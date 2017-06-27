@@ -5,13 +5,16 @@
     name: nginx
     state: present
 
-- name: Creating nginx http directory
+- name: Creating nginx http directories
   file:
-    dest: "{{nginx_http_pxe_dir}}"
+    dest: "{{item}}"
     mode: 0755
     owner: root
     group: root
     state: directory
+  with_items:
+    - "{{nginx_http_pxe_dir}}"
+    - "{{nginx_http_pxe_dir}}/isos"
 
 - name: Configuring nginx
   template:

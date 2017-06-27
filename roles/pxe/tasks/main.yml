@@ -3,3 +3,5 @@
 - include: tftpd-hpa.yml
 - include: syslinux.yml
 - include: http-server.yml
+- include: pxe-debian-live-xfce.yml
+- include: pxe-coreos.yml

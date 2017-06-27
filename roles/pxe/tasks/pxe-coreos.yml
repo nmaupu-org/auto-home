@@ -1,0 +1,7 @@
+---
+
+- name: Creating pxe menu for CoreOS
+  template:
+    src: templates/coreos.include.j2
+    dest: "{{tftproot_dir}}/bios/pxelinux.cfg/coreos.include"
+    mode: 0644
