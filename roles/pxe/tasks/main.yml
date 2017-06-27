@@ -2,3 +2,4 @@
 
 - include: tftpd-hpa.yml
 - include: syslinux.yml
+- include: http-server.yml

@@ -3,3 +3,8 @@
   service:
     name: tftpd-hpa
     state: restarted
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

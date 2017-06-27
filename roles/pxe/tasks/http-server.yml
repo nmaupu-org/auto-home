@@ -1,0 +1,36 @@
+---
+
+- name: Installing nginx server
+  apt:
+    name: nginx
+    state: present
+
+- name: Creating nginx http directory
+  file:
+    dest: "{{nginx_http_pxe_dir}}"
+    mode: 0755
+    owner: root
+    group: root
+    state: directory
+
+- name: Configuring nginx
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+  notify:
+    - restart nginx
+
+- name: Configuring nginx http PXE file server
+  template:
+    src: templates/nginx-pxe.conf.j2
+    dest: /etc/nginx/conf.d/pxe.conf
+    mode: 0644
+  notify:
+    - restart nginx
+
+- name: Ensure nginx is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes

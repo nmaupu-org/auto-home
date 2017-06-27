@@ -1,9 +1,7 @@
 #!ipxe
 
 dhcp
-set server_ip {{pxe_nfs_server}}
-set nfs_path {{pxe_nfs_path}}
 kernel http://{{pxe_http_server}}/pxe/livecd/debian-xfce/vmlinuz-4.9.0-3-amd64 || read void
 initrd http://{{pxe_http_server}}/pxe/livecd/debian-xfce/initrd.img-4.9.0-3-amd64 || read void
-imgargs vmlinuz-4.9.0-3-amd64 root=/dev/nfs boot=live netboot=nfs ip=dhcp nfsroot=${server_ip}:${nfs_path} || read void
+imgargs vmlinuz-4.9.0-3-amd64 boot=live config hooks=filesystem ${conkern} username=live noeject fetch=http://{{pxe_http_server}}/pxe/livecd/debian-xfce/filesystem.squashfs
 boot || read void

@@ -14,7 +14,7 @@
   with_items:
     - bios
     - bios/pxelinux.cfg
-    - bios/ipxe-scripts
+    - "{{ipxe_scripts_dir}}"
 
 - name: Copying necessary files for syslinux
   copy:
@@ -55,3 +55,4 @@
   with_items:
     - coreos.ipxe
     - debian-live-xfce.ipxe
+

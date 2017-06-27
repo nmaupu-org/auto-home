@@ -10,9 +10,14 @@ syslinux_version: "{{syslinux_major_ver}}-{{syslinux_flavor}}"
 
 pxe_timeout: 60
 pxe_title: -==| PXE mopsland |==-
-pxe_nfs_server: 192.168.12.8
-pxe_nfs_path: /mnt/tank/pxe-nfs/debian-live-9.0.1-amd64-xfce
-pxe_http_server: 192.168.12.156
-pxe_matchbox_url: matchbox.home.fossar.net:8080
+pxe_http_server: "{{ansible_default_ipv4.address}}"
 
 ipxe_lkrn_url: http://boot.ipxe.org/ipxe.lkrn
+ipxe_scripts_dir: bios/ipxe-scripts
+
+nginx_http_dir: /var/www
+nginx_http_pxe_url: /pxe
+nginx_http_pxe_dir: "{{nginx_http_dir}}/{{nginx_http_pxe_url}}"
+
+# TODO - install matchbox
+pxe_matchbox_url: matchbox.home.fossar.net:8080
