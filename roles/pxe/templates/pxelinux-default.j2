@@ -1,0 +1,17 @@
+DEFAULT vesamenu.c32 pxelinux.cfg/graphics.conf ~
+PROMPT 0
+TIMEOUT {{pxe_timeout}}
+ 
+MENU TITLE **** {{pxe_title}} ****
+
+LABEL matchbox-coreos
+  MENU LABEL Matchbox CoreOS
+  KERNEL ipxe.lkrn
+  initrd ipxe-scripts/coreos.ipxe
+
+LABEL debian-live-xfce
+  MENU LABEL Debian live (XFCE)
+  KERNEL ipxe.lkrn
+  initrd ipxe-scripts/debian-live-xfce.ipxe
+  MENU default
+
