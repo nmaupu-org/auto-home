@@ -8,3 +8,8 @@
   service:
     name: nginx
     state: restarted
+
+- name: restart matchbox
+  service:
+    name: matchbox
+    state: restarted

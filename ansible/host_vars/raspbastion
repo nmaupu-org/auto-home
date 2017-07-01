@@ -1,0 +1,3 @@
+pxe_title: PXE mopsland
+matchbox_dns: matchbox.fossar.net
+pxe_matchbox_url: "{{matchbox_dns}}:8080"

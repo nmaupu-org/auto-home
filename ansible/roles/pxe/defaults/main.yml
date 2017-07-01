@@ -9,7 +9,7 @@ syslinux_url: https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/{{sys
 syslinux_version: "{{syslinux_major_ver}}-{{syslinux_flavor}}"
 
 pxe_timeout: 60
-pxe_title: -==| PXE mopsland |==-
+pxe_title: PXE
 pxe_http_server: "{{ansible_default_ipv4.address}}"
 pxe_menu_items:
   - debian-live-xfce.include
@@ -32,5 +32,10 @@ debian_live_iso:
   kernel: vmlinuz-4.9.0-3-amd64
   initrd: initrd.img-4.9.0-3-amd64
 
-# TODO - install matchbox
-pxe_matchbox_url: matchbox.home.fossar.net:8080
+matchbox_version: v0.6.1
+matchbox_dns: localhost
+matchbox:
+  url: "https://github.com/coreos/matchbox/releases/download/{{matchbox_version}}/matchbox-{{matchbox_version}}-linux-amd64.tar.gz"
+  checksum: sha1:73fc9be915e1d7943b3caf4634a70b80505c665
+
+coreos_version: 1353.8.0

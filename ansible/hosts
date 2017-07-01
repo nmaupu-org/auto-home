@@ -1,5 +1,8 @@
 nas         ansible_host=192.168.12.8   ansible_user=root
-raspbastion ansible_host=192.168.12.11  ansible_user=pi
 rproxy      ansible_host=192.168.12.156 ansible_user=root
+
+[pxe]
+raspbastion ansible_host=192.168.12.11  ansible_user=pi
 test        ansible_host=192.168.14.70  ansible_user=user
+
 test-work   ansible_host=10.0.2.15      ansible_user=osboxes.org

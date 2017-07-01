@@ -1,7 +1,7 @@
 ---
 
-- name: Install rapspbastion utilities
-  hosts: "{{pxe_host}}"
+- name: Install utilities
+  hosts: pxe
   become: yes
   roles:
     - pxe
