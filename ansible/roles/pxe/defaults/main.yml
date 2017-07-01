@@ -34,8 +34,9 @@ debian_live_iso:
 
 matchbox_version: v0.6.1
 matchbox_dns: localhost
+matchbox_arch: linux-amd64
 matchbox:
-  url: "https://github.com/coreos/matchbox/releases/download/{{matchbox_version}}/matchbox-{{matchbox_version}}-linux-amd64.tar.gz"
+  url: "https://github.com/coreos/matchbox/releases/download/{{matchbox_version}}/matchbox-{{matchbox_version}}-{{matchbox_arch}}.tar.gz"
   checksum: sha1:73fc9be915e1d7943b3caf4634a70b80505c665
 
 coreos_version: 1353.8.0

@@ -19,9 +19,10 @@ EXTRA_OPTS="$@"
 
 DOCKER_IMAGE="${DOCKER_ID_USER}/builder"
 ANSIBLE_DIR="/workspace/ansible"
-CMD="ansible-playbook -i "${ANSIBLE_DIR}/hosts" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
+CMD="${CMD:-ansible-playbook -i "${ANSIBLE_DIR}/hosts" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}"}"
+DOCKER_OPTS="${DOCKER_OPTS:--t}"
 
-docker run -t --rm \
+docker run ${DOCKER_OPTS} --rm \
   -e ANSIBLE_CONFIG="${ANSIBLE_DIR}/ansible.cfg" \
   -v "${DIRNAME}":/workspace \
   -v ~/.ssh:/root/.ssh \
