@@ -1,0 +1,7 @@
+---
+
+- name: Install utilities
+  hosts: localhost
+  become: no
+  roles:
+    - coreos-bootstrap

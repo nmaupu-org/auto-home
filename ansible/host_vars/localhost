@@ -1,0 +1,3 @@
+---
+matchbox_domain: matchbox.home.fossar.net
+terraform_matchbox_output_dir: "{{ansible_env.HOME}}/work/auto-home/terraform" 

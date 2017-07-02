@@ -4,4 +4,5 @@
   hosts: pxe
   become: yes
   roles:
+    - linux-base
     - pxe

@@ -5,12 +5,10 @@ NAME=builder
 VERSION=1.0
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
-# As of 2017/07/01, coreos/matchbox is working with terraform 0.9.6 max
-TERRAFORM_VERSION=0.9.6
+ARCH=amd64
+PLATFORM=linux
 
-build: check-docker-hub clean tmp
-	wget --no-check-certificate -O tmp/terraform.zip https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_linux_amd64.zip
-	unzip -d tmp tmp/terraform.zip
+build: check-docker-hub
 	docker build -t $(NAME):$(VERSION) .
 	$(MAKE) clean
 

@@ -1,0 +1,26 @@
+---
+
+terraform_matchbox_output_dir: /tmp/coreos-terraform
+matchbox_version: v0.6.1
+
+matchbox_domain: matchbox.home.fossar.net
+matchbox_url: "{{matchbox_domain}}:8080"
+matchbox_rpc_url: "{{matchbox_domain}}:8081"
+coreos_ssh_pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdAx40wbnT5SHE0vt3vSsLiuXyjbx5PdhRgZ0jHJTgSqdQEEGalr0u28o/hQJpIyTSNfYETEcdY1nBMbrwviv2WPp2A7QFAZF8eq0Tp4U0x1/8coSgXOyDnMUbDaFlS+b6CUcsEXsvRA1yzvBNoJ4tbmLozY/5IL4Bu9pcd8CZAR2eBkSwQ0j3gjgP+2StsIOqsba1A4FugilxQbdkQ7hRa89Rt0j92rGTEt+AzD9zgWp6VCiwumj7OiwTFbhZ/+OYA18XMQjuIb8O0RSBxQm6RDmF9b1+MFp882ZHRVK9S/FeCe0peErgmPFOjgiIxpqUzJu25rpKm7i77x8lkfOn bicnic@travelers.bicnic.fr"
+
+kube_cluster_name: kube-home
+coreos_version: 1353.8.0
+coreos_branch: stable
+
+# Machines
+controllers:
+  - name: '"kcontroller1"'
+    mac: '"08:00:27:32:CF:9A"'
+    domain: '"kcontroller1.home.fossar.net"'
+
+workers:
+  - name: '"knode1"'
+    mac: '"08:00:27:8C:73:0C"'
+    domain: '"knode1.home.fossar.net"'
+
+kube_domain_name: kcontroller1.home.fossar.net

@@ -1,0 +1,19 @@
+---
+
+# Bootstrap terraform config for a home coreos' kubernetes cluster
+
+- name: Creating {{terraform_matchbox_output_dir}} directory
+  file:
+    path: "{{terraform_matchbox_output_dir}}"
+    state: directory
+
+- name: Checking out matchbox example directory
+  git:
+    repo: 'https://github.com/coreos/matchbox.git'
+    dest: "{{terraform_matchbox_output_dir}}"
+    version: "{{matchbox_version}}"
+
+- name: Generating terraform.tfvars
+  template:
+    src: templates/terraform.tfvars.j2
+    dest: "{{terraform_matchbox_output_dir}}/examples/terraform/bootkube-install/terraform.tfvars"
