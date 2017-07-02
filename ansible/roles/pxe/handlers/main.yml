@@ -1,4 +1,7 @@
 ---
+- name: daemon-reload
+  shell: systemctl daemon-reload
+
 - name: restart tftpd-hpa
   service:
     name: tftpd-hpa

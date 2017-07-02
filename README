@@ -1,1 +1,11 @@
-Personal home automation scripts and tests
+Personal home automation scripts.
+
+Kubernetes cluster using CoreOS
+===============================
+
+- PXE and coreos/matchbox is installed using ansible
+- Once installed, terraform is to be used to configure the config files on matchbox server
+- Now, pxe boot controllers and nodes and choose coreos entry (wait for machines to reboot themselves)
+- Locally, use ssh-agent to add your private ssh key (the one configured in terraform/matchbox-home/bootkube-install/terraform.tfvars)
+- Once machines rebooted, use the exact same terraform script to bootstrap controllers and nodes.
+

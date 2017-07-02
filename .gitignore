@@ -1,3 +1,7 @@
 *.retry
 .DS_Store
 tmp/
+*.tfstate
+*.backup
+.terraform/
+assets/

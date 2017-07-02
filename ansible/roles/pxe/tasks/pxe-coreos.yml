@@ -73,7 +73,25 @@
     owner: root
     group: root
     remote_src: true
-  notify: restart matchbox
+  notify:
+    - daemon-reload
+    - restart matchbox
+
+- name: Creating matchbox systemd override dir
+  file:
+    path: /etc/systemd/system/matchbox.service.d
+    state: directory
+
+- name: Configuring matchbox service
+  copy:
+    src: files/matchbox-service-override.conf
+    dest: /etc/systemd/system/matchbox.service.d/override.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - daemon-reload
+    - restart matchbox
 
 - name: Enabling matchbox service
   service:
