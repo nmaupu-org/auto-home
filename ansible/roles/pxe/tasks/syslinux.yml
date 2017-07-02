@@ -55,4 +55,5 @@
   with_items:
     - coreos.ipxe
     - debian-live-xfce.ipxe
+    - get-mac-addr.ipxe
 

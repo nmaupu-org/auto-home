@@ -1,3 +1,20 @@
 ---
 matchbox_domain: matchbox.home.fossar.net
 terraform_matchbox_output_dir: "{{ansible_env.HOME}}/work/auto-home/terraform" 
+
+# Machines
+controllers:
+  - name: '"kcontroller1"'
+    mac: '"08:00:27:32:CF:9A"'
+    domain: '"kcontroller1.home.fossar.net"'
+
+workers:
+  - name: '"knode1"'
+    mac: '"08:00:27:8C:73:0C"'
+    domain: '"knode1.home.fossar.net"'
+  - name: '"knode2"'
+    mac: '""'
+    domain: '"knode2.home.fossar.net"'
+  - name: '"knode3"'
+    mac: '""'
+    domain: '"knode3.home.fossar.net"'

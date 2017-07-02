@@ -1,0 +1,5 @@
+---
+
+users:
+  - home: /root
+    user: root

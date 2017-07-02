@@ -2,3 +2,9 @@ pxe_title: PXE mopsland
 matchbox_dns: matchbox.home.fossar.net
 matchbox_arch: linux-arm
 pxe_matchbox_url: "{{matchbox_dns}}:8080"
+
+users:
+  - home: /root
+    user: root
+  - home: /home/pi
+    user: pi

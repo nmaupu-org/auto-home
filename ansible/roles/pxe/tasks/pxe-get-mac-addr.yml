@@ -1,0 +1,7 @@
+---
+
+- name: Creating pxe menu to help getting mac addresses
+  template:
+    src: templates/get-mac-addr.include.j2
+    dest: "{{tftproot_dir}}/bios/pxelinux.cfg/get-mac-addr.include"
+    mode: 0644
