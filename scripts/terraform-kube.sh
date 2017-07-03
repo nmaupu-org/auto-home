@@ -18,8 +18,11 @@ mkdir -p ~/.matchbox && \
   scp root@${ansible_host}:/usr/local/matchbox-*/scripts/tls/ca.crt   ~/.matchbox
 [ $? -gt 0 ] && echo "Cannot get client keys, aborting." >&2 && exit 1
 
+# Cleaning remote directories
+ssh root@${ansible_host} "rm -rf /var/lib/matchbox/{groups,ignition,profiles}"
+
 cd ${BASEDIR}/terraform/examples/terraform/bootkube-install
-rm -f terraform.tfstate*
+#rm -f terraform.tfstate*
 terraform get && TF_LOG=debug terraform apply
 
 if [ -f ${BASEDIR}/terraform/examples/terraform/bootkube-install/assets/auth/kubeconfig ]; then

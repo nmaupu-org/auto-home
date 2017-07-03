@@ -23,4 +23,4 @@ workers:
     mac: '"08:00:27:8C:73:0C"'
     domain: '"knode1.home.fossar.net"'
 
-kube_domain_name: kcontroller1.home.fossar.net
+kube_domain_name: kube.home.fossar.net
