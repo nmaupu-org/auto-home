@@ -6,3 +6,11 @@
   roles:
     - linux-base
     - pxe
+  tags: pxe
+
+- name: Install DNS server
+  hosts: raspbastion
+  become: yes
+  roles:
+    - dns
+  tags: dns

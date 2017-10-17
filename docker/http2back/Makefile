@@ -1,15 +1,16 @@
 default: push
 .PHONY: default clean build tag tag-latest check-docker-hub
 
-NAME=builder
-VERSION=1.0
+NAME=http2back
+HTTP2BACK_VERSION=0.4
+VERSION=$(HTTP2BACK_VERSION)
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
 ARCH=amd64
 PLATFORM=linux
 
 build: check-docker-hub
-	docker build --no-cache -t $(NAME):$(VERSION) .
+	docker build --build-arg HTTP2BACK_VERSION=$(HTTP2BACK_VERSION) -t $(NAME):$(VERSION) .
 	$(MAKE) clean
 
 tag: build

@@ -2,7 +2,7 @@ FROM alpine
 
 RUN apk update && \
     apk upgrade && \
-    apk add ansible py-pip openssh-client openssl bash git && \
+    apk add ansible py-pip openssh-client openssl bash git bash-completion && \
     pip install paramiko && \
     wget -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.6.1/bin/linux/amd64/kubectl && \
     chmod +x /usr/bin/kubectl && \
