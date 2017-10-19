@@ -1,0 +1,9 @@
+---
+
+- name: Downloading kubectl binary
+  get_url:
+    url: "{{kubectl_url}}"
+    dest: "{{kubectl_install_dir}}/kubectl"
+    mode: 0755
+    checksum: md5:{{kubectl_md5}}
+

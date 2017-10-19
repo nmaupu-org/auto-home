@@ -1,0 +1,7 @@
+---
+
+kubectl_version: 1.8.1
+kubectl_url: https://storage.googleapis.com/kubernetes-release/release/v{{kubectl_version}}/bin/linux/amd64/kubectl
+kubectl_md5: 5342c7881b37a6185f87703bacb493ac
+kubectl_user: pi
+kubectl_install_dir: /opt

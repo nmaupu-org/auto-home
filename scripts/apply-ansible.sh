@@ -16,6 +16,7 @@ EOF
 YAML_FILE="$1"; shift
 EXTRA_OPTS="$@"
 ANSIBLE_DIR="/workspace/ansible"
+ANSIBLE_CFG="${ANSIBLE_DIR}/ansible.cfg"
 CMD="ansible-playbook -i "${ANSIBLE_DIR}/hosts" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
 
 ${BASEDIR}/scripts/apply-wrapper.sh "${CMD}"

@@ -1,6 +1,7 @@
 ---
 
 - name: Install utilities
+  gather_facts: no
   hosts: pxe
   become: yes
   roles:
@@ -9,8 +10,17 @@
   tags: pxe
 
 - name: Install DNS server
+  gather_facts: no
   hosts: raspbastion
   become: yes
   roles:
     - dns
   tags: dns
+
+- name: Install kubectl client
+  gather_facts: no
+  hosts: raspbastion
+  become: yes
+  roles:
+    - kubectl
+  tags: kubectl
