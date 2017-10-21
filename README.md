@@ -110,3 +110,14 @@ Useful tools and projects
 - https://github.com/hjacobs/kube-ops-view
 - https://github.com/containous/traefik
 
+Troubleshooting
+===============
+
+If cluster crashes somehow and controller does boot but does not start those vital containers :
+```
+ssh kcontroller1 -l core
+$ sudo rm -f /opt/bootkube/init_bootkube.done
+$ sudo systemctl start bootkube
+```
+
+Be patient !

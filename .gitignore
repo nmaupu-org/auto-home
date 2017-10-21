@@ -6,4 +6,5 @@ tmp/
 .terraform/
 assets/
 *.swp
+*.swo
 terraform/
