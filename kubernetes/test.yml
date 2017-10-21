@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: http2back
-        image: docker.io/nmaupu/http2back:0.4
+        image: docker.io/nmaupu/http2back:0.5
         args:
           - --bind=0.0.0.0
           - --port=8080
@@ -67,3 +67,19 @@ spec:
   - name: http2back
     port: 8080
     protocol: TCP
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: http2back-ingress
+  namespace: test
+spec:
+  rules:
+  - host: http2back.home.fossar.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: http2back
+          servicePort: 8080

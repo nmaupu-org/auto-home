@@ -1,8 +1,15 @@
-nas         ansible_host=192.168.12.8   ansible_user=root
 rproxy      ansible_host=192.168.12.156 ansible_user=root
+test-work   ansible_host=10.0.2.15      ansible_user=osboxes.org
+
+[freebsd]
+nas         ansible_host=192.168.12.8
+kube-rproxy ansible_host=192.168.12.157
+
+[freebsd:vars]
+ansible_user=root
+ansible_python_interpreter=/usr/local/bin/python2.7
+#ansible_shell_type=csh
 
 [pxe]
 raspbastion ansible_host=192.168.12.11  ansible_user=pi
 test        ansible_host=192.168.14.70  ansible_user=user
-
-test-work   ansible_host=10.0.2.15      ansible_user=osboxes.org

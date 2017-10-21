@@ -1,0 +1,67 @@
+---
+
+- fail: msg="Variable jail_name is not defined"
+  when: jail_name is not defined
+
+- fail: msg="Variable kube_nodes is not defined"
+  when: kube_nodes is not defined
+
+- name: Creating .ssh directory
+  delegate_to: nas
+  file:
+    state: directory
+    mode: 0700
+    path: "{{jail_mount}}/{{jail_name}}/root/.ssh"
+
+- name: Copying authorized_keys file
+  delegate_to: nas
+  copy:
+    src: authorized_keys
+    dest: "{{jail_mount}}/{{jail_name}}/root/.ssh/authorized_keys"
+
+- name: Activating sshd service
+  delegate_to: nas
+  lineinfile:
+    path: "{{jail_mount}}/{{jail_name}}/etc/rc.conf"
+    regexp: '^sshd_enable'
+    state: present
+    line: 'sshd_enable="YES"'
+
+- name: Permit root login
+  delegate_to: nas
+  lineinfile:
+    path: "{{jail_mount}}/{{jail_name}}/etc/ssh/sshd_config"
+    regexp: '^PermitRootLogin yes'
+    state: present
+    line: 'PermitRootLogin yes'
+
+- name: Starting sshd service
+  delegate_to: nas
+  shell: |
+    jexec {{jail_name}} tcsh -c "service sshd start"
+  args:
+    creates: "{{jail_mount}}/{{jail_name}}/var/run/sshd.pid"
+
+# From now on we can connect to ssh to this jail,
+# no need to delegate anymore.
+# Nevertheless, we still need python on it to be able to ansible.
+- name: Installing python (raw)
+  raw: pkg install -y python27
+
+- name: Installing nginx
+  pkgng:
+    name: nginx
+    state: present
+
+- name: Creating nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /usr/local/etc/nginx/nginx.conf
+  notify:
+    - restart nginx
+
+- name: nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes

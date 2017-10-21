@@ -21,8 +21,17 @@ For an obscure reason, `terraform-provider-matchbox` is not working using docker
 
 ---
 
-Ansible provisioning
-====================
+Ansibling and kubernetizing
+===========================
+
+Kubernetes architecture is quite simple :
+
+- a CoreOS cluster composed of 4 machines (1 controller and 3 nodes)
+- traefik as ingress controller
+- a nginx acting as reverse proxy outside the cluster with a very basic configuration
+
+General use
+-----------
 
 Use docker image nmaupu/builder like so :
 ```
@@ -31,6 +40,23 @@ Use docker image nmaupu/builder like so :
 ```
 
 `--limit test` is used to limit action to test machine configured in `ansible/hosts` file
+
+Reverse proxy provisioning
+--------------------------
+
+Kubernetes requires a reverse proxy outside the cluster to serve ingress controller. I am using a freenas jail here (FreeBSD).
+FreeNAS jails can be created using the api. The jail can then be provisionned as usual (but needs python2.7 installed before !)
+```
+./freenas/kube-rproxy-jail.py nas.home.fossar.net root password | jq
+./scripts/apply-ansible.sh home.yml --limit kube-rproxy --tags freenas-jail
+```
+
+Apply kubernetes yaml
+---------------------
+
+```
+./scripts/apply-wrapper.sh /workspace/scripts/kube-provision-tools.sh
+```
 
 Kubernetes cluster using CoreOS
 ===============================
@@ -76,3 +102,11 @@ NAME                           STATUS    AGE       VERSION
 kcontroller1.home.fossar.net   Ready     5m        v1.6.4+coreos.0
 knode1.home.fossar.net         Ready     5m        v1.6.4+coreos.0
 ```
+
+Useful tools and projects
+=========================
+
+- https://github.com/coreos/matchbox
+- https://github.com/hjacobs/kube-ops-view
+- https://github.com/containous/traefik
+

@@ -2,7 +2,7 @@ default: push
 .PHONY: default clean build tag tag-latest check-docker-hub
 
 NAME=http2back
-HTTP2BACK_VERSION=0.4
+HTTP2BACK_VERSION=0.5
 VERSION=$(HTTP2BACK_VERSION)
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 

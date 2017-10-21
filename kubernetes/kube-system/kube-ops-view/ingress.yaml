@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kube-ops-view
+spec:
+  rules:
+  - host: kube-ops-view.home.fossar.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kube-ops-view
+          servicePort: 80

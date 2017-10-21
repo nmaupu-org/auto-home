@@ -26,11 +26,18 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-      - image: traefik
-        name: traefik-ingress-lb
+      - name: traefik-ingress-lb
+        image: traefik
         args:
         - --web
         - --kubernetes
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
 ---
 kind: Service
 apiVersion: v1
@@ -40,11 +47,13 @@ metadata:
 spec:
   selector:
     k8s-app: traefik-ingress-lb
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
       name: web
+      nodePort: 30080
     - protocol: TCP
       port: 8080
       name: admin
-  type: NodePort
+      nodePort: 30081

@@ -24,3 +24,16 @@
   roles:
     - kubectl
   tags: kubectl
+
+- name: Provisioning kube-rproxy jail
+  hosts: kube-rproxy
+  vars:
+    jail_name: kube-rproxy
+    kube_nodes:
+      - knode1.home.fossar.net
+      - knode2.home.fossar.net
+      - knode3.home.fossar.net
+  gather_facts: no
+  roles:
+    - freenas-jail
+  tags: freenas-jail
