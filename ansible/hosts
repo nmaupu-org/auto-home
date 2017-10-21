@@ -1,21 +1,33 @@
-[freebsd]
+[pxe]
+raspbastion ansible_host=192.168.12.11  ansible_user=pi
+test        ansible_host=192.168.14.70  ansible_user=user
+
+[jails-host]
 nas         ansible_host=192.168.12.8
+
+[jails]
 kube-rproxy ansible_host=192.168.12.157
+
+[freebsd:children]
+jails-host
+jails
 
 [freebsd:vars]
 ansible_user=root
 ansible_python_interpreter=/usr/local/bin/python2.7
 #ansible_shell_type=csh
 
-[pxe]
-raspbastion ansible_host=192.168.12.11  ansible_user=pi
-test        ansible_host=192.168.14.70  ansible_user=user
-
-[coreos]
+[coreos-controllers]
 kcontroller1 ansible_host=192.168.12.12
+
+[coreos-nodes]
 knode1       ansible_host=192.168.12.13
 knode2       ansible_host=192.168.12.14
 knode3       ansible_host=192.168.12.15
+
+[coreos:children]
+coreos-controllers
+coreos-nodes
 
 [coreos:vars]
 ansible_ssh_user=core

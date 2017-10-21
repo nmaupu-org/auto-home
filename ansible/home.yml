@@ -1,5 +1,6 @@
 ---
 
+## CoreOS related
 - name: Bootstraping python on coreos machines
   gather_facts: no
   hosts: coreos
@@ -9,9 +10,25 @@
   tags:
     - always
 
+## Mouting NFS volumes on CoreOS needs rpc.statd
+## service to be running
+- name: Ensuring rpc-statd is up and running
+  gather_facts: no
+  hosts: coreos-nodes
+  become: yes
+  tasks:
+    - service:
+        name: rpc-statd
+        enabled: yes
+        state: started
+  tags:
+    - always
+
+
+## Linux related
 - name: Installing utilities
   gather_facts: yes
-  hosts: all
+  hosts: all & !coreos & !freebsd
   become: yes
   roles:
     - { role: linux-base, tags: ['pxe', 'linux'] }
