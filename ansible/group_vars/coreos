@@ -1,0 +1,3 @@
+users:
+  - home: /home/core
+    user: core

@@ -35,7 +35,7 @@ General use
 
 Use docker image nmaupu/builder like so :
 ```
-./scripts/apply-ansible.sh home-pxe.yml --limit test
+./scripts/apply-ansible.sh <file>.yml --limit test --tags <tags>
 ./scripts/apply-ansible.sh work.yml --limit test
 ```
 

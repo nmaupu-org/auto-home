@@ -1,0 +1,26 @@
+---
+
+- name: Bootstraping python on coreos machines
+  gather_facts: no
+  hosts: coreos
+  become: no
+  roles:
+    - defunctzombie.coreos-bootstrap
+  tags:
+    - always
+
+- name: Installing utilities
+  gather_facts: yes
+  hosts: all
+  become: yes
+  roles:
+    - { role: linux-base, tags: ['pxe', 'linux'] }
+
+- name: Installing services
+  gather_facts: no
+  hosts: pxe
+  become: yes
+  roles:
+    - { role: pxe, tags: ['pxe'] }
+    - { role: dns, tags: ['dns'] }
+    - { role: kubectl, tags: ['kubectl'] }

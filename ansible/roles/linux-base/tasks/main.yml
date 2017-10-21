@@ -30,3 +30,4 @@
     group: "{{item.user}}"
     mode: 0644
   with_items: "{{users}}"
+  tags: authorized_keys
