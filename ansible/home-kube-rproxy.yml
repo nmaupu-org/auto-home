@@ -6,7 +6,7 @@
     jail_name: kube-rproxy
   gather_facts: no
   roles:
-    - freenas-jail
+    - freebsd-jail
 
 - name: Provisioning kube-rproxy jail
   hosts: kube-rproxy

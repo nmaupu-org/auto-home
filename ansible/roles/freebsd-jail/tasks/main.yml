@@ -15,21 +15,21 @@
 ##
 
 - name: Creating .ssh directory
-  delegate_to: {{jail_host}}
+  delegate_to: "{{jail_host}}"
   file:
     state: directory
     mode: 0700
     path: "{{jail_mount}}/{{jail_name}}/root/.ssh"
 
 - name: Copying authorized_keys file
-  delegate_to: {{jail_host}}
+  delegate_to: "{{jail_host}}"
   copy:
     content: |
       {{authorized_keys}}
     dest: "{{jail_mount}}/{{jail_name}}/root/.ssh/authorized_keys"
 
 - name: Activating sshd service
-  delegate_to: {{jail_host}}
+  delegate_to: "{{jail_host}}"
   lineinfile:
     path: "{{jail_mount}}/{{jail_name}}/etc/rc.conf"
     regexp: '^sshd_enable'
@@ -37,7 +37,7 @@
     line: 'sshd_enable="YES"'
 
 - name: Permit root login
-  delegate_to: {{jail_host}}
+  delegate_to: "{{jail_host}}"
   lineinfile:
     path: "{{jail_mount}}/{{jail_name}}/etc/ssh/sshd_config"
     regexp: '^PermitRootLogin yes'
@@ -45,7 +45,7 @@
     line: 'PermitRootLogin yes'
 
 - name: Starting sshd service
-  delegate_to: {{jail_host}}
+  delegate_to: "{{jail_host}}"
   shell: |
     jexec {{jail_name}} tcsh -c "service sshd start"
   args:
