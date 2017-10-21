@@ -1,0 +1,5 @@
+kube_nodes:
+  - knode1
+  - knode2
+  - knode3
+rproxy_conf_dir: /usr/local/etc/nginx

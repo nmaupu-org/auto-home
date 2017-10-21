@@ -1,0 +1,23 @@
+---
+
+# Parameters:
+# kubde_nodes: array of all kube nodes
+# rproxy_conf_dir: Path to nginx configuration dir
+
+- name: Installing nginx
+  package:
+    name: nginx
+    state: present
+
+- name: Creating nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: "{{rproxy_conf_dir}}/nginx.conf"
+  notify:
+    - restart nginx
+
+- name: nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes

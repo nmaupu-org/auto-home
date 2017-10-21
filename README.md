@@ -35,7 +35,7 @@ General use
 
 Use docker image nmaupu/builder like so :
 ```
-./scripts/apply-ansible.sh home.yml --limit test
+./scripts/apply-ansible.sh home-pxe.yml --limit test
 ./scripts/apply-ansible.sh work.yml --limit test
 ```
 
@@ -48,7 +48,7 @@ Kubernetes requires a reverse proxy outside the cluster to serve ingress control
 FreeNAS jails can be created using the api. The jail can then be provisionned as usual (but needs python2.7 installed before !)
 ```
 ./freenas/kube-rproxy-jail.py nas.home.fossar.net root password | jq
-./scripts/apply-ansible.sh home.yml --limit kube-rproxy --tags freenas-jail
+./scripts/apply-ansible.sh home-kube-rproxy.yml
 ```
 
 Apply kubernetes yaml

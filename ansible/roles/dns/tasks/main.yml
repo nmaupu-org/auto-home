@@ -25,4 +25,3 @@
     name: dnsmasq
     enabled: yes
     state: started
-  

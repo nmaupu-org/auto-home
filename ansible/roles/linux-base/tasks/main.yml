@@ -23,7 +23,8 @@
 
 - name: SSH public keys
   copy:
-    src: files/authorized_keys
+    content: |
+      {{authorized_keys}}
     dest: "{{item.home}}/.ssh/authorized_keys"
     owner: "{{item.user}}"
     group: "{{item.user}}"
