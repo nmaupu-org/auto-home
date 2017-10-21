@@ -35,3 +35,4 @@ dns_hosts:
     - rproxy
     - traefik
     - kube-ops-view
+    - photoweb
