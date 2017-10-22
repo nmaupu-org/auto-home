@@ -4,6 +4,7 @@ metadata:
   labels:
     application: kube-ops-view-redis
   name: kube-ops-view-redis
+  namespace: kube-system
 spec:
   selector:
     application: kube-ops-view-redis

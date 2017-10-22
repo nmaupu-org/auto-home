@@ -5,6 +5,7 @@ metadata:
     application: kube-ops-view
     version: v0.7.1
   name: kube-ops-view
+  namespace: kube-system
 spec:
   replicas: 1
   selector:

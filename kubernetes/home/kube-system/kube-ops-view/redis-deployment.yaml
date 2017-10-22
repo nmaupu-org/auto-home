@@ -5,6 +5,7 @@ metadata:
     application: kube-ops-view-redis
     version: v0.0.1
   name: kube-ops-view-redis
+  namespace: kube-system
 spec:
   replicas: 1
   selector:
