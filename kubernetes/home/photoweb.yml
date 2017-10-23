@@ -16,8 +16,8 @@ spec:
   accessModes:
     - ReadOnlyMany
   nfs:
-    server: 192.168.12.8
-    path: "/mnt/tank/photos/web/photos-web"
+    server: nfs.home.fossar.net
+    path: "/mnt/tank/kube-nfs/photoweb"
 
 ---
 apiVersion: v1
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: nginx
+        image: nginx:1.13.5
         ports:
           - name: web
             containerPort: 80
@@ -63,11 +63,11 @@ spec:
             mountPath: "/usr/share/nginx/html"
         resources:
            limits:
-             cpu: 100m
-             memory: 100Mi
-           requests:
              cpu: 50m
              memory: 50Mi
+           requests:
+             cpu: 10m
+             memory: 30Mi
       volumes:
       - name: nfs
         persistentVolumeClaim:

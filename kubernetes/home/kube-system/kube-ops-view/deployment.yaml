@@ -40,4 +40,4 @@ spec:
             memory: 100Mi
           requests:
             cpu: 50m
-            memory: 50Mi
+            memory: 60Mi

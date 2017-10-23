@@ -18,6 +18,7 @@ dns_hosts:
   192.168.12.8:
     - nas
     - freenas
+    - nfs
   192.168.12.11:
     - raspbastion
     - matchbox
@@ -30,9 +31,15 @@ dns_hosts:
     - knode2
   192.168.12.15:
     - knode3
+  192.168.12.156:
+    - utils
   192.168.12.157:
+    - grafana
+    - kubernetes-dashboard
+    - kube-ops-view
     - kube-rproxy
+    - minio
+    - photoweb
     - rproxy
     - traefik
-    - kube-ops-view
-    - photoweb
+    - vault

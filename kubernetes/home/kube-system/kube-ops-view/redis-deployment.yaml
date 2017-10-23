@@ -28,8 +28,8 @@ spec:
             port: 6379
         resources:
           limits:
-            cpu: 200m
-            memory: 100Mi
-          requests:
             cpu: 50m
-            memory: 50Mi
+            memory: 60Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
