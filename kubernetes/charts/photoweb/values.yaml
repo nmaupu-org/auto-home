@@ -1,0 +1,25 @@
+NginxImage: nginx:1.13.5
+
+replicaCount: 1
+
+deployment:
+  image: nginx:1.13.5
+
+ingress:
+  enabled: true
+  hostname: photoweb.home.fossar.net
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 50Mi
+  requests:
+    cpu: 20m
+    memory: 30Mi
+
+nfs:
+  accessModes:
+    - ReadOnlyMany
+  server: nfs.home.fossar.net
+  storageSize: 5Gi
+  mountpoint: /mnt/tank/kube-nfs/photoweb

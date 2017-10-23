@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Photoweb
+name: photoweb
+version: 0.1.1
