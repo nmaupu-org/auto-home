@@ -4,4 +4,4 @@
   hosts: localhost
   become: no
   roles:
-    - coreos-bootstrap
+    - pxe-bootstrap-coreos
