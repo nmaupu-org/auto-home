@@ -5,12 +5,14 @@
 ## So the best way is to add a 'Wants' on kubelet service
 ## Should be fixed by https://github.com/coreos/bugs/issues/2038
 - name: Creating 'Wants' directory
+  become: yes
   file:
     state: directory
     mode: 0755
     dest: "{{kubelet_wants_dir}}"
 
 - name: Symlinking rpc-statd service to kubelet's wants directory
+  become: yes
   file:
     src: "{{rpc_statd_service_dir}}/rpc-statd.service"
     dest: "{{kubelet_wants_dir}}/rpc-statd.service"

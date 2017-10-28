@@ -26,3 +26,13 @@
     - { role: pxe, tags: ['pxe'] }
     - { role: dns, tags: ['dns'] }
     - { role: kubectl, tags: ['kubectl'] }
+
+## Deluge configuration
+- name: Creating deluge config on NFS share
+  gather_facts: no
+  hosts: jails-host
+  become: yes
+  roles:
+    - deluge-config
+  tags:
+    - always

@@ -1,6 +1,7 @@
 ---
 
 - name: restart kubelet
+  become: yes
   systemd:
     name: kubelet
     enabled: yes

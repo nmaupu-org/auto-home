@@ -1,8 +1,8 @@
 ---
 
-- include: tftpd-hpa.yml
-- include: syslinux.yml
-- include: http-server.yml
-- include: pxe-get-mac-addr.yml
-- include: pxe-debian-live-xfce.yml
-- include: pxe-coreos.yml
+- include_tasks: tftpd-hpa.yml
+- include_tasks: syslinux.yml
+- include_tasks: http-server.yml
+- include_tasks: pxe-get-mac-addr.yml
+- include_tasks: pxe-debian-live-xfce.yml
+- include_tasks: pxe-coreos.yml

@@ -101,7 +101,7 @@ def main():
     print(r.status_code, r.text)
 
     # Vault
-    # Creating group vault as in the vault container
+    # Creating group vault as in the vault container (gid = 100)
     vault_name = "vault"
     r = fac.createGroup(vault_name, 100)
     print(r.status_code, r.text)
@@ -141,6 +141,12 @@ def main():
     r = fac.createDataset("kube-nfs/grafana", "Grafana dashboard")
     print(r.status_code, r.text)
     r = fac.createNfsShareForKube("Grafana for Kube", "/mnt/tank/kube-nfs/grafana", False)
+    print(r.status_code, r.text)
+
+    # dls stuff
+    r = fac.createDataset("kube-nfs/dls", "dls")
+    print(r.status_code, r.text)
+    r = fac.createNfsShareForKube("dls share", "/mnt/tank/kube-nfs/dls", False)
     print(r.status_code, r.text)
 
 if __name__ == "__main__":

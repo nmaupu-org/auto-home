@@ -1,0 +1,58 @@
+---
+
+deluge_conf_directory: /mnt/tank/kube-nfs/dls/deluge-config
+# Base path is the path when mounted elsewhere (container)
+base_path: /mnt/dls
+incoming: "{{base_path}}/incoming"
+incoming_couchpotato: "{{base_path}}/incoming-couchpotato"
+incoming_sickrage: "{{base_path}}/incoming-sickrage"
+
+labels:
+  couchpotato:
+    stop_at_ratio: "true"
+    remove_at_ratio: "false"
+    apply_move_completed: "true"
+    move_completed: "true"
+    stop_ratio: 2.7
+    move_completed_path: "{{incoming_couchpotato}}"
+  tl_autoratio:
+    stop_at_ratio: "true"
+    remove_at_ratio: "false"
+    apply_move_completed: "false"
+    move_completed: "false"
+    stop_ratio: 2.7
+    move_completed_path: ""
+  sickrage:
+    stop_at_ratio: "true"
+    remove_at_ratio: "false"
+    apply_move_completed: "true"
+    move_completed: "true"
+    stop_ratio: 2.7
+    move_completed_path: "{{incoming_sickrage}}"
+
+core:
+  download_location: "{{base_path}}/process"
+  completed_location: "{{base_path}}/incoming"
+  torrentfiles_location: "{{base_path}}/torrent-files"
+  daemon_port: 58846
+  max_active_limit: 200
+  max_active_downloading: 30
+  max_active_seeding: 150
+  max_connections_global: 600
+  allow_remote: "true"
+  max_half_open_connections: 100
+  seed_time_limit: 36600
+  geoip_db_location: "{{deluge_conf_directory}}/GeoIP.dat"
+  stop_seed_at_ratio: "false"
+  remove_seed_at_ratio: "false"
+  dht: "false"
+  lsd: "false"
+  natpmp: "false"
+  utpex: "false"
+  upnp: "false"
+  stop_seed_ratio: 2
+  move_completed: "true"
+  add_paused: "true"
+  listen_port_beg: 6800
+  listen_port_end: 7000
+  plugins_location: "{{deluge_conf_directory}}/plugins"

@@ -1,0 +1,31 @@
+{
+  "file": 1,
+  "format": 1
+}
+{
+  "labels": {
+{% for label in labels %}
+    "{{label}}": {
+      "stop_at_ratio": {{labels[label].stop_at_ratio}},
+      "remove_at_ratio": {{labels[label].remove_at_ratio}},
+      "apply_move_completed": {{labels[label].apply_move_completed}},
+      "move_completed": {{labels[label].move_completed}},
+      "stop_ratio": {{labels[label].stop_ratio}},
+      "move_completed_path": "{{labels[label].move_completed_path}}",
+      "max_download_speed": -1,
+      "apply_queue": true,
+      "auto_add": false,
+      "max_upload_slots": -1,
+      "prioritize_first_last": false,
+      "max_connections": -1,
+      "is_auto_managed": false,
+      "max_upload_speed": -1,
+      "auto_add_trackers": [],
+      "apply_max": false,
+      "move_completed": true
+    }{% if not loop.last %},{% endif %}
+
+{% endfor %}
+  },
+  "torrent_labels": {}
+}
