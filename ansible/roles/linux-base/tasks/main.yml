@@ -3,14 +3,14 @@
 - name: Installing some packages
   package:
     name: "{{item}}"
-    state: installed
+    state: latest
   with_items:
     - vim
     - rsync
     - htop
     - git
-    - openssh-server
-    - irssi
+    - tmux
+    - "{{linux_base_extra_packages}}"
 
 - name: Ensure .ssh directories exist
   file:

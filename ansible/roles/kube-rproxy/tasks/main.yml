@@ -22,6 +22,7 @@
     path: "{{rproxy_conf_dir}}/htpasswd.photoweb"
     name: "{{item.name}}"
     password: "{{item.password}}"
+  no_log: True
   with_items:
     - "{{photoweb_users}}"
   notify:

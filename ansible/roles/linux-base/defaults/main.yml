@@ -1,5 +1,7 @@
 ---
 
+linux_base_extra_packages: []
+
 users:
   - home: /root
     user: root

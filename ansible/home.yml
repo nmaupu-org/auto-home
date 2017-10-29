@@ -14,25 +14,18 @@
 ## Linux related
 - name: Installing utilities
   gather_facts: yes
-  hosts: all & !coreos & !freebsd
+  hosts: linux
   become: yes
   roles:
-    - { role: linux-base, tags: ['pxe', 'linux'] }
+    - linux-base
+  tags:
+    - linux
+    - always
 - name: Installing services
   gather_facts: no
-  hosts: pxe
+  hosts: raspbastion
   become: yes
   roles:
     - { role: pxe, tags: ['pxe'] }
     - { role: dns, tags: ['dns'] }
     - { role: kubectl, tags: ['kubectl'] }
-
-## Deluge configuration
-- name: Creating deluge config on NFS share
-  gather_facts: no
-  hosts: jails-host
-  become: yes
-  roles:
-    - deluge-config
-  tags:
-    - always

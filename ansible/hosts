@@ -1,6 +1,8 @@
 [pxe]
 raspbastion ansible_host=192.168.12.11  ansible_user=pi
-test        ansible_host=192.168.14.70  ansible_user=user
+
+[linux:children]
+pxe
 
 [jails-host]
 nas         ansible_host=192.168.12.8
