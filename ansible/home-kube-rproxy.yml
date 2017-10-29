@@ -12,4 +12,5 @@
   hosts: kube-rproxy
   gather_facts: yes
   roles:
+    - base
     - kube-rproxy

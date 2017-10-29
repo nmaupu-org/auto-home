@@ -9,6 +9,7 @@ EOF
 }
 
 [ -z "${DOCKER_ID_USER}" ] && echo "ERROR! DOCKER_ID_USER environment variable must be defined" >&2 && exit 1
+[ -z "${VAULT_ADDR}" ] && echo "ERROR! VAULT_ADDR environment variable must be defined" >&2 && exit 1
 [ $# -lt 1 ] && usage && exit 2
 
 SCRIPT="$1"
@@ -22,7 +23,10 @@ DOCKER_OPTS="${DOCKER_OPTS:--t}"
 docker run ${DOCKER_OPTS} --rm \
   -e ANSIBLE_CONFIG="${ANSIBLE_DIR}/ansible.cfg" \
   -e ANSIBLE_HOST="${ANSIBLE_HOST}" \
+  -e VAULT_CAHOSTVERIFY=no \
+  -e VAULT_ADDR="${VAULT_ADDR}" \
   -v "${DIRNAME}":/workspace \
+  -v "${HOME}/.vault-token:/root/.vault-token" \
   -v ~/.ssh:/root/.ssh ${OTHER_VOLUMES} \
   -w /workspace \
   "${DOCKER_IMAGE}" \

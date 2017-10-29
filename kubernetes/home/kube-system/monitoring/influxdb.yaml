@@ -48,11 +48,11 @@ spec:
           name: influxdb-storage
         resources:
           limits:
-            cpu: 100m
-            memory: 200Mi
+            cpu: 200m
+            memory: 600Mi
           requests:
-            cpu: 50m
-            memory: 150Mi
+            cpu: 100m
+            memory: 300Mi
       volumes:
       - name: influxdb-storage
         persistentVolumeClaim:

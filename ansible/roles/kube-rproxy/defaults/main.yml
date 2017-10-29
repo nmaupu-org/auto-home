@@ -1,0 +1,5 @@
+---
+
+photoweb_users:
+  - name: "{{ lookup('vault', 'secret/photoweb', 'user') }}"
+    password: "{{ lookup('vault', 'secret/photoweb', 'password') }}"

@@ -1,0 +1,6 @@
+---
+
+- name: Installing python passlib
+  pip:
+    name: passlib
+    state: present

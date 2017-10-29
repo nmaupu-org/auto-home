@@ -16,6 +16,17 @@
   notify:
     - restart nginx
 
+- name: Creating htpasswd file for photoweb
+  htpasswd:
+    create: yes
+    path: "{{rproxy_conf_dir}}/htpasswd.photoweb"
+    name: "{{item.name}}"
+    password: "{{item.password}}"
+  with_items:
+    - "{{photoweb_users}}"
+  notify:
+    - restart nginx
+
 - name: nginx service
   service:
     name: nginx

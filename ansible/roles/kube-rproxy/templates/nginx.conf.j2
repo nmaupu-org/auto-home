@@ -17,7 +17,7 @@ http {
     }
 
     server {
-        listen 80;
+        listen      80;
         server_name kube-ops-view.*;
 
         location / {
@@ -26,6 +26,18 @@ http {
             proxy_set_header Connection keep-alive;
             proxy_buffering off;
             proxy_request_buffering off;
+        }
+    }
+
+    server {
+        listen      80;
+        server_name photoweb.*;
+
+        location / {
+            proxy_pass http://kube_nodes_30080;
+            proxy_set_header Host $host;
+            auth_basic "Restricted area";
+            auth_basic_user_file {{rproxy_conf_dir}}/htpasswd.photoweb;
         }
     }
 

@@ -56,3 +56,5 @@
 # Nevertheless, we still need python on it to be able to ansible.
 - name: Installing python (raw)
   raw: pkg install -y python27
+- name: Installing pip (raw)
+  raw: /usr/local/bin/python2.7 -m ensurepip

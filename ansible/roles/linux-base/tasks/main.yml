@@ -1,7 +1,7 @@
 ---
 
 - name: Installing some packages
-  apt:
+  package:
     name: "{{item}}"
     state: installed
   with_items:
