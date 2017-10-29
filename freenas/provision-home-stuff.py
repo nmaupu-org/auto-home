@@ -78,6 +78,36 @@ class FreenasApiCaller:
             }),
         )
 
+    def createJail(self, name, ip, mask):
+        return requests.post(
+            "https://%s/api/v1.0/jails/jails/" % self.nas_addr,
+             auth=(self.nas_login, self.nas_password),
+             headers={"Content-Type": "application/json"},
+             verify=False,
+             data=json.dumps({
+                 "jail_host": name,
+                 "jail_ipv4": ip,
+                 "jail_ipv4_netmask": mask,
+                 "jail_flags": "allow.raw_sockets=true",
+                 "jail_autostart": True,
+             }),
+        )
+
+    def associateDataset(self, jail_name, src, dst, readonly=True):
+        return requests.post(
+             "https://%s/api/v1.0/jails/mountpoints/" % self.nas_addr,
+             auth=(self.nas_login, self.nas_password),
+             headers={"Content-Type": "application/json"},
+             verify=False,
+             data=json.dumps({
+                 "jail": jail_name,
+                 "source": src,
+                 "destination": dst,
+                 "mounted": True,
+                 "readonly": readonly,
+             }),
+        )
+
 
 ##
 def main():
@@ -143,11 +173,22 @@ def main():
     r = fac.createNfsShareForKube("Grafana for Kube", "/mnt/tank/kube-nfs/grafana", False)
     print(r.status_code, r.text)
 
-    # dls stuff
-    r = fac.createDataset("kube-nfs/dls", "dls")
+    ###################################
+    ## jails and associated datasets ##
+    ###################################
+    r = fac.createJail("kube-rproxy", "192.168.12.157", "24")
     print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("dls share", "/mnt/tank/kube-nfs/dls", False)
+
+    r = fac.createDataset("dls", "Downloads and stuff")
     print(r.status_code, r.text)
+    r = fac.createDataset("dls/seedbox", "Seedbox jail specific")
+    print(r.status_code, r.text)
+
+    r = fac.createJail("seedbox", "192.168.12.158", "24")
+    print(r.status_code, r.text)
+    r = fac.associateDataset("seedbox", "/mnt/tank/dls/seedbox", "/mnt", False)
+    print(r.status_code, r.text)
+
 
 if __name__ == "__main__":
     main()

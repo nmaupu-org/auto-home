@@ -34,7 +34,6 @@ dns_hosts:
   192.168.12.156:
     - utils
   192.168.12.157:
-    - deluge
     - grafana
     - kubernetes-dashboard
     - kube-ops-view

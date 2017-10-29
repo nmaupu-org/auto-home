@@ -1,0 +1,25 @@
+---
+
+- name: Bootstraping jails
+  hosts: jails
+  gather_facts: no
+  roles:
+    - freebsd-jail
+
+- name: Provisioning jails
+  hosts: jails
+  gather_facts: yes
+  roles:
+    - base
+
+- name: Provisioning kube-rproxy jail
+  hosts: kube-rproxy
+  gather_facts: yes
+  roles:
+    - kube-rproxy
+
+- name: Provisioning seedbox jail
+  hosts: seedbox
+  gather_facts: yes
+  roles:
+    - deluge

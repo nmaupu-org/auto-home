@@ -1,8 +1,5 @@
 ---
 
-- fail: msg="Variable jail_name is not defined"
-  when: jail_name is not defined
-
 - fail: msg="Variable jail_host is not defined"
   when: jail_host is not defined
 
@@ -19,19 +16,19 @@
   file:
     state: directory
     mode: 0700
-    path: "{{jail_mount}}/{{jail_name}}/root/.ssh"
+    path: "{{jail_mount}}/{{inventory_hostname_short}}/root/.ssh"
 
 - name: Copying authorized_keys file
   delegate_to: "{{jail_host}}"
   copy:
     content: |
       {{authorized_keys}}
-    dest: "{{jail_mount}}/{{jail_name}}/root/.ssh/authorized_keys"
+    dest: "{{jail_mount}}/{{inventory_hostname_short}}/root/.ssh/authorized_keys"
 
 - name: Activating sshd service
   delegate_to: "{{jail_host}}"
   lineinfile:
-    path: "{{jail_mount}}/{{jail_name}}/etc/rc.conf"
+    path: "{{jail_mount}}/{{inventory_hostname_short}}/etc/rc.conf"
     regexp: '^sshd_enable'
     state: present
     line: 'sshd_enable="YES"'
@@ -39,7 +36,7 @@
 - name: Permit root login
   delegate_to: "{{jail_host}}"
   lineinfile:
-    path: "{{jail_mount}}/{{jail_name}}/etc/ssh/sshd_config"
+    path: "{{jail_mount}}/{{inventory_hostname_short}}/etc/ssh/sshd_config"
     regexp: '^PermitRootLogin yes'
     state: present
     line: 'PermitRootLogin yes'
@@ -47,9 +44,9 @@
 - name: Starting sshd service
   delegate_to: "{{jail_host}}"
   shell: |
-    jexec {{jail_name}} tcsh -c "service sshd start"
+    jexec {{inventory_hostname_short}} tcsh -c "service sshd start"
   args:
-    creates: "{{jail_mount}}/{{jail_name}}/var/run/sshd.pid"
+    creates: "{{jail_mount}}/{{inventory_hostname_short}}/var/run/sshd.pid"
 
 # From now on we can connect to ssh to this jail,
 # no need to delegate anymore.
@@ -58,3 +55,16 @@
   raw: pkg install -y python27
 - name: Installing pip (raw)
   raw: /usr/local/bin/python2.7 -m ensurepip
+
+- name: installing useful tools
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - gtar
+    - unzip
+    - bzip2
+    - git
+    - wget
+    - curl
+    - bash

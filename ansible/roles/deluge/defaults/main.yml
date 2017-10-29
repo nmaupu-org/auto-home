@@ -1,0 +1,49 @@
+---
+
+base_path: /home/{{deluge_user}}
+deluge_user: deluge
+deluge_conf_directory: "{{base_path}}/config-deluge"
+deluge_log_directory: "{{base_path}}/log"
+geoip_database_url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+daemon_username: "{{ lookup('vault', 'secret/deluge', 'daemon_username') }}"
+daemon_password: "{{ lookup('vault', 'secret/deluge', 'daemon_password') }}"
+
+webui_port: 8112
+webui_salt: "{{ lookup('vault', 'secret/deluge', 'webui_salt')}}"
+webui_password: "{{ lookup('vault', 'secret/deluge', 'webui_password')}}"
+
+labels:
+  test:
+    stop_at_ratio: true
+    remove_at_ratio: false
+    apply_move_completed: true
+    move_completed: true
+    stop_ratio: 2.7
+    move_completed_path: "{{base_path}}/completed"
+
+core:
+  download_location: "{{base_path}}/incoming"
+  completed_location: "{{base_path}}/completed"
+  torrentfiles_location: "{{base_path}}/torrents"
+  daemon_port: 58846
+  max_active_limit: 200
+  max_active_downloading: 30
+  max_active_seeding: 150
+  max_connections_global: 600
+  allow_remote: true
+  max_half_open_connections: 100
+  seed_time_limit: 36600
+  geoip_db_location: "{{deluge_conf_directory}}/geoip.dat"
+  stop_seed_at_ratio: false
+  remove_seed_at_ratio: false
+  dht: false
+  lsd: false
+  natpmp: false
+  utpex: false
+  upnp: false
+  stop_seed_ratio: 2
+  move_completed: true
+  add_paused: true
+  listen_port_beg: 6800
+  listen_port_end: 7000
+  plugins_location: "/config/plugins"

@@ -1,8 +1,10 @@
 ---
 
-deluge_conf_directory: /mnt/tank/kube-nfs/dls/deluge-config
 # Base path is the path when mounted elsewhere (container)
-base_path: /mnt/dls
+base_path: /mnt
+deluge_user: deluge
+deluge_conf_directory: "{{base_path}}/deluge/config"
+deluge_log_directory: "{{base_path}}/deluge/log"
 incoming: "{{base_path}}/incoming"
 incoming_couchpotato: "{{base_path}}/incoming-couchpotato"
 incoming_sickrage: "{{base_path}}/incoming-sickrage"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rm -f {{deluge_conf_directory}}/GeoIP.dat
+
+wget -O {{deluge_conf_directory}}/geoip.gz {{geoip_database_url}} && \
+  gunzip {{deluge_conf_directory}}/geoip.gz && \
+  mv {{deluge_conf_directory}}/geoip {{deluge_conf_directory}}/GeoIP.dat

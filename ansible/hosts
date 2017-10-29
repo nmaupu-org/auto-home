@@ -7,6 +7,7 @@ nas         ansible_host=192.168.12.8
 
 [jails]
 kube-rproxy ansible_host=192.168.12.157
+seedbox     ansible_host=192.168.12.158
 
 [freebsd:children]
 jails-host

@@ -1,0 +1,77 @@
+---
+
+## FreeBSD only playbook
+
+- name: Installing deluge
+  package:
+    name: deluge-cli
+    state: present
+
+- name: Creating deluge user
+  user:
+    name: "{{deluge_user}}"
+    createhome: yes
+    state: present
+
+- name: Creating rc conf files
+  template:
+    src: "{{item}}-rc.j2"
+    dest: /etc/rc.conf.d/{{item}}
+  with_items:
+    - deluged
+    - deluge_web
+
+- name: Creating directories
+  file:
+    path: "{{item}}"
+    owner: "{{deluge_user}}"
+    mode: 0755
+    state: directory
+  with_items:
+    - "{{base_path}}"
+    - "{{deluge_conf_directory}}"
+    - "{{deluge_log_directory}}"
+
+- name: Creating configuration files
+  template:
+    src: "{{item.name}}.j2"
+    dest: "{{deluge_conf_directory}}/{{item.name}}"
+    mode: "{{item.mode}}"
+    owner: "{{deluge_user}}"
+  with_items:
+    - name: core.conf
+      mode: u=rw,g=r,o=r
+    - name: label.conf
+      mode: u=rw,g=r,o=r
+    - name: web.conf
+      mode: u=rw,g=r,o=r
+    - name: auth
+      mode: u=rw
+  notify:
+    - restart deluged
+    - restart deluge_web
+
+- name: Copying script geoip-update.sh
+  template:
+    src: geoip-update.sh.j2
+    dest: /usr/local/bin/geoip-update.sh
+    mode: 0755
+
+- name: Creating cron to update geoip database
+  cron:
+    name: update-geoip
+    job: /usr/local/bin/geoip-update.sh
+    special_time: daily
+    user: "{{deluge_user}}"
+
+- name: Starting deluged service
+  service:
+    name: deluged
+    state: started
+    enabled: yes
+
+- name: Starting deluge-web service
+  service:
+    name: deluge_web
+    state: started
+    enabled: yes
