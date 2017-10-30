@@ -1,0 +1,35 @@
+---
+
+- name: Installing irssi
+  package:
+    name: irssi
+    state: latest
+
+- name: Creating irssi config directory
+  file:
+    path: "{{irssi_config_dir}}"
+    state: directory
+    mode: 0755
+    owner: "{{irssi_config_owner}}"
+
+- name: Creating irssi config file
+  template:
+    src: irssi-config.j2
+    dest: "{{irssi_config_dir}}/config"
+    mode: 0600
+    owner: "{{irssi_config_owner}}"
+
+- name: Installing irssi over tmux service
+  template:
+    src: irssi.service.j2
+    dest: /etc/systemd/system/irssi.service
+    mode: 0644
+  notify:
+    - systemd reload
+    - restart irssi
+
+- name: Activating / starting irssi service
+  service:
+    name: irssi
+    state: started
+    enabled: yes

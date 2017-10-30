@@ -1,0 +1,10 @@
+---
+
+- name: restart irssi
+  service:
+    name: irssi
+    state: restarted
+
+- name: systemd reload
+  systemd:
+    daemon_reload=yes

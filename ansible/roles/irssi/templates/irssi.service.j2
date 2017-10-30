@@ -1,0 +1,12 @@
+[Unit]
+Description=irssi
+After=network.target
+
+[Service]
+Type=forking
+User={{irssi_config_owner}}
+ExecStart=/usr/bin/tmux new-session -d -s irssi irssi
+ExecStop=/usr/bin/tmux -c irssi -X quit
+
+[Install]
+WantedBy=multi-user.target

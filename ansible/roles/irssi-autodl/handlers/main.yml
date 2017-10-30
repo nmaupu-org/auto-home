@@ -1,0 +1,6 @@
+---
+
+- name: restart irssi
+  service:
+    name: irssi
+    state: restarted

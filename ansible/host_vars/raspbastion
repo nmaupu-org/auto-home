@@ -1,13 +1,50 @@
-linux_base_extra_packages:
-  - irssi
-
-pxe_title: PXE mopsland
-matchbox_dns: matchbox.home.fossar.net
-matchbox_arch: linux-arm
-pxe_matchbox_url: "{{matchbox_dns}}:8080"
-
+---
+# Users
 users:
   - home: /root
     user: root
   - home: /home/pi
     user: pi
+
+# IRSSI configuration related
+irssi_config_dir: /home/pi/.irssi
+irssi_config_owner: pi
+irc_default_nick: pi
+irc_default_username: "{{irc_default_nick}}"
+qnet_nick: "{{lookup('vault', 'secret/irc/irc.quakenet.org', 'nick')}}"
+qnet_password: "{{lookup('vault', 'secret/irc/irc.quakenet.org', 'password')}}"
+tl_nick: "{{lookup('vault', 'secret/irc/irc.torrentleech.org', 'nick')}}"
+tl_key: "{{lookup('vault', 'secret/irc/irc.torrentleech.org', 'key')}}"
+qnet_main_chan: "{{lookup('vault', 'secret/irc/irc.quakenet.org', 'channel')}}"
+
+irc_servers:
+  - address: irc.quakenet.org
+    chatnet: qnet
+    port: 6667
+    use_ssl: "no"
+    use_tls: "no"
+    ssl_verify: "no"
+    autoconnect: "yes"
+    autosendcmd: "/nick {{qnet_nick}}; /msg Q@CServe.quakenet.org auth {{qnet_nick}} {{qnet_password}};"
+  - address: irc.torrentleech.org
+    chatnet: TL
+    port: 7011
+    use_ssl: "no"
+    use_tls: "no"
+    ssl_verify: "no"
+    autoconnect: "yes"
+    autosendcmd: "/nick {{tl_nick}}; /msg TL-Monkey !invite {{tl_key}};"
+
+channels:
+  qnet:
+    - name: "{{qnet_main_chan}}"
+      autojoin: "yes"
+  TL:
+    - name: torrentleech
+      autojoin: "yes"
+
+# PXE
+pxe_title: PXE mopsland
+matchbox_dns: matchbox.home.fossar.net
+matchbox_arch: linux-arm
+pxe_matchbox_url: "{{matchbox_dns}}:8080"

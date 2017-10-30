@@ -1,0 +1,17 @@
+[options]
+upload-type = exec
+upload-command = {{irssi_config_dir}}/../.autodl/scripts/add_torrent_to_deluge.rb
+upload-args = {{deluge_server_address}} {{deluge_server_port}} {{deluge_server_username}} {{deluge_server_password}} "$(TorrentPathName)" tl_autoratio
+
+[tracker tl]
+enabled = true
+rsskey = {{tl_rsskey}}
+upload-delay-secs = 5
+
+{% for filter in autodl_filters %}
+
+[filter {{filter}}]
+{% for key, val in autodl_filters[filter].iteritems() %}
+{{key}} = {{val}}
+{% endfor %}
+{% endfor %}

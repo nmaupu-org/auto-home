@@ -1,0 +1,19 @@
+---
+
+irssi_config_dir: /tmp
+irssi_config_owner: root
+
+irc_servers:
+  - address: irc.quakenet.org
+    chatnet: qnet
+    port: 6667
+    use_ssl: "no"
+    use_tls: "no"
+    ssl_verify: "no"
+    autoconnect: "no"
+    autosendcmd: ""
+
+channels:
+  qnet:
+    - name: "foo"
+      autojoin: "no"

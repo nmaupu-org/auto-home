@@ -20,8 +20,10 @@
     - linux-base
   tags:
     - linux
-    - always
-- name: Installing services
+#    - always
+
+## Raspbastion
+- name: Installing raspbastion stuff
   gather_facts: no
   hosts: raspbastion
   become: yes
@@ -29,3 +31,5 @@
     - { role: pxe, tags: ['pxe'] }
     - { role: dns, tags: ['dns'] }
     - { role: kubectl, tags: ['kubectl'] }
+    - { role: irssi, tags: ['irc'] }
+    - { role: irssi-autodl, tags: ['irc'] }

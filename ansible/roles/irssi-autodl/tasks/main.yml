@@ -1,0 +1,101 @@
+---
+
+## See: https://github.com/autodl-community/autodl-irssi/wiki/Manual-Installation
+## Params:
+##   - irssi_config_dir
+##   - irssi_config_owner
+
+- name: Installing perl dependencies
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - libarchive-zip-perl
+    - libnet-ssleay-perl
+    - libhtml-html5-entities-perl
+    - libxml-libxml-perl
+    - libdigest-sha-perl
+    - libjson-perl
+    - libjson-xs-perl
+
+- name: Creating autodl dir
+  file:
+    path: "{{irssi_config_dir}}/{{item}}"
+    state: directory
+    owner: "{{irssi_config_owner}}"
+    mode: 0755
+  with_items:
+    - scripts
+    - scripts/autorun
+    - ../.autodl
+    - ../.autodl/scripts
+  notify:
+    - restart irssi
+
+- name: Getting autodl autorun script
+  unarchive:
+    remote_src: yes
+    src: "{{autodl_url}}"
+    dest: "{{irssi_config_dir}}/scripts"
+    owner: "{{irssi_config_owner}}"
+  notify:
+    - restart irssi
+
+- name: linking autodl.pl script to autorun directory
+  file:
+    state: link
+    src: "{{irssi_config_dir}}/scripts/autodl-irssi.pl"
+    dest: "{{irssi_config_dir}}/scripts/autorun/autodl-irssi.pl"
+    owner: "{{irssi_config_owner}}"
+  notify:
+    - restart irssi
+
+- name: Configuring autodl
+  template:
+    src: autodl.cfg.j2
+    dest: "{{irssi_config_dir}}/../.autodl/autodl.cfg"
+    mode: 0644
+    owner: "{{irssi_config_owner}}"
+  notify:
+    - restart irssi
+  tags: autodl_config
+
+# See: https://github.com/t3hk0d3/deluge-rpc
+- name: Copying some homemade ruby scripts
+  copy:
+    src: "{{item}}"
+    dest: "{{irssi_config_dir}}/../.autodl/scripts"
+    mode: 0755
+    owner: "{{irssi_config_owner}}"
+  with_items:
+    - add_torrent_to_deluge.rb
+    - clean_torrents.rb
+    - test_listen_ports.rb
+
+- name: Installing scripts' dependencies
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - ruby
+    #- rubygems
+
+- name: Installing gem dependencies
+  gem:
+    name: deluge-rpc
+    state: present
+
+- name: Installing cleaning cron jobs
+  cron:
+    name: "clean torrents {{item.name}}"
+    state: present
+    user: "{{irssi_config_owner}}"
+    job: "{{irssi_config_dir}}/../.autodl/scripts/clean_torrents.rb {{deluge_server_address}} {{deluge_server_port}} {{deluge_server_username}} {{deluge_server_password}} {{item.name}} >/tmp/clean-{{item.name}}.log 2>&1"
+    minute: "{{item.minute}}"
+  with_items:
+    - name: tl_autoratio
+      minute: "*"
+    - name: sickrage
+      minute: 10
+    - name: couchpotato
+      minute: 15
