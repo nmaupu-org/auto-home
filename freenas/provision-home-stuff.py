@@ -173,6 +173,13 @@ def main():
     r = fac.createNfsShareForKube("Grafana for Kube", "/mnt/tank/kube-nfs/grafana", False)
     print(r.status_code, r.text)
 
+    # dls
+    r = fac.createDataset("kube-nfs/dls", "Dls dataset")
+    print(r.status_code, r.text)
+    r = fac.createNfsShareForKube("Dls share", "/mnt/tank/kube-nfs/dls", False)
+    print(r.status_code, r.text)
+
+
     ###################################
     ## jails and associated datasets ##
     ###################################

@@ -1,0 +1,52 @@
+---
+## Mouting NFS volumes on CoreOS needs rpc.statd
+## service being running
+## Forcing systemd unit to start at boot does not work (coreos issue).
+## So the best way is to add a 'Wants' on kubelet service
+## Should be fixed by https://github.com/coreos/bugs/issues/2038
+- name: Creating 'Wants' directory
+  become: yes
+  file:
+    state: directory
+    mode: 0755
+    dest: "{{kubelet_wants_dir}}"
+
+- name: Symlinking rpc-statd service to kubelet's wants directory
+  become: yes
+  file:
+    src: "{{rpc_statd_service_dir}}/rpc-statd.service"
+    dest: "{{kubelet_wants_dir}}/rpc-statd.service"
+    state: link
+  notify:
+    - systemd reload
+    - restart kubelet
+
+## iSCSI
+- name: Ensuring iscsid is up and running
+  become: yes
+  service:
+    name: iscsid
+    state: started
+    enabled: yes
+
+- name: discover and login to iSCSI target
+  become: yes
+  open_iscsi:
+    discover: True
+    portal: "{{iscsi_portal}}"
+    target: "{{iscsi_target}}"
+    login: true
+
+- name: Adding iscsiadm binary bind mount to kubelet
+  become: yes
+  lineinfile:
+    path: /etc/kubernetes/kubelet.env
+    state: present
+    line: |
+      RKT_RUN_ARGS=--uuid-file-save=/var/run/kubelet-pod.uuid \
+      --volume=resolv,kind=host,source=/etc/resolv.conf --mount volume=resolv,target=/etc/resolv.conf \
+      --volume var-lib-cni,kind=host,source=/var/lib/cni --mount volume=var-lib-cni,target=/var/lib/cni \
+      --volume var-log,kind=host,source=/var/log --mount volume=var-log,target=/var/log \
+      --volume iscsiadm,kind=host,source=/usr/sbin/iscsiadm --mount volume=iscsiadm,target=/usr/sbin/iscsiadm
+  notify:
+    - restart kubelet

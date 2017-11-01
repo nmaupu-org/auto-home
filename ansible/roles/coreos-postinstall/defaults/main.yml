@@ -1,3 +1,6 @@
 ---
 kubelet_wants_dir: /etc/systemd/system/kubelet.service.wants
 rpc_statd_service_dir: /usr/lib/systemd/system
+
+iscsi_portal: 192.168.12.8
+iscsi_target: iqn.2011-03.home.fossar.net.istgt:kube-target

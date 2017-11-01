@@ -34,6 +34,34 @@ spec:
     requests:
       storage: {{ .Values.deluge.nfs.storageSize }}
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-iscsi-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  iscsi:
+    targetPortal: "192.168.12.8:3260"
+    iqn: "iqn.2011-03.home.fossar.net.istgt:kube-target"
+    lun: 0
+    fsType: "ext4"
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-iscsi-pvc
+  namespace: {{ .Release.Name }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -58,16 +86,16 @@ spec:
         ports:
           - name: deluge
             containerPort: 8112
-        livenessProbe:
-          tcpSocket:
-            port: {{ .Values.deluge.daemon_port }}
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        readinessProbe:
-          tcpSocket:
-            port: {{ .Values.deluge.daemon_port }}
-          initialDelaySeconds: 10
-          periodSeconds: 20
+#        livenessProbe:
+#          tcpSocket:
+#            port: {{ .Values.deluge.daemon_port }}
+#          initialDelaySeconds: 10
+#          periodSeconds: 10
+#        readinessProbe:
+#          tcpSocket:
+#            port: {{ .Values.deluge.daemon_port }}
+#          initialDelaySeconds: 20
+#          periodSeconds: 20
         resources:
            limits:
              cpu: {{ .Values.deluge.resources.limits.cpu }}
@@ -76,15 +104,15 @@ spec:
              cpu: {{ .Values.deluge.resources.requests.cpu }}
              memory: {{ .Values.deluge.resources.requests.memory }}
         volumeMounts:
-          - name: storage-volume
+          - name: iscsi-volume
             mountPath: {{ .Values.deluge.storageDir | quote }}
-          - name: storage-volume
+          - name: iscsi-volume
             mountPath: "/config"
             subPath: {{ .Values.deluge.nfs.configSubPath }}
       volumes:
-        - name: storage-volume
+        - name: iscsi-volume
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-pvc
+            claimName: {{ .Release.Name }}-iscsi-pvc
 ---
 apiVersion: v1
 kind: Service

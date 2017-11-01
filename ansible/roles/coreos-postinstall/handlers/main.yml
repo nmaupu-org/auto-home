@@ -6,4 +6,8 @@
     name: kubelet
     enabled: yes
     state: restarted
+
+- name: systemd reload
+  become: yes
+  systemd:
     daemon_reload: yes

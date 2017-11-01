@@ -7,7 +7,7 @@
   become: no
   roles:
     - defunctzombie.coreos-bootstrap
-    - coreos-post
+    - coreos-postinstall
   tags:
     - always
 
