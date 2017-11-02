@@ -1,0 +1,35 @@
+nfs_server: nfs.home.fossar.net
+
+couchpotato:
+  image: linuxserver/couchpotato:89
+  port: 5050
+  ingress_hostname: couchpotato.home.fossar.net
+
+  downloader:
+    username: deluge
+    password: deluge
+    label: couchpotato
+    host: host
+    port: 6666
+
+  torrent_source:
+    username: user
+    password: password
+    score: 20
+
+  datadir:
+    storageSize: 300Mi
+    mountpoint: /mnt/tank/kube-nfs/couchpotato
+  downloadsdir:
+    storageSize: 250Gi
+    mountpoint: /mnt/tank/dls/seedbox/incoming-couchpotato
+  moviesdir:
+    storageSize: 400Gi
+    mountpoint: /mnt/tank/misc/plex/Movies
+  resources:
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi

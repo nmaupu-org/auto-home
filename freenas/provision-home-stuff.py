@@ -21,7 +21,7 @@ class FreenasApiCaller:
         self.nas_login = nas_login
         self.nas_password = nas_password
 
-    def createNfsShareForKube(self, nfs_comment, nfs_path, nfs_ro=True, mapall_user="root", mapall_group="wheel"):
+    def createNfsShareForKube(self, nfs_comment, nfs_path, nfs_ro=True, mapall_user="root", mapall_group="wheel", all_dirs=False):
         return requests.post(
             "https://%s/api/v1.0/sharing/nfs/" % self.nas_addr,
             auth=(self.nas_login, self.nas_password),
@@ -31,7 +31,7 @@ class FreenasApiCaller:
                 "nfs_comment": nfs_comment,
                 "nfs_paths": [nfs_path],
                 "nfs_ro": nfs_ro,
-                "nfs_alldirs": False,
+                "nfs_alldirs": all_dirs,
                 "nfs_hosts": "knode1 knode2 knode3",
                 "nfs_mapall_user": mapall_user,
                 "nfs_mapall_group": mapall_group,
@@ -173,10 +173,19 @@ def main():
     r = fac.createNfsShareForKube("Grafana for Kube", "/mnt/tank/kube-nfs/grafana", False)
     print(r.status_code, r.text)
 
-    # dls
-    r = fac.createDataset("kube-nfs/dls", "Dls dataset")
+    #Automatic Video Library Manager
+    r = fac.createDataset("kube-nfs/couchpotato", "Couchpotato datadir")
     print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Dls share", "/mnt/tank/kube-nfs/dls", False)
+    r = fac.createNfsShareForKube("Couchpotato datadir share", "/mnt/tank/kube-nfs/couchpotato", False)
+    print(r.status_code, r.text)
+    r = fac.createNfsShareForKube("Couchpotato downloads share (listen dir)", "/mnt/tank/dls/seedbox", True, all_dirs=True)
+    print(r.status_code, r.text)
+    r = fac.createNfsShareForKube("Couchpotato Movies share (on air)", "/mnt/tank/misc/plex", False, all_dirs=True)
+    print(r.status_code, r.text)
+
+    r = fac.createDataset("kube-nfs/sickrage", "Sickrage datadir")
+    print(r.status_code, r.text)
+    r = fac.createNfsShareForKube("Sickrage datadir share", "/mnt/tank/kube-nfs/sickrage", False)
     print(r.status_code, r.text)
 
 

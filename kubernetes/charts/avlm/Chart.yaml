@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Automatic Video Library Management
+name: avlm
+version: 0.0.4
