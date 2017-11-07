@@ -18,7 +18,9 @@ DOCKER_IMAGE="${DOCKER_ID_USER}/builder"
 ANSIBLE_DIR="/workspace/ansible"
 DOCKER_OPTS="${DOCKER_OPTS:--t}"
 
-[ -f ${HOME}/.kube/kubeconfig-home ] && OTHER_VOLUMES="-v ${HOME}/.kube:/root/.kube"
+[ -f ${HOME}/.kube/kubeconfig-home ] && OTHER_VOLUMES="${OTHER_VOLUMES} -v ${HOME}/.kube:/root/.kube"
+[ -d /etc/ansible ]                  && OTHER_VOLUMES="${OTHER_VOLUMES} -v /etc/ansible:/etc/ansible"
+[ -d /usr/local/etc/ansible ]        && OTHER_VOLUMES="${OTHER_VOLUMES} -v /usr/local/etc/ansible:/usr/local/etc/ansible"
 
 docker run ${DOCKER_OPTS} --rm \
   -e ANSIBLE_CONFIG="${ANSIBLE_DIR}/ansible.cfg" \
@@ -27,7 +29,7 @@ docker run ${DOCKER_OPTS} --rm \
   -e VAULT_ADDR="${VAULT_ADDR}" \
   -v "${DIRNAME}":/workspace \
   -v "${HOME}/.vault-token:/root/.vault-token" \
-  -v ~/.ssh:/root/.ssh ${OTHER_VOLUMES} \
+  ${OTHER_VOLUMES} \
   -w /workspace \
   "${DOCKER_IMAGE}" \
   ${SCRIPT}

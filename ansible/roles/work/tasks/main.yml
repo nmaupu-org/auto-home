@@ -1,0 +1,28 @@
+---
+
+- name: Updating sudoers file
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^.sudo  ALL=(ALL:ALL) ALL'
+    line: '%sudo ALL=(ALL) NOPASSWD:ALL'
+    state: present
+
+- block:
+    - import_tasks: init-dirs.yml
+      tags: init-dirs
+    - import_tasks: rxvt-unicode.yml
+      tags: rxvt
+    - import_tasks: golang.yml
+      tags: golang
+    - import_tasks: zsh.yml
+      tags: zsh
+    - import_tasks: fzf.yml
+      tags: fzf
+    - import_tasks: vim.yml
+      tags: vim
+    - import_tasks: xmonad.yml
+      tags: xmonad
+  become: yes
+  become_user: "{{me}}"
+  vars:
+    home: "/home/{{me}}"

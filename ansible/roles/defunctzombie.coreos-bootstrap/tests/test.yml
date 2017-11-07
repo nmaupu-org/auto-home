@@ -1,4 +1,0 @@
----
-- hosts: all
-  roles:
-    - pxe-bootstrap-coreos

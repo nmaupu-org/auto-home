@@ -1,0 +1,69 @@
+---
+
+- name: Installing xmonad and dependencies
+  become: yes
+  become_user: root
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - xmonad
+    - dzen2
+    - conky-all
+    - lm-sensors
+    - trayer
+    - xscreensaver
+    - xscreensaver-data-extra
+    - xscreensaver-gl-extra
+
+- name: directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{home}}/.xmonad"
+    - "{{home}}/.xmonad/scripts"
+    - "{{home}}/.xmonad/icons"
+
+- name: files
+  copy:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    mode: 0444
+  with_items:
+    - src: separator.xbm
+      dest: "{{home}}/.xmonad/icons"
+    - src: brightness.sh
+      dest: "{{home}}/.xmonad/scripts"
+    - src: xmonad-server-connect.sh
+      dest: "{{home}}/.xmonad/scripts"
+    - src: conky-dzen
+      dest: "{{home}}/.xmonad/scripts"
+  tags: xmonad-config
+
+- name: Installing xsession lightdm file
+  become: yes
+  become_user: root
+  copy:
+    src: xsession.desktop
+    dest: /usr/share/xsessions
+    mode: 0644
+  notify:
+    - restart lightdm
+
+- name: Installing xsession file
+  copy:
+    src: xsession
+    dest: "{{home}}/.xsession"
+    mode: 0555 
+  notify:
+    - restart lightdm
+
+- name: Configuring xmonad
+  template:
+    src: xmonad.hs.j2
+    dest: .xmonad/xmonad.hs
+  notify:
+    - recompile xmonad
+  tags: xmonad-config

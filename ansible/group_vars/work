@@ -1,0 +1,60 @@
+users:
+  - home: /home/nmaupu
+    user: nmaupu
+    shell: /usr/bin/zsh
+    generate_ssh_key: yes
+    extra_groups: sudo,docker
+  - home: /root
+    user: root
+    shell: /bin/bash
+    generate_ssh_key: no
+    extra_groups: ""
+
+me: nmaupu
+
+sshd:
+  PermitRootLogin: without-password
+
+zsh_antigen:
+  theme: bhilburn/powerlevel9k powerlevel9k
+  plugins:
+    - docker
+    - fabric
+    - git
+    - git-extras
+    - git-flow
+    - pip
+    - common-aliases
+    - djui/alias-tips
+    - sudo
+    - vagrant
+    - zsh-users/zsh-completions
+    - zsh-users/zsh-syntax-highlighting
+
+linux_base_extra_packages:
+  - apt-file
+  - arandr
+  - autocutsel
+  - clusterssh
+  - curl
+  - firefox-esr
+  - git
+  - graphviz
+  - irssi
+  - jq
+  - lightdm
+  - lxappearance
+  - meld
+  - ngrep
+  - pssh
+  - redshift-gtk
+  - rsync
+  - maim
+  - solaar
+  - tcpdump
+  - wget
+  - wicd
+  - wicd-cli
+  - wicd-gtk
+  - wireshark
+  - zsh

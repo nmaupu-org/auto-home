@@ -1,0 +1,20 @@
+---
+
+- block:
+    - name: Installing make
+      package:
+        name: "{{item}}"
+        state: latest
+      with_items:
+        - make
+    
+    - name: Installing golang
+      unarchive:
+        src: "{{golang.url}}"
+        remote_src: yes
+        dest: "{{golang.installdir}}"
+        creates: "{{golang.installdir}}/go/bin/go"
+  become: yes
+  become_user: root
+
+# Vim and go will be install when vim is ready to do so

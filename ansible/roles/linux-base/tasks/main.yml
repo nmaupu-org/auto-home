@@ -12,6 +12,19 @@
     - tmux
     - "{{linux_base_extra_packages}}"
 
+- name: Ensuring users are existing
+  user:
+    name: "{{item.user}}"
+    shell: "{{item.shell}}"
+    groups: "{{item.extra_groups}}"
+    append: yes
+    state: present
+    generate_ssh_key: "{{item.generate_ssh_key}}"
+    ssh_key_bits: 2048
+    ssh_key_file: ".ssh/id_rsa"
+  with_items: "{{users}}"
+  tags: users
+
 - name: Ensure .ssh directories exist
   file:
     path: "{{item.home}}/.ssh"
@@ -22,10 +35,13 @@
   with_items: "{{users}}"
 
 - name: SSH public keys
-  copy:
-    content: |
+  blockinfile:
+    block: |
       {{authorized_keys}}
-    dest: "{{item.home}}/.ssh/authorized_keys"
+    create: yes
+    path: "{{item.home}}/.ssh/authorized_keys"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
     owner: "{{item.user}}"
     group: "{{item.user}}"
     mode: 0644

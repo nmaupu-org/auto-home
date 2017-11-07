@@ -1,0 +1,11 @@
+---
+
+- name: Bootstraping work machine
+  become: yes
+  become_user: root
+  gather_facts: yes
+  hosts: work
+  roles:
+    - { role: linux-base, tags: ['linux-base'] }
+    - { role: willshersystems.sshd, tags: ['sshd'] }
+    - { role: work, tags: ['work'] }
