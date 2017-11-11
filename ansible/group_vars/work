@@ -38,6 +38,7 @@ linux_base_extra_packages:
   - clusterssh
   - curl
   - firefox-esr
+  - gdisk
   - git
   - graphviz
   - irssi
@@ -45,13 +46,16 @@ linux_base_extra_packages:
   - lightdm
   - lxappearance
   - meld
+  - mlocate
   - ngrep
   - pssh
   - redshift-gtk
   - rsync
   - maim
+  - parted
   - solaar
   - tcpdump
+  - util-linux
   - wget
   - wicd
   - wicd-cli
