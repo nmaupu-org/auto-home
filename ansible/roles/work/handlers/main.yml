@@ -1,0 +1,11 @@
+---
+
+- name: restart lightdm
+  service:
+    name: lightdm
+    state: restarted
+
+- name: recompile xmonad
+  become: yes
+  become_user: "{{me}}"
+  shell: xmonad --recompile

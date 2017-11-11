@@ -1,0 +1,18 @@
+---
+zsh_histsize: 50000
+
+urxvt_font_size:
+  url: https://raw.githubusercontent.com/majutsushi/urxvt-font-size/master/font-size
+  checksum: sha1:0ce1e9c95611bdacd9140038cb96022cbcd84385
+
+dircolors:
+  url: https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark
+  checksum: sha1:a69a89705554ca0c66a7848496f8db7a3d6e2278
+
+antigen:
+  url: http://git.io/antigen
+  checksum: sha1:817b3c214e48c04c6e365a3e20db97a1f5e686da
+
+golang:
+  url: https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
+  installdir: /usr/local

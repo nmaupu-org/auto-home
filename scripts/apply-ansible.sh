@@ -16,7 +16,9 @@ EOF
 YAML_FILE="$1"; shift
 EXTRA_OPTS="$@"
 ANSIBLE_DIR="/workspace/ansible"
-ANSIBLE_CFG="${ANSIBLE_DIR}/ansible.cfg"
-CMD="ansible-playbook -i "${ANSIBLE_DIR}/hosts" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
+: ${SSH_KEYS_DIR:="${HOME}/.ssh"}
+: ${INVENTORY_FILE:="${ANSIBLE_DIR}/hosts"}
+CMD="ansible-playbook -i "${INVENTORY_FILE}" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
 
-${BASEDIR}/scripts/apply-wrapper.sh "${CMD}"
+OTHER_VOLUMES="-v ${SSH_KEYS_DIR}:/root/.ssh" \
+  "${BASEDIR}/scripts/apply-wrapper.sh" "${CMD}"

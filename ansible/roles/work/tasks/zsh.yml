@@ -1,0 +1,25 @@
+---
+
+- name: Installing zsh
+  become: yes
+  become_user: root
+  package:
+    name: zsh
+    state: latest
+
+- name: Getting dircolors
+  get_url:
+    url: "{{dircolors.url}}"
+    dest: "{{home}}/.dircolors"
+    checksum: "{{dircolors.checksum}}"
+
+- name: Installing antigen
+  get_url:
+    url: "{{antigen.url}}"
+    dest: "{{home}}/.antigen.zsh"
+    checksum: "{{antigen.checksum}}"
+
+- name: Configuring zsh
+  template:
+    src: zshrc.j2
+    dest: "{{home}}/.zshrc"

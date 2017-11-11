@@ -1,0 +1,31 @@
+---
+
+- name: Installing vim
+  become: yes
+  become_user: root
+  package:
+    name: vim-nox
+    state: latest
+
+- name: Ensuring vundle directory exists
+  file:
+    state: directory
+    path: "{{item}}"
+  with_items:
+    - "{{home}}/.vim"
+    - "{{home}}/.vim/bundle"
+
+- name: Installing Vundle
+  git:
+    repo: https://github.com/VundleVim/Vundle.vim
+    dest: "{{home}}/.vim/bundle/Vundle.vim"
+
+- name: Configuring vim
+  template:
+    src: vimrc.j2
+    dest: "{{home}}/.vimrc"
+  register: vimrcupdated
+
+- name: Reloading vundle
+  shell: vim +PluginInstall +GoInstallBinaries +qall 2&>/dev/null
+  when: vimrcupdated.changed

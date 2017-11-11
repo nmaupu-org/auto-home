@@ -1,0 +1,10 @@
+[Unit]
+Description=Bootstrap machine using auto-home
+ConditionPathExists=!/usr/share/already-bootstrapped
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=/root
+ExecStart=wget -O - https://raw.githubusercontent.com/nmaupu/auto-home/master/scripts/provision-work.sh | bash
+ExecStartPost=/bin/touch /usr/share/already-bootstrapped

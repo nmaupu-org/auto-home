@@ -1,0 +1,32 @@
+---
+- name: Locking home directory
+  file:
+    state: directory
+    path: "{{home}}"
+    mode: 0700
+
+- name: Deleting useless stuff
+  file:
+    state: absent
+    path: "{{home}}/{{item}}"
+  with_items:
+    - Desktop
+    - Documents
+    - Downloads
+    - Music
+    - Pictures
+    - Public
+    - Templates
+    - Videos
+
+- name: Creating useful dirs
+  file:
+    state: directory
+    path: "{{home}}/{{item}}"
+    mode: 0755
+  with_items:
+    - bin
+    - work
+    - work/tmp
+    - work/go
+    - downloads

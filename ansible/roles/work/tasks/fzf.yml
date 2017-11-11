@@ -1,0 +1,13 @@
+---
+
+- name: Cloning FZF
+  git:
+    repo: https://github.com/junegunn/fzf
+    dest: "{{home}}/.fzf"
+    depth: 1
+    update: yes
+  register: fzfupdated
+
+- name: Installing FZF
+  shell: "{{home}}/.fzf/install --all --no-bash --no-fish --no-update-rc"
+  when: fzfupdated.changed

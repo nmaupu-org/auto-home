@@ -1,0 +1,46 @@
+---
+
+- name:
+  become: yes
+  become_user: root
+  package:
+    name: rxvt-unicode-256color
+    state: latest
+
+- name: Creating some directories
+  file:
+    state: directory
+    mode: 0755
+    path: "{{item}}"
+  with_items:
+    - "{{home}}/.urxvt"
+    - "{{home}}/.urxvt/ext"
+    - "{{home}}/.config"
+    - "{{home}}/.config/fontconfig"
+    - "{{home}}/.config/fontconfig/conf.d"
+    - "{{home}}/.local"
+    - "{{home}}/.local/share"
+    - "{{home}}/.local/share/fonts"
+
+- name: Installing urxvt-font-size
+  get_url:
+    url: "{{urxvt_font_size.url}}"
+    dest: "{{home}}/.urxvt/ext/font-size"
+    checksum: "{{urxvt_font_size.checksum}}"
+
+- name: Installing powerline fonts
+  git:
+    repo: https://github.com/powerline/fonts
+    dest: "{{home}}/.powerline-fonts"
+    update: no
+
+- name: Installing powerline fonts
+  shell: ./install.sh && cp fontconfig/*.conf {{home}}/.config/fontconfig/conf.d && touch {{home}}/.powerline-fonts/installed
+  args:
+    chdir: "{{home}}/.powerline-fonts"
+    creates: "{{home}}/.powerline-fonts/installed"
+
+- name: Installing .Xdefaults file
+  template:
+    src: Xdefaults.j2
+    dest: "{{home}}/.Xdefaults"
