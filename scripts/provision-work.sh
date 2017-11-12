@@ -21,7 +21,7 @@ echo "IP address is ${IPADDR}"
 
 # Installing necessary packages
 apt-get update
-apt-get install -y git ansible
+apt-get install -y git ansible sudo
 
 CLONE_DIR="${HOME}/bootstrap-machine"
 rm -rf "${CLONE_DIR}"
