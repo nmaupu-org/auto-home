@@ -33,7 +33,7 @@
     dest: "{{item.dest}}"
     mode: 0444
   with_items:
-    - src: separator.xbm
+    - src: icons/
       dest: "{{home}}/.xmonad/icons"
     - src: brightness.sh
       dest: "{{home}}/.xmonad/scripts"
