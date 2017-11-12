@@ -7,6 +7,7 @@ DIRNAME="$(dirname $0)"
 ## Call would be something like :
 ## sudo env USER_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ROOT_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ./create-debian-usb-key.sh /dev/sdx bobby "Bobby Lapointe"
 ## If passwords are not provided, they will be prompted.
+## Set env var DO_NOT_FORMAT to skip usb formatting
 
 DISK="$1"
 USER_NAME="$2"
@@ -46,6 +47,7 @@ ROOT_PASSWORD   Password to use for root
 EOF
 }
 
+
 [ $# -ne 3 ]              && echo "Please provide required args"    && usage && exit 1
 [ -z "${DISK}" ]          && echo "Please provide a disk"           && usage && exit 1
 [ -z "${USER_NAME}" ]     && echo "Please provide a username"       && usage && exit 1
@@ -63,30 +65,33 @@ fi
 
 PART="${DISK}1"
 
-echo "Getting ISO"
-wget --continue -O "${DIRNAME}/${ISO_NAME}" "${REMOTE_ISO}"
-ISO="${DIRNAME}/${ISO_NAME}"
 
-echo "Wiping out beginning of ${DISK}"
-dd if=/dev/zero of="${DISK}" bs=10M count=5
-
-echo "Preparing disk partitions"
-(echo n; echo p; echo 1; echo ; echo ; echo w) | fdisk "${DISK}"
-partx -u "${DISK}"
-
-echo "Creating a filesystem on ${PART}"
-mkfs.ext2 "${PART}"
+# To accelerate debugging, use this env var to avoid reformatting and copying stuff
+# each time you want to try something new
+if [ -z "${DO_NOT_FORMAT}" ]; then
+  echo "Wiping out beginning of ${DISK}"
+  dd if=/dev/zero of="${DISK}" bs=10M count=5
+  
+  echo "Preparing disk partitions"
+  (echo n; echo p; echo 1; echo ; echo ; echo w) | fdisk "${DISK}"
+  partx -u "${DISK}"
+  
+  echo "Creating a filesystem on ${PART}"
+  mkfs.ext2 "${PART}"
+fi
 
 mkdir -p /mnt/usb
 mount "${PART}" /mnt/usb
 grub-install --root-directory=/mnt/usb "${DISK}"
 
 echo "Download the initrd image"
-mkdir "/mnt/usb/hdmedia-${DEBIAN_RELEASE}"
+mkdir -p "/mnt/usb/hdmedia-${DEBIAN_RELEASE}"
 wget -O "/mnt/usb/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/vmlinuz"
 wget -O "/mnt/usb/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/initrd.gz"
+
+echo "Getting ISO"
 mkdir -p /mnt/usb/isos
-rsync -aP "${ISO}" /mnt/usb/isos
+wget --continue -O "/mnt/usb/isos/${ISO_NAME}" "${REMOTE_ISO}"
 
 echo "Create grub config file"
 cat << EOF > /mnt/usb/boot/grub/grub.cfg
@@ -103,24 +108,30 @@ menuentry "Debian ${DEBIAN_RELEASE} ${ARCH} auto install" {
   initrd \$hdmedia/initrd.gz
 }
 EOF
-
-mkdir /mnt/usb/preseed
-
+  
+mkdir -p /mnt/usb/preseed
+  
 echo "Creating custom preseed late_command requirements"
 cat << EOF > /mnt/usb/preseed/nobeep.conf
 blacklist pcspkr
 EOF
-
+  
 cat << EOF > /mnt/usb/preseed/bootstrap.service
 [Unit]
 Description=Bootstrap machine using auto-home
 ConditionPathExists=!/usr/share/already-bootstrapped
+After=network.target
+
 [Service]
 Type=oneshot
 RemainAfterExit=true
 WorkingDirectory=/root
+ExecStartPre=/bin/sleep 30
 ExecStart=/bin/bash -c 'set -o pipefail; /usr/bin/wget -O - https://raw.githubusercontent.com/nmaupu/auto-home/master/scripts/provision-work.sh | /bin/bash'
 ExecStartPost=/bin/touch /usr/share/already-bootstrapped
+
+[Install]
+WantedBy=multi-user.target
 EOF
 
 cat << EOF > /mnt/usb/preseed/debian.preseed
@@ -295,6 +306,8 @@ popularity-contest popularity-contest/participate    boolean     false
 d-i                finish-install/reboot_in_progress note
 
 d-i preseed/late_command string \
+  in-target apt-get update; \
+  in-target apt-get -y upgrade; \
   lvremove -f /dev/sys/lv_delete; \
   cp /hd-media/preseed/nobeep.conf       /target/etc/modprobe.d/nobeep.conf; \
   cp /hd-media/preseed/bootstrap.service /target/etc/systemd/system/bootstrap.service; \

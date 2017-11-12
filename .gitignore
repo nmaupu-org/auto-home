@@ -7,5 +7,6 @@ tmp/
 assets/
 *.swp
 *.swo
+*.iso
 terraform/
 ansible/plugins/lookup/ansible-vault/
