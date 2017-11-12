@@ -111,6 +111,8 @@ _gen_fzf_default_opts
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Custom aliases
+alias test_term_colors="wget -O - https://raw.githubusercontent.com/robertknight/konsole/master/tests/color-spaces.pl | perl; \
+  curl -s https://raw.githubusercontent.com/JohnMorales/dotfiles/master/colors/24-bit-color.sh | bash"
 alias vim="vim.nox"
 alias vi="vim.nox"
 alias s="vim.nox + ~/.scratchpad"
