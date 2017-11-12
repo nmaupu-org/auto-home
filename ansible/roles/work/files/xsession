@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-xrdb -merge ~/.Xdefaults
+xrdb -merge ~/.Xresources
 autocutsel -f -s PRIMARY -buttonup
 #redshift-gtk &
 ssh-agent &

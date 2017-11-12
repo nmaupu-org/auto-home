@@ -108,7 +108,7 @@ set hlsearch
 " Hint :
 "   - To use C-x and C-S-x to work in vim at the same time
 "     We need to remap those shortcut in rxvt
-"     from .Xdefaults/.Xresources using the following:
+"     from .Xresources using the following:
 "       URxvt.keysym.Control-0x43: \033x
 "     0x43 is upper C (example) in ascii table
 "     in vim:
@@ -128,7 +128,7 @@ map! <ESC>Od <C-Left>
 map! <ESC>Oc <C-Right>
 
 " Remap ctrl+shift+Left/Right
-" to simple shortcut (done in .Xdefaults file via rxvt remapping)
+" to simple shortcut (done in .Xresources file via rxvt remapping)
 map  <ESC>f  <C-S-Left>
 map  <ESC>g  <C-S-Right>
 map  <ESC>w  <C-S-W>
@@ -160,7 +160,7 @@ map <silent> <F6> "<ESC>:silent setlocal spell! spelllang=fr<CR>"
 map Q <Nop>
 
 " Make tabs (tabulator) visible
-" Beware: shortcut is also C-S-T (see .Xdefaults for rxvt remapping)
+" Beware: shortcut is also C-S-T (see .Xresources for rxvt remapping)
 set listchars=tab:>-
 map  <ESC>t :set list!<CR>
 map! <ESC>t <ESC>:set list!<CR>

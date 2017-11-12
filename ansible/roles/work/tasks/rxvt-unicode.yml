@@ -40,7 +40,7 @@
     chdir: "{{home}}/.powerline-fonts"
     creates: "{{home}}/.powerline-fonts/installed"
 
-- name: Installing .Xdefaults file
+- name: Installing .Xresources file
   template:
-    src: Xdefaults.j2
-    dest: "{{home}}/.Xdefaults"
+    src: Xresources.j2
+    dest: "{{home}}/.Xresources"
