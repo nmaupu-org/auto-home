@@ -15,6 +15,11 @@ me: nmaupu
 sshd:
   PermitRootLogin: without-password
 
+# Get it with :
+#   xrandr | grep '*'
+resolution_width: 1680
+resolution_height: 1050
+
 zsh_antigen:
   theme: bhilburn/powerlevel9k powerlevel9k
   plugins:
