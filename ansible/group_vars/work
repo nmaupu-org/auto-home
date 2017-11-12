@@ -37,6 +37,7 @@ linux_base_extra_packages:
   - autocutsel
   - clusterssh
   - curl
+  - dnsutils
   - firefox-esr
   - gdisk
   - git
@@ -49,7 +50,8 @@ linux_base_extra_packages:
   - mlocate
   - ngrep
   - pssh
-  - redshift-gtk
+  - pwgen
+  #- redshift-gtk
   - rsync
   - maim
   - parted
@@ -61,4 +63,5 @@ linux_base_extra_packages:
   - wicd-cli
   - wicd-gtk
   - wireshark
+  - whois
   - zsh

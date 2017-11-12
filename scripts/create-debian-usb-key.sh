@@ -1,33 +1,62 @@
 #!/usr/bin/env bash
 
-set -e -x -o pipefail
+set -e -o pipefail
 
 DIRNAME="$(dirname $0)"
 
+## Call would be something like :
+## sudo env USER_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ROOT_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ./create-debian-usb-key.sh /dev/sdx bobby "Bobby Lapointe"
+
 DISK="$1"
-: "${DEBIAN_RELEASE:=stretch}"
-: "${DEBIAN_VERSION:=9.2.1}"
+USER_NAME="$2"
+USER_FULLNAME="$3"
+#: "${DEBIAN_RELEASE:=stretch}"
+#: "${REMOTE_ISO:=https://cdimage.debian.org/debian-cd/current/${ARCH}/iso-cd/debian-${DEBIAN_VERSION}-${ARCH}-netinst.iso}"
+: "${DEBIAN_RELEASE:=buster}"
+: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha1/amd64/iso-cd/debian-buster-DI-alpha1-amd64-netinst.iso}"
+
 : "${DEBIAN_MIRROR:=http://ftp.debian.org}"
 : "${ARCH:=amd64}"
-: "${REMOTE_ISO:=https://cdimage.debian.org/debian-cd/current/${ARCH}/iso-cd/debian-${DEBIAN_VERSION}-${ARCH}-netinst.iso}"
 ISO_NAME="${REMOTE_ISO##*/}"
 
 usage() {
   cat << EOF
-Usage: $0 <disk> <iso>
+Usage: $0 <disk> <user> "<fulluser>"
 
 disk     Disk to use (e.g. /dev/sdb) - will be wiped out
+user     Regular username to use for the preseed installation
+fulluser Regular full user name for the preseed installation
+
+Passwords will be prompted if not set by environment variables
 
 Overriding options via environment variables
-DEBIAN_RELEASE  Release of Debian (default: buster)
-DEBIAN_VERSION  VERSION of Debian (default: 9.2.1)
+DEBIAN_RELEASE  Release of Debian (default: stretch)
 DEBIAN_MIRROR   Debian mirror (default: http://ftp.debian.org)
 ARCH            Architecture (default: amd64)
+
+All Passwords has to provided hashed (e.g. sha-512)
+Use the following command to do so (mkpasswd is part of whois package):
+  mkpasswd -m sha-512 -S $(pwgen -ns 16 1)
+
+USER_PASSWORD   Regular user password
+ROOT_PASSWORD   Password to use for root
 EOF
 }
 
-[ $# -ne 1 ]     && echo "Please provide required args" && usage && exit 1
-[ -z "${DISK}" ] && echo "Please provide a disk"        && usage && exit 1
+[ $# -ne 3 ]              && echo "Please provide required args"    && usage && exit 1
+[ -z "${DISK}" ]          && echo "Please provide a disk"           && usage && exit 1
+[ -z "${USER_NAME}" ]     && echo "Please provide a username"       && usage && exit 1
+[ -z "${USER_FULLNAME}" ] && echo "Please provide a user full name" && usage && exit 1
+
+if [ -z "${USER_PASSWORD}" ]; then
+  echo "Enter password for regular user ${USER_NAME}"
+  USER_PASSWORD=$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))
+fi
+
+if [ -z "${ROOT_PASSWORD}" ]; then
+  echo "Enter password for root user"
+  ROOT_PASSWORD=$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))
+fi
 
 PART="${DISK}1"
 
@@ -87,7 +116,7 @@ ConditionPathExists=!/usr/share/already-bootstrapped
 Type=oneshot
 RemainAfterExit=true
 WorkingDirectory=/root
-ExecStart=wget -O - https://raw.githubusercontent.com/nmaupu/auto-home/master/scripts/provision-work.sh | bash
+ExecStart=/bin/bash -c 'set -o pipefail; /usr/bin/wget -O - https://raw.githubusercontent.com/nmaupu/auto-home/master/scripts/provision-work.sh | /bin/bash'
 ExecStartPost=/bin/touch /usr/share/already-bootstrapped
 EOF
 
@@ -97,23 +126,30 @@ d-i keyboard-configuration/xkb-keymap select   us
 d-i console-tools/archs               select   skip-config
 d-i time/zone                         string   EU/Paris
 d-i hw-detect/load_firmware           boolean  true
-d-i passwd/make-user                  boolean  false
-d-i passwd/root-password              password root
-d-i passwd/root-password-again        password root
-d-i netcfg/enable                     boolean  false
+d-i netcfg/enable                     boolean  true
+d-i netcfg/choose_interface           select   auto
 d-i clock-setup/utc                   boolean  true
 d-i clock-setup/ntp                   boolean  true
+
+# Root and regular user
+d-i passwd/make-user                  boolean  true
+d-i passwd/root-password-crypted      password ${ROOT_PASSWORD}
+d-i passwd/username                   string   ${USER_NAME}
+d-i passwd/user-fullname              string   ${USER_FULLNAME}
+d-i passwd/user-password-crypted      password ${USER_PASSWORD}
 
 # We assume the target computer has only one harddrive.
 # In most case the USB Flash drive is attached on /dev/sda
 # but sometimes the harddrive is detected before the USB flash drive and
 # it is attached on /dev/sda and the USB flash drive on /dev/sdb
-# You can set manually partman-auto/disk and grub-installer/bootdev or
-# used the early_command option to automatically set the device to use.
+# First line is to avoid erasing the disk before crypto
+# This is discouraged but here it is for the science
+# source: http://www.linuxjournal.com/content/preseeding-full-disk-encryption?page=0,1
 d-i partman/early_command string \
+    sed -i.bak 's/-f \$id\/skip_erase/-d \$id/g' /lib/partman/lib/crypto-base.sh; \
     USBDEV=\$(mount | grep hd-media | cut -d" " -f1 | sed "s/\(.*\)./\1/");\
     BOOTDEV=\$(list-devices disk | grep -v \$USBDEV | head -1);\
-    debconf-set partman-auto/disk \$BOOTDEV;\
+    debconf-set partman-auto/disk      \$BOOTDEV;\
     debconf-set grub-installer/bootdev \$BOOTDEV;
 
 d-i grub-installer/only_debian   boolean true
@@ -122,105 +158,126 @@ d-i grub-installer/with_other_os boolean false
 ##############
 # Partioning #
 ##############
-d-i partman-auto/method                string  lvm
+d-i partman-auto/method                string  crypto
+#d-i partman-crypto/passphrase          password password
+#d-i partman-crypto/passphrase-again    password password
+d-i partman/default_filesystem         string  xfs
 d-i partman-auto/purge_lvm_from_device boolean true
-d-i partman-auto-lvm/new_vg_name       string  sys
 d-i partman-lvm/device_remove_lvm      boolean true
 d-i partman-lvm/device_remove_lvm_span boolean true
 d-i partman/alignment                  string  optimal
-d-i partman-auto-lvm/guided_size       string  max
+d-i partman-auto-lvm/guided_size       string  80%
 
-# This makes partman automatically partition without confirmation, provided
-# that you told it what to do using one of the methods above.
-d-i partman-lvm/confirm             boolean true
-d-i partman/mount_style             select  uuid
-d-i partman/choose_partition        select  Finish partitioning and write changes to disk
-d-i partman/confirm_write_new_label boolean true
-d-i partman/choose_partition        select  finish
-d-i partman/confirm                 boolean true
-d-i partman-auto/expert_recipe string           \
-    my-scheme ::                                \
-        2000 10000 2000 xfs                     \
-            \$primary{ }                        \
-            \$bootable{ }                       \
+# When using crypto as partman-auto/method, in_vg NEEDS a space before the {
+# whereas, normaly, you don't have to put any space before {
+# See https://serverfault.com/questions/674137/preeseding-a-debian-stable-install-with-a-complex-partitioning-scheme-missing
+d-i partman-auto-lvm/new_vg_name            string sys
+d-i partman-auto/choose_recipe              select mine-encrypted
+d-i partman-auto/expert_recipe              string mine-encrypted :: \
+        512 512 1074 xfs                        \
+            \$primary{ } \$bootable{ }          \
+            method{ format } format{ }          \
+            use_filesystem{ } filesystem{ xfs } \
+            mountpoint{ /boot }                 \
+        .                                       \
+        1000 10000 2000 xfs                     \
+            \$lvmok{ }                          \
+            lv_name{ root }                     \
+            options/noatime{ noatime }          \
+            label{ root }                       \
+            in_vg { sys }                       \
             method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ / }                     \
         .                                       \
-        100 1000 1000000000 xfs                 \
-            \$defaultignore{ }                  \
-            \$primary{ }                        \
-            method{ lvm }                       \
-            vg_name{ sys }                      \
-        .                                       \
         8000 512 8000 swap                      \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
+            in_vg { sys }                       \
             lv_name{ swap }                     \
             method{ swap }                      \
             format{ }                           \
         .                                       \
         8000 1000 10000 usr                     \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
+            options/noatime{ noatime }          \
+            label{ usr }                        \
+            in_vg { sys }                       \
             lv_name{ usr }                      \
-            method{ format }                    \
+            method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ /usr }                  \
-            format{ }                           \
         .                                       \
         8000 1000 10000 var                     \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
+            options/noatime{ noatime }          \
+            label{ var }                        \
+            in_vg { sys }                       \
             lv_name{ var }                      \
-            method{ format }                    \
+            method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ /var }                  \
-            format{ }                           \
         .                                       \
-        10000 1000 50000 var-docker             \
+        20000 1000 50000 docker                 \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
-            lv_name{ var-docker }               \
-            method{ format }                    \
+            options/noatime{ noatime }          \
+            label{ docker }                     \
+            in_vg { sys }                       \
+            lv_name{ docker }                   \
+            method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ /var/lib/docker }       \
-            format{ }                           \
         .                                       \
         2000 1000 2000 tmp                      \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
+            options/noatime{ noatime }          \
+            label{ tmp }                        \
+            in_vg { sys }                       \
             lv_name{ tmp }                      \
-            method{ format }                    \
+            method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ /tmp }                  \
-            format{ }                           \
         .                                       \
         5000 1000 10000 opt                     \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
+            options/noatime{ noatime }          \
+            label{ opt }                        \
+            in_vg { sys }                       \
             lv_name{ opt }                      \
-            method{ format }                    \
+            method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ /opt }                  \
-            format{ }                           \
         .                                       \
-        5000 1000 50000 home                    \
+        20000 1000 50000 home                   \
             \$lvmok{ }                          \
-            in_vg{ sys }                        \
+            options/noatime{ noatime }          \
+            label{ home }                       \
+            in_vg { sys }                       \
             lv_name{ home }                     \
-            method{ format }                    \
+            method{ format } format{ }          \
             use_filesystem{ } filesystem{ xfs } \
             mountpoint{ /home }                 \
-            format{ }                           \
+        .                                       \
+        1024 1024 1024 ext4                     \
+            \$lvmok{ }                          \
+            in_vg { sys }                       \
+            lv_name{ lv_delete }                \
         .
 
+# This makes partman automatically partition without confirmation
+d-i partman-md/device_remove_md             boolean  true
+d-i partman/mount_style                     select   uuid
+d-i partman/choose_partition                select   finish
+d-i partman/confirm_write_new_label         boolean  true
+d-i partman-lvm/confirm_nooverwrite         boolean  true
+d-i partman-lvm/confirm                     boolean  true
+d-i partman/confirm_nooverwrite             boolean  true
+d-i partman/confirm                         boolean  true
 
 # Installation settings and mirror
 d-i base-installer/install-recommends      boolean true
 d-i apt-setup/non-free                     boolean true
 d-i apt-setup/contrib                      boolean true
-d-i apt-setup/use_mirror                   boolean false
+d-i apt-setup/use_mirror                   boolean true
 d-i debian-installer/allow_unauthenticated boolean true
 d-i mirror/country                         string  fr
 d-i mirror/http/hostname                   string  ftp.fr.debian.org
@@ -235,6 +292,7 @@ popularity-contest popularity-contest/participate    boolean     false
 d-i                finish-install/reboot_in_progress note
 
 d-i preseed/late_command string \
+  lvremove -f /dev/sys/lv_delete; \
   cp /hd-media/preseed/nobeep.conf       /target/etc/modprobe.d/nobeep.conf; \
   cp /hd-media/preseed/bootstrap.service /target/etc/systemd/system/bootstrap.service; \
   in-target /bin/systemctl daemon-reload; \

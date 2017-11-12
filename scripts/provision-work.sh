@@ -6,7 +6,13 @@
 
 set -e -o pipefail
 
-: ${DOCKER_ID_USER:=nmaupu}
+: "${DOCKER_ID_USER:=nmaupu}"
+: "${HOME:=/root}"
+
+# When executing from systemd, ~ directory is not bound to
+# any user's home
+export ANSIBLE_LOCAL_TEMP=$HOME/.ansible/tmp
+export ANSIBLE_REMOTE_TEMP=$HOME/.ansible/tmp
 
 # First getting local ip
 : ${IPADDR:="$(/sbin/ip -4 -o addr show | awk '{ if($2 != "lo" && $2 != "docker0") { split($4, tab, "/"); print tab[1] } }')"}
@@ -25,7 +31,17 @@ git clone --depth 1 --branch "${BRANCH}" https://github.com/nmaupu/auto-home "${
 ## From now on, we use script from freshly cloned repo
 
 # Ansible version should be too old to provision everything, we will do it with docker
-ansible-galaxy install angstwad.docker_ubuntu
+ansible-galaxy install -p /etc/ansible/roles angstwad.docker_ubuntu
+
+## Ugly hack if debian is buster (testing in 2017)
+# angstwad.docker_ubuntu is not ready for buster version of debian
+# docker apt repo neither
+if grep -q buster /etc/debian_version; then
+  sed -i -e 's/stretch/buster/g' /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml
+  sed -i -e 's/{{ ansible_lsb.codename|lower }}/stretch/' /etc/ansible/roles/angstwad.docker_ubuntu/defaults/main.yml
+fi
+## End ugly hack for buster
+
 cat << EOF > "${CLONE_DIR}/bootstrap.yml"
 ---
 - name: Run docker.ubuntu
@@ -53,7 +69,7 @@ local ansible_host=${IPADDR} ansible_user=root
 EOF
 
 # Install all requirements
-ansible-galaxy install -r "${CLONE_DIR}/ansible/requirements.yml"
+ansible-galaxy install -p /etc/ansible/roles -r "${CLONE_DIR}/ansible/requirements.yml"
 
 # Provision local machine
 INVENTORY_FILE="/workspace/dummy-bootstrap-inventory" \
