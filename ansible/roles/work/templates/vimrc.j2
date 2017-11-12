@@ -96,7 +96,9 @@ syntax enable
 " Make this comment silent because when installing plugins from a script
 " colorscheme is not yet here (install via Vundle)
 " In that case, vim displays an error and waits for a key to be pressed...
-:silent! colorscheme solarized8_dark
+set background=dark
+let g:solarized_use16 = 1
+:silent! colorscheme solarized8_high
 
 set relativenumber
 set number

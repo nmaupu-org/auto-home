@@ -32,6 +32,7 @@ zsh_antigen:
     - zsh-users/zsh-syntax-highlighting
 
 linux_base_extra_packages:
+  - acpi
   - apt-file
   - arandr
   - autocutsel

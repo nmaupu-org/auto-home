@@ -8,6 +8,7 @@
     state: present
   with_items:
     - xmonad
+    - dmenu
     - dzen2
     - conky-all
     - lm-sensors
