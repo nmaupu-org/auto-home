@@ -6,6 +6,7 @@ DIRNAME="$(dirname $0)"
 
 ## Call would be something like :
 ## sudo env USER_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ROOT_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ./create-debian-usb-key.sh /dev/sdx bobby "Bobby Lapointe"
+## If passwords are not provided, they will be prompted.
 
 DISK="$1"
 USER_NAME="$2"
@@ -13,11 +14,11 @@ USER_FULLNAME="$3"
 : "${DEBIAN_MIRROR:=http://ftp.debian.org}"
 : "${ARCH:=amd64}"
 
-: "${DEBIAN_RELEASE:=stretch}"
-DEBIAN_VERSION=9.2.1
-: "${REMOTE_ISO:=https://cdimage.debian.org/debian-cd/current/${ARCH}/iso-cd/debian-${DEBIAN_VERSION}-${ARCH}-netinst.iso}"
-#: "${DEBIAN_RELEASE:=buster}"
-#: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha1/amd64/iso-cd/debian-buster-DI-alpha1-amd64-netinst.iso}"
+#: "${DEBIAN_RELEASE:=stretch}"
+#DEBIAN_VERSION=9.2.1
+#: "${REMOTE_ISO:=https://cdimage.debian.org/debian-cd/current/${ARCH}/iso-cd/debian-${DEBIAN_VERSION}-${ARCH}-netinst.iso}"
+: "${DEBIAN_RELEASE:=buster}"
+: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha1/amd64/iso-cd/debian-buster-DI-alpha1-amd64-netinst.iso}"
 
 ISO_NAME="${REMOTE_ISO##*/}"
 
