@@ -127,7 +127,7 @@ cat << EOF > /mnt/usb/preseed/debian.preseed
 d-i debian-installer/locale           string   en_US
 d-i keyboard-configuration/xkb-keymap select   us
 d-i console-tools/archs               select   skip-config
-d-i time/zone                         string   EU/Paris
+d-i time/zone                         string   Europe/Paris
 d-i hw-detect/load_firmware           boolean  true
 d-i netcfg/enable                     boolean  true
 d-i netcfg/choose_interface           select   auto
