@@ -9,3 +9,17 @@
   become: yes
   become_user: "{{me}}"
   shell: xmonad --recompile
+
+- name: antigen apply
+  become: yes
+  become_user: "{{me}}"
+  shell: |
+    source "/home/{{me}}/.antigen.zsh"
+    antigen use oh-my-zsh
+    {% for plugin in zsh_antigen.plugins %}
+      antigen bundle {{plugin}}
+    {% endfor %}
+    antigen theme {{zsh_antigen.theme}}
+    antigen apply
+  args:
+    executable: /usr/bin/zsh

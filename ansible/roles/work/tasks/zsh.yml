@@ -18,8 +18,12 @@
     url: "{{antigen.url}}"
     dest: "{{home}}/.antigen.zsh"
     checksum: "{{antigen.checksum}}"
+  notify:
+    - antigen apply
 
 - name: Configuring zsh
   template:
     src: zshrc.j2
     dest: "{{home}}/.zshrc"
+  notify:
+    - antigen apply
