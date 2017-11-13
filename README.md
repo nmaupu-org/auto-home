@@ -25,7 +25,7 @@ Hash's password can be calculated using the following command:
 mkpasswd -m sha-512 -S $(pwgen -ns 16 1)
 ```
 
-It is also possible to update the USB stick without formating it again:
+It is also possible to update the USB stick without formatting it again:
 ```
 sudo env DO_NOT_FORMAT=yes ./scripts/create-debian-usb-key.sh /dev/sdb bobby "Bobby Lapointe"
 ```
