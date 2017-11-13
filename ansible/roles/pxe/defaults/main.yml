@@ -1,6 +1,6 @@
 ---
 
-tftproot_dir: /tftproot
+tftproot_dir: /var/lib/tftproot
 tftpd_opts: -4 --secure -v -v -v
 
 syslinux_major_ver: 6.03

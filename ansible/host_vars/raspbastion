@@ -44,6 +44,7 @@ channels:
       autojoin: "yes"
 
 # PXE
+tftproot_dir: /tftproot
 pxe_title: PXE mopsland
 matchbox_dns: matchbox.home.fossar.net
 matchbox_arch: linux-arm

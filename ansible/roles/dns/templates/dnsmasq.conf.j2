@@ -21,3 +21,9 @@ dhcp-option=15,{{domain_name}}
 dhcp-option=19,0
 # Source Routing
 dhcp-option=20,0
+
+# PXE related
+# next server
+dhcp-option=66,{{ansible_default_ipv4.address}}
+dhcp-boot=bios/pxelinux.0,{{ansible_default_ipv4.address}}
+
