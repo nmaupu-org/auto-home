@@ -20,6 +20,12 @@
     dest: /etc/dnsmasq-hosts
   notify: reload dnsmasq
 
+- name: Configuring dhcp static leases
+  template:
+    src: ethers.j2
+    dest: /etc/ethers
+  notify: reload dnsmasq
+
 - name: Activating dnsmasq service
   service:
     name: dnsmasq

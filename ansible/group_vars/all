@@ -10,7 +10,42 @@ kube_nodes:
   - knode2
   - knode3
 
-main_dns_server: 192.168.12.1
+dhcp_range_begin: 192.168.12.150
+dhcp_range_end: 192.168.12.200
+dhcp_static_leases:
+  freenas:
+      mac: D0:50:99:19:2E:13
+      ip: 192.168.12.8
+  asrock:
+      mac: BC:5F:F4:FE:18:D1
+      ip: 192.168.12.3
+  mbr:
+      mac: 98:fe:94:41:74:36
+      ip: 192.168.12.10
+  raspbastion:
+      mac: B8:27:EB:C4:1C:80
+      ip: 192.168.12.11
+  plex:
+      mac: 02:FF:B0:00:09:0B
+      ip: 192.168.12.155
+  printer:
+      mac: 00:1B:A9:FA:0A:81
+      ip: 192.168.12.5
+  kcontroller1:
+      mac: 00:19:99:CF:34:71
+      ip: 192.168.12.12
+  knode1:
+      mac: 00:19:99:CE:C3:1A
+      ip: 192.168.12.13
+  knode2:
+      mac: 00:19:99:D0:43:A9
+      ip: 192.168.12.14
+  knode3:
+      mac: 00:19:99:D0:42:E7
+      ip: 192.168.12.15
+
+main_router: 192.168.12.1
+main_dns_server: "{{main_router}}"
 domain_name: home.fossar.net
 dns_hosts:
   192.168.12.5:

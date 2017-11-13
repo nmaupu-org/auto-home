@@ -1,3 +1,4 @@
+filterwin2k
 domain-needed
 expand-hosts
 bogus-priv
@@ -6,3 +7,17 @@ domain={{domain_name}}
 cache-size=256
 server={{main_dns_server}}
 addn-hosts=/etc/dnsmasq-hosts
+no-negcache
+
+# DHCP
+dhcp-authoritative
+dhcp-leasefile=/var/tmp/dhcp.leases
+read-ethers
+dhcp-range={{dhcp_range_begin}},{{dhcp_range_end}},255.255.255.0,12h
+dhcp-option=3,{{main_router}}
+dhcp-option=6,{{ansible_default_ipv4.address}}
+dhcp-option=15,{{domain_name}}
+# IP Forward (no)
+dhcp-option=19,0
+# Source Routing
+dhcp-option=20,0
