@@ -40,6 +40,23 @@ if grep -q buster /etc/debian_version; then
   sed -i -e 's/stretch/buster/g' /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml
   sed -i -e 's/{{ ansible_lsb.codename|lower }}/stretch/' /etc/ansible/roles/angstwad.docker_ubuntu/defaults/main.yml
 fi
+
+# Installing docker on docker's stretch repo is failing on the first service start
+# because it seems that docker is starting using init script (instead of systemd) and thus
+# the socket does not exist and everything fails (socket is nowhere to be found).
+# It finally works because systemd retries later and creates the socket
+# (because a socket unit creates it). We can thus ignore this fail when installing
+# but it is indeed very ugly.
+cat << EOF | patch -i - /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml
+@@ -113,6 +113,7 @@
+     state: "{{ 'latest' if update_docker_package else 'present' }}"
+     update_cache: "{{ update_docker_package }}"
+     cache_valid_time: "{{ docker_apt_cache_valid_time }}"
++  ignore_errors: true
+
+ - name: Set systemd playbook var
+   set_fact:
+EOF
 ## End ugly hack for buster
 
 cat << EOF > "${CLONE_DIR}/bootstrap.yml"
