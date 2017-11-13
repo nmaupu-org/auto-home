@@ -170,7 +170,11 @@ myManageHook = composeAll
 -- next, conky (700px)
 -- remaining 100px for trayer app (see .xsession file)
 --
+{% if ansible_lsb.codename|lower == "stretch" %}
+myStartupHook = setWMName "LG3D"
+{% else %}
 myStartupHook = docksStartupHook <+> setWMName "LG3D"
+{% endif %}
 myStatusBar   = "dzen2 -dock -xs 1 -m -x 0 -y 0 -h 20 -w {{ resolution_width - 800}} -ta l -fg '" ++ colNormal ++ "' -bg '" ++ colBG ++ "' -fn '" ++ dzenFontBold ++ "'"
 myDzenRight   = "conky -c " ++ scriptDir ++ "/conky-dzen | dzen2 -xs 1 -ta r -fn '" ++ dzenFontNormal ++ "' -x {{ resolution_width - 800 }} -y 0 -h 20 -w 700 -ta r -bg '" ++ colBG  ++ "' -fg '" ++ colNormal  ++ "' -p -e ''"
 

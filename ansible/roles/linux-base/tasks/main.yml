@@ -23,6 +23,7 @@
     ssh_key_bits: 2048
     ssh_key_file: ".ssh/id_rsa"
   with_items: "{{users}}"
+  register: userscomputed
   tags: users
 
 - name: Ensure .ssh directories exist
@@ -33,17 +34,25 @@
     owner: "{{item.user}}"
     group: "{{item.user}}"
   with_items: "{{users}}"
+  tags: users
 
+# Iterate through register variable to get ssh_public_key
+# from current user
 - name: SSH public keys
   blockinfile:
     block: |
       {{authorized_keys}}
+      {% if item.ssh_public_key is defined %}
+      {{item.ssh_public_key}}
+      {% endif %}
     create: yes
-    path: "{{item.home}}/.ssh/authorized_keys"
+    path: "{{item.item.home}}/.ssh/authorized_keys"
     insertafter: EOF
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
-    owner: "{{item.user}}"
-    group: "{{item.user}}"
+    owner: "{{item.item.user}}"
+    group: "{{item.item.user}}"
     mode: 0644
-  with_items: "{{users}}"
-  tags: authorized_keys
+  with_items: "{{userscomputed.results}}"
+  tags:
+    - users
+    - authorized_keys

@@ -8,8 +8,8 @@
     state: present
 
 - block:
-    - import_tasks: init-dirs.yml
-      tags: init-dirs
+    - import_tasks: init.yml
+      tags: init
     - import_tasks: rxvt-unicode.yml
       tags: rxvt
     - import_tasks: golang.yml

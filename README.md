@@ -69,12 +69,12 @@ Once bootstrapped, updates are assured with a *regular user* from the repo:
 `mymachine` has to be present in `ansible/hosts` file before proceeding.
 
 ```
-./scripts/apply-ansible.sh work.yml --limit mymachine
+VAULT_ADDR=not-used ./scripts/apply-ansible.sh work.yml --limit mymachine
 ```
 
 Bunch of tags are also available and can be combined:
 ```
-./scripts/apply-ansible.sh work.yml --limit mymachine --tags linux-base,sshd,work
+.VAULT_ADDR=not-used /scripts/apply-ansible.sh work.yml --limit mymachine --tags linux-base,sshd,work
 ```
 
 *Work* part can also be cut down using several tags:
@@ -124,8 +124,8 @@ General use
 
 Use docker image nmaupu/builder like so :
 ```
-./scripts/apply-ansible.sh <file>.yml --limit test --tags <tags>
-./scripts/apply-ansible.sh work.yml --limit test
+/scripts/apply-ansible.sh <file>.yml --limit test --tags <tags>
+/scripts/apply-ansible.sh work.yml --limit test
 ```
 
 `--limit test` is used to limit action to test machine configured in `ansible/hosts` file
