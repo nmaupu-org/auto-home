@@ -1,3 +1,11 @@
 pxe_title: -== PXE mopsland test ==-
 matchbox_dns: matchbox-test.home.fossar.net
 pxe_matchbox_url: "{{matchbox_dns}}:8080"
+
+# Get it with :
+#   xrandr | grep '*'
+resolution_width: 1024
+resolution_height: 768
+
+xmonad_meta_key: altKey
+xmonad_num_workspaces: 3

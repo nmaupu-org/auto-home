@@ -20,6 +20,9 @@ sshd:
 resolution_width: 1680
 resolution_height: 1050
 
+xmonad_meta_key: winKey
+xmonad_num_workspaces: 10
+
 zsh_antigen:
   theme: bhilburn/powerlevel9k powerlevel9k
   plugins:

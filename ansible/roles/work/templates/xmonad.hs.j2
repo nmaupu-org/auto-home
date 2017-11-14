@@ -38,7 +38,7 @@ winKey            = mod4Mask
 numLockKey        = mod2Mask
 myTerminal        = "urxvt"
 myBorderWidth     = 2
-myWorkspaces      = take 15 $ map show [1..]
+myWorkspaces      = take {{xmonad_num_workspaces}} $ map show [1..]
 dzenFontBold      = "-xos4-terminus-bold-r-normal-*-14-*-*-*-*-*-iso8859-15"
 dzenFontNormal    = "-xos4-terminus-*-r-normal-*-14-*-*-*-*-*-iso8859-15"
 dmenuFont         = "xft:DejaVu Sans Mono:pixelsize=13,style=Regular,xft:Inconsolata for Powerline:pixelsize=14"
@@ -208,7 +208,7 @@ main = do
     { terminal           = myTerminal,
       focusFollowsMouse  = True,
       borderWidth        = myBorderWidth,
-      modMask            = winKey,
+      modMask            = {{xmonad_meta_key}},
       --numlockMask        = numLockKey,
       workspaces         = myWorkspaces,
       normalBorderColor  = colBorderNormal,
