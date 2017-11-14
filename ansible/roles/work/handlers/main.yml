@@ -16,10 +16,9 @@
   shell: |
     source "{{home}}/.antigen.zsh"
     antigen use oh-my-zsh
-    {% for plugin in zsh_antigen.plugins %}
-      antigen bundle {{plugin}}
+    {% for line in zsh_antigen %}
+      {{line}}
     {% endfor %}
-    antigen theme {{zsh_antigen.theme}}
     antigen apply
   args:
     executable: "{{zsh_bin}}"
