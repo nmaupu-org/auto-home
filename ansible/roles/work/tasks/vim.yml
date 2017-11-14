@@ -6,6 +6,13 @@
   package:
     name: vim-nox
     state: latest
+  when: ansible_os_family != 'Darwin'
+
+- name: Installing vim
+  package:
+    name: vim
+    state: latest
+  when: ansible_os_family == 'Darwin'
 
 - name: Ensuring vundle directory exists
   file:

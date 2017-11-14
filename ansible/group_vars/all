@@ -10,12 +10,15 @@ kube_nodes:
   - knode2
   - knode3
 
-dhcp_range_begin: 192.168.12.150
-dhcp_range_end: 192.168.12.200
+dhcp_range_begin: 192.168.12.200
+dhcp_range_end: 192.168.12.250
 dhcp_static_leases:
   freenas:
       mac: D0:50:99:19:2E:13
       ip: 192.168.12.8
+  freenasbak:
+      mac: d0:50:99:19:2e:14
+      ip: 192.168.12.9
   asrock:
       mac: BC:5F:F4:FE:18:D1
       ip: 192.168.12.3

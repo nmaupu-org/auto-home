@@ -1,11 +1,22 @@
 ---
 
-- name: Installing zsh
+- name: Installing required packages
   become: yes
   become_user: root
   package:
     name: zsh
     state: latest
+  when: ansible_os_family != 'Darwin'
+
+
+- name: Installing required packages
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - zsh
+    - coreutils
+  when: ansible_os_family == 'Darwin'
 
 - name: Getting dircolors
   get_url:

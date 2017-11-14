@@ -1,3 +1,9 @@
+me: nmaupu
+home: /home/{{me}}
+my_terminal: rxvt-unicode-256color
+zsh_bin: /usr/bin/zsh
+dircolors_bin: /usr/bin/dircolors
+
 users:
   - home: /home/nmaupu
     user: nmaupu
@@ -10,7 +16,21 @@ users:
     generate_ssh_key: no
     extra_groups: ""
 
-me: nmaupu
+useless_dirs:
+  - Desktop
+  - Documents
+  - Downloads
+  - Music
+  - Pictures
+  - Public
+  - Templates
+  - Videos
+useful_dirs:
+  - bin
+  - work
+  - work/tmp
+  - work/go
+  - downloads
 
 sshd:
   PermitRootLogin: without-password

@@ -6,6 +6,6 @@
   gather_facts: yes
   hosts: work
   roles:
-    - { role: linux-base, tags: ['linux-base'] }
-    - { role: willshersystems.sshd, tags: ['sshd'] }
+    - { role: linux-base, tags: ['linux-base'], when: ansible_os_family != 'Darwin'}
+    - { role: willshersystems.sshd, tags: ['sshd'], when: ansible_os_family != 'Darwin' }
     - { role: work, tags: ['work'] }

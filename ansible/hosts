@@ -1,5 +1,6 @@
 [work]
 test ansible_host=192.168.12.162 ansible_user=nmaupu
+mbr ansible_host=192.168.12.10 ansible_user=bicnic
 
 [pxe]
 raspbastion ansible_host=192.168.12.11  ansible_user=pi

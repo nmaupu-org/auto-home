@@ -21,8 +21,8 @@ setopt HIST_REDUCE_BLANKS
 #############
 # Some vars #
 #############
-export TERM=rxvt-unicode-256color
-eval `dircolors ~/.dircolors`
+export TERM={{my_terminal}}
+eval `{{dircolors_bin}} ~/.dircolors`
 export GIT_EDITOR=vim
 export GOROOT={{golang.installdir}}/go
 export GOPATH=$HOME/work/go
@@ -113,9 +113,17 @@ _gen_fzf_default_opts
 # Custom aliases
 alias test_term_colors="wget -O - https://raw.githubusercontent.com/robertknight/konsole/master/tests/color-spaces.pl | perl; \
   curl -s https://raw.githubusercontent.com/JohnMorales/dotfiles/master/colors/24-bit-color.sh | bash"
+
+{% if ansible_os_family != 'Darwin' %}
 alias vim="vim.nox"
 alias vi="vim.nox"
 alias s="vim.nox + ~/.scratchpad"
-alias history="fc -il 1"
 alias us="setxkbmap -layout us -variant altgr-intl"
 alias fr="setxkbmap -layout fr"
+{% else %}
+alias vim="/usr/local/bin/vim"
+alias vi="/usr/local/bin/vim"
+alias s="vim + ~/.scratchpad"
+{% endif %}
+
+alias history="fc -il 1"

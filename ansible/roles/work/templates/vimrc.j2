@@ -107,6 +107,7 @@ set hlsearch
 """""""""""""""""""
 " Remap shortcuts "
 """""""""""""""""""
+{% if ansible_os_family != 'Darwin' %}
 " Hint :
 "   - To use C-x and C-S-x to work in vim at the same time
 "     We need to remap those shortcut in rxvt
@@ -116,10 +117,12 @@ set hlsearch
 "     in vim:
 "       map <ESC>x :echo "C-S-C has been pressed"
 "       map <C-C>  :echo "C-C" has been pressed"
+{% endif %}
 
 " Remap Ctrl+arrows to the correct escape sequence
 " To Get the sequence, use Ctrl+V Ctrl+Left/Right/Up/Down
 " in a term (or in vim)
+" In mac os handle that using correct profiles in iTerm2
 map  <ESC>Oa <C-Up>
 map  <ESC>Ob <C-Down>
 map  <ESC>Od <C-Left>

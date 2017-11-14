@@ -1,0 +1,13 @@
+me: bicnic
+home: /Users/{{me}}
+my_terminal: xterm-256color
+zsh_bin: /bin/zsh
+dircolors_bin: /usr/local/bin/gdircolors
+
+users: []
+useless_dirs: []
+useful_dirs:
+  - bin
+  - work
+  - work/tmp
+  - work/go

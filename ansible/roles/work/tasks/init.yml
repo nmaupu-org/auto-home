@@ -9,24 +9,11 @@
   file:
     state: absent
     path: "{{home}}/{{item}}"
-  with_items:
-    - Desktop
-    - Documents
-    - Downloads
-    - Music
-    - Pictures
-    - Public
-    - Templates
-    - Videos
+  with_items: "{{useless_dirs}}"
 
 - name: Creating useful dirs
   file:
     state: directory
     path: "{{home}}/{{item}}"
     mode: 0755
-  with_items:
-    - bin
-    - work
-    - work/tmp
-    - work/go
-    - downloads
+  with_items: "{{useful_dirs}}"
