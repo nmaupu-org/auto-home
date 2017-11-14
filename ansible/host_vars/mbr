@@ -11,3 +11,19 @@ useful_dirs:
   - work
   - work/tmp
   - work/go
+
+zsh_antigen:
+  - antigen bundle docker
+  - antigen bundle fabric
+  - antigen bundle git
+  - antigen bundle git-extras
+  - antigen bundle git-flow
+  - antigen bundle pip
+  - antigen bundle common-aliases
+  - antigen bundle djui/alias-tips
+  - antigen bundle sudo
+  - antigen bundle vagrant
+  - antigen bundle zsh-users/zsh-completions
+  - antigen bundle zsh-users/zsh-syntax-highlighting
+  - antigen bundle mafredri/zsh-async
+  - antigen bundle marszall87/lambda-pure

@@ -70,11 +70,9 @@ fi
 source "${HOME}/.antigen.zsh"
 
 antigen use oh-my-zsh
-{% for plugin in zsh_antigen.plugins %}
-antigen bundle {{plugin}}
+{% for line_conf in zsh_antigen %}
+{{line_conf}}
 {% endfor %}
-
-antigen theme {{zsh_antigen.theme}}
 antigen apply
 
 ###############################
