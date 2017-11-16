@@ -1,7 +1,7 @@
 nfs_server: nfs.home.fossar.net
 
 couchpotato:
-  image: linuxserver/couchpotato:89
+  image: linuxserver/couchpotato:91
   port: 5050
   ingress_hostname: couchpotato.home.fossar.net
 
@@ -28,8 +28,8 @@ couchpotato:
     mountpoint: /mnt/tank/misc/plex/Movies
   resources:
     limits:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 800m
+      memory: 400Mi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 400m
+      memory: 200Mi
