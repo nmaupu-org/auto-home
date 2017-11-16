@@ -39,9 +39,13 @@
       dest: "{{home}}/.xmonad/scripts"
     - src: xmonad-server-connect.sh
       dest: "{{home}}/.xmonad/scripts"
-    - src: conky-dzen
-      dest: "{{home}}/.xmonad/scripts"
   tags: xmonad-config
+
+- name: Installing conky configuration
+  template:
+    src: conky-dzen.j2
+    dest: "{{home}}/.xmonad/scripts/conky-dzen"
+    mode: 0444
 
 - name: Installing xsession lightdm file
   become: yes

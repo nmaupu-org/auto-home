@@ -6,7 +6,7 @@ update_interval_on_battery 2
 use_spacer left
  
 TEXT
-^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/net_wired.xbm)^fg(\#00aa4a) ^i(/home/nmaupu/.xmonad/icons/net_down_03.xbm)${downspeed enp3s0}^fg(\#ff6633) ^i(/home/nmaupu/.xmonad/icons/net_up_03.xbm)${upspeed enp3s0} \
+^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/net_wired.xbm)^fg(\#00aa4a) ^i(/home/nmaupu/.xmonad/icons/net_down_03.xbm)${downspeed {{ ansible_default_ipv4.interface }}}^fg(\#ff6633) ^i(/home/nmaupu/.xmonad/icons/net_up_03.xbm)${upspeed {{ ansible_default_ipv4.interface }}} \
 ^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/bat_full_02.xbm) \
 ${if_match ${exec acpi -a | grep 'on-line' | wc -l} > 0}\
 ^fg(\#00aa4a)\
