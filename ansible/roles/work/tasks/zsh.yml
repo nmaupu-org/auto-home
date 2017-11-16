@@ -8,7 +8,6 @@
     state: latest
   when: ansible_os_family != 'Darwin'
 
-
 - name: Installing required packages
   package:
     name: "{{item}}"
@@ -31,6 +30,12 @@
     checksum: "{{antigen.checksum}}"
   notify:
     - antigen apply
+
+- name: Creating .zshrc.d directory
+  file:
+    state: directory
+    mode: 0755
+    path: "{{home}}/.zshrc.d"
 
 - name: Configuring zsh
   template:

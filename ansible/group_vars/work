@@ -3,10 +3,11 @@ home: /home/{{me}}
 my_terminal: rxvt-unicode-256color
 zsh_bin: /usr/bin/zsh
 dircolors_bin: /usr/bin/dircolors
+docker_id_user: nmaupu
 
 users:
-  - home: /home/nmaupu
-    user: nmaupu
+  - home: /home/{{me}}
+    user: "{{me}}"
     shell: /usr/bin/zsh
     generate_ssh_key: yes
     extra_groups: sudo,docker

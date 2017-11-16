@@ -112,6 +112,7 @@ _gen_fzf_default_opts
 alias test_term_colors="wget -O - https://raw.githubusercontent.com/robertknight/konsole/master/tests/color-spaces.pl | perl; \
   curl -s https://raw.githubusercontent.com/JohnMorales/dotfiles/master/colors/24-bit-color.sh | bash"
 
+export DOCKER_ID_USER={{docker_id_user}}
 {% if ansible_os_family != 'Darwin' %}
 alias vim="vim.nox"
 alias vi="vim.nox"
@@ -125,3 +126,10 @@ alias s="vim + ~/.scratchpad"
 {% endif %}
 
 alias history="fc -il 1"
+
+# Custom and private configs
+if [ -d "${HOME}/.zshrc.d" ]; then
+  find "${HOME}/.zshrc.d" -type f | while read -r file; do
+    source ${file}
+  done
+fi
