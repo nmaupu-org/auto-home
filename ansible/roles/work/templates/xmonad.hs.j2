@@ -20,8 +20,10 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ToggleLayouts
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.ThreeColumns
 import XMonad.Prompt
 import XMonad.Util.Run
+import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare (getSortByTag)
 import Data.Ratio
 
@@ -92,6 +94,12 @@ keyBindings conf@(XConfig {XMonad.modMask = modMask}) =
   addKeyBinding modMask       xK_Up     (sendMessage Expand) $
   addKeyBinding modMask       xK_f      (sendMessage ToggleLayout) $
   addKeyBinding modMask       xK_u      focusUrgent $
+
+  -- scratchpads
+  addKeyBinding modMask       xK_t         (namedScratchpadAction myScratchpads "htop") $
+  addKeyBinding modMask       xK_a         (namedScratchpadAction myScratchpads "alsamixer") $
+  addKeyBinding modMask       xK_d         (namedScratchpadAction myScratchpads "vimScratchpad") $
+
   -- Reset the layout
   addKeyBinding cModCtrlShift xK_space (sendMessage resetAlt) $
   addKeyBinding cModCtrl      xK_Left   prevWS $
@@ -138,23 +146,48 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 --
 full = noBorders Full
 winDecoTabbed = tabbed shrinkText defaultTheme
-stdLayouts = avoidStruts(Grid ||| tiled ||| Mirror tiled ||| full)
+stdLayouts = avoidStruts(smartBorders(threeCols ||| Grid ||| tiled)) ||| full
   where
-    -- default tiling algorithm partitions the screen into two panes
-    --tiled    = Tall nmaster delta ratio
-    tiled    = ResizableTall 1 delta (1/10) []
-    -- The default number of windows in the master pane
-    nmaster  = 1
-    -- Default proportion of screen occupied by master pane
-    ratio    = 1/10
-    -- Percent of screen to increment by when resizing panes
-    delta    = 10/100
+    tiled     = ResizableTall 1 0.1 0.1 []
+    threeCols = ThreeColMid   1 (3/100)  (1/2)
 
 myLayout = (toggleLayouts $ avoidStruts winDecoTabbed) $ stdLayouts
 
 ------------------------------------------------------------------------
 -- Window rules:
 --
+manageScratchFromBottom = customFloating (W.RationalRect l t w h)
+  where
+    h = 0.94    -- terminal height
+    w = 0.98    -- terminal width
+    t = 1 - h   -- distance from top edge
+    l = (1-w)/2 -- distance from left edge
+
+manageScratchCentered = customFloating (W.RationalRect l t w h)
+  where
+    h = 0.80        -- terminal height
+    w = 0.80        -- terminal width
+    t = (1 - h) / 2 -- distance from top edge
+    l = (1 - w) / 2 -- distance from left edge
+
+myScratchpads = [ NS "htop"          spawnHtop          findHtop          manageHtop
+                , NS "alsamixer"     spawnAlsa          findAlsa          manageAlsa
+                , NS "vimScratchpad" spawnVimScratchpad findVimScratchpad manageVimScratchpad
+                ]
+  where
+    -- htop
+    spawnHtop  = myTerminal ++ " -name scratchHtop -e htop"
+    findHtop   = resource =? "scratchHtop"
+    manageHtop = manageScratchFromBottom
+    -- alsamixer
+    spawnAlsa  = myTerminal ++ " -name alsamixer -e alsamixer"
+    findAlsa   = resource =? "alsamixer"
+    manageAlsa = manageScratchCentered
+    -- vim scratchpad
+    spawnVimScratchpad  = myTerminal ++ " -name vimScratchpad -e zsh -c 'vim ~/.scratchpad'"
+    findVimScratchpad   = resource =? "vimScratchpad"
+    manageVimScratchpad = manageScratchFromBottom
+
 myManageHook = composeAll
     [ title =? "GNU Image Manipulation Program" --> doFloat
     , title =? "GIMP"                           --> doFloat
@@ -162,7 +195,9 @@ myManageHook = composeAll
     , className =? "Firefox"                    --> doShift "1"
     , className =? "jetbrains-pycharm"          --> doShift "6"
     , className =? "jetbrains-idea"             --> doShift "6"
-    ] <+> manageDocks
+    ]
+    <+> namedScratchpadManageHook myScratchpads
+    <+> manageDocks
 
 ------------------------------------------------------------------------
 -- Status bars and logging
