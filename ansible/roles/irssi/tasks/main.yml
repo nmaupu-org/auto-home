@@ -18,6 +18,9 @@
     dest: "{{irssi_config_dir}}/config"
     mode: 0600
     owner: "{{irssi_config_owner}}"
+  notify:
+    - restart irssi
+  tags: irssi_config
 
 - name: Installing irssi over tmux service
   template:

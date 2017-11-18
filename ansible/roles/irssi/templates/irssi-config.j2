@@ -6,7 +6,7 @@ servers = (
     port = "{{server.port}}";
     use_ssl = "{{server.use_ssl}}";
     use_tls = "{{server.use_tls}}";
-    ssl_verify = "{{server.ssl_verify}}"
+    ssl_verify = "{{server.ssl_verify}}";
     autoconnect = "{{server.autoconnect}}";
   },
 {% endfor %}
@@ -16,16 +16,16 @@ chatnets = {
 {% for server in irc_servers %}
   {{server.chatnet}} = {
     type = "IRC";
-    autosendcmd="{{server.autosendcmd}}"
+    autosendcmd="{{server.autosendcmd}}";
   }
 {% endfor %}
 }
 
 channels = (
 {% for chatnet in channels %}
-  {% for c in channels[chatnet] %}
-  { name = "#{{c.name}}"; chatnet = "{{chatnet}}"; autojoin = "{{c.autojoin}}" }
-  {% endfor %}
+{% for c in channels[chatnet] %}
+  { name = "#{{c.name}}"; chatnet = "{{chatnet}}"; autojoin = "{{c.autojoin}}"; }
+{% endfor %}
 {% endfor %}
 );
 
