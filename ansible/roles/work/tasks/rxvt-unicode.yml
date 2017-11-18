@@ -1,12 +1,85 @@
 ---
 
-- name:
-  become: yes
-  become_user: root
-  package:
-    name: rxvt-unicode-256color
-    state: latest
+# Compile manually urxvt because the one from Debian has a bug :
+# it does not support wide glyphs used in powerline fonts
+- name: Verifying urxvt installation
+  stat:
+    path: /usr/local/urxvt-installed
+  register: urxvt_installed
 
+- block:
+    - name: Ensuring compile dir is not present
+      file:
+        path: /tmp/rxvt-unicode
+        state: absent
+
+    - name: Ensuring rxvt packages are not installed
+      become: yes
+      become_user: root
+      package:
+        name: "{{item}}"
+        state: absent
+      with_items:
+        - rxvt
+        - rxvt-unicode
+        - rxvt-unicode-256color
+    
+    - name: Installing required building packages
+      become: yes
+      become_user: root
+      package:
+        name: "{{item}}"
+        state: installed
+      with_items:
+        - cvs
+        - libperl-dev
+    
+    - name: Checking out urxvt source tree
+      shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
+      args:
+        chdir: /tmp
+    
+    - name: Copying installation script to remote
+      copy:
+        src: urxvt-widechars.patch
+        dest: /tmp/rxvt-unicode
+    
+    - name: Patching urxvt
+      shell: patch -Np1 -i urxvt-widechars.patch
+      args:
+        chdir: /tmp/rxvt-unicode
+    
+    - name: Configuring urxvt
+      shell: ./configure --prefix="/usr/local" --enable-everything --enable-256-color --enable-unicode3 --enable-xft --enable-transparency --enable-font-styles --enable-frills
+      args:
+        chdir: /tmp/rxvt-unicode
+    
+    - name: Compiling urxvt
+      shell: make
+      args:
+        chdir: /tmp/rxvt-unicode
+    
+    - name: Installing urxvt
+      become: yes
+      become_user: root
+      shell: make install
+      args:
+        chdir: /tmp/rxvt-unicode
+
+    - name: Cleaning compile dir
+      file:
+        path: /tmp/rxvt-unicode
+        state: absent
+    
+    - name: Creating witness file
+      become: yes
+      become_user: root
+      file:
+        path: /usr/local/urxvt-installed
+        state: touch
+  when: urxvt_installed.stat.exists is not defined or not urxvt_installed.stat.exists
+
+# Conf part
 - name: Creating some directories
   file:
     state: directory
@@ -32,7 +105,8 @@
   git:
     repo: https://github.com/powerline/fonts
     dest: "{{home}}/.powerline-fonts"
-    update: no
+    depth: 1
+    update: yes
 
 - name: Installing powerline fonts
   shell: ./install.sh && cp fontconfig/*.conf {{home}}/.config/fontconfig/conf.d && touch {{home}}/.powerline-fonts/installed
