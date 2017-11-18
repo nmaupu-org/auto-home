@@ -61,6 +61,7 @@ zsh_antigen:
 
 linux_base_extra_packages:
   - acpi
+  - alsa-utils
   - apt-file
   - arandr
   - autocutsel
