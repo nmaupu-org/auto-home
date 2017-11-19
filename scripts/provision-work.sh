@@ -31,7 +31,7 @@ git clone --depth 1 --branch "${BRANCH}" https://github.com/nmaupu/auto-home "${
 ## From now on, we use script from freshly cloned repo
 
 # Ansible version should be too old to provision everything, we will do it with docker
-ansible-galaxy install -p /etc/ansible/roles angstwad.docker_ubuntu
+ansible-galaxy install -p /etc/ansible/roles angstwad.docker_ubuntu,v3.3.2
 
 ## Ugly hack if debian is buster (testing in 2017)
 # angstwad.docker_ubuntu is not ready for buster version of debian
