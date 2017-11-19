@@ -47,7 +47,7 @@ fi
 # It finally works because systemd retries later and creates the socket
 # (because a socket unit creates it). We can thus ignore this fail when installing
 # but it is indeed very ugly.
-cat << EOF | patch -i - /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml
+cat << EOF | patch -i - /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml || true
 @@ -113,6 +113,7 @@
      state: "{{ 'latest' if update_docker_package else 'present' }}"
      update_cache: "{{ update_docker_package }}"
