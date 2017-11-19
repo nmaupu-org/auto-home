@@ -13,9 +13,6 @@
     - conky-all
     - lm-sensors
     - trayer
-    - xscreensaver
-    - xscreensaver-data-extra
-    - xscreensaver-gl-extra
 
 - name: directories
   file:
