@@ -1,0 +1,18 @@
+---
+
+# Substrate screensaver is in data-extra package
+- name: Installing xscreensaver
+  package:
+    name: "{{item}}"
+    state: installed
+  with_items:
+    - xscreensaver
+    - xscreensaver-data-extra
+
+# No notify is needed, xscreensaver reload conf itself
+# when needed
+- name: Configuring xscreensaver
+  template:
+    src: xscreensaver.j2
+    dest: "{{home}}/.xscreensaver"
+    mode: 0644
