@@ -49,12 +49,19 @@
       shell: patch -Np1 -i urxvt-widechars.patch
       args:
         chdir: /tmp/rxvt-unicode
-    
+
+    - name: Installing urxvt unicode build dependencies
+      become: yes
+      become_user: root
+      apt:
+        state: build-dep
+        pkg: rxvt-unicode-256color
+
     - name: Configuring urxvt
       shell: ./configure --prefix="/usr/local" --enable-everything --enable-256-color --enable-unicode3 --enable-xft --enable-transparency --enable-font-styles --enable-frills
       args:
         chdir: /tmp/rxvt-unicode
-    
+
     - name: Compiling urxvt
       shell: make
       args:
