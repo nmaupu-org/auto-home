@@ -23,6 +23,10 @@
       tags: fzf
     - import_tasks: vim.yml
       tags: vim
+    - import_tasks: electricsheep.yml
+      tags: electricsheep
+    - import_tasks: xscreensaver.yml
+      tags: xscreensaver
     - import_tasks: xmonad.yml
       tags: xmonad
       when: ansible_os_family != 'Darwin'

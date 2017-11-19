@@ -1,0 +1,150 @@
+---
+## Needs a lot of dependencies and compile time
+## Using a docker container to compile all that stuff
+## would be much better.
+## Dependencies :
+##   - bunch of apt installabled packages listed in electricsheep block
+##   - flam3 (which come in apt for now)
+##   - wxWidgets - to compile oneself
+## Source: https://github.com/scottdraves/electricsheep/wiki/Compiling
+## Installation is lasting approximately 30 minutes depending on CPU resources available
+
+- name: Verifying electricsheep installation
+  stat:
+    path: "{{electricsheep.installdir}}/electricsheep-installed-{{electricsheep.version}}"
+  register: electricsheep_installed
+
+- name: Verifying wxWidgets installation
+  stat:
+    path: "electricsheep.wxWidgets.version"
+  register: wxWidgets_installed
+
+# wxWidgets dependency
+- block
+    - name: Getting rid of obsolete files for wxWidgets
+      file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - "{{electricsheep.wxWidgets.installdir}}/wxWidgets_installed_*"
+        - /var/tmp/wxWidgets
+
+    - name: Getting wxWidgets
+      git:
+        repo: "{{electricsheep.wxWidgets.url}}"
+        dest: /var/tmp/wxWidgets
+        depth: 1
+        version: "{{electricsheep.wxWidgets.version}}"
+
+    - name: Autogen wxWidgets
+      shell: ./autogen.sh
+      args:
+        chdir: /var/tmp/wxWidgets
+
+    - name: Configuring wxWidgets
+      shell: ./configure --prefix={{electricsheep.wxWidgets.installdir}} --enable-unicode
+      args:
+        chdir: /var/tmp/wxWidgets
+
+    - name: Compiling wxWidgets
+      shell: make
+      args:
+        chdir: /var/tmp/wxWidgets
+
+    - name: Installing wxWidgets
+      become: yes
+      become_user: root
+      shell: make install
+      args:
+        chdir: /var/tmp/wxWidgets
+
+    - name: Getting rid of useless stuff for wxWidgets
+      file:
+        path: /var/tmp/wxWidgets
+        state: absent
+
+    - name: wxWidgets is now installed
+      become: yes
+      become_user: root
+      file:
+        path: "{{electricsheep.wxWidgets.installdir}}/wxWidgets-installed-{{electricsheep.wxWidgets.version}}"
+        state: touch
+  when: wxWidgets_installed.stat.exists is not defined or not wxWidgets_installed.stat.exists
+
+# electricsheep itself
+- block:
+    - name: Getting rid of obsolete files
+      file:
+        path: "{{item}}""
+        state: absent
+      with_items:
+        - "{{electricsheep.installdir}}/electricsheep_installed_*"
+        - /var/tmp/electricsheep
+
+    - name: Installing required dependencies
+      package:
+        name: "{{item}}"
+        state: installed
+      with_items:
+        - subversion
+        - autoconf
+        - libtool
+        - libgtk2.0-dev
+        - libgl1-mesa-dev
+        - libavcodec-dev
+        - libavformat-dev
+        - libswscale-dev
+        - liblua5.1-0-dev
+        - libcurl4-openssl-dev
+        - libxml2-dev
+        - libjpeg62-turbo-dev
+        - libgtop2-dev
+        - libboost-dev
+        - libboost-filesystem-dev
+        - libboost-thread-dev
+        - libtinyxml-dev
+        - freeglut3-dev
+        - glee-dev
+        - libwxbase3.0-dev
+        - flam3
+
+    - name: Getting electricsheep
+      git:
+        repo: "{{electricsheep.url}}"
+        version: "{{electricsheep.version}}"
+        depth: 1
+        dest: /var/tmp/electricsheep
+
+    - name: Autogen electricsheep
+      shell: ./autogen.sh
+      args:
+        chdir: /var/tmp/electricsheep/client_generic
+
+    - name: Configuring electricsheep
+      shell: ./configure --prefix={{electricsheep.installdir}}
+      args:
+        chdir: /var/tmp/electricsheep/generic_client
+
+    - name: Compiling electricsheep
+      shell: make
+      args:
+        chdir: /var/tmp/electricsheep/client_generic
+
+    - name: Installing electricsheep
+      become: yes
+      become_user: root
+      shell: make install
+      args:
+        chdir: /var/tmp/electricsheep/client_generic
+
+    - name: Cleaning
+      file:
+        path: /var/tmp/electricsheep
+        state: absent
+
+    - name: Electrisheep is now installed
+      file:
+        path: "{{electricsheep.installdir}}/electricsheep-installed-{{electricsheep.version}}"
+        state: touch
+
+  when: electricsheep_installed.stat.exists is not defined or not electricsheep_installed.stat.exists

@@ -16,3 +16,12 @@ antigen:
 golang:
   url: https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
   installdir: /usr/local
+
+electricsheep:
+  url: https://github.com/scottdraves/electricsheep
+  version: c02c19b9364733fc73826e105fc983a89a8b4f40
+  installdir: /usr/local
+  wxWidgets:
+    installdir: /usr/local
+    url: https://github.com/wxWidgets/wxWidgets
+    version: v3.0.3.1
