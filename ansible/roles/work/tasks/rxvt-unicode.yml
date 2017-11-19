@@ -33,6 +33,7 @@
       with_items:
         - cvs
         - libperl-dev
+        - libx11-dev
     
     - name: Checking out urxvt source tree
       shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
