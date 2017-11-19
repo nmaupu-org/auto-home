@@ -30,8 +30,20 @@
     dest: "{{item.dest}}"
     mode: 0444
   with_items:
-    - src: icons/
-      dest: "{{home}}/.xmonad/icons"
+    - src: icons/net_wired.xbm
+      dest: "{{home}}/.xmonad/icons/net_wired.xbm"
+    - src: icons/net_up_03.xbm
+      dest: "{{home}}/.xmonad/icons/net_up_03.xbm"
+    - src: icons/bat_full_02.xbm
+      dest: "{{home}}/.xmonad/icons/bat_full_02.xbm"
+    - src: icons/cpu.xbm
+      dest: "{{home}}/.xmonad/icons/cpu.xbm"
+    - src: icons/mem.xbm
+      dest: "{{home}}/.xmonad/icons/mem.xbm"
+    - src: icons/clock.xbm
+      dest: "{{home}}/.xmonad/icons/clock.xbm"
+    - src: icons/separator.xbm
+      dest: "{{home}}/.xmonad/icons/separator.xbm"
     - src: brightness.sh
       dest: "{{home}}/.xmonad/scripts"
     - src: xmonad-server-connect.sh
