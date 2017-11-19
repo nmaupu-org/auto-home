@@ -11,8 +11,6 @@
 - block:
     - import_tasks: init.yml
       tags: init
-    - import_tasks: rxvt-unicode.yml
-      tags: rxvt
       when: ansible_os_family != 'Darwin'
     - import_tasks: golang.yml
       tags: golang
@@ -29,5 +27,7 @@
     - import_tasks: xmonad.yml
       tags: xmonad
       when: ansible_os_family != 'Darwin'
+    - import_tasks: rxvt-unicode.yml
+      tags: rxvt
   become: yes
   become_user: "{{me}}"
