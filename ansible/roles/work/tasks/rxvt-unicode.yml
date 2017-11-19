@@ -36,10 +36,10 @@
         - libx11-dev
     
     - name: Checking out urxvt source tree
-      shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
+      shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co -r rxvt-unicode-rel-9_22 rxvt-unicode
       args:
         chdir: /tmp
-    
+
     - name: Copying installation script to remote
       copy:
         src: urxvt-widechars.patch
