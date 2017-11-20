@@ -12,6 +12,7 @@
       file:
         path: /tmp/rxvt-unicode
         state: absent
+      tags: urxvt_cvs
 
     - name: Ensuring rxvt packages are not installed
       become: yes
