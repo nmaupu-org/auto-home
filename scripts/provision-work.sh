@@ -66,7 +66,7 @@ cat << EOF > "${CLONE_DIR}/bootstrap.yml"
   roles:
     - angstwad.docker_ubuntu
 EOF
-ansible-playbook -u root -i "localhost, " -c local "${CLONE_DIR}/bootstrap.yml" --skip-tags urxvt_cvs
+ansible-playbook -u root -i "localhost, " -c local "${CLONE_DIR}/bootstrap.yml"
 
 # Creating a local ssh key pair for ansible to be able to remotely connect to localhost
 SSH_KEYS_DIR="${HOME}/ssh-bootstrap-keys"
@@ -93,7 +93,7 @@ INVENTORY_FILE="/workspace/dummy-bootstrap-inventory" \
   DOCKER_ID_USER="${DOCKER_ID_USER}" \
   VAULT_ADDR="not used" \
   SSH_KEYS_DIR="${SSH_KEYS_DIR}" \
-  "${CLONE_DIR}/scripts/apply-ansible.sh" work.yml
+  "${CLONE_DIR}/scripts/apply-ansible.sh" work.yml --skip-tags urxvt_cvs
 
 # Cleaning
 rm -rf "${CLONE_DIR}" "${SSH_KEYS_DIR}"
