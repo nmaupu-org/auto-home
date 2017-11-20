@@ -39,6 +39,7 @@
       shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
       args:
         chdir: /tmp
+      tags: urxvt_cvs
 
     - name: Copying installation script to remote
       copy:
