@@ -93,7 +93,7 @@ INVENTORY_FILE="/workspace/dummy-bootstrap-inventory" \
   DOCKER_ID_USER="${DOCKER_ID_USER}" \
   VAULT_ADDR="not used" \
   SSH_KEYS_DIR="${SSH_KEYS_DIR}" \
-  "${CLONE_DIR}/scripts/apply-ansible.sh" work.yml --skip-tags urxvt_cvs
+  "${CLONE_DIR}/scripts/apply-ansible.sh" work.yml
 
 # Cleaning
 rm -rf "${CLONE_DIR}" "${SSH_KEYS_DIR}"
