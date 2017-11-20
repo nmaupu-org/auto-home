@@ -8,11 +8,11 @@
   register: urxvt_installed
 
 - block:
-    - name: Ensuring compile dir is not present
-      file:
-        path: /tmp/rxvt-unicode
-        state: absent
-      tags: urxvt_cvs
+    #- name: Ensuring compile dir is not present
+    #  file:
+    #    path: /tmp/rxvt-unicode
+    #    state: absent
+    #  tags: urxvt_cvs
 
     - name: Ensuring rxvt packages are not installed
       become: yes
@@ -36,11 +36,11 @@
         - libperl-dev
         - libx11-dev
     
-    - name: Checking out urxvt source tree
-      shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
-      args:
-        chdir: /tmp
-      tags: urxvt_cvs
+    #- name: Checking out urxvt source tree
+    #  shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
+    #  args:
+    #    chdir: /tmp
+    #  tags: urxvt_cvs
 
     - name: Copying installation script to remote
       copy:
