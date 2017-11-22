@@ -1,7 +1,7 @@
 [work]
 test ansible_host=192.168.12.248 ansible_user=nmaupu
 mbr ansible_host=192.168.12.10 ansible_user=bicnic
-nmaupu-laptop ansible_host=10.0.0.1 ansible_user=nmaupu
+nmaupu-laptop ansible_host=192.168.11.7 ansible_user=nmaupu
 
 [pxe]
 raspbastion ansible_host=192.168.12.11  ansible_user=pi

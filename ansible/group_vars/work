@@ -65,6 +65,7 @@ linux_base_extra_packages:
   - apt-file
   - arandr
   - autocutsel
+  - bc
   - clusterssh
   - curl
   - dnsutils
@@ -88,6 +89,8 @@ linux_base_extra_packages:
   - solaar
   - tcpdump
   - util-linux
+  - vagrant
+  - virtualbox
   - wget
   - wicd
   - wicd-cli

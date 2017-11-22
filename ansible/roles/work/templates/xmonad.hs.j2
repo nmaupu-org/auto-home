@@ -96,7 +96,7 @@ keyBindings conf@(XConfig {XMonad.modMask = modMask}) =
   addKeyBinding modMask       xK_u      focusUrgent $
 
   -- scratchpads
-  addKeyBinding modMask       xK_t         (namedScratchpadAction myScratchpads "htop") $
+  addKeyBinding cModShift     xK_t         (namedScratchpadAction myScratchpads "htop") $
   addKeyBinding modMask       xK_a         (namedScratchpadAction myScratchpads "alsamixer") $
   addKeyBinding modMask       xK_d         (namedScratchpadAction myScratchpads "vimScratchpad") $
 
