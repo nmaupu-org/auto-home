@@ -69,7 +69,6 @@ linux_base_extra_packages:
   - clusterssh
   - curl
   - dnsutils
-  - firefox-esr
   - gdisk
   - git
   - graphviz

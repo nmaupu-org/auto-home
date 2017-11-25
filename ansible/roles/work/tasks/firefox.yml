@@ -1,0 +1,25 @@
+---
+
+- block:
+    - name: Ensuring firefox is not installed via apt
+      package:
+        name: "{{item}}"
+        state: absent
+      with_items:
+        - firefox
+        - firefox-esr
+
+    - name: Installing firefox
+      unarchive:
+        src: "{{firefox.url}}"
+        remote_src: yes
+        dest: "{{firefox.installdir}}"
+        creates: "{{firefox.installdir}}/firefox"
+
+    - name: Linking to binaries
+      file:
+        src: "{{firefox.installdir}}/firefox/firefox"
+        dest: /usr/local/bin/firefox
+        state: link
+  become: yes
+  become_user: root

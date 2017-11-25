@@ -22,3 +22,8 @@ terraform_arch: linux_amd64
 terraform:
   url: https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_{{terraform_arch}}.zip
   installdir: /opt/bin
+
+firefox:
+  version: 57.0
+  url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/57.0/linux-x86_64/fr/firefox-57.0.tar.bz2
+  installdir: /usr/local
