@@ -5,13 +5,12 @@
       file:
         state: directory
         path: "{{terraform.installdir}}"
-    
+
     - name: Downloading Terraform
       unarchive:
         src: "{{terraform.url}}"
         remote_src: yes
         dest: "/tmp"
-        creates: "{{terraform.installdir}}/terraform-{{terraform_version}}"
         validate_certs: no
 
     - name: copying binary
@@ -22,7 +21,7 @@
         owner: "{{me}}"
         group: "{{me}}"
         mode: 0755
-    
+
     - name: Symlinking to this version
       file:
         state: link

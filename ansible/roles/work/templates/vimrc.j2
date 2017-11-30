@@ -15,11 +15,21 @@ Plugin 'fatih/vim-go'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'MicahElliott/Rocannon'
 Plugin 'ctrlpvim/ctrlp.vim'
+
+" Ansible
+Plugin 'pearofducks/ansible-vim'
+Plugin 'vim-syntastic/syntastic'
+
+" Terraform
+Plugin 'juliosueiras/vim-terraform-completion'
+Plugin 'hashivim/vim-terraform'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 call vundle#end()
 
 filetype plugin indent on
+set omnifunc=syntaxcomplete#Complete
+set completeopt=longest,menuone
 
 hi clear
 
@@ -89,6 +99,25 @@ hi Underlined   cterm=underline ctermfg=5
 hi Ignore       ctermfg=darkgrey
 hi Error        cterm=bold ctermfg=7 ctermbg=1
 
+" Syntastic Config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" (Optional)Remove Info(Preview) window
+set completeopt-=preview
+
+" (Optional)Hide Info(Preview) window after completions
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+" (Optional) Enable terraform plan to be include in filter
+let g:syntastic_terraform_tffilter_plan = 1
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -106,6 +135,20 @@ let g:solarized_use16 = 1
 set relativenumber
 set number
 set hlsearch
+
+" Renaming some commands
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Qa! qa!
+cnoreabbrev Wq wq
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
+cnoreabbrev X x
+cnoreabbrev X! x!
 
 """""""""""""""""""
 " Remap shortcuts "
@@ -179,6 +222,13 @@ map! <ESC>t <ESC>:set list!<CR>
 " Using <C-B> instead
 map <C-B> :!make<CR>
 
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <C-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
 " autocmd vimenter * NERDTree
 map <C-N> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows = 1
@@ -190,6 +240,10 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 let g:airline_theme='base16'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline_skip_empty_sections = 1
 
 " Ctrlp
 let g:ctrlp_map = '<C-P>'

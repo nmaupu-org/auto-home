@@ -8,4 +8,5 @@ xscreensaver -no-splash -no-capture-stderr -log ~/.xscreensaver.log &
 trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand false --width 100 --widthtype pixel --transparent true --tint 0x000000 --alpha 0 --height 20 &
 wicd-client -t &
 solaar &
+[ -f .screenlayout/myscreens.sh ] && sudo xrandr --setprovideroutputsource 1 0 && .screenlayout/myscreens.sh
 exec xmonad

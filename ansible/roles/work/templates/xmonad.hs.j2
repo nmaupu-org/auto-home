@@ -125,7 +125,7 @@ keyBindings conf@(XConfig {XMonad.modMask = modMask}) =
     cCtrlShift    = shiftMask .|. controlMask
     cCtrlAlt      = altKey    .|. controlMask
     cModCtrlShift = cModCtrl  .|. shiftMask
-    numAzerty     = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0] ++ [xK_F1..xK_F12]
+    numAzerty     = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,xK_0] ++ [xK_F1..xK_F12]
 
 
 ------------------------------------------------------------------------
@@ -146,7 +146,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 --
 full = noBorders Full
 winDecoTabbed = tabbed shrinkText defaultTheme
-stdLayouts = avoidStruts(smartBorders(threeCols ||| Grid ||| tiled)) ||| full
+stdLayouts = avoidStruts(smartBorders(threeCols ||| Grid ||| tiled ||| Mirror tiled)) ||| full
   where
     tiled     = ResizableTall 1 0.1 0.1 []
     threeCols = ThreeColMid   1 (3/100)  (1/2)

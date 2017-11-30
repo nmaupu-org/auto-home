@@ -18,7 +18,7 @@ EXTRA_OPTS="$@"
 ANSIBLE_DIR="/workspace/ansible"
 : ${SSH_KEYS_DIR:="${HOME}/.ssh"}
 : ${INVENTORY_FILE:="${ANSIBLE_DIR}/hosts"}
-CMD="ansible-playbook -i "${INVENTORY_FILE}" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
+CMD="ansible-playbook -i "${INVENTORY_FILE}" -c paramiko ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
 
 OTHER_VOLUMES="-v ${SSH_KEYS_DIR}:/root/.ssh" \
   "${BASEDIR}/scripts/apply-wrapper.sh" "${CMD}"

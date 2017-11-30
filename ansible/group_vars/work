@@ -79,7 +79,9 @@ linux_base_extra_packages:
   - meld
   - mlocate
   - ngrep
+  - pavucontrol
   - pssh
+  - pulseaudio
   - pwgen
   #- redshift-gtk
   - rsync
