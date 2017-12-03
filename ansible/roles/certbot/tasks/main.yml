@@ -1,0 +1,27 @@
+---
+
+- name: Installing requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - py27-certbot
+    - rsync
+
+- name: Generating letsencrypt certificates
+  shell: "{{ certbot_cmd }} -d {{ item }}"
+  args:
+    creates: /usr/local/etc/letsencrypt/live/{{item}}
+  with_items: "{{ certbot_domains }}"
+
+- name: Copying all generated certificates
+  shell: rsync -a /usr/local/etc/letsencrypt /mnt
+  args:
+    creates: /mnt/letsencrypt/live
+
+- name: Adding renew cron job
+  cron:
+    name: Certificates renewal and copy
+    job: "certbot renew; rsync --delete -a /usr/local/etc/letsencrypt /mnt"
+    special_time: daily
+    state: present

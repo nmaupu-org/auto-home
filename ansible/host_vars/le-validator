@@ -1,0 +1,10 @@
+---
+
+freenas_url: "{{ lookup('vault', 'secret/nas', 'url') }}"
+
+my_email: "{{ lookup('vault', 'secret/letsencrypt_email', 'value') }}"
+certbot_cmd: certbot certonly -n -m {{ my_email }} --agree-tos --standalone --preferred-challenges http
+
+certbot_domains:
+  - "{{ freenas_url }}"
+

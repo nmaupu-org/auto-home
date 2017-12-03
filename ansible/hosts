@@ -13,8 +13,9 @@ pxe
 nas         ansible_host=192.168.12.8
 
 [jails]
-kube-rproxy ansible_host=192.168.12.157
-seedbox     ansible_host=192.168.12.158
+le-validator ansible_host=192.168.12.156
+kube-rproxy  ansible_host=192.168.12.157
+seedbox      ansible_host=192.168.12.158
 
 [freebsd:children]
 jails-host

@@ -1,0 +1,3 @@
+certbot_cmd: certbot certonly --standalone
+certbot_domains:
+  - example.com

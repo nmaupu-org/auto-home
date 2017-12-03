@@ -12,10 +12,36 @@
   roles:
     - base
 
+- name: Provisioning le-validator jail
+  hosts: le-validator
+  gather_facts: no
+  roles:
+    - certbot
+  # Specific tasks for freenas certificates
+  tasks:
+    - name: Creating freenas certs directory
+      file:
+        path: /mnt/certificates
+        state: directory
+    - name: Creating freenas links
+      file:
+        state: link
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - src: ../letsencrypt/live/{{ freenas_url }}/fullchain.pem
+          dest: /mnt/certificates/freenas.crt
+        - src: ../letsencrypt/live/{{ freenas_url }}/privkey.pem
+          dest: /mnt/certificates/freenas.key
+  tags:
+    - le-validator
+
 - name: Provisioning kube-rproxy jail
   hosts: kube-rproxy
   gather_facts: yes
   roles:
+    - kube-rproxy
+  tags:
     - kube-rproxy
 
 - name: Provisioning seedbox jail
@@ -23,3 +49,5 @@
   gather_facts: yes
   roles:
     - deluge
+  tags:
+    - seedbox

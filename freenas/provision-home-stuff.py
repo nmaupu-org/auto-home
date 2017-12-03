@@ -192,6 +192,13 @@ def main():
     ###################################
     ## jails and associated datasets ##
     ###################################
+    r = fac.createJail("le-validator", "192.168.12.156", "24")
+    print(r.status_code, r.text)
+    r = fac.createDataset("le-certs", "Let's encrypt certificates")
+    print(r.status_code, r.text)
+    r = fac.associateDataset("le-validator", "/mnt/tank/le-certs", "/mnt", False)
+    print(r.status_code, r.text)
+
     r = fac.createJail("kube-rproxy", "192.168.12.157", "24")
     print(r.status_code, r.text)
 
