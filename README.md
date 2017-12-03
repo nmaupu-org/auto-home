@@ -207,6 +207,24 @@ If cluster crashes somehow and controller does boot but does not start those vit
 ssh kcontroller1 -l core
 $ sudo rm -f /opt/bootkube/init_bootkube.done
 $ sudo systemctl start bootkube
+$ journalctl -u bootkube -f
 ```
 
 Be patient !
+
+Upgrading kubernetes binaries
+=============================
+
+CoreOS self-hosts a kubernetes cluster. Its lifecycle is not dependent on CoreOS version so far. Kubernetes has to be upgraded separately from CoreOS!
+For CoreOS releases, see: https://coreos.com/releases/
+To get latest kubernetes release images used by CoreOS, see: https://github.com/coreos/kubernetes/releases
+Note: replace `+` character by `_` ;-)
+
+For a kubernetes doc, see: See: https://coreos.com/matchbox/docs/latest/bootkube-upgrades.html
+
+Note: To upgrade kubelets (which are using systemd on each host), one can do the following:
+- edit /etc/kubernetes/kubelet.env
+- Change the version of the image
+- restart kubelet service
+
+In case of issues, see troubleshooting above to get back a running cluster.
