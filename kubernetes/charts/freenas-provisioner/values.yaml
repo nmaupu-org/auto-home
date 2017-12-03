@@ -21,4 +21,4 @@ freenas:
   password: TBD
   host: TBD
   port: 443
-  parentDataset: nfs-kube
+  parentDataset: kube-nfs
