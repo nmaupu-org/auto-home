@@ -65,6 +65,7 @@ linux_base_extra_packages:
   - apt-file
   - arandr
   - autocutsel
+  - autossh
   - bc
   - clusterssh
   - curl
