@@ -23,7 +23,8 @@ terraform:
   url: https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_{{terraform_arch}}.zip
   installdir: /opt/bin
 
+firefox_version: 58.0.1
 firefox:
-  version: 57.0.4
-  url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/57.0.4/linux-x86_64/en-US/firefox-57.0.4.tar.bz2
+  version: "{{ firefox_version }}"
+  url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ firefox_version }}/linux-x86_64/en-US/firefox-{{ firefox_version }}.tar.bz2
   installdir: /usr/local
