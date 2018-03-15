@@ -35,5 +35,8 @@
     - import_tasks: terraform.yml
       tags: terraform
       when: ansible_os_family != 'Darwin'
+    - import_tasks: kubectl.yml
+      tags: kubectl
+      when: ansible_os_family != 'Darwin'
   become: yes
   become_user: "{{me}}"
