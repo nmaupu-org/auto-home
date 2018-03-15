@@ -1,0 +1,28 @@
+---
+
+- block:
+    - name: Creating destination directory if needed
+      file:
+        state: directory
+        path: "{{kubectl.installdir}}"
+
+    - name: Downloading and installing kubectl
+      get_url:
+        url: "{{kubectl.url}}"
+        dest: "{{kubectl.installdir}}/kubectl-{{kubectl_version}}"
+        checksum: "{{kubectl.checksum}}"
+
+    - name: Setting executable bit on binary
+      file:
+        path: "{{kubectl.installdir}}/kubectl-{{kubectl_version}}"
+        mode: 0755
+
+    - name: Symlinking to this version
+      file:
+        state: link
+        src: "{{kubectl.installdir}}/kubectl-{{kubectl_version}}"
+        dest: "{{kubectl.installdir}}/kubectl"
+        owner: "{{me}}"
+        group: "{{me}}"
+  become: yes
+  become_user: root
