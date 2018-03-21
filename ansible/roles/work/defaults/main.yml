@@ -30,7 +30,7 @@ kubectl:
   installdir: /opt/bin
   checksum: sha1:3085aebbaa7d54b2d52730b64ae44966d8fe2954
 
-firefox_version: 58.0.2
+firefox_version: 59.0.1
 firefox:
   version: "{{ firefox_version }}"
   url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ firefox_version }}/linux-x86_64/en-US/firefox-{{ firefox_version }}.tar.bz2
