@@ -9,12 +9,25 @@
         - firefox
         - firefox-esr
 
-    - name: Installing firefox
-      unarchive:
-        src: "{{firefox.url}}"
-        remote_src: yes
-        dest: "{{firefox.installdir}}"
-        creates: "{{firefox.installdir}}/firefox"
+    - name: Downloading firefox
+      get_url:
+        url: "{{firefox.url}}"
+        dest: "{{firefox.installdir}}/firefox-{{firefox_version}}.tar.bz2"
+        mode: 0644
+      register: firefox_archive
+
+    - block:
+        - name: Deleting existing firefox
+          file:
+            path: "{{firefox.installdir}}/firefox"
+            state: absent
+
+        - name: Installing firefox
+          unarchive:
+            src: "{{firefox.installdir}}/firefox-{{firefox_version}}.tar.bz2"
+            remote_src: yes
+            dest: "{{firefox.installdir}}"
+      when: firefox_archive.changed
 
     - name: Linking to binaries
       file:
