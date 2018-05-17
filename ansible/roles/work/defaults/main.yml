@@ -23,12 +23,12 @@ terraform:
   url: https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_{{terraform_arch}}.zip
   installdir: /opt/bin
 
-kubectl_version: 1.9.4
+kubectl_version: 1.10.2
 kubectl_arch: linux/amd64
 kubectl:
   url: https://storage.googleapis.com/kubernetes-release/release/v{{kubectl_version}}/bin/{{kubectl_arch}}/kubectl
   installdir: /opt/bin
-  checksum: sha1:3085aebbaa7d54b2d52730b64ae44966d8fe2954
+  checksum: sha1:6f1b0de3b9eb191b003734d47e7b07e034b3b645
 
 firefox_version: 59.0.2
 firefox:
