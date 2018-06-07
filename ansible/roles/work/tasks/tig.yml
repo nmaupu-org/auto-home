@@ -1,0 +1,31 @@
+---
+
+- block:
+    - name: Downloading Tig sources
+      get_url:
+        url: "{{ tig.url }}"
+        dest: "{{ tig.installdir }}/tig-{{ tig.version }}.tgz"
+        mode: 0644
+      register: tig_archive
+
+    - block:
+      - name: Unarchiving tig
+        unarchive:
+          src: "{{ tig.installdir }}/tig-{{ tig.version }}.tgz"
+          remote_src: yes
+          dest: "{{ tig.installdir }}"
+
+      - name: Compiling tig
+        shell: |
+          make prefix={{ tig.installdir }}
+          make install prefix={{ tig.installdir }}
+        args:
+          chdir: "{{ tig.installdir }}/tig-{{ tig.version }}"
+
+      - name: Deleting compile dir
+        file:
+          path: "{{ tig.installdir }}/tig-{{ tig.version }}"
+          state: absent
+      when: tig_archive.changed
+  become: yes
+  become_user: root

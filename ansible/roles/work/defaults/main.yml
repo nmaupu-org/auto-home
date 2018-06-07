@@ -35,3 +35,9 @@ firefox:
   version: "{{ firefox_version }}"
   url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ firefox_version }}/linux-x86_64/en-US/firefox-{{ firefox_version }}.tar.bz2
   installdir: /usr/local
+
+tig_version: 2.3.3
+tig:
+  version: "{{ tig_version }}"
+  url: https://github.com/jonas/tig/releases/download/tig-{{ tig_version }}/tig-{{ tig_version }}.tar.gz
+  installdir: /usr/local

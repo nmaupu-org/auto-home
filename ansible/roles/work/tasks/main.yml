@@ -26,6 +26,8 @@
       tags: fzf
     - import_tasks: vim.yml
       tags: vim
+    - import_tasks: tig.yml
+      tags: tig
     - import_tasks: xscreensaver.yml
       tags: xscreensaver
       when: ansible_os_family != 'Darwin'
