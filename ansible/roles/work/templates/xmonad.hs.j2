@@ -8,6 +8,7 @@ import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ICCCMFocus
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
@@ -253,5 +254,9 @@ main = do
       layoutHook         = myLayout,
       manageHook         = myManageHook,
       logHook            = (dynamicLogWithPP $ myDzenPP dzen) >> takeTopFocus >> updatePointer (0.5, 0.5) (0, 0),
-      startupHook        = myStartupHook
+      startupHook        = myStartupHook,
+      handleEventHook    = do
+        ewmhDesktopsEventHook
+        docksEventHook
+        fullscreenEventHook
     }

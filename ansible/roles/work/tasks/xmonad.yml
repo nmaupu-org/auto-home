@@ -12,7 +12,7 @@
     - dzen2
     - conky-all
     - lm-sensors
-    - trayer
+    - stalonetray
 
 - name: directories
   file:
@@ -70,9 +70,15 @@
   copy:
     src: xsession
     dest: "{{home}}/.xsession"
-    mode: 0555 
+    mode: 0555
   notify:
     - restart lightdm
+
+- name: Installing stalonetray config file
+  template:
+    src: stalonetrayrc.j2
+    dest: "{{home}}/.stalonetrayrc"
+    mode: 0444
 
 - name: Configuring xmonad
   template:

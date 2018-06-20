@@ -38,8 +38,8 @@ sshd:
 
 # Get it with :
 #   xrandr | grep '*'
-resolution_width: 1680
-resolution_height: 1050
+resolution_width: 1920
+resolution_height: 1080
 
 xmonad_meta_key: winKey
 xmonad_num_workspaces: 10
