@@ -19,7 +19,9 @@ USER_FULLNAME="$3"
 #DEBIAN_VERSION=9.2.1
 #: "${REMOTE_ISO:=https://cdimage.debian.org/debian-cd/current/${ARCH}/iso-cd/debian-${DEBIAN_VERSION}-${ARCH}-netinst.iso}"
 : "${DEBIAN_RELEASE:=buster}"
-: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha1/amd64/iso-cd/debian-buster-DI-alpha1-amd64-netinst.iso}"
+# Version has to match latest vmlinuz and initrd downloaded later
+# Verify that alphaX is the latest version
+: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha3/amd64/iso-cd/debian-buster-DI-alpha3-amd64-netinst.iso}"
 
 ISO_NAME="${REMOTE_ISO##*/}"
 
@@ -189,92 +191,92 @@ d-i partman-auto-lvm/new_vg_name            string sys
 d-i partman-auto/choose_recipe              select mine-encrypted
 d-i partman-auto/expert_recipe              string mine-encrypted :: \
         512 512 1074 xfs                        \
-            \$primary{ } \$bootable{ }          \
-            method{ format } format{ }          \
+            \$primary{ } \$bootable{ }           \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /boot }                 \
-        .                                       \
+            mountpoint{ /boot }                  \
+        .                                        \
         1000 10000 2000 xfs                     \
-            \$lvmok{ }                          \
-            lv_name{ root }                     \
-            options/noatime{ noatime }          \
-            label{ root }                       \
-            in_vg { sys }                       \
-            method{ format } format{ }          \
+            \$lvmok{ }                           \
+            lv_name{ root }                      \
+            options/noatime{ noatime }           \
+            label{ root }                        \
+            in_vg { sys }                        \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ / }                     \
-        .                                       \
-        8000 512 8000 swap                      \
-            \$lvmok{ }                          \
-            in_vg { sys }                       \
-            lv_name{ swap }                     \
-            method{ swap }                      \
-            format{ }                           \
-        .                                       \
-        8000 1000 10000 usr                     \
-            \$lvmok{ }                          \
-            options/noatime{ noatime }          \
-            label{ usr }                        \
-            in_vg { sys }                       \
-            lv_name{ usr }                      \
-            method{ format } format{ }          \
+            mountpoint{ / }                      \
+        .                                        \
+        8000 512 8000 swap                       \
+            \$lvmok{ }                           \
+            in_vg { sys }                        \
+            lv_name{ swap }                      \
+            method{ swap }                       \
+            format{ }                            \
+        .                                        \
+        8000 1000 10000 usr                      \
+            \$lvmok{ }                           \
+            options/noatime{ noatime }           \
+            label{ usr }                         \
+            in_vg { sys }                        \
+            lv_name{ usr }                       \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /usr }                  \
-        .                                       \
-        8000 1000 10000 var                     \
-            \$lvmok{ }                          \
-            options/noatime{ noatime }          \
-            label{ var }                        \
-            in_vg { sys }                       \
-            lv_name{ var }                      \
-            method{ format } format{ }          \
+            mountpoint{ /usr }                   \
+        .                                        \
+        8000 1000 10000 var                      \
+            \$lvmok{ }                           \
+            options/noatime{ noatime }           \
+            label{ var }                         \
+            in_vg { sys }                        \
+            lv_name{ var }                       \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /var }                  \
-        .                                       \
-        20000 1000 50000 docker                 \
-            \$lvmok{ }                          \
-            options/noatime{ noatime }          \
-            label{ docker }                     \
-            in_vg { sys }                       \
-            lv_name{ docker }                   \
-            method{ format } format{ }          \
+            mountpoint{ /var }                   \
+        .                                        \
+        20000 1000 50000 docker                  \
+            \$lvmok{ }                           \
+            options/noatime{ noatime }           \
+            label{ docker }                      \
+            in_vg { sys }                        \
+            lv_name{ docker }                    \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /var/lib/docker }       \
-        .                                       \
-        2000 1000 2000 tmp                      \
-            \$lvmok{ }                          \
-            options/noatime{ noatime }          \
-            label{ tmp }                        \
-            in_vg { sys }                       \
-            lv_name{ tmp }                      \
-            method{ format } format{ }          \
+            mountpoint{ /var/lib/docker }        \
+        .                                        \
+        2000 1000 2000 tmp                       \
+            \$lvmok{ }                           \
+            options/noatime{ noatime }           \
+            label{ tmp }                         \
+            in_vg { sys }                        \
+            lv_name{ tmp }                       \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /tmp }                  \
-        .                                       \
-        5000 1000 10000 opt                     \
-            \$lvmok{ }                          \
-            options/noatime{ noatime }          \
-            label{ opt }                        \
-            in_vg { sys }                       \
-            lv_name{ opt }                      \
-            method{ format } format{ }          \
+            mountpoint{ /tmp }                   \
+        .                                        \
+        5000 1000 10000 opt                      \
+            \$lvmok{ }                           \
+            options/noatime{ noatime }           \
+            label{ opt }                         \
+            in_vg { sys }                        \
+            lv_name{ opt }                       \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /opt }                  \
-        .                                       \
-        20000 1000 50000 home                   \
-            \$lvmok{ }                          \
-            options/noatime{ noatime }          \
-            label{ home }                       \
-            in_vg { sys }                       \
-            lv_name{ home }                     \
-            method{ format } format{ }          \
+            mountpoint{ /opt }                   \
+        .                                        \
+        20000 1000 50000 home                    \
+            \$lvmok{ }                           \
+            options/noatime{ noatime }           \
+            label{ home }                        \
+            in_vg { sys }                        \
+            lv_name{ home }                      \
+            method{ format } format{ }           \
             use_filesystem{ } filesystem{ xfs } \
-            mountpoint{ /home }                 \
-        .                                       \
-        1024 1024 1024 ext4                     \
-            \$lvmok{ }                          \
-            in_vg { sys }                       \
-            lv_name{ lv_delete }                \
+            mountpoint{ /home }                  \
+        .                                        \
+        1024 1024 1024 ext4                      \
+            \$lvmok{ }                           \
+            in_vg { sys }                        \
+            lv_name{ lv_delete }                 \
         .
 
 # This makes partman automatically partition without confirmation

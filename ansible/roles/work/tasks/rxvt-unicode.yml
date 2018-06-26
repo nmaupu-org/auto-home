@@ -24,7 +24,7 @@
         - rxvt
         - rxvt-unicode
         - rxvt-unicode-256color
-    
+
     - name: Installing required building packages
       become: yes
       become_user: root
@@ -35,7 +35,7 @@
         - cvs
         - libperl-dev
         - libx11-dev
-    
+
     #- name: Checking out urxvt source tree
     #  shell: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
     #  args:
@@ -46,7 +46,7 @@
       copy:
         src: urxvt-widechars.patch
         dest: /tmp/rxvt-unicode
-    
+
     - name: Patching urxvt
       shell: patch -Np1 -i urxvt-widechars.patch
       args:
@@ -68,7 +68,7 @@
       shell: make
       args:
         chdir: /tmp/rxvt-unicode
-    
+
     - name: Installing urxvt
       become: yes
       become_user: root
@@ -80,7 +80,7 @@
       file:
         path: /tmp/rxvt-unicode
         state: absent
-    
+
     - name: Creating witness file
       become: yes
       become_user: root
