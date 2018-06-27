@@ -3,7 +3,6 @@ zsh_histsize: 50000
 
 urxvt_font_size:
   url: https://raw.githubusercontent.com/majutsushi/urxvt-font-size/master/font-size
-  checksum: sha1:0ce1e9c95611bdacd9140038cb96022cbcd84385
 
 dircolors:
   url: https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark

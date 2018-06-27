@@ -109,7 +109,6 @@
   get_url:
     url: "{{urxvt_font_size.url}}"
     dest: "{{home}}/.urxvt/ext/font-size"
-    checksum: "{{urxvt_font_size.checksum}}"
 
 - name: Installing powerline fonts
   git:

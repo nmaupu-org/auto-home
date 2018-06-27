@@ -190,20 +190,20 @@ d-i partman-auto-lvm/guided_size       string  80%
 d-i partman-auto-lvm/new_vg_name            string sys
 d-i partman-auto/choose_recipe              select mine-encrypted
 d-i partman-auto/expert_recipe              string mine-encrypted :: \
-        512 512 1074 xfs                        \
+        512 512 1074 xfs                         \
             \$primary{ } \$bootable{ }           \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /boot }                  \
         .                                        \
-        1000 10000 2000 xfs                     \
+        1000 10000 2000 xfs                      \
             \$lvmok{ }                           \
             lv_name{ root }                      \
             options/noatime{ noatime }           \
             label{ root }                        \
             in_vg { sys }                        \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ / }                      \
         .                                        \
         8000 512 8000 swap                       \
@@ -220,7 +220,7 @@ d-i partman-auto/expert_recipe              string mine-encrypted :: \
             in_vg { sys }                        \
             lv_name{ usr }                       \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /usr }                   \
         .                                        \
         8000 1000 10000 var                      \
@@ -230,7 +230,7 @@ d-i partman-auto/expert_recipe              string mine-encrypted :: \
             in_vg { sys }                        \
             lv_name{ var }                       \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /var }                   \
         .                                        \
         20000 1000 50000 docker                  \
@@ -240,7 +240,7 @@ d-i partman-auto/expert_recipe              string mine-encrypted :: \
             in_vg { sys }                        \
             lv_name{ docker }                    \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /var/lib/docker }        \
         .                                        \
         2000 1000 2000 tmp                       \
@@ -250,7 +250,7 @@ d-i partman-auto/expert_recipe              string mine-encrypted :: \
             in_vg { sys }                        \
             lv_name{ tmp }                       \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /tmp }                   \
         .                                        \
         5000 1000 10000 opt                      \
@@ -260,7 +260,7 @@ d-i partman-auto/expert_recipe              string mine-encrypted :: \
             in_vg { sys }                        \
             lv_name{ opt }                       \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /opt }                   \
         .                                        \
         20000 1000 50000 home                    \
@@ -270,7 +270,7 @@ d-i partman-auto/expert_recipe              string mine-encrypted :: \
             in_vg { sys }                        \
             lv_name{ home }                      \
             method{ format } format{ }           \
-            use_filesystem{ } filesystem{ xfs } \
+            use_filesystem{ } filesystem{ xfs }  \
             mountpoint{ /home }                  \
         .                                        \
         1024 1024 1024 ext4                      \
