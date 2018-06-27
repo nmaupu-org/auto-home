@@ -27,7 +27,6 @@
   get_url:
     url: "{{antigen.url}}"
     dest: "{{home}}/.antigen.zsh"
-    checksum: "{{antigen.checksum}}"
   notify:
     - antigen apply
 

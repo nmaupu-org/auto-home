@@ -10,7 +10,6 @@ dircolors:
 
 antigen:
   url: http://git.io/antigen
-  checksum: sha1:817b3c214e48c04c6e365a3e20db97a1f5e686da
 
 golang:
   url: https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
