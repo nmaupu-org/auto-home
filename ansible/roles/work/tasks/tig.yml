@@ -1,6 +1,13 @@
 ---
 
 - block:
+    - name: Installing pre-requisites
+      package:
+        name: "{{ item }}"
+        state: installed
+      with_items:
+        - libncurses-dev
+
     - name: Downloading Tig sources
       get_url:
         url: "{{ tig.url }}"
