@@ -5,15 +5,17 @@ set -e -o pipefail
 DIRNAME="$(dirname $0)"
 
 ## Call would be something like :
-## sudo env USER_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ROOT_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ./create-debian-usb-key.sh /dev/sdx bobby "Bobby Lapointe"
+## sudo env USER_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ROOT_PASSWORD="$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))" ./create-bootable-usb-key.sh /dev/sdx bobby "Bobby Lapointe"
 ## If passwords are not provided, they will be prompted.
 ## Set env var DO_NOT_FORMAT to skip usb formatting
 
-DISK="$1"
-USER_NAME="$2"
-USER_FULLNAME="$3"
+COMMAND="$1"
+DISK="$2"
+USER_NAME="$3"
+USER_FULLNAME="$4"
 : "${DEBIAN_MIRROR:=http://ftp.debian.org}"
 : "${ARCH:=amd64}"
+: "${PRESEED_ONLY:=false}"
 
 #: "${DEBIAN_RELEASE:=stretch}"
 #DEBIAN_VERSION=9.2.1
@@ -22,38 +24,39 @@ USER_FULLNAME="$3"
 # Version has to match latest vmlinuz and initrd downloaded later
 # Verify that alphaX is the latest version
 : "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha3/amd64/iso-cd/debian-buster-DI-alpha3-amd64-netinst.iso}"
+: "${MOUNTPOINT:=/mnt/usb}"
 
 ISO_NAME="${REMOTE_ISO##*/}"
 
 usage() {
   cat << EOF
-Usage: $0 <disk> <user> "<fulluser>"
+Usage: $0 <efi|legacy> <disk> <user> "<fulluser>"
 
-disk     Disk to use (e.g. /dev/sdb) - will be wiped out
-user     Regular username to use for the preseed installation
-fulluser Regular full user name for the preseed installation
+efi|legacy Use efi type boot disk or legacy mode
+disk       Disk to use (e.g. /dev/sdb) - will be wiped out
+user       Regular username to use for the preseed installation
+fulluser   Regular full user name for the preseed installation
 
-Passwords will be prompted if not set by environment variables
+Passwords will be prompted if not set by environment variables USER_PASSWORD and ROOT_PASSWORD
+All Passwords have to be provided hashed (e.g. sha-512)
+Use the following command to do so (mkpasswd is part of whois package):
+  mkpasswd -m sha-512 -S $(pwgen -ns 16 1)
 
 Overriding options via environment variables
 DEBIAN_RELEASE  Release of Debian (default: stretch)
 DEBIAN_MIRROR   Debian mirror (default: http://ftp.debian.org)
 ARCH            Architecture (default: amd64)
-
-All Passwords has to provided hashed (e.g. sha-512)
-Use the following command to do so (mkpasswd is part of whois package):
-  mkpasswd -m sha-512 -S $(pwgen -ns 16 1)
-
 USER_PASSWORD   Regular user password
 ROOT_PASSWORD   Password to use for root
+MOUNTPOINT      Mountpoint to use for preparing the usb key
 EOF
 }
 
-
-[ $# -ne 3 ]              && echo "Please provide required args"    && usage && exit 1
-[ -z "${DISK}" ]          && echo "Please provide a disk"           && usage && exit 1
-[ -z "${USER_NAME}" ]     && echo "Please provide a username"       && usage && exit 1
-[ -z "${USER_FULLNAME}" ] && echo "Please provide a user full name" && usage && exit 1
+[ $# -ne 4 ]                                          && echo "Please provide required args"             && usage && exit 1
+[ "${COMMAND}" != "efi" -a "${COMMAND}" != "legacy" ] && echo "Please provide a command (efi or legacy)" && usage && exit 1
+[ -z "${DISK}" ]                                      && echo "Please provide a disk"                    && usage && exit 1
+[ -z "${USER_NAME}" ]                                 && echo "Please provide a username"                && usage && exit 1
+[ -z "${USER_FULLNAME}" ]                             && echo "Please provide a user full name"          && usage && exit 1
 
 if [ -z "${USER_PASSWORD}" ]; then
   echo "Enter password for regular user ${USER_NAME}"
@@ -65,40 +68,83 @@ if [ -z "${ROOT_PASSWORD}" ]; then
   ROOT_PASSWORD=$(mkpasswd -m sha-512 -S $(pwgen -ns 16 1))
 fi
 
-PART="${DISK}1"
+# Function to format and prepare a USB key using legacy boot (not UEFI)
+format_dos() {
+  disk=${1}
+  PART="${disk}1"
 
+  echo "Wiping out beginning of ${disk}"
+  dd if=/dev/zero of="${disk}" bs=2M count=1
 
-# To accelerate debugging, use this env var to avoid reformatting and copying stuff
-# each time you want to try something new
-if [ -z "${DO_NOT_FORMAT}" ]; then
-  echo "Wiping out beginning of ${DISK}"
-  dd if=/dev/zero of="${DISK}" bs=10M count=5
-  
   echo "Preparing disk partitions"
-  (echo n; echo p; echo 1; echo ; echo ; echo w) | fdisk "${DISK}"
-  partx -u "${DISK}"
-  
+  (echo n; echo p; echo 1; echo ; echo ; echo w) | fdisk "${disk}"
+  partx -u "${disk}"
+
   echo "Creating a filesystem on ${PART}"
   mkfs.ext2 "${PART}"
-fi
+}
 
-mkdir -p /mnt/usb
-mount "${PART}" /mnt/usb
-grub-install --root-directory=/mnt/usb "${DISK}"
+format_gpt() {
+  disk=${1}
 
-echo "Download the initrd image"
-mkdir -p "/mnt/usb/hdmedia-${DEBIAN_RELEASE}"
-wget -O "/mnt/usb/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/vmlinuz"
-wget -O "/mnt/usb/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/initrd.gz"
+  echo "Wiping out beginning of ${disk}"
+  dd if=/dev/zero of="${disk}" bs=2M count=1
 
-echo "Getting ISO"
-mkdir -p /mnt/usb/isos
-wget --continue -O "/mnt/usb/isos/${ISO_NAME}" "${REMOTE_ISO}"
+  echo "Preparing disk partitions"
+  parted -a optimal ${disk} --script \
+    mklabel gpt \
+    unit MB \
+    mkpart bootefi fat32 0% 200M \
+    set 1 boot on \
+    mkpart bootiso ext4 200M 100% \
+    align-check optimal 1 \
+    align-check optimal 2
 
-echo "Create grub config file"
-cat << EOF > /mnt/usb/boot/grub/grub.cfg
-set hdmedia="/hdmedia-${DEBIAN_RELEASE}"
+  sleep 2
+
+  echo "Creating filesystem vfat for EFI boot"
+  mkfs.vfat -F32 -n EFIBOOT "${disk}1"
+  echo "Creating filesystem for storing isos"
+  mkfs.ext4 -F -L bootiso "${disk}2"
+}
+
+mount_dos() {
+  disk="${1}"
+  part="${disk}1"
+  mountpoint="${2}"
+  mkdir -p "${mountpoint}" && \
+    mount "${part}" "${mountpoint}" && \
+    grub-install --root-directory=${mountpoint} "${disk}"
+}
+
+mount_gpt() {
+  disk="${1}"
+  part_efi="${disk}1"
+  part_iso="${disk}2"
+  mountpoint="${2}"
+
+  mkdir -p "${mountpoint}"
+  mount "${part_iso}" "${mountpoint}"
+  mkdir -p "${mountpoint}/efi"
+  mount "${part_efi}" "${mountpoint}/efi"
+
+  grub-install --removable \
+    --no-uefi-secure-boot \
+    --target=x86_64-efi \
+    --efi-directory="${mountpoint}/efi" \
+    --boot-directory="${mountpoint}/boot" \
+    --bootloader-id=grub \
+    --recheck \
+    "${disk}"
+}
+
+grub_file_legacy() {
+  mountpoint="${1}"
+
+  echo "Create grub config file"
+  cat << EOF > ${mountpoint}/boot/grub/grub.cfg
 set preseed="/hd-media/preseed"
+set hdmedia="/hdmedia-${DEBIAN_RELEASE}"
 set iso="/isos/${ISO_NAME}"
 
 menuentry "Debian ${DEBIAN_RELEASE} ${ARCH} manual install" {
@@ -110,15 +156,91 @@ menuentry "Debian ${DEBIAN_RELEASE} ${ARCH} auto install" {
   initrd \$hdmedia/initrd.gz
 }
 EOF
+}
+
+grub_file_uefi() {
+  mountpoint=${1}
+
+  echo "Create grub config file"
+
+  cat << EOF > ${mountpoint}/boot/grub/grub.cfg
+set timeout=15
+set default=0
+set iso="/cdrom/isos/${ISO_NAME}"
+set hdmedia="/hdmedia-${DEBIAN_RELEASE}"
+set preseed="/hd-media/preseed"
+
+insmod efi_gop
+insmod efi_uga
+insmod font
+
+if loadfont \${prefix}/fonts/unicode.pf2
+then
+  insmod gfxterm
+  set gfxmode=auto
+  set gfxpayload=keep
+  terminal_output gfxterm
+fi
+
+menuentry "Debian ${DEBIAN_RELEASE} ${ARCH} manual install" {
+  linux  \$hdmedia/vmlinuz vga=788 iso-scan/filename=\$iso priority=critical
+  initrd \$hdmedia/initrd.gz
+}
+menuentry "Debian ${DEBIAN_RELEASE} ${ARCH} auto install" {
+  linux  \$hdmedia/vmlinuz vga=788 iso-scan/filename=\$iso priority=critical auto=true preseed/file=\$preseed/debian.preseed
+  initrd \$hdmedia/initrd.gz
+}
+EOF
+}
+
+if [ "${PRESEED_ONLY}" = "false" ]; then
+  if [ "${COMMAND}" = "legacy" ]; then
+    # To accelerate debugging, use this env var to avoid reformatting and copying stuff
+    # each time you want to try something new
+    if [ -z "${DO_NOT_FORMAT}" ]; then
+      format_dos "${DISK}"
+    fi
+    mount_dos "${DISK}" "${MOUNTPOINT}"
   
-mkdir -p /mnt/usb/preseed
+  elif [ "${COMMAND}" = "efi" ]; then
+    # To accelerate debugging, use this env var to avoid reformatting and copying stuff
+    # each time you want to try something new
+    if [ -z "${DO_NOT_FORMAT}" ]; then
+      format_gpt "${DISK}"
+    fi
+    mount_gpt "${DISK}" "${MOUNTPOINT}"
   
+  fi
+
+
+  echo "Download the initrd image"
+  mkdir -p "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}"
+  wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/vmlinuz"
+  wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/initrd.gz"
+  
+  
+  echo "Getting ISO"
+  mkdir -p ${MOUNTPOINT}/isos
+  wget --continue -O "${MOUNTPOINT}/isos/${ISO_NAME}" "${REMOTE_ISO}"
+  
+  
+  # Grub config file
+  if [ "${COMMAND}" = "legacy" ]; then
+    grub_file_legacy "${MOUNTPOINT}"
+  elif [ "${COMMAND}" = "efi" ]; then
+    grub_file_uefi "${MOUNTPOINT}"
+  fi
+fi
+
+
+mkdir -p ${MOUNTPOINT}/preseed
+
 echo "Creating custom preseed late_command requirements"
-cat << EOF > /mnt/usb/preseed/nobeep.conf
+cat << EOF > ${MOUNTPOINT}/preseed/nobeep.conf
 blacklist pcspkr
 EOF
-  
-cat << EOF > /mnt/usb/preseed/bootstrap.service
+
+cat << EOF > ${MOUNTPOINT}/preseed/bootstrap.service
 [Unit]
 Description=Bootstrap machine using auto-home
 ConditionPathExists=!/usr/share/already-bootstrapped
@@ -136,7 +258,31 @@ ExecStartPost=/bin/touch /usr/share/already-bootstrapped
 WantedBy=multi-user.target
 EOF
 
-cat << EOF > /mnt/usb/preseed/debian.preseed
+echo "Creating preseed file"
+
+if [ "${COMMAND}" = "efi" ]; then
+  efi_partman_opts=`cat << EOF
+d-i partman-basicfilesystems/choose_label string gpt
+d-i partman-basicfilesystems/default_label string gpt
+d-i partman-partitioning/choose_label string gpt
+d-i partman-partitioning/default_label string gpt
+d-i partman/choose_label string gpt
+d-i partman/default_label string gpt
+EOF
+`
+
+  efi_part=$(echo '\
+    538 538 1075 free \
+    $iflabel{ gpt } \
+    $reusemethod{ } \
+    method{ efi }     \
+    format{ }         \
+    .                 \
+	'
+    )
+fi
+
+cat << EOF > ${MOUNTPOINT}/preseed/debian.preseed
 d-i debian-installer/locale           string   en_US
 d-i keyboard-configuration/xkb-keymap select   us
 d-i console-tools/archs               select   skip-config
@@ -183,6 +329,7 @@ d-i partman-lvm/device_remove_lvm      boolean true
 d-i partman-lvm/device_remove_lvm_span boolean true
 d-i partman/alignment                  string  optimal
 d-i partman-auto-lvm/guided_size       string  80%
+${efi_partman_opts}
 
 # When using crypto as partman-auto/method, in_vg NEEDS a space before the {
 # whereas, normaly, you don't have to put any space before {
@@ -190,6 +337,7 @@ d-i partman-auto-lvm/guided_size       string  80%
 d-i partman-auto-lvm/new_vg_name            string sys
 d-i partman-auto/choose_recipe              select mine-encrypted
 d-i partman-auto/expert_recipe              string mine-encrypted :: \
+        ${efi_part}                              \
         512 512 1074 xfs                         \
             \$primary{ } \$bootable{ }           \
             method{ format } format{ }           \
@@ -317,5 +465,9 @@ d-i preseed/late_command string \
   in-target /bin/systemctl enable bootstrap;
 EOF
 
-sync
-umount /mnt/usb
+if [ "${PRESEED_ONLY}" = "false" ]; then
+  sync
+  
+  [ "${COMMAND}" = "efi" ] && umount "${MOUNTPOINT}/efi"
+  umount "${MOUNTPOINT}"
+fi
