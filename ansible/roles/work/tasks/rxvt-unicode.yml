@@ -39,7 +39,7 @@
     # Original repo: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
     - name: Checking out urxvt source tree from git
       git:
-        repo: https://github.com/exg/rxvt-unicode.git
+        repo: https://github.com/nmaupu/rxvt-unicode
         dest: /tmp/rxvt-unicode
       tags: urxvt_git
 

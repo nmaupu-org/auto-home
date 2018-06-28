@@ -7,11 +7,13 @@ USB boot disk creation
 
 Distribution used is Debian and USB bootable disk can be created using 'scripts/create-debian-usb-key.sh':
 ```
-sudo ./scripts/create-debian-usb-key.sh /dev/sdb bobby "Bobby Lapointe"
+sudo ./scripts/create-debian-usb-key.sh efi /dev/sdb bobby "Bobby Lapointe"
 ```
 
 `/dev/sdb` has to be replaced by the USB device of course.
 Passwords for user `bobby` and `root` will be prompted. You can also provide a hash via 2 environment variables:
+
+If using that on a legacy system (not EFI ready), use `legacy` instead of `efi` on the previous command line.
 
 ```
 sudo -i
