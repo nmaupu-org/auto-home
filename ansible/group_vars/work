@@ -73,6 +73,7 @@ linux_base_extra_packages:
   - gdisk
   - git
   - graphviz
+  - grub-efi-amd64-bin
   - irssi
   - jq
   - lightdm
