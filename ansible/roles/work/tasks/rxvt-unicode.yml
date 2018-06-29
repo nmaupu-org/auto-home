@@ -39,8 +39,18 @@
     # Original repo: cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
     - name: Checking out urxvt source tree from git
       git:
-        repo: https://github.com/nmaupu/rxvt-unicode
+        repo: https://github.com/yusiwen/rxvt-unicode
         dest: /tmp/rxvt-unicode
+      tags: urxvt_git
+
+    - name: Checking out urxvt dependencies
+      git:
+        repo: https://github.com/yusiwen/{{ item }}
+        dest: /tmp/rxvt-unicode/{{ item }}
+      with_items:
+        - libev
+        - libecb
+        - libptytty
       tags: urxvt_git
 
     - name: Copying installation script to remote
