@@ -100,4 +100,5 @@ linux_base_extra_packages:
   - wicd-gtk
   - wireshark
   - whois
+  - xclip
   - zsh
