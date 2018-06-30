@@ -26,7 +26,12 @@ USER_FULLNAME="$4"
 : "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha3/amd64/iso-cd/debian-buster-DI-alpha3-amd64-netinst.iso}"
 : "${MOUNTPOINT:=/mnt/usb}"
 
+# KALI is available only using uefi
+: "${KALI_ISO_URL:=http://ftp.free.fr/pub/kali-images/kali-2018.2/kali-linux-lxde-2018.2-amd64.iso}"
+: "${KALI_ENABLED:=false}"
+
 ISO_NAME="${REMOTE_ISO##*/}"
+KALI_ISO_NAME="${KALI_ISO_URL##*/}"
 
 usage() {
   cat << EOF
@@ -53,7 +58,7 @@ EOF
 }
 
 [ $# -ne 4 ]                                          && echo "Please provide required args"             && usage && exit 1
-[ "${COMMAND}" != "efi" -a "${COMMAND}" != "legacy" ] && echo "Please provide a command (efi or legacy)" && usage && exit 1
+[ "x${COMMAND}" != "xefi" -a "x${COMMAND}" != "xlegacy" ] && echo "Please provide a command (efi or legacy)" && usage && exit 1
 [ -z "${DISK}" ]                                      && echo "Please provide a disk"                    && usage && exit 1
 [ -z "${USER_NAME}" ]                                 && echo "Please provide a username"                && usage && exit 1
 [ -z "${USER_FULLNAME}" ]                             && echo "Please provide a user full name"          && usage && exit 1
@@ -194,22 +199,22 @@ EOF
 }
 
 if [ "${PRESEED_ONLY}" = "false" ]; then
-  if [ "${COMMAND}" = "legacy" ]; then
+  if [ "x${COMMAND}" = "xlegacy" ]; then
     # To accelerate debugging, use this env var to avoid reformatting and copying stuff
     # each time you want to try something new
     if [ -z "${DO_NOT_FORMAT}" ]; then
       format_dos "${DISK}"
     fi
     mount_dos "${DISK}" "${MOUNTPOINT}"
-  
-  elif [ "${COMMAND}" = "efi" ]; then
+
+  elif [ "x${COMMAND}" = "xefi" ]; then
     # To accelerate debugging, use this env var to avoid reformatting and copying stuff
     # each time you want to try something new
     if [ -z "${DO_NOT_FORMAT}" ]; then
       format_gpt "${DISK}"
     fi
     mount_gpt "${DISK}" "${MOUNTPOINT}"
-  
+
   fi
 
 
@@ -217,17 +222,17 @@ if [ "${PRESEED_ONLY}" = "false" ]; then
   mkdir -p "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}"
   wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/vmlinuz"
   wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/initrd.gz"
-  
-  
+
+
   echo "Getting ISO"
   mkdir -p ${MOUNTPOINT}/isos
   wget --continue -O "${MOUNTPOINT}/isos/${ISO_NAME}" "${REMOTE_ISO}"
-  
-  
+
+
   # Grub config file
-  if [ "${COMMAND}" = "legacy" ]; then
+  if [ "x${COMMAND}" = "xlegacy" ]; then
     grub_file_legacy "${MOUNTPOINT}"
-  elif [ "${COMMAND}" = "efi" ]; then
+  elif [ "x${COMMAND}" = "xefi" ]; then
     grub_file_uefi "${MOUNTPOINT}"
   fi
 fi
@@ -260,7 +265,7 @@ EOF
 
 echo "Creating preseed file"
 
-if [ "${COMMAND}" = "efi" ]; then
+if [ "x${COMMAND}" = "xefi" ]; then
   efi_partman_opts=`cat << EOF
 d-i partman-basicfilesystems/choose_label string gpt
 d-i partman-basicfilesystems/default_label string gpt
@@ -278,7 +283,7 @@ EOF
     method{ efi }     \
     format{ }         \
     .                 \
-	'
+    '
     )
 fi
 
@@ -465,9 +470,28 @@ d-i preseed/late_command string \
   in-target /bin/systemctl enable bootstrap;
 EOF
 
+
+# KALI
+if [ "x${COMMAND}" = "xefi" -a "x${KALI_ENABLED}" = "xtrue" ]; then
+  wget --continue -O "${MOUNTPOINT}/isos/${KALI_ISO_NAME}" "${KALI_ISO_URL}"
+
+  BLKID=$(blkid "${DISK}2" | tr -s " " "\n" | awk -F= '/^UUID/{print $2}' | tr -d '"')
+  cat << EOF >> ${MOUNTPOINT}/boot/grub/grub.cfg
+
+menuentry "Kali Linux 1.0.6" {
+  loopback loop /isos/${KALI_ISO_NAME}
+  linux (loop)/live/vmlinuz fromiso=/dev/disk/by-uuid/${BLKID}/isos/${KALI_ISO_NAME} boot=live noconfig=sudo username=root hostname=kali
+  initrd (loop)/live/initrd.img
+}
+EOF
+fi
+# End KALI
+
+
+# Finalizing the key and unmounting
 if [ "${PRESEED_ONLY}" = "false" ]; then
   sync
-  
-  [ "${COMMAND}" = "efi" ] && umount "${MOUNTPOINT}/efi"
+
+  [ "x${COMMAND}" = "xefi" ] && umount "${MOUNTPOINT}/efi"
   umount "${MOUNTPOINT}"
 fi
