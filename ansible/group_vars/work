@@ -70,12 +70,14 @@ linux_base_extra_packages:
   - clusterssh
   - curl
   - dnsutils
+  - evince
   - gdisk
   - git
   - graphviz
   - grub-efi-amd64-bin
   - irssi
   - jq
+  - libreoffice
   - lightdm
   - lxappearance
   - meld
