@@ -219,6 +219,9 @@ set listchars=tab:>-
 map  <ESC>t :set list!<CR>
 map! <ESC>t <ESC>:set list!<CR>
 
+" toggle relative numbers and line numbers
+map <silent> <C-l> <ESC>t :set relativenumber!<CR>:set number!<CR>
+
 " make command from shortcut
 " Cannot use <C-M> as it will also be mapped as <CR> :(
 " So when pressing enter, that launch make command.
