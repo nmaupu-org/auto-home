@@ -23,6 +23,7 @@ DOCKER_OPTS="${DOCKER_OPTS:--t}"
 [ -d /usr/local/etc/ansible ]        && OTHER_VOLUMES="${OTHER_VOLUMES} -v /usr/local/etc/ansible:/usr/local/etc/ansible"
 
 docker run ${DOCKER_OPTS} --rm \
+  --network=host \
   -e ANSIBLE_CONFIG="${ANSIBLE_DIR}/ansible.cfg" \
   -e ANSIBLE_HOST="${ANSIBLE_HOST}" \
   -e VAULT_CAHOSTVERIFY=no \

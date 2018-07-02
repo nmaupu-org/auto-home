@@ -26,7 +26,17 @@ kubectl_arch: linux/amd64
 kubectl:
   url: https://storage.googleapis.com/kubernetes-release/release/v{{kubectl_version}}/bin/{{kubectl_arch}}/kubectl
   installdir: /opt/bin
-  checksum: sha1:6f1b0de3b9eb191b003734d47e7b07e034b3b645
+
+vault_version: 0.10.3
+vault_arch: linux/amd64
+vault:
+  url: https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip
+  installdir: /opt/bin
+
+helm_version: 2.10.0-rc.1
+helm:
+  url: https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz
+  installdir: /opt/bin
 
 firefox_version: 61.0
 firefox:

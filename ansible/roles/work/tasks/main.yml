@@ -43,5 +43,11 @@
     - import_tasks: kubectl.yml
       tags: kubectl
       when: ansible_os_family != 'Darwin'
+    - import_tasks: vault.yml
+      tags: vault
+      when: ansible_os_family != 'Darwin'
+    - import_tasks: helm.yml
+      tags: helm
+      when: ansible_os_family != 'Darwin'
   become: yes
   become_user: "{{me}}"

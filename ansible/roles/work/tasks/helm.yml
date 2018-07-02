@@ -1,0 +1,25 @@
+---
+
+- block:
+    - name: Creating destination directory if needed
+      file:
+        state: directory
+        path: "{{ item }}"
+      with_items:
+        - "{{ helm.installdir }}"
+        - "{{ helm.installdir }}/helm-{{ helm_version }}"
+
+    - name: Unarchiving helm
+      unarchive:
+        src: "{{ helm.url }}"
+        dest: "{{ helm.installdir }}/helm-{{ helm_version }}"
+        remote_src: yes
+
+    - name: symlinking to the current version
+      file:
+        src: "{{ helm.installdir }}/helm-{{ helm_version }}/linux-amd64/helm"
+        dest: "{{ helm.installdir }}/helm"
+        state: link
+
+  become: yes
+  become_user: root

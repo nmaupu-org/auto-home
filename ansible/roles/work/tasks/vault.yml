@@ -1,0 +1,25 @@
+---
+
+- block:
+    - name: Creating destination directory if needed
+      file:
+        state: directory
+        path: "{{ item }}"
+      with_items:
+        - "{{ vault.installdir }}"
+        - "{{ vault.installdir }}/vault-{{ vault_version }}"
+
+    - name: Unarchiving vault
+      unarchive:
+        src: "{{ vault.url }}"
+        dest: "{{ vault.installdir }}/vault-{{ vault_version }}"
+        remote_src: yes
+
+    - name: Linking to the current version
+      file:
+        src: "{{ vault.installdir }}/vault-{{ vault_version }}/vault"
+        dest: "{{ vault.installdir }}/vault"
+        state: link
+
+  become: yes
+  become_user: root
