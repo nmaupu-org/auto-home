@@ -15,11 +15,11 @@
 - name: Ensuring users are existing
   user:
     name: "{{item.user}}"
-    shell: "{{item.shell}}"
-    groups: "{{item.extra_groups}}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    groups: "{{ item.extra_groups | default('') }}"
     append: yes
     state: present
-    generate_ssh_key: "{{item.generate_ssh_key}}"
+    generate_ssh_key: "{{ item.generate_ssh_key | default('no') }}"
     ssh_key_bits: 2048
     ssh_key_file: ".ssh/id_rsa"
   with_items: "{{users}}"

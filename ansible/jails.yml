@@ -23,3 +23,10 @@
   gather_facts: yes
   roles:
     - deluge
+
+- name: Provisioning vault jail
+  hosts: vault
+  gather_facts: no
+  roles:
+    - vault
+  tags: vault

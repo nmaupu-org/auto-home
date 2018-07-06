@@ -86,6 +86,7 @@ dns_hosts:
     - photoweb
     - rproxy
     - traefik
-    - vault
   192.168.12.158:
     - deluge-daemon
+  192.168.12.159:
+    - vault

@@ -1,0 +1,7 @@
+vault_user: vault
+vault_installdir: /usr/local
+vault_arch: linux_amd64
+vault_version: 0.10.3
+vault_datadir: /var/lib/vault
+vault_url: https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_{{ vault_arch }}.zip
+vault_port: 8200

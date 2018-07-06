@@ -1,0 +1,14 @@
+listener "tcp" {
+  address = "0.0.0.0:{{ vault_port }}"
+  tls_disable = "true"
+}
+
+storage "file" {
+  path = "{{ vault_datadir }}"
+}
+
+max_lease_ttl = "12h"
+default_lease_ttl = "12h"
+pid_file = "/var/run/vault.pid"
+ui = "true"
+disable_mlock = "true"

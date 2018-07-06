@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# PROVIDE: vault
+# REQUIRE: NETWORK
+# BEFORE:  DAEMON
+
+. /etc/rc.subr
+
+name=vault
+rcvar=vault_enable
+start_cmd="${name}_start"
+
+command="{{ vault_installdir }}/bin/${name}"
+command_args="server -config={{ vault_installdir }}/etc/${name}.hcl"
+
+pidfile="/var/run/${name}.pid"
+required_files="{{ vault_installdir }}/etc/${name}.hcl"
+
+vault_start() {
+  touch "${pidfile}" "/var/log/${name}.log"
+  chown {{ vault_user }}: "${pidfile}" "/var/log/${name}.log"
+  su - {{ vault_user }} -c "${command} ${command_args} 2>&1 >/var/log/${name}.log" &
+}
+
+load_rc_config ${name}
+run_rc_command "$1"

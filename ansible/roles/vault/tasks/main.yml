@@ -1,0 +1,40 @@
+---
+
+- name: Downloading vault
+  unarchive:
+    remote_src: true
+    src: "{{ vault_url }}"
+    dest: "{{ vault_installdir }}/bin"
+  notify: restart vault
+
+- name: Configuring vault
+  template:
+    src: vault.hcl.j2
+    dest: "{{ vault_installdir }}/etc/vault.hcl"
+    mode: 0644
+  notify: restart vault
+
+- name: Add the vault user
+  user:
+    name: "{{ vault_user }}"
+    state: present
+    system: yes
+
+- name: Chown data dir
+  file:
+    path: "{{ vault_datadir }}"
+    owner: "{{ vault_user }}"
+    recurse: yes
+
+- name: Configuring vault service
+  template:
+    src: vault-freebsd.j2
+    dest: /usr/local/etc/rc.d/vault
+    mode: 0555
+  notify: restart vault
+
+- name: Enabling and starting vault service
+  service:
+    name: vault
+    state: started
+    enabled: yes

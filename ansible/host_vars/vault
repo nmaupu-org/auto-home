@@ -1,0 +1,2 @@
+vault_arch: freebsd_amd64
+vault_datadir: "/mnt/data"
