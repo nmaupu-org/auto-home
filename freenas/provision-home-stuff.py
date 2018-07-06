@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import json
 import requests
@@ -204,6 +204,12 @@ def main():
     print(r.status_code, r.text)
     r = fac.associateDataset("seedbox", "/mnt/tank/dls/seedbox", "/mnt", False)
     print(r.status_code, r.text)
+
+    r = fac.createJail("vault", "192.168.12.159", "24")
+    print(r.status_code, r.text)
+    r = fac.createDataset("vault-nas", "Vault data")
+    print(r.status_code, r.text)
+    r = fac.associateDataset("vault", "/mnt/tank/vault-nas", "/mnt", False)
 
 
 if __name__ == "__main__":
