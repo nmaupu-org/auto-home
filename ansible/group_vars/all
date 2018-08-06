@@ -17,7 +17,7 @@ dhcp_static_leases:
       mac: b8:27:eb:11:dd:10
       ip: 192.168.12.7
   freenas:
-      mac: D0:50:99:19:2E:13
+      mac: d0:50:99:c2:be:3d
       ip: 192.168.12.8
   freenasbak:
       mac: d0:50:99:19:2e:14
