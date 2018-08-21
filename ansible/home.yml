@@ -32,4 +32,4 @@
     - { role: dns, tags: ['dns'] }
     - { role: kubectl, tags: ['kubectl'] }
     - { role: irssi, tags: ['irc'] }
-    - { role: irssi-autodl, tags: ['irc'] }
+    - { role: irssi-autodl, tags: ['irc-autodl'] }

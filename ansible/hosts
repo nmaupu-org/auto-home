@@ -4,7 +4,7 @@ mbr ansible_host=192.168.12.10 ansible_user=bicnic
 nmaupu-laptop ansible_host=192.168.11.14 ansible_user=nmaupu
 
 [pxe]
-raspbastion ansible_host=192.168.12.11  ansible_user=pi
+raspbastion ansible_host=78.192.25.46 ansible_user=pi
 
 [linux:children]
 pxe
