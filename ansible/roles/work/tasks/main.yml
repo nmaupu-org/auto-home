@@ -40,6 +40,9 @@
     - import_tasks: onepassword.yml
       tags: onepassword
       when: ansible_os_family != 'Darwin'
+    - import_tasks: minikube.yml
+      tags: minikube
+      when: ansible_os_family != 'Darwin'
     - import_tasks: kubectl.yml
       tags: kubectl
       when: ansible_os_family != 'Darwin'

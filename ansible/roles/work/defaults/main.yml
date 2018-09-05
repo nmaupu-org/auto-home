@@ -27,6 +27,11 @@ kubectl:
   url: https://storage.googleapis.com/kubernetes-release/release/v{{kubectl_version}}/bin/{{kubectl_arch}}/kubectl
   installdir: /opt/bin
 
+minikube_arch: linux/amd64
+minikube:
+  url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  installdir: /opt/bin
+
 vault_version: 0.10.3
 vault_arch: linux/amd64
 vault:

@@ -1,0 +1,26 @@
+---
+
+- block:
+    - name: Installing virtualbox package
+      package:
+        name: virtualbox
+        state: present
+
+    - name: Creating destination directory if needed
+      file:
+        state: directory
+        path: "{{minikube.installdir}}"
+
+    - name: Downloading and installing minikube
+      get_url:
+        url: "{{minikube.url}}"
+        dest: "{{minikube.installdir}}/minikube"
+
+    - name: Setting executable bit on binary
+      file:
+        path: "{{minikube.installdir}}/minikube"
+        mode: 0755
+        owner: "{{me}}"
+        group: "{{me}}"
+  become: yes
+  become_user: root
