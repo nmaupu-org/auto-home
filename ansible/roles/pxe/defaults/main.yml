@@ -13,7 +13,7 @@ pxe_title: PXE
 pxe_http_server: "{{ansible_default_ipv4.address}}"
 pxe_menu_items:
   - debian-live-xfce.include
-  - coreos.include
+  - ubuntu.include
   - get-mac-addr.include
 
 ipxe_lkrn_url: http://boot.ipxe.org/ipxe.lkrn
@@ -32,3 +32,11 @@ debian_live_iso:
   checksum: sha1:abb84c386aef07f543070228f8af1cf04b3deb1d
   kernel: vmlinuz-4.9.0-3-amd64
   initrd: initrd.img-4.9.0-3-amd64
+
+ubuntu_version: bionic
+ubuntu_arch: amd64
+ubuntu:
+  baseurl: http://archive.ubuntu.com/ubuntu/dists/{{ ubuntu_version }}-updates/main/installer-{{ ubuntu_arch }}/current/images/netboot/ubuntu-installer/{{ ubuntu_arch }}
+  checksum: sha1:a1c3272c6cfc96e1d3024825fbe1e015e4350be4
+  kernel: linux
+  initrd: initrd.gz

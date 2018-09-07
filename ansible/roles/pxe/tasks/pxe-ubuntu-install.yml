@@ -1,0 +1,20 @@
+---
+
+- name: Creating ubuntu directory
+  file:
+      path: "{{nginx_http_pxe_dir}}/ubuntu/"
+      state: directory
+
+- name: Downloading ubuntu netboot files
+  get_url:
+    url: "{{ ubuntu.baseurl }}/{{ item }}"
+    dest: "{{nginx_http_pxe_dir}}/ubuntu/{{item}}"
+  with_items:
+    - linux
+    - initrd.gz
+
+- name: Creating pxe menu for ubuntu
+  template:
+    src: templates/ubuntu.include.j2
+    dest: "{{tftproot_dir}}/bios/pxelinux.cfg/ubuntu.include"
+    mode: 0644

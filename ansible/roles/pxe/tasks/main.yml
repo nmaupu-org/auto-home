@@ -1,7 +1,14 @@
 ---
 
-- include_tasks: tftpd-hpa.yml
-- include_tasks: syslinux.yml
-- include_tasks: http-server.yml
-- include_tasks: pxe-get-mac-addr.yml
-- include_tasks: pxe-debian-live-xfce.yml
+- import_tasks: tftpd-hpa.yml
+  tags: pxe-tftpd-hpa
+- import_tasks: syslinux.yml
+  tags: pxe-syslinux
+- import_tasks: http-server.yml
+  tags: pxe-http-server
+- import_tasks: pxe-get-mac-addr.yml
+  tags: pxe-get-mac-addr
+- import_tasks: pxe-debian-live-xfce.yml
+  tags: pxe-debian-live-xfce
+- import_tasks: pxe-ubuntu-install.yml
+  tags: pxe-ubuntu
