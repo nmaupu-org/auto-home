@@ -1,7 +1,0 @@
----
-
-- name: Install utilities
-  hosts: localhost
-  become: no
-  roles:
-    - pxe-bootstrap-coreos

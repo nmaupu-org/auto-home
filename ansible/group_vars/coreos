@@ -1,5 +1,0 @@
-users:
-  - home: /home/core
-    user: core
-    shell: /bin/bash
-    generate_ssh_key: no

@@ -5,4 +5,3 @@
 - include_tasks: http-server.yml
 - include_tasks: pxe-get-mac-addr.yml
 - include_tasks: pxe-debian-live-xfce.yml
-- include_tasks: pxe-coreos.yml
