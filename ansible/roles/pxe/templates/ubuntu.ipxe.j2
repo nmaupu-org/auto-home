@@ -1,7 +1,9 @@
 #!ipxe
 
 dhcp
-kernel http://{{pxe_http_server}}/{{nginx_http_pxe_url}}/ubuntu/{{ubuntu.kernel}}
-initrd http://{{pxe_http_server}}/{{nginx_http_pxe_url}}/ubuntu/{{ubuntu.initrd}}
-imgargs {{ubuntu.kernel}} priority=low vga=788 ---
+kernel http://{{ pxe_http_server }}/{{ nginx_http_pxe_url }}/ubuntu/{{ ubuntu.kernel }}
+initrd http://{{ pxe_http_server }}/{{ nginx_http_pxe_url }}/ubuntu/{{ ubuntu.initrd }}
+imgargs {{ ubuntu.kernel }} priority=critical vga=788 --- \
+  auto=true \
+  url=http://{{ pxe_http_server }}/{{ nginx_http_pxe_url }}/ubuntu/{{ ubuntu.preseed }}
 boot

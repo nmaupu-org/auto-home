@@ -13,8 +13,8 @@ pxe_title: PXE
 pxe_http_server: "{{ansible_default_ipv4.address}}"
 pxe_menu_items:
   - debian-live-xfce.include
-  - ubuntu.include
   - get-mac-addr.include
+  - ubuntu.include
 
 ipxe_lkrn_url: http://boot.ipxe.org/ipxe.lkrn
 ipxe_scripts_dir: bios/ipxe-scripts
@@ -40,3 +40,5 @@ ubuntu:
   checksum: sha1:a1c3272c6cfc96e1d3024825fbe1e015e4350be4
   kernel: linux
   initrd: initrd.gz
+  preseed: ubuntu.preseed
+ubuntu_root_password: toor
