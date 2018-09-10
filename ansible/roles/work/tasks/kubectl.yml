@@ -26,5 +26,13 @@
         dest: "{{kubectl.installdir}}/kubectl"
         owner: "{{me}}"
         group: "{{me}}"
+
+    - name: Symlinking to this version from /usr/local/bin
+      file:
+        state: link
+        src: "{{kubectl.installdir}}/kubectl-{{kubectl_version}}"
+        dest: "/usr/local/bin/kubectl"
+        owner: root
+        group: root
   become: yes
   become_user: root
