@@ -71,6 +71,9 @@ linux_base_extra_packages:
   - curl
   - dnsutils
   - evince
+  # Wallpaper tool
+  # feh --bg-scale /usr/share/backgrounds/warty-final-ubuntu.png &
+  - feh
   - gdisk
   - git
   - graphviz
