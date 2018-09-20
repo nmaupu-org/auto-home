@@ -149,6 +149,9 @@ d-i                finish-install/reboot_in_progress note
 d-i preseed/late_command string \
   in-target apt-get update; \
   in-target apt-get -y upgrade; \
+  in-target mkdir /root/.ssh; \
+  in-target chmod 700 /root/.ssh; \
+  wget -O /target/root/.ssh/authorized_keys http://{{ pxe_http_server }}/{{ nginx_http_pxe_url }}/ubuntu/authorized_keys; \
   in-target apt-get install -y docker.io apt-transport-https curl gnupg; \
   wget --no-check-certificate -O /target/tmp/apt-key.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg; \
   in-target apt-key add /tmp/apt-key.gpg; \

@@ -29,6 +29,14 @@
   tags:
     - pxe-ubuntu-preseed
 
+- name: Copying authorized_keys file
+  copy:
+    src: authorized_keys
+    dest: "{{ nginx_http_pxe_dir }}/ubuntu/authorized_keys"
+    mode: 0644
+  tags:
+    - pxe-ubuntu-preseed
+
 - name: Creating pxe menu for ubuntu
   template:
     src: templates/ubuntu.include.j2
