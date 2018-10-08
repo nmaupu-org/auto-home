@@ -44,7 +44,7 @@ helm:
   url: https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz
   installdir: /opt/bin
 
-firefox_version: 62.0.2
+firefox_version: 62.0.3
 firefox:
   version: "{{ firefox_version }}"
   url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ firefox_version }}/linux-x86_64/en-US/firefox-{{ firefox_version }}.tar.bz2
