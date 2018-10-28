@@ -38,6 +38,7 @@
     src: "{{autodl_url}}"
     dest: "{{irssi_config_dir}}/scripts"
     owner: "{{irssi_config_owner}}"
+    validate_certs: no
   notify:
     - restart irssi
 
