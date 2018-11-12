@@ -210,7 +210,18 @@ def main():
     r = fac.createDataset("vault-nas", "Vault data")
     print(r.status_code, r.text)
     r = fac.associateDataset("vault", "/mnt/tank/vault-nas", "/mnt", False)
+    print(r.status_code, r.text)
 
+    r = fac.createJail("sickchill", "192.168.12.160", "24")
+    print(r.status_code, r.text)
+    r = fac.createDataset("sickchill-data", "Sickrage configuration and data")
+    print(r.status_code, r.text)
+    r = fac.associateDataset("sickchill", "/mnt/tank/sickchill-data", "/mnt/sickchill-data", False)
+    print(r.status_code, r.text)
+    r = fac.associateDataset("sickchill", "/mnt/tank/dls/seedbox/incoming-sickrage", "/mnt/toprocess", False)
+    print(r.status_code, r.text)
+    r = fac.associateDataset("sickchill", "/mnt/tank/misc/plex", "/mnt/onair", False)
+    print(r.status_code, r.text)
 
 if __name__ == "__main__":
     main()

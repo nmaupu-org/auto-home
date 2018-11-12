@@ -16,6 +16,7 @@ nas         ansible_host=192.168.12.8
 kube-rproxy ansible_host=192.168.12.157
 seedbox     ansible_host=192.168.12.158
 vault       ansible_host=192.168.12.159
+sickchill   ansible_host=192.168.12.160
 
 [freebsd:children]
 jails-host

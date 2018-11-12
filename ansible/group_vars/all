@@ -63,7 +63,6 @@ dns_hosts:
     - iscsi
   192.168.12.11:
     - raspbastion
-    - matchbox
   192.168.12.12:
     - kcontroller1
     - kube
@@ -84,8 +83,11 @@ dns_hosts:
     - kube-rproxy
     - minio
     - photoweb
+    - plex
     - rproxy
+    - sickchill
     - traefik
+    - vault
   192.168.12.158:
     - deluge-daemon
   192.168.12.159:

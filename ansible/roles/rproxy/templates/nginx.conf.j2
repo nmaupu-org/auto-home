@@ -18,19 +18,6 @@ http {
 
     server {
         listen      80;
-        server_name kube-ops-view.*;
-
-        location / {
-            proxy_pass http://kube_nodes_30080;
-            proxy_set_header Host $host;
-            proxy_set_header Connection keep-alive;
-            proxy_buffering off;
-            proxy_request_buffering off;
-        }
-    }
-
-    server {
-        listen      80;
         server_name photoweb.*;
 
         location / {
@@ -52,7 +39,50 @@ http {
     }
 
     server {
-        listen       80;
+      listen 80;
+      server_name sickchill.*;
+
+      location / {
+        proxy_pass http://192.168.12.160:8081;
+        proxy_set_header Host $host;
+      }
+    }
+
+    server {
+      listen 80;
+      server_name plex.*;
+
+      location / {
+        proxy_pass http://192.168.12.155:32400;
+        proxy_set_header Host $host;
+      }
+    }
+
+    server {
+      listen 80;
+      server_name vault.*;
+
+      location / {
+        proxy_pass http://192.168.12.159:8200;
+        proxy_set_header Host $host;
+      }
+    }
+
+    server {
+        listen      80;
+        server_name kube-ops-view.*;
+
+        location / {
+            proxy_pass http://kube_nodes_30080;
+            proxy_set_header Host $host;
+            proxy_set_header Connection keep-alive;
+            proxy_buffering off;
+            proxy_request_buffering off;
+        }
+    }
+
+    server {
+        listen       80 default_server;
         server_name  _;
 
         location / {

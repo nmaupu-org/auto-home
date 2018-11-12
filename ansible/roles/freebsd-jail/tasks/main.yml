@@ -68,3 +68,4 @@
     - wget
     - curl
     - bash
+    - sudo

@@ -1,0 +1,82 @@
+---
+
+- name: Installing useful packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python
+    - libxml2
+    - libxslt
+    - py27-sqlite3
+    - compat6x-amd64
+    - glib
+    - gobject-introspection
+    - node
+    - unrar
+    - unzip
+    - gzip
+    - bzip2
+
+- name: Creating user sickchill
+  user:
+    name: sickchill
+    comment: Sickrage
+    home: /home/sickchill
+
+- name: Creating logs directory
+  file:
+    path: /home/sickchill/logs
+    state: directory
+    owner: sickchill
+    group: sickchill
+
+- name: Cloning sickchill git repository
+  git:
+    repo: 'https://github.com/SickChill/SickChill.git'
+    dest: /home/sickchill/sickchill
+  become: yes
+  become_user: sickchill
+
+- name: Upgrade pip
+  pip:
+    state: latest
+    name: pip
+
+- name: Installing python requirements
+  pip:
+    requirements: /home/sickchill/sickchill/requirements/requirements.txt
+
+- name: Creating rc.d script
+  copy:
+    src: sickchill.rc.d
+    dest: /etc/rc.d/sickchill
+    mode: 0755
+
+- name: Enabling sickchill service
+  delegate_to: "{{ jail_host }}"
+  lineinfile:
+    path: "{{ jail_mount }}/{{ inventory_hostname_short }}/etc/rc.conf"
+    regexp: '^sickchill'
+    state: present
+    line: 'sickchill_enable="YES"'
+
+- name: Starting sickchill
+  delegate_to: "{{jail_host}}"
+  shell: |
+    jexec {{ inventory_hostname_short }} tcsh -c "service sickchill start"
+
+- name: Creating cleaning script
+  copy:
+    src: force-clean-to-process.sh
+    dest: /home/sickchill/force-clean-to-process.sh
+    mode: 0755
+    owner: sickchill
+    group: sickchill
+
+- name: Croning force-clean-to-process.sh script
+  cron:
+    name: "Force cleaning toprocess directory"
+    minute: "0"
+    hour: "1"
+    job: "DAYS=15 /home/sickchill/force-clean-to-process.sh"

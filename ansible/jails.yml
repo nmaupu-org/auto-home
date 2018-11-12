@@ -12,11 +12,11 @@
   roles:
     - base
 
-- name: Provisioning kube-rproxy jail
+- name: Provisioning rproxy jail
   hosts: kube-rproxy
   gather_facts: yes
   roles:
-    - kube-rproxy
+    - rproxy
 
 - name: Provisioning seedbox jail
   hosts: seedbox
@@ -30,3 +30,10 @@
   roles:
     - vault
   tags: vault
+
+- name: Provisioning sickchill jail
+  hosts: sickchill
+  gather_facts: no
+  roles:
+    - sickchill
+  tags: sickchill
