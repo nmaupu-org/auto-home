@@ -49,6 +49,9 @@ dhcp_static_leases:
   knode3:
       mac: 00:19:99:D0:42:E7
       ip: 192.168.12.15
+  naomi:
+      mac: 00:d0:f1:01:2e:a0
+      ip: 192.168.12.36
 
 main_router: 192.168.12.1
 main_dns_server: "{{main_router}}"
