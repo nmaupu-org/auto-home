@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ include "freenas-provisioner.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "freenas-provisioner.name" . }}
+    helm.sh/chart: {{ include "freenas-provisioner.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.deployment.replicasCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "freenas-provisioner.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "freenas-provisioner.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ include "freenas-provisioner.fullname" . }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        args:
+{{ toYaml .Values.deployment.args | indent 10 }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}

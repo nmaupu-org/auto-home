@@ -1,0 +1,30 @@
+deployment:
+  replicasCount: 1
+  image:
+    repository: docker.io/nmaupu/freenas-provisioner
+    tag: 2.4
+  imagePullPolicy: IfNotPresent
+  args: []
+
+storageclass:
+  create: true
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+  reclaimPolicy: Delete
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 100Mi
+  requests:
+    cpu: 10m
+    memory: 50Mi
+
+freenas:
+  username: TBD
+  password: TBD
+  host: TBD
+  port: :443
+  parentDataset: kube-nfs
+  protocol: http
+  allowInsecure: "false"

@@ -23,7 +23,7 @@ dhcp_static_leases:
       mac: d0:50:99:19:2e:14
       ip: 192.168.12.9
   asrock:
-      mac: BC:5F:F4:FE:18:D1
+      mac: D0:50:99:E1:96:BF
       ip: 192.168.12.3
   mbr:
       mac: 98:fe:94:41:74:36
@@ -91,6 +91,7 @@ dns_hosts:
     - sickchill
     - traefik
     - vault
+    - gonaomi
   192.168.12.158:
     - deluge-daemon
   192.168.12.159:
