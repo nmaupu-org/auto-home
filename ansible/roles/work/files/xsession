@@ -2,8 +2,7 @@
 
 [ -f .screenlayout/myscreens.sh ] && sudo xrandr --setprovideroutputsource 1 0 && .screenlayout/myscreens.sh
 xrdb -merge ~/.Xresources
-autocutsel -f
-autocutsel -f -s PRIMARY -buttonup
+autocutsel -f -s CLIPBOARD -buttonup
 #redshift-gtk &
 ssh-agent &
 pkill xscreensaver; xscreensaver -no-splash -no-capture-stderr &
