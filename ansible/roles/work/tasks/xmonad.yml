@@ -28,7 +28,7 @@
   copy:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    mode: 0444
+    mode: 0555
   with_items:
     - src: icons/net_wired.xbm
       dest: "{{home}}/.xmonad/icons/net_wired.xbm"
@@ -46,8 +46,14 @@
       dest: "{{home}}/.xmonad/icons/separator.xbm"
     - src: brightness.sh
       dest: "{{home}}/.xmonad/scripts"
-    - src: xmonad-server-connect.sh
+    - src: xmonad-kube-switch-ctx.sh
       dest: "{{home}}/.xmonad/scripts"
+  tags: xmonad-config
+
+- name: Installing easyopt script
+  git:
+    repo: 'https://github.com/nmaupu/easyopt.git'
+    dest: "{{home}}/.xmonad/scripts/easyopt"
   tags: xmonad-config
 
 - name: Installing conky configuration
