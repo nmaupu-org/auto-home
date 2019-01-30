@@ -34,5 +34,25 @@
         dest: "/usr/local/bin/kubectl"
         owner: root
         group: root
+
+    - name: Installing stern binary command
+      get_url:
+        url: "{{ stern.url }}"
+        dest: "{{ stern.installdir }}"
+        checksum: "{{ stern.checksum }}"
+
+    - name: Making stern executable
+      file:
+        path: "{{ stern.installdir }}/stern_linux_amd64"
+        mode: 0755
+
+    - name: Symlinking stern
+      file:
+        state: link
+        src: "{{ stern.installdir }}/stern_linux_amd64"
+        dest: "/usr/local/bin/stern"
+        owner: root
+        group: root
+
   become: yes
   become_user: root

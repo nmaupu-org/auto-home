@@ -44,6 +44,12 @@ helm:
   url: https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz
   installdir: /opt/bin
 
+stern_version: 1.10.0
+stern:
+  url: https://github.com/wercker/stern/releases/download/{{ stern_version }}/stern_linux_amd64
+  installdir: /opt/bin
+  checksum: sha1:e702e8d28572e415798b928b13009c8004d901ff
+
 firefox_version: 64.0.2
 firefox:
   version: "{{ firefox_version }}"
