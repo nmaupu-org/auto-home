@@ -36,6 +36,15 @@
     mode: 0755
     path: "{{home}}/.zshrc.d"
 
+- name: Creating .zshrc.d files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ home }}/.zshrc.d"
+    mode: 0644
+  with_items:
+    - zshrc.d/java
+    - zshrc.d/k8s-and-misc
+
 - name: Configuring zsh
   template:
     src: zshrc.j2

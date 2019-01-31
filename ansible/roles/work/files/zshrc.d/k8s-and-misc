@@ -1,0 +1,48 @@
+# Kubernetes - change context
+kcs() {
+  local new_context
+  if [ "$1" = '-' ]; then
+    new_context = '-'
+  else
+    new_context=$(kubectl config get-contexts -o=name | fzf -0 -1 --tac -q "${1:-""}")
+  fi
+
+  kubectl config use-context "${new_context}"
+}
+
+# Kubernetes - change current namespace
+kns() {
+  local new_context
+  if [ "$1" = '-' ]; then
+    new_ns = '-'
+  else
+    new_ns=$(kubectl get ns | awk 'NR>2{print $1}'| fzf -0 -1 --tac)
+  fi
+
+  kubectl config set-context $(kubectl config current-context) --namespace="${new_ns}"
+}
+
+kubectl() {
+  command kubectl $*
+  if [[ -z $KUBECTL_COMPLETE ]]; then
+    source <(command kubectl completion zsh)
+    KUBECTL_COMPLETE=1 
+  fi
+}
+
+helm() {
+  command helm $*
+  if [[ -z $HELM_COMPLETE ]]; then
+    source <(command helm completion zsh)
+    HELM_COMPLETE=1 
+  fi
+}
+
+vault() {
+  command vault $*
+  if [[ -z $VAULT_COMPLETE ]]; then
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C /opt/bin/vault vault
+    VAULT_COMPLETE=1
+  fi
+}
