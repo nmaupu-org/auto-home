@@ -22,22 +22,6 @@ kns() {
   kubectl config set-context $(kubectl config current-context) --namespace="${new_ns}"
 }
 
-kubectl() {
-  command kubectl $*
-  if [[ -z $KUBECTL_COMPLETE ]]; then
-    source <(command kubectl completion zsh)
-    KUBECTL_COMPLETE=1 
-  fi
-}
-
-helm() {
-  command helm $*
-  if [[ -z $HELM_COMPLETE ]]; then
-    source <(command helm completion zsh)
-    HELM_COMPLETE=1 
-  fi
-}
-
 vault() {
   command vault $*
   if [[ -z $VAULT_COMPLETE ]]; then

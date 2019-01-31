@@ -45,6 +45,8 @@ xmonad_meta_key: winKey
 xmonad_num_workspaces: 10
 
 zsh_antigen:
+  - antigen bundle kubectl
+  - antigen bundle helm
   - antigen bundle docker
   - antigen bundle fabric
   - antigen bundle git

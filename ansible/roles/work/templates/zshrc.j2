@@ -172,3 +172,7 @@ if [ -d "${HOME}/.zshrc.d" ]; then
     source ${file}
   done
 fi
+
+# Trying to fix problem with autocompletion commands
+# https://github.com/zsh-users/antigen/issues/583#issuecomment-336903466
+source $HOME/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/kubectl/kubectl.plugin.zsh
