@@ -15,7 +15,7 @@ golang:
   url: https://dl.google.com/go/go1.11.5.linux-amd64.tar.gz
   installdir: /usr/local
 
-terraform_version: 0.11.3
+terraform_version: 0.12.0
 terraform_arch: linux_amd64
 terraform:
   url: https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_{{terraform_arch}}.zip
