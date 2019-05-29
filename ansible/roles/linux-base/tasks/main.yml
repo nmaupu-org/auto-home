@@ -5,6 +5,8 @@
     name: "{{item}}"
     state: latest
   with_items:
+    - ntp
+    - ntpdate
     - vim
     - rsync
     - htop
@@ -56,3 +58,9 @@
   tags:
     - users
     - authorized_keys
+
+- name: Activating ntp service
+  service:
+    name: ntp
+    state: started
+    enabled: yes
