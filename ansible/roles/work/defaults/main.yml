@@ -50,7 +50,7 @@ stern:
   installdir: /opt/bin
   checksum: sha1:e702e8d28572e415798b928b13009c8004d901ff
 
-firefox_version: 66.0.3
+firefox_version: 67.0
 firefox:
   version: "{{ firefox_version }}"
   url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ firefox_version }}/linux-x86_64/en-US/firefox-{{ firefox_version }}.tar.bz2
