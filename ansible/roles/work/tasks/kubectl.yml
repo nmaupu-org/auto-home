@@ -40,6 +40,7 @@
         url: "{{ stern.url }}"
         dest: "{{ stern.installdir }}"
         checksum: "{{ stern.checksum }}"
+        validate_certs: false
 
     - name: Making stern executable
       file:

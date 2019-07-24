@@ -101,7 +101,6 @@ linux_base_extra_packages:
   - tree
   - util-linux
   - vagrant
-  - virtualbox
   - wget
   - wicd
   - wicd-cli

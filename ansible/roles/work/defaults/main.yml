@@ -28,6 +28,12 @@ kubectl:
   installdir: /opt/bin
   checksum: sha1:94866b439197f56d6e9011af7e79fda100b8ccbc
 
+k9s_version: 0.7.11
+k9s_arch: Linux_x86_64
+k9s:
+  url: https://github.com/derailed/k9s/releases/download/0.7.11/k9s_{{ k9s_version }}_{{ k9s_arch }}.tar.gz
+  installdir: /opt/bin
+
 minikube_arch: linux/amd64
 minikube:
   url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
@@ -44,11 +50,12 @@ helm:
   url: https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz
   installdir: /opt/bin
 
-stern_version: 1.10.0
+stern_version: 1.11.0
+stern_arch: linux_amd64
 stern:
-  url: https://github.com/wercker/stern/releases/download/{{ stern_version }}/stern_linux_amd64
+  url: https://github.com/wercker/stern/releases/download/{{ stern_version }}/stern_{{ stern_arch }}
   installdir: /opt/bin
-  checksum: sha1:e702e8d28572e415798b928b13009c8004d901ff
+  checksum: sha1:e8d569c2908882f3e29b9529716e89a83b4d3f23
 
 firefox_version: 67.0.4
 firefox:
@@ -67,3 +74,8 @@ onepassword:
   version: "{{ onepassword_version }}"
   url: https://cache.agilebits.com/dist/1P/op/pkg/v{{ onepassword_version }}/op_linux_amd64_v{{ onepassword_version }}.zip
   installdir: /opt/bin
+
+slack_version: 4.0.0
+slack_arch: amd64
+slack:
+  url: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-{{ slack_arch }}.deb

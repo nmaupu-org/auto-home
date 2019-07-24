@@ -1,0 +1,33 @@
+---
+
+- block:
+    - name: Creating destination directory if needed
+      file:
+        state: directory
+        path: "{{ k9s.installdir }}"
+
+    - name: Downloading k9s
+      unarchive:
+        src: "{{ k9s.url }}"
+        remote_src: yes
+        dest: "/tmp"
+        validate_certs: no
+
+    - name: copying binary
+      copy:
+        remote_src: true
+        src: "/tmp/k9s"
+        dest: "{{ k9s.installdir }}/k9s-{{ k9s_version }}"
+        owner: "{{ me }}"
+        group: "{{ me }}"
+        mode: 0755
+
+    - name: Symlinking to this version
+      file:
+        state: link
+        src: "{{ k9s.installdir }}/k9s-{{ k9s_version }}"
+        dest: "{{ k9s.installdir }}/k9s"
+        owner: "{{ me }}"
+        group: "{{ me }}"
+  become: yes
+  become_user: root

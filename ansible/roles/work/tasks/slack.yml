@@ -1,0 +1,8 @@
+---
+
+- block:
+    - name: Installing slack deb file
+      apt:
+        deb: "{{ slack.url }}"
+  become: yes
+  become_user: root
