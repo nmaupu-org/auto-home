@@ -32,7 +32,7 @@ dhcp_static_leases:
       mac: B8:27:EB:C4:1C:80
       ip: 192.168.12.11
   plex:
-      mac: 02:FF:B0:00:09:0B
+      mac: d0:50:99:30:63:78
       ip: 192.168.12.155
   printer:
       mac: 00:1B:A9:FA:0A:81
