@@ -13,6 +13,9 @@ kube_nodes:
 dhcp_range_begin: 192.168.12.200
 dhcp_range_end: 192.168.12.250
 dhcp_static_leases:
+  archerC3150:
+      mac: 18:a6:f7:62:71:a9
+      ip: 192.168.12.4
   rasplex:
       mac: b8:27:eb:11:dd:10
       ip: 192.168.12.7
