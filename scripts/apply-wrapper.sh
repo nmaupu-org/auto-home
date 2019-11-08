@@ -14,7 +14,7 @@ EOF
 
 SCRIPT="$1"
 
-DOCKER_IMAGE="${DOCKER_ID_USER}/builder"
+DOCKER_IMAGE="${DOCKER_ID_USER}/builder:1.1"
 ANSIBLE_DIR="/workspace/ansible"
 DOCKER_OPTS="${DOCKER_OPTS:--t}"
 

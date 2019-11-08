@@ -1,0 +1,11 @@
+firewall_packages: []
+firewall_ports: {}
+#firewall_ports:
+#  test:
+#    target: DNAT
+#    src: wan
+#    dest: lan
+#    proto: tcp
+#    src_port: 9090
+#    dest_port: 9090
+#    name: test redirect 9090

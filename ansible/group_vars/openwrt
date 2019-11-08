@@ -1,0 +1,36 @@
+firewall_packages:
+    - vim
+    - openvpn-openssl
+    - uclient-fetch
+    - libustream-mbedtls
+    - ca-bundle
+    - ca-certificates
+    - kmod-ipt-ipset
+    - vpn-policy-routing
+    - luci-app-vpn-policy-routing
+
+firewall_ports:
+  - target: DNAT
+    src: wan
+    dest: lan
+    proto: tcp
+    src_port: 22
+    dest_port: 22
+    dest_ip: 192.168.12.11
+    name: bastion SSH
+  - target: DNAT
+    src: wan
+    dest: lan
+    proto: tcp
+    src_port: 32400
+    dest_port: 32400
+    dest_ip: 192.168.12.155
+    name: plex
+  - target: DNAT
+    src: wan
+    dest: lan
+    proto: tcp
+    src_port: 6700-7000
+    dest_port: 6700-7000
+    dest_ip: 192.168.12.158
+    name: torrent
