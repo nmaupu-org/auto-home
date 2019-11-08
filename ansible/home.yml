@@ -1,5 +1,14 @@
 ---
 
+## Firewall setup
+- name: Configuring openwrt firewall
+  gather_facts: no
+  hosts: openwrt
+  become: no
+  roles:
+    - gekmihesg.openwrt
+    - { role: firewall, tags: ['firewall'] }
+
 ## CoreOS related
 - name: Bootstraping python on coreos machines
   gather_facts: no

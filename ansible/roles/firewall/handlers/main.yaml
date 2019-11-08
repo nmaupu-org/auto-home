@@ -1,0 +1,11 @@
+---
+
+- name: restart firewall
+  service:
+    name: firewall
+    state: restarted
+
+- name: reload firewall
+  service:
+    name: firewall
+    state: reloaded

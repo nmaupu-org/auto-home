@@ -1,0 +1,74 @@
+---
+
+- name: Installing packages
+  opkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - vim
+    - openvpn-openssl
+    - uclient-fetch
+    - libustream-mbedtls
+    - ca-bundle
+    - ca-certificates
+    - kmod-ipt-ipset
+    - vpn-policy-routing
+    - luci-app-vpn-policy-routing
+
+- name: Revert pending changes
+  uci:
+    command: revert
+
+- name: Add a firewall redirect
+  uci:
+    command: add
+    config: firewall
+    type: redirect
+
+- name: Rename firewall redirect
+  uci:
+    command: rename
+    key: firewall.@redirect[-1]
+    value: uci_redir_test
+
+- name: Open port 9090
+  uci:
+    command: set
+    key: firewall.uci_redir_test
+    value:
+      target: DNAT
+      src: wan
+      dest: lan
+      proto: tcp
+      src_port: 9090
+      dest_port: 9090
+      name: test open port
+
+- name: commit changes
+  uci:
+    command: commit
+  notify: restart firewall
+
+#- name: Configuring dnsmasq
+#  template:
+#    src: dnsmasq.conf.j2
+#    dest: /etc/dnsmasq.conf
+#  notify: restart dnsmasq
+#
+#- name: Configuring some local names
+#  template:
+#    src: dnsmasq-hosts.j2
+#    dest: /etc/dnsmasq-hosts
+#  notify: reload dnsmasq
+#
+#- name: Configuring dhcp static leases
+#  template:
+#    src: ethers.j2
+#    dest: /etc/ethers
+#  notify: reload dnsmasq
+#
+#- name: Activating dnsmasq service
+#  service:
+#    name: dnsmasq
+#    enabled: yes
+#    state: started
