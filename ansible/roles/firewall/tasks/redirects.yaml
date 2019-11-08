@@ -1,0 +1,17 @@
+---
+
+##
+# Redirect and ports opening
+- name: Deleting all redirect rules
+  uci:
+    command: delete
+    key: firewall.@redirect[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 99
+  ignore_errors: true
+
+- name: Add firewall redirect
+  include_tasks: utils/uci_redirect.yaml
+  loop: "{{ firewall_ports }}"
