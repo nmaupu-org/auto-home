@@ -9,7 +9,7 @@
   register: result
   until: result.failed | bool
   delay: 0
-  retries: 99
+  retries: 999
   ignore_errors: true
 
 - name: Add firewall redirect

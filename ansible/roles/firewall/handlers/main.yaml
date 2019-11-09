@@ -9,3 +9,13 @@
   service:
     name: firewall
     state: reloaded
+
+- name: reload dhcp
+  service:
+    name: dnsmasq
+    state: reloaded
+
+- name: restart dhcp
+  service:
+    name: dnsmasq
+    state: restarted

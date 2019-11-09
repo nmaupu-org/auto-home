@@ -1,25 +1,28 @@
 ---
 
+##
+## Packages
+
 - name: Installing packages
   opkg:
     name: "{{item}}"
     state: present
   with_items: "{{ firewall_packages }}"
 
-# uci handling
-- name: Revert pending changes
+##
+## UCI stuff
+
+- name: Revert potential pending changes if needed
   uci:
     command: revert
+
+- name: Processing DHCP configuration
+  include_tasks: dhcp.yaml
+  with_dict: "{{ firewall_dhcp }}"
 
 - name: Processing redirect rules
   include_tasks: redirects.yaml
 
-- name: Processing DHCP/DNS configuration
-  include_tasks: dhcp-dns.yaml
-
-##
-# Commit uci changes
-- name: commit changes
+- name: Commit UCI changes
   uci:
     command: commit
-  notify: restart firewall

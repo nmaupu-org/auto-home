@@ -1,13 +1,20 @@
 firewall_packages:
-    - vim
-    - openvpn-openssl
-    - uclient-fetch
-    - libustream-mbedtls
-    - ca-bundle
-    - ca-certificates
-    - kmod-ipt-ipset
-    - vpn-policy-routing
-    - luci-app-vpn-policy-routing
+  - luci-theme-material
+  - vim
+  - tcpdump
+  - openvpn-openssl
+  - uclient-fetch
+  - libustream-mbedtls
+  - ca-bundle
+  - ca-certificates
+  - kmod-ipt-ipset
+  - vpn-policy-routing
+  - luci-app-vpn-policy-routing
+
+firewall_dhcp:
+  lan:
+    start: 200
+    limit: 250
 
 firewall_ports:
   - target: DNAT
