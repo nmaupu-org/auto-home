@@ -11,6 +11,7 @@
     command: delete
     key: dhcp.{{ item.key }}
   notify: restart dhcp
+  ignore_errors: True
 
 - name: "{{ item.key }} - Adding DHCP server entry"
   uci:
@@ -25,3 +26,7 @@
     key: dhcp.{{ item.key }}
     value: "{{ item.value }}"
   notify: restart dhcp
+
+- name: Commit UCI changes
+  uci:
+    command: commit

@@ -1,0 +1,18 @@
+---
+# Add DNS entries to the configuration
+
+- name: "{{ item.0.ip }} / {{ item.1 }} - Add a new DNS entry"
+  uci:
+    command: add
+    config: dhcp
+    type: domain
+  notify: restart dhcp
+
+- name: "{{ item.0.ip }} / {{ item.1 }} - Set DNS entry"
+  uci:
+    command: set
+    key: dhcp.@domain[-1]
+    value:
+      ip: "{{ item.0.ip }}"
+      name: "{{ item.1 }}"
+  notify: restart dhcp

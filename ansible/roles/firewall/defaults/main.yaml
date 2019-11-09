@@ -12,7 +12,38 @@ firewall_dhcp:
     leasetime: 12h
     force: 1
 
+# See https://openwrt.org/docs/guide-user/base-system/dhcp
+# for more details and options
+firewall_dnsmasq_config:
+  add_local_domain: 1
+  domainneeded: 1
+  boguspriv: 1
+  filterwin2k: 0
+  localise_queries: 1
+  rebind_protection: 1
+  rebind_localhost: 1
+  local: /lan/
+  domain: lan
+  expandhosts: 1
+  nonegcache: 0
+  authoritative: 1
+  readethers: 1
+  leasefile: /tmp/dhcp.leases
+  resolvfile: /tmp/resolv.conf.auto
+  nonwildcard: 1
+  localservice: 1
+
 firewall_dhcp_static_leases: []
+
+firewall_dhcp_static_leases_extras:
+  leasetime: 12h
+
+firewall_dns_entries: {}
+#firewall_dns_entries:
+#  192.168.1.10:
+#    - name1
+#    - name2
+#    - name3
 
 firewall_ports: {}
 #firewall_ports:

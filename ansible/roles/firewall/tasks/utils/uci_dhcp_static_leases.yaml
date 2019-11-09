@@ -13,5 +13,5 @@
   uci:
     command: set
     key: dhcp.@host[-1]
-    value: "{{ item }}"
+    value: "{{ item | combine(firewall_dhcp_static_leases_extras)}}"
   notify: restart dhcp

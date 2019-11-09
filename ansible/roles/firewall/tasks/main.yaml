@@ -19,5 +19,8 @@
 - name: Processing DHCP static leases configuration
   include_tasks: dhcp-static-leases.yaml
 
+- name: Processing DNS entries
+  include_tasks: dns.yaml
+
 - name: Processing redirect rules
   include_tasks: redirects.yaml

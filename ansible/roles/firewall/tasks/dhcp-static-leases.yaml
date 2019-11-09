@@ -17,9 +17,6 @@
   ignore_errors: true
   notify: restart dhcp
 
-- debug:
-    var: result
-
 - name: Add lease entries
   include_tasks: utils/uci_dhcp_static_leases.yaml
   loop: "{{ firewall_dhcp_static_leases }}"

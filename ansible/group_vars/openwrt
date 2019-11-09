@@ -17,59 +17,72 @@ firewall_dhcp:
     start: 200
     limit: 250
 
+firewall_dnsmasq_config:
+  domain: home.fossar.net
+
 firewall_dhcp_static_leases:
   - name: freenas
     mac: d0:50:99:c2:be:3d
     ip: 192.168.12.8
-    dns: 1
   - name: freenasbak
     mac: d0:50:99:19:2e:14
     ip: 192.168.12.9
-    dns: 1
   - name: asrock
     mac: D0:50:99:E1:96:BF
     ip: 192.168.12.3
-    dns: 1
   - name: mbp
     mac: a4:83:e7:6c:19:0d
     ip: 192.168.12.7
-    dns: 1
   - name: mbr
     mac: 98:fe:94:41:74:36
     ip: 192.168.12.10
-    dns: 1
   - name: raspbastion
     mac: B8:27:EB:C4:1C:80
     ip: 192.168.12.11
-    dns: 1
   - name: plex
     mac: d0:50:99:30:63:78
     ip: 192.168.12.155
-    dns: 1
   - name: printer
     mac: 00:1B:A9:FA:0A:81
     ip: 192.168.12.5
-    dns: 1
   - name: kcontroller1
     mac: 00:19:99:CF:34:71
     ip: 192.168.12.12
-    dns: 1
   - name: knode1
     mac: 00:19:99:CE:C3:1A
     ip: 192.168.12.13
-    dns: 1
   - name: knode2
     mac: 00:19:99:D0:43:A9
     ip: 192.168.12.14
-    dns: 1
   - name: knode3
     mac: 00:19:99:D0:42:E7
     ip: 192.168.12.15
-    dns: 1
   - name: naomi
     mac: 00:d0:f1:01:2e:a0
     ip: 192.168.12.36
-    dns: 1
+
+firewall_dns_entries:
+  192.168.12.158:
+    - deluge
+  192.168.12.8:
+    - nas
+  192.168.12.5:
+    - printer
+  192.168.12.156:
+    - utils
+  192.168.12.157:
+    - rproxy
+    - couchpotato
+    - grafana
+    - rproxy
+    - minio
+    - photoweb
+    - sickchill
+    - vault
+    - gonaomi
+  192.168.12.12:
+    - kube
+    - k8s
 
 firewall_ports:
   - target: DNAT

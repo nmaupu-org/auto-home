@@ -1,0 +1,16 @@
+---
+# Add dnsmasq instances
+
+- name: "Add dnsmasq instance"
+  uci:
+    command: add
+    config: dhcp
+    type: dnsmasq
+  notify: restart dhcp
+
+- name: "Set dnsmasq instance's configuration"
+  uci:
+    command: set
+    key: dhcp.@dnsmasq[-1]
+    value: "{{ item }}"
+  notify: restart dhcp
