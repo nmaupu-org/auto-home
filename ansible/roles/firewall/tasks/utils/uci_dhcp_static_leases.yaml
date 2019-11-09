@@ -1,0 +1,17 @@
+---
+# Add static leases to the configuration
+# Parameter: array containing leases to add, each array entry is a config dict
+
+- name: "{{ item.name }} - Add a new dhcp static lease entry"
+  uci:
+    command: add
+    config: dhcp
+    type: host
+  notify: restart dhcp
+
+- name: "{{ item.name }} - Set dhcp static lease configuration"
+  uci:
+    command: set
+    key: dhcp.@host[-1]
+    value: "{{ item }}"
+  notify: restart dhcp

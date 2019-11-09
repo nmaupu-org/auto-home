@@ -12,17 +12,12 @@
 ##
 ## UCI stuff
 
-- name: Revert potential pending changes if needed
-  uci:
-    command: revert
-
 - name: Processing DHCP configuration
-  include_tasks: dhcp.yaml
+  include_tasks: dhcp-server.yaml
   with_dict: "{{ firewall_dhcp }}"
+
+- name: Processing DHCP static leases configuration
+  include_tasks: dhcp-static-leases.yaml
 
 - name: Processing redirect rules
   include_tasks: redirects.yaml
-
-- name: Commit UCI changes
-  uci:
-    command: commit

@@ -2,14 +2,14 @@
 # Group of tasks to add a redirection to the firewall
 # Parameter: dictionary containing the values to add (as a loop)
 
-- name: Add a new redirect rule
+- name: "{{ item.name }} - Add a new redirect rule"
   uci:
     command: add
     config: firewall
     type: redirect
   notify: restart firewall
 
-- name: Set redirect configuration ({{ item.name }})
+- name: "{{ item.name}} - Set redirect configuration"
   uci:
     command: set
     key: firewall.@redirect[-1]

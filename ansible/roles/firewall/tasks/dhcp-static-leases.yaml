@@ -1,0 +1,29 @@
+---
+# Configure DHCP static leases
+# Parameter: dictionary containing static leases to configure
+
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Deleting old leases
+  uci:
+    command: delete
+    key: dhcp.@host[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 999
+  ignore_errors: true
+  notify: restart dhcp
+
+- debug:
+    var: result
+
+- name: Add lease entries
+  include_tasks: utils/uci_dhcp_static_leases.yaml
+  loop: "{{ firewall_dhcp_static_leases }}"
+
+- name: Commit UCI changes
+  uci:
+    command: commit

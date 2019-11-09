@@ -5,12 +5,14 @@ firewall_dhcp:
     interface: wan
     ignore: 1
   lan:
-    ignore: 0
+    ignore: 1
     interface: lan
     start: 100
     limit: 150
     leasetime: 12h
     force: 1
+
+firewall_dhcp_static_leases: []
 
 firewall_ports: {}
 #firewall_ports:

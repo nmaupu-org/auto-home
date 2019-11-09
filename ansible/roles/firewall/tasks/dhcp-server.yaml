@@ -2,20 +2,24 @@
 # Configure DHCP server (dnsmasq)
 # Parameter: dictionary containing target interface and associated configuration
 
-- name: "{{ item.key }} - Deleting old/default DHCP configuration"
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: "{{ item.key }} - Deleting old/default DHCP server configuration"
   uci:
     command: delete
     key: dhcp.{{ item.key }}
   notify: restart dhcp
 
-- name: "{{ item.key }} - Adding DHCP entry"
+- name: "{{ item.key }} - Adding DHCP server entry"
   uci:
     command: set
     key: dhcp.{{ item.key }}
     value: dhcp
   notify: restart dhcp
 
-- name: "{{ item.key }} Configuring DHCP entry"
+- name: "{{ item.key }} Configuring DHCP configuration"
   uci:
     command: set
     key: dhcp.{{ item.key }}

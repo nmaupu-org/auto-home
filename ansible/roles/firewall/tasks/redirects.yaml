@@ -2,6 +2,10 @@
 
 ##
 # Redirect and ports opening
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
 - name: Deleting all redirect rules
   uci:
     command: delete
@@ -11,7 +15,12 @@
   delay: 0
   retries: 999
   ignore_errors: true
+  notify: restart firewall
 
 - name: Add firewall redirect
   include_tasks: utils/uci_redirect.yaml
   loop: "{{ firewall_ports }}"
+
+- name: Commit UCI changes
+  uci:
+    command: commit
