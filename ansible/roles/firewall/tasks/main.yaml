@@ -87,3 +87,10 @@
     apply:
       tags: ['firewall_prometheus']
   tags: ['always']
+
+- name: Processing PXE configuration
+  include_tasks:
+    file: pxe.yaml
+    apply:
+      tags: ['firewall_pxe']
+  tags: ['always']

@@ -1,0 +1,113 @@
+---
+
+- name: PXE - Installing required packages
+  opkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - kmod-fs-ext4 
+    - kmod-fs-vfat 
+    - usbutils
+    - kmod-usb-storage
+    - block-mount
+
+- name: PXE - Creating external storage directory
+  file:
+    state: directory
+    path: /mnt/extstorage
+    mode: '0755'
+
+- name: PXE - Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Deleting default fstab global configurations
+  uci:
+    command: delete
+    key: fstab.@global[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 999
+  ignore_errors: true
+  notify: restart fstab
+
+- name: Deleting default fstab mounts configurations
+  uci:
+    command: delete
+    key: fstab.@mount[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 999
+  ignore_errors: true
+  notify: restart fstab
+
+- name: Adding fstab global section
+  uci:
+    command: add
+    config: fstab
+    type: global
+  notify:
+    - restart fstab
+
+- name: Rename config global to automount
+  uci:
+    command: rename
+    key: fstab.@global[-1]
+    value: automount
+
+- name: Configuring fstab global automount section
+  uci:
+    command: set
+    key: fstab.automount
+    value:
+      from_fstab: 1
+      anon_mount: 1
+
+- name: Adding fstab global section
+  uci:
+    command: add
+    config: fstab
+    type: global
+  notify:
+    - restart fstab
+
+- name: Rename config global to autoswap  
+  uci:
+    command: rename
+    key: fstab.@global[-1]
+    value: autoswap
+
+- name: Configuring fstab global automount section
+  uci:
+    command: set
+    key: fstab.autoswap
+    value:
+      from_fstab: 1
+      anon_swap: 0
+
+- name: Adding a mount section
+  uci:
+    command: add
+    config: fstab
+    type: mount
+
+- name: Configuring mount section
+  uci:
+    command: set
+    key: fstab.@mount[-1]
+    value:
+      target: /mnt/extstorage
+      device: /dev/sda1
+      enabled: 1
+      enable_fsck: 0
+
+- name: PXE - Commit UCI changes
+  uci:
+    command: commit
+
+- name: Enabling fstab service
+  service:
+    name: fstab
+    enabled: yes

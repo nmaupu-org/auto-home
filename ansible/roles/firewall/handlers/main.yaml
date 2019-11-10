@@ -27,6 +27,7 @@
   service:
     name: dropbear
     state: restarted
+    enabled: yes
 
 - name: restart network
   service:
@@ -37,3 +38,8 @@
   service:
     name: prometheus-node-exporter-lua
     state: restarted
+    enabled: yes
+
+- name: restart fstab
+  shell: |
+    block mount
