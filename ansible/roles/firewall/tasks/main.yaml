@@ -80,3 +80,10 @@
     apply:
       tags: ['firewall_redirects']
   tags: ['always']
+
+- name: Processing prometheus
+  include_tasks:
+    file: prometheus.yaml
+    apply:
+      tags: ['firewall_prometheus']
+  tags: ['always']

@@ -32,3 +32,8 @@
   service:
     name: network
     state: restarted
+
+- name: restart prometheus
+  service:
+    name: prometheus-node-exporter-lua
+    state: restarted

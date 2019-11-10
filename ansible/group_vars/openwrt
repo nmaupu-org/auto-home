@@ -1,15 +1,13 @@
 firewall_packages:
   - luci-theme-material
   - vim
+  - curl
   - tcpdump
   - openvpn-openssl
   - libustream-mbedtls
   - kmod-ipt-ipset
   - vpn-policy-routing
   - luci-app-vpn-policy-routing
-  - prometheus-node-exporter-lua
-  - prometheus-node-exporter-lua-wifi
-  - prometheus-node-exporter-lua-wifi_stations
 
 firewall_network_interfaces:
   lan:
@@ -155,3 +153,6 @@ firewall_ports:
     dest_port: 6700-7000
     dest_ip: 192.168.12.158
     name: torrent
+
+firewall_prometheus:
+  listen_address: 192.168.12.1

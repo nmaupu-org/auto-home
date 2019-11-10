@@ -1,0 +1,31 @@
+---
+
+- name: Installing prometheus required packages
+  opkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - prometheus-node-exporter-lua
+    - prometheus-node-exporter-lua-wifi
+    - prometheus-node-exporter-lua-wifi_stations
+    - prometheus-node-exporter-lua-netstat
+    - prometheus-node-exporter-lua-nat_traffic
+    - prometheus-node-exporter-lua-openwrt
+  notify:
+    - restart prometheus
+
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Configuring prometheus packages
+  uci:
+    command: set
+    key: prometheus-node-exporter-lua.main
+    value: "{{ firewall_prometheus }}"
+  notify:
+    - restart prometheus
+
+- name: Commit UCI changes
+  uci:
+    command: commit

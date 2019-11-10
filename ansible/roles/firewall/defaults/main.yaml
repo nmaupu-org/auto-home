@@ -90,3 +90,7 @@ firewall_ports: {}
 #    src_port: 9090
 #    dest_port: 9090
 #    name: test redirect 9090
+
+firewall_prometheus:
+  listen_address: ::1
+  listen_port: 9100
