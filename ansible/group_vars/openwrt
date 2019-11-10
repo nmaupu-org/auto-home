@@ -149,8 +149,8 @@ firewall_ports:
     src: wan
     dest: lan
     proto: tcp
-    src_port: 6700-7000
-    dest_port: 6700-7000
+    src_port: 6800-7000
+    dest_port: 6800-7000
     dest_ip: 192.168.12.158
     name: torrent
 
