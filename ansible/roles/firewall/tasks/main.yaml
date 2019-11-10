@@ -3,24 +3,80 @@
 ##
 ## Packages
 
+- name: Installing alternative repository
+  shell: |
+    echo -e -n 'untrusted comment: OpenWrt usign key of Stan Grishin\nRWR//HUXxMwMVnx7fESOKO7x8XoW4/dRidJPjt91hAAU2L59mYvHy0Fa\n' > /tmp/stangri-repo.pub && \
+    opkg-key add /tmp/stangri-repo.pub
+    ! grep -q 'stangri_repo' /etc/opkg/customfeeds.conf && echo 'src/gz stangri_repo https://raw.githubusercontent.com/stangri/openwrt-repo/master' >> /etc/opkg/customfeeds.conf && \
+    touch /etc/stangri_repo_added
+  args:
+    creates: /etc/stangri_repo_added
+  tags: ['firewall_packages']
+
+- name: Updating opkg
+  shell: |
+    opkg update
+  tags: ['firewall_packages']
+
 - name: Installing packages
   opkg:
     name: "{{item}}"
     state: present
-  with_items: "{{ firewall_packages }}"
+  with_items:
+      - "{{ firewall_packages }}"
+  tags: ['firewall_packages']
 
 ##
 ## UCI stuff
 
+- name: Processing dropbear configuration
+  include_tasks:
+    file: dropbear.yaml
+    apply:
+      tags: ['firewall_dropbear']
+  tags: ['always']
+
+- name: Processing network interfaces configuration
+  include_tasks:
+    file: network_interfaces.yaml
+    apply:
+      tags: ['firewall_network_interfaces']
+  loop: "{{ firewall_network_interfaces | dict2items }}"
+  tags: ['always']
+
+- name: Processing wireless configuration
+  include_tasks:
+    file: wireless.yaml
+    apply:
+      tags: ['firewall_wireless']
+  loop: "{{ firewall_wireless }}"
+  tags: ['always']
+
 - name: Processing DHCP configuration
-  include_tasks: dhcp-server.yaml
+  include_tasks:
+    file: dhcp-server.yaml
+    apply:
+      tags: ['firewall_dhcp']
   with_dict: "{{ firewall_dhcp }}"
+  tags: ['always']
 
 - name: Processing DHCP static leases configuration
-  include_tasks: dhcp-static-leases.yaml
+  include_tasks:
+    file: dhcp-static-leases.yaml
+    apply:
+      tags: ['firewall_dhcp_static_leases']
+  tags: ['always']
 
 - name: Processing DNS entries
-  include_tasks: dns.yaml
+  include_tasks:
+    file: dns.yaml
+    apply:
+      tags: ['firewall_dns']
+  tags: ['always']
 
 - name: Processing redirect rules
-  include_tasks: redirects.yaml
+  include_tasks:
+    file: redirects.yaml
+    apply:
+      tags: ['firewall_redirects']
+  tags: ['always']

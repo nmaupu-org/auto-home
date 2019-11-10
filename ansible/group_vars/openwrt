@@ -3,13 +3,59 @@ firewall_packages:
   - vim
   - tcpdump
   - openvpn-openssl
-  - uclient-fetch
   - libustream-mbedtls
-  - ca-bundle
-  - ca-certificates
   - kmod-ipt-ipset
   - vpn-policy-routing
   - luci-app-vpn-policy-routing
+  - prometheus-node-exporter-lua
+  - prometheus-node-exporter-lua-wifi
+  - prometheus-node-exporter-lua-wifi_stations
+
+firewall_network_interfaces:
+  lan:
+    ipaddr: 192.168.12.1
+    netmask: 255.255.255.0
+  wan:
+    proto: dhcp
+  vpn0:
+    ifname: tun0
+    proto: none
+
+# Wireless key is given using extra-vars parameter to ansible
+#   e.g. AULT_ADDR=not-used ./scripts/apply-ansible.sh home.yml --private-key /root/.ssh/id_rsa.bicnic-travelers --limit openwrt --extra-vars "firewall_wireless_key='my_key'"
+firewall_wireless:
+  - device:
+      name: radio0
+      config:
+        disabled: 0
+        channel: auto
+        legacy_rates: 1
+        country: FR
+    iface:
+      name: default_radio0
+      config:
+        disabled: 0
+        device: radio0
+        network: lan
+        mode: ap
+        ssid: ml-ng-5g
+        encryption: psk2
+  - device:
+      name: radio1
+      config:
+        disabled: 0
+        channel: auto
+        legacy_rates: 1
+        country: FR
+    iface:
+      name: default_radio1
+      config:
+        disabled: 0
+        device: radio1
+        network: lan
+        mode: ap
+        ssid: ml-ng
+        encryption: psk2
 
 firewall_dhcp:
   lan:

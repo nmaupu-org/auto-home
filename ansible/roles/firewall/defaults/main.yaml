@@ -1,5 +1,40 @@
 firewall_packages: []
 
+firewall_network_interfaces:
+  lan:
+    ipaddr: 192.168.1.1
+
+firewall_wireless_key: 0123456789
+firewall_wireless:
+  - device:
+      name: radio0
+      config:
+        channel: auto
+        legacy_rates: 1
+        country: FR
+    iface:
+      name: default_radio0
+      config:
+        device: radio0
+        network: lan
+        mode: ap
+        ssid: openwrt-5g
+        encryption: psk2
+  - device:
+      name: radio1
+      config:
+        channel: auto
+        legacy_rates: 1
+        country: FR
+    iface:
+      name: default_radio1
+      config:
+        device: radio1
+        network: lan
+        mode: ap
+        ssid: openwrt-2g
+        encryption: psk2
+
 firewall_dhcp:
   wan:
     interface: wan

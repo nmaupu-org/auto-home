@@ -9,7 +9,7 @@
     type: redirect
   notify: restart firewall
 
-- name: "{{ item.name}} - Set redirect configuration"
+- name: "{{ item.name }} - Set redirect configuration"
   uci:
     command: set
     key: firewall.@redirect[-1]

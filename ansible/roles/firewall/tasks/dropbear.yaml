@@ -1,0 +1,27 @@
+---
+
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Setting ssh authorized_keys
+  blockinfile:
+    block: |
+      {{ authorized_keys }}
+    create: yes
+    path: /etc/dropbear/authorized_keys
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+
+- name: Disabling password authentication
+  uci:
+    command: set
+    key: dropbear.@dropbear[0]
+    value:
+      RootPasswordAuth: off
+      PasswordAuth: off
+  notify: restart dropbear
+
+- name: Commit UCI changes
+  uci:
+    command: commit

@@ -1,5 +1,8 @@
 ---
 
+- name: opkg update cache
+  shell: opkg update
+
 - name: restart firewall
   service:
     name: firewall
@@ -18,4 +21,14 @@
 - name: restart dhcp
   service:
     name: dnsmasq
+    state: restarted
+
+- name: restart dropbear
+  service:
+    name: dropbear
+    state: restarted
+
+- name: restart network
+  service:
+    name: network
     state: restarted

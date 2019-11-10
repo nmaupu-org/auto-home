@@ -1,0 +1,33 @@
+---
+# Setup wireless configuration
+# Parameters:
+#   - dictionary for the radio configuration
+#   - dictionary for the default part of the configuration
+
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Configuring device {{ item.device.name }}
+  uci:
+    command: set
+    key: wireless.{{ item.device.name }}
+    value: "{{ item.device.config }}"
+
+- name: Adding wifi iface {{ item.iface.name }}
+  uci:
+    command: set
+    key: wireless.{{ item.iface.name }}
+    value: wifi-iface
+  notify: reload wifi
+
+- name: Configuring wifi iface {{ item.iface.name }}
+  uci:
+    command: set
+    key: wireless.{{ item.iface.name }}
+    value: "{{ item.iface.config | combine({'key': lookup('vars', 'firewall_wireless_key')}) }}"
+  notify: reload wifi
+
+- name: Commit UCI changes
+  uci:
+    command: commit

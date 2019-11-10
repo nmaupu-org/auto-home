@@ -1,6 +1,5 @@
 ---
 
-##
 # Redirect and ports opening
 - name: Revert potential pending changes if needed
   uci:

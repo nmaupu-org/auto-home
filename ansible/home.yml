@@ -6,7 +6,7 @@
   hosts: openwrt
   become: no
   roles:
-    - gekmihesg.openwrt
+    - { role: gekmihesg.openwrt, tags: ['always'] }
     - { role: firewall, tags: ['firewall'] }
 
 ## CoreOS related

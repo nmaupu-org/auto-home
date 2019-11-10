@@ -1,0 +1,23 @@
+---
+
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: "{{ item.key }} - Adding interface if needed"
+  uci:
+    command: set
+    key: network.{{ item.key }}
+    value: interface
+
+- name: "{{ item.key }} - Setting network configuration"
+  uci:
+    command: set
+    key: network.{{ item.key }}
+    value: "{{ item.value }}"
+  notify:
+    - restart network
+
+- name: Commit UCI changes
+  uci:
+    command: commit
