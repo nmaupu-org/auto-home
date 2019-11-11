@@ -124,26 +124,6 @@
   notify:
     - restart fstab
 
-- name: Add iso mounts at boot time
-  uci:
-    command: add
-    config: fstab
-    type: mount
-  notify:
-    - restart fstab
-
-- name: Configuring iso mounts section
-  uci:
-    command: set
-    key: fstab.@mount[-1]
-    value:
-      device: "{{ firewall_pxe.usb_mount_dir }}/www/pxe/isos/debian-live-10.1.0-amd64-xfce.iso"
-      target: "{{ firewall_pxe.usb_mount_dir }}/www/pxe/debian-live"
-      enabled: 1
-      enable_fsck: 0
-      options: ro
-  notify: restart fstab
-
 - name: PXE - Commit UCI changes
   uci:
     command: commit

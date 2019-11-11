@@ -97,7 +97,7 @@
 
 - name: Processing PXE content
   import_role:
-    name: pxe
+    name: openwrt_pxe
   vars:
     tftproot_dir: "{{ firewall_pxe.usb_mount_dir }}"
     tftpdir: "{{ firewall_pxe.usb_mount_dir }}"

@@ -1,5 +1,0 @@
-# DHCP static leases
-{% for v in dhcp_static_leases %}
-# {{v}}
-{{dhcp_static_leases[v].mac}} {{dhcp_static_leases[v].ip}}
-{% endfor %}
