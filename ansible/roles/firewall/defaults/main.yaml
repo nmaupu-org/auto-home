@@ -94,3 +94,9 @@ firewall_ports: {}
 firewall_prometheus:
   listen_address: ::1
   listen_port: 9100
+
+firewall_pxe:
+  nginx_port: 8080
+  usb_mount_dir: /mnt/extstorage
+  syslinux:
+    url: https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.gz

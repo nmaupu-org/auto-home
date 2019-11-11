@@ -9,6 +9,7 @@
   get_url:
     url: "{{ ubuntu.baseurl }}/{{ item }}"
     dest: "{{ nginx_http_pxe_dir }}/ubuntu/{{ item }}"
+    tmp_dest: "{{ nginx_http_pxe_dir }}/ubuntu"
   with_items:
     - linux
     - initrd.gz

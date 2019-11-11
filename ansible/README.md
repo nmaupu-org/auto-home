@@ -7,12 +7,19 @@ ansible-galaxy install -r requirements.yml
 
 # Openwrt devices bootstrap
 
-First, plug and boot the device, then:
+** You need to use an ethernet cable for the bootstrap procedure ! **
+
+First, plug and boot the device:
+- wan cable to the box, bridge mode
+- lan cables as needed
+- USB key in USB port, formatted as `fat32` or `ext4`
+
+Boot the device up and:
 - connect to http://192.168.1.1
 - set a root password via the ui
-- set a ssh public key (better for ansible usage)
+- set a ssh public key (needed for ansible later on)
 
-Then, ssh to the device and do:
+SSH to the device and install the following (needed for ansible):
 ```
 opkg update
 opkg install python-light python-logging python-openssl python-codecs openssh-sftp-server uclient-fetch libustream-mbedtls ca-bundle ca-certificates
@@ -21,7 +28,7 @@ uci commit
 /etc/init.d/network restart
 ```
 
-** Device IP has now changed to 192.168.12.1, renew DHCP lease before proceeding further ! **
+** Device IP has now changed to 192.168.12.1, renew locale DHCP lease before proceeding further ! **
 
 To install, simply use:
 ```

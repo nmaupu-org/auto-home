@@ -5,16 +5,23 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - kmod-fs-ext4 
-    - kmod-fs-vfat 
+    - kmod-fs-ext4
+    - kmod-fs-vfat
+    - kmod-fs-isofs
+    - kmod-fs-nfs
+    - kmod-fs-nfs-common
+    - e2fsprogs
     - usbutils
     - kmod-usb-storage
     - block-mount
+    - unzip
+    - tar
+    - gzip
 
 - name: PXE - Creating external storage directory
   file:
     state: directory
-    path: /mnt/extstorage
+    path: "{{ firewall_pxe.usb_mount_dir }}"
     mode: '0755'
 
 - name: PXE - Revert potential pending changes if needed
@@ -30,7 +37,8 @@
   delay: 0
   retries: 999
   ignore_errors: true
-  notify: restart fstab
+  notify:
+    - restart fstab
 
 - name: Deleting default fstab mounts configurations
   uci:
@@ -41,7 +49,8 @@
   delay: 0
   retries: 999
   ignore_errors: true
-  notify: restart fstab
+  notify:
+    - restart fstab
 
 - name: Adding fstab global section
   uci:
@@ -56,6 +65,8 @@
     command: rename
     key: fstab.@global[-1]
     value: automount
+  notify:
+    - restart fstab
 
 - name: Configuring fstab global automount section
   uci:
@@ -64,6 +75,8 @@
     value:
       from_fstab: 1
       anon_mount: 1
+  notify:
+    - restart fstab
 
 - name: Adding fstab global section
   uci:
@@ -73,11 +86,13 @@
   notify:
     - restart fstab
 
-- name: Rename config global to autoswap  
+- name: Rename config global to autoswap
   uci:
     command: rename
     key: fstab.@global[-1]
     value: autoswap
+  notify:
+    - restart fstab
 
 - name: Configuring fstab global automount section
   uci:
@@ -86,28 +101,49 @@
     value:
       from_fstab: 1
       anon_swap: 0
+  notify:
+    - restart fstab
 
 - name: Adding a mount section
   uci:
     command: add
     config: fstab
     type: mount
+  notify:
+    - restart fstab
 
 - name: Configuring mount section
   uci:
     command: set
     key: fstab.@mount[-1]
     value:
-      target: /mnt/extstorage
+      target: "{{ firewall_pxe.usb_mount_dir }}"
       device: /dev/sda1
       enabled: 1
       enable_fsck: 0
+  notify:
+    - restart fstab
+
+- name: Add iso mounts at boot time
+  uci:
+    command: add
+    config: fstab
+    type: mount
+  notify:
+    - restart fstab
+
+- name: Configuring iso mounts section
+  uci:
+    command: set
+    key: fstab.@mount[-1]
+    value:
+      device: "{{ firewall_pxe.usb_mount_dir }}/www/pxe/isos/debian-live-10.1.0-amd64-xfce.iso"
+      target: "{{ firewall_pxe.usb_mount_dir }}/www/pxe/debian-live"
+      enabled: 1
+      enable_fsck: 0
+      options: ro
+  notify: restart fstab
 
 - name: PXE - Commit UCI changes
   uci:
     command: commit
-
-- name: Enabling fstab service
-  service:
-    name: fstab
-    enabled: yes

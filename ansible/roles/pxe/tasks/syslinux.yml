@@ -1,27 +1,31 @@
 ---
 
-- name: Dowloading syslinux binaries under {{tftproot_dir}}
+- name: Dowloading syslinux binaries under {{ tmpdir }}
   unarchive:
-    src: "{{syslinux_url}}/syslinux-{{syslinux_version}}.tar.gz"
-    dest: /tmp
+    src: "{{ syslinux_url }}/syslinux-{{ syslinux_version }}.tar.gz"
+    dest: "{{ tmpdir }}"
     remote_src: true
+    extra_opts:
+      - --no-same-owner
 
 - name: Creating some directories under {{tftproot_dir}}
   file:
-    dest: "{{tftproot_dir}}/{{item}}"
+    dest: "{{ tftproot_dir }}/{{ item }}"
     mode: 0755
     state: directory
   with_items:
     - bios
     - bios/pxelinux.cfg
-    - "{{ipxe_scripts_dir}}"
+    - "{{ ipxe_scripts_dir }}"
 
 - name: Copying necessary files for syslinux
   copy:
-    src: /tmp/syslinux-{{syslinux_version}}/{{item}}
-    dest: /tftproot/bios
+    src: "/{{ tmpdir }}/syslinux-{{ syslinux_version }}/{{ item }}"
+    dest: /{{ tftpdir }}/bios
     remote_src: true
   with_items:
+    - bios/core/pxelinux.0
+    - bios/core/lpxelinux.0
     - bios/com32/elflink/ldlinux/ldlinux.c32
     - bios/com32/menu/vesamenu.c32
     - bios/com32/lib/libcom32.c32
@@ -29,29 +33,28 @@
 
 - name: Dowloading and copying ipxe.lkrn binary file
   get_url:
-    url: "{{ipxe_lkrn_url}}"
-    dest: "{{tftproot_dir}}/bios/ipxe.lkrn"
+    url: "{{ ipxe_lkrn_url }}"
+    dest: "{{ tftproot_dir }}/bios/ipxe.lkrn"
     mode: 0755
 
 - name: Creating pxelinux.cfg default config
   template:
     src: templates/pxelinux-default.j2
-    dest: "{{tftproot_dir}}/bios/pxelinux.cfg/default"
+    dest: "{{ tftproot_dir }}/bios/pxelinux.cfg/default"
     mode: 0644
 
 - name: Copying graphics.conf file
   copy:
     src: files/graphics.conf
-    dest: "{{tftproot_dir}}/bios/pxelinux.cfg/graphics.conf"
+    dest: "{{ tftproot_dir }}/bios/pxelinux.cfg/graphics.conf"
     mode: 0644
 
 - name: Creating ipxe scripts
   template:
-    src: templates/{{item}}.j2
-    dest: "{{tftproot_dir}}/bios/ipxe-scripts/{{item}}"
+    src: templates/{{ item }}.j2
+    dest: "{{ tftproot_dir }}/bios/ipxe-scripts/{{ item }}"
     mode: 0644
   with_items:
     - ubuntu.ipxe
     - debian-live-xfce.ipxe
     - get-mac-addr.ipxe
-

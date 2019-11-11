@@ -1,20 +1,22 @@
 ---
 
 - name: Installing nginx server
-  apt:
+  opkg:
     name: nginx
     state: present
+    update_cache: yes
 
 - name: Creating nginx http directories
   file:
-    dest: "{{item}}"
+    dest: "{{ item }}"
     mode: 0755
     owner: root
     group: root
     state: directory
   with_items:
-    - "{{nginx_http_pxe_dir}}"
-    - "{{nginx_http_pxe_dir}}/isos"
+    - "{{ nginx_http_pxe_dir }}"
+    - "{{ nginx_http_pxe_dir }}/isos"
+    - /etc/nginx/conf.d
 
 - name: Configuring nginx
   template:

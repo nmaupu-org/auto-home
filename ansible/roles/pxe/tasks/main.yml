@@ -1,7 +1,5 @@
 ---
 
-- import_tasks: tftpd-hpa.yml
-  tags: pxe-tftpd-hpa
 - import_tasks: syslinux.yml
   tags: pxe-syslinux
 - import_tasks: http-server.yml

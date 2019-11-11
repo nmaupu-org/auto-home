@@ -94,3 +94,15 @@
     apply:
       tags: ['firewall_pxe']
   tags: ['always']
+
+- name: Processing PXE content
+  import_role:
+    name: pxe
+  vars:
+    tftproot_dir: "{{ firewall_pxe.usb_mount_dir }}"
+    tftpdir: "{{ firewall_pxe.usb_mount_dir }}"
+    tmpdir: "/tmp"
+    nginx_http_dir: /mnt/extstorage/www
+    nginx_port: 8080
+    pxe_http_server: "{{ firewall_network_interfaces.lan.ipaddr }}"
+  tags: ['firewall_pxe']

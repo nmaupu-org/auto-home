@@ -1,9 +1,9 @@
 #!ipxe
 
 dhcp
-kernel http://{{pxe_http_server}}/{{nginx_http_pxe_url}}/debian-live/live/{{debian_live_iso.kernel}}
-initrd http://{{pxe_http_server}}/{{nginx_http_pxe_url}}/debian-live/live/{{debian_live_iso.initrd}}
+kernel http://{{pxe_http_server}}:{{ nginx_port }}/{{nginx_http_pxe_url}}/debian-live/live/{{debian_live_iso.kernel}}
+initrd http://{{pxe_http_server}}:{{ nginx_port }}/{{nginx_http_pxe_url}}/debian-live/live/{{debian_live_iso.initrd}}
 imgargs {{debian_live_iso.kernel}} \
   boot=live config hooks=filesystem ${conkern} username=live noeject \
-  fetch=http://{{pxe_http_server}}/pxe/debian-live/live/filesystem.squashfs
+  fetch=http://{{pxe_http_server}}:{{ nginx_port }}/pxe/debian-live/live/filesystem.squashfs
 boot

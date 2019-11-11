@@ -7,21 +7,25 @@
   service:
     name: firewall
     state: restarted
+    enabled: yes
 
 - name: reload firewall
   service:
     name: firewall
     state: reloaded
+    enabled: yes
 
 - name: reload dhcp
   service:
     name: dnsmasq
     state: reloaded
+    enabled: yes
 
 - name: restart dhcp
   service:
     name: dnsmasq
     state: restarted
+    enabled: yes
 
 - name: restart dropbear
   service:
@@ -33,6 +37,7 @@
   service:
     name: network
     state: restarted
+    enabled: yes
 
 - name: restart prometheus
   service:

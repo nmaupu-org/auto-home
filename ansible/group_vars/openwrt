@@ -63,6 +63,8 @@ firewall_dhcp:
 
 firewall_dnsmasq_config:
   domain: home.fossar.net
+  enable_tftp: 1
+  tftp_root: /mnt/extstorage/bios
 
 firewall_dhcp_static_leases:
   - name: freenas
@@ -130,26 +132,29 @@ firewall_dns_entries:
 
 firewall_ports:
   - target: DNAT
+    enabled: 1
     src: wan
     dest: lan
     proto: tcp
-    src_port: 22
+    src_dport: 22
     dest_port: 22
     dest_ip: 192.168.12.11
     name: bastion SSH
   - target: DNAT
+    enabled: 1
     src: wan
     dest: lan
     proto: tcp
-    src_port: 32400
+    src_dport: 32400
     dest_port: 32400
     dest_ip: 192.168.12.155
     name: plex
   - target: DNAT
+    enabled: 1
     src: wan
     dest: lan
     proto: tcp
-    src_port: 6800-7000
+    src_dport: 6800-7000
     dest_port: 6800-7000
     dest_ip: 192.168.12.158
     name: torrent

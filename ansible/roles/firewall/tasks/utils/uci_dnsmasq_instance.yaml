@@ -14,3 +14,22 @@
     key: dhcp.@dnsmasq[-1]
     value: "{{ item }}"
   notify: restart dhcp
+
+- name: "Add boot option"
+  uci:
+    command: add
+    config: dhcp
+    type: boot
+  notify: restart dhcp
+
+- name: "Set boot options"
+  uci:
+    command: set
+    key: dhcp.@boot[-1]
+    value:
+      filename: pxelinux.0
+      serveraddress: "{{ firewall_network_interfaces.lan.ipaddr }}"
+      servername: OpenWrt
+      dhcp_option: 209,pxelinux.cfg/default
+      force: 1
+  notify: restart dhcp
