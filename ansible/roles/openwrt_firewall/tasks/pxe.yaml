@@ -5,14 +5,17 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - kmod-usb-storage
     - kmod-fs-ext4
     - kmod-fs-vfat
     - kmod-fs-isofs
     - kmod-fs-nfs
     - kmod-fs-nfs-common
+    - kmod-loop
+    - mount-utils
+    - losetup
     - e2fsprogs
     - usbutils
-    - kmod-usb-storage
     - block-mount
     - unzip
     - tar
@@ -60,51 +63,15 @@
   notify:
     - restart fstab
 
-- name: Rename config global to automount
-  uci:
-    command: rename
-    key: fstab.@global[-1]
-    value: automount
-  notify:
-    - restart fstab
-
-- name: Configuring fstab global automount section
+- name: Configuring fstab global section
   uci:
     command: set
-    key: fstab.automount
-    value:
-      from_fstab: 1
-      anon_mount: 1
-  notify:
-    - restart fstab
-
-- name: Adding fstab global section
-  uci:
-    command: add
-    config: fstab
-    type: global
-  notify:
-    - restart fstab
-
-- name: Rename config global to autoswap
-  uci:
-    command: rename
     key: fstab.@global[-1]
-    value: autoswap
+    value: "{{ firewall_fstab.global }}"
   notify:
     - restart fstab
 
-- name: Configuring fstab global automount section
-  uci:
-    command: set
-    key: fstab.autoswap
-    value:
-      from_fstab: 1
-      anon_swap: 0
-  notify:
-    - restart fstab
-
-- name: Adding a mount section
+- name: Adding a mount section for usb storage
   uci:
     command: add
     config: fstab
@@ -112,18 +79,18 @@
   notify:
     - restart fstab
 
-- name: Configuring mount section
+- name: Configuring mount section for usb storage
   uci:
     command: set
     key: fstab.@mount[-1]
-    value:
-      target: "{{ firewall_pxe.usb_mount_dir }}"
-      device: /dev/sda1
-      enabled: 1
-      enable_fsck: 0
+    value: "{{ firewall_usb.mount }}"
   notify:
     - restart fstab
 
 - name: PXE - Commit UCI changes
   uci:
     command: commit
+
+- name: Force mount usb storage before handlers kick in
+  shell: |
+    block mount

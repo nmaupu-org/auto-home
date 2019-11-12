@@ -38,6 +38,7 @@
       target: "{{ nginx_http_pxe_dir }}/debian-live"
       enable_fsck: 0
       options: ro
+      fstype: iso9660
   notify: restart fstab
 
 - name: PXE - Commit UCI changes

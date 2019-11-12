@@ -95,8 +95,26 @@ firewall_prometheus:
   listen_address: ::1
   listen_port: 9100
 
+firewall_fstab:
+  global:
+    anon_swap: 0
+    anon_mount: 0
+    auto_swap: 0
+    auto_mount: 1
+    delay_root: 5
+    check_fs: 0
+
 firewall_pxe:
   nginx_port: 8080
   usb_mount_dir: /mnt/extstorage
   syslinux:
     url: https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.gz
+
+firewall_usb:
+  mount:
+    enabled: 1
+    device: /dev/sda1
+    enable_fsck: 0
+    fstype: ext4
+    options: rw,sync,noatime
+    target: "{{ firewall_pxe.usb_mount_dir }}"
