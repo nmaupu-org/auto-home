@@ -10,3 +10,11 @@
   tags: pxe-debian-live-xfce
 - import_tasks: pxe-ubuntu-install.yml
   tags: pxe-ubuntu
+
+- name: Adding rc.local script to mount iso at boot
+  template:
+    src: templates/openwrt-rc.local.j2
+    dest: /etc/rc.local
+    mode: 0555
+  notify:
+    - run rc.local

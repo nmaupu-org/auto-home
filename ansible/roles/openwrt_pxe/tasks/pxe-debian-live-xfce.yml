@@ -26,7 +26,7 @@
     config: fstab
     type: mount
   notify:
-    - restart fstab
+    - run rc.local
 
 - name: Configuring iso mount section
   uci:
@@ -34,12 +34,13 @@
     key: fstab.@mount[-1]
     value:
       enabled: 1
-      device: "{{ nginx_http_pxe_dir }}/isos/{{ debian_live_iso.image_name }}"
+      device: "/dev/loop0"
       target: "{{ nginx_http_pxe_dir }}/debian-live"
       enable_fsck: 0
       options: ro
       fstype: iso9660
-  notify: restart fstab
+  notify:
+    - run rc.local
 
 - name: PXE - Commit UCI changes
   uci:

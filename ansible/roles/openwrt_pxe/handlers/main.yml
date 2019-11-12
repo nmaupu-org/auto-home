@@ -7,3 +7,7 @@
 - name: restart fstab
   shell: |
     block mount
+
+- name: run rc.local
+  shell: |
+    /etc/rc.local

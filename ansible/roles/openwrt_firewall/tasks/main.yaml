@@ -95,7 +95,7 @@
       tags: ['firewall_pxe']
   tags: ['always']
 
-- name: Processing PXE content
+- name: Processing PXE service configuration
   import_role:
     name: openwrt_pxe
   vars:

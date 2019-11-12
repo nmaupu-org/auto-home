@@ -72,20 +72,8 @@
     - restart fstab
 
 - name: Adding a mount section for usb storage
-  uci:
-    command: add
-    config: fstab
-    type: mount
-  notify:
-    - restart fstab
-
-- name: Configuring mount section for usb storage
-  uci:
-    command: set
-    key: fstab.@mount[-1]
-    value: "{{ firewall_usb.mount }}"
-  notify:
-    - restart fstab
+  include_tasks: utils/uci_fstab_add_mount.yaml
+  loop: "{{ firewall_usb.mounts }}"
 
 - name: PXE - Commit UCI changes
   uci:

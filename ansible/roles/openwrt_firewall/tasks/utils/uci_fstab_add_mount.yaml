@@ -1,0 +1,17 @@
+---
+
+- name: Adding a mount section
+  uci:
+    command: add
+    config: fstab
+    type: mount
+  notify:
+    - restart fstab
+
+- name: Setting mount section options
+  uci:
+    command: set
+    key: fstab.@mount[-1]
+    value: "{{ item }}"
+  notify:
+    - restart fstab

@@ -1,0 +1,15 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+# Created by ansible from firewall_pxe role
+
+LOOP_DEVICE=$(losetup -f)
+losetup ${LOOP_DEVICE} {{ nginx_http_pxe_dir }}/isos/{{ debian_live_iso.image_name }}
+
+# Getting mount index for this iso
+MOUNT_IDX=$(uci show fstab | grep debian | cut -d. -f2 | sed -e 's/@mount\[\(\d\)\]/\1/g')
+uci set fstab.@mount[${MOUNT_IDX}].device="${LOOP_DEVICE}"
+
+uci commit fstab
+block mount
+
+exit 0

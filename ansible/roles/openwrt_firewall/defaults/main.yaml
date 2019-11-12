@@ -111,10 +111,10 @@ firewall_pxe:
     url: https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.gz
 
 firewall_usb:
-  mount:
-    enabled: 1
-    device: /dev/sda1
-    enable_fsck: 0
-    fstype: ext4
-    options: rw,sync,noatime
-    target: "{{ firewall_pxe.usb_mount_dir }}"
+  mounts:
+    - enabled: 1
+      device: /dev/sda1
+      enable_fsck: 0
+      fstype: ext4
+      options: rw,sync,noatime
+      target: "{{ firewall_pxe.usb_mount_dir }}"
