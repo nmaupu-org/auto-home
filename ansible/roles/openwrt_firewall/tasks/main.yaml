@@ -105,4 +105,4 @@
     nginx_http_dir: /mnt/extstorage/www
     nginx_port: 8080
     pxe_http_server: "{{ firewall_network_interfaces.lan.ipaddr }}"
-  tags: ['firewall_pxe']
+  tags: ['firewall_pxe_config']
