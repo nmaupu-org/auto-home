@@ -18,16 +18,20 @@ ingress-controller:
 
 .PHONY: freenas-provisioner
 .SILENT: freenas-provisioner
-freenas-provisioner:
+freenas-provisioner: check-vault
 	helm upgrade --install \
 		--namespace tools \
-		--set deployment.image.tag=2.4 \
+		--set deployment.image.tag=2.5 \
 		--set freenas.username=$(shell vault read -field username secret/nas) \
 		--set freenas.password=$(shell vault read -field password secret/nas) \
-		--set freenas.host=$(shell vault read -field url secret/nas) \
-		--set freenas.port=:443 \
-		--set freenas.protocol=https \
-		--set storageclass.reclaimPolicy=Retain \
+		--set freenas.host=$(shell vault read -field ip secret/nas) \
+		--set freenas.port=:80 \
+		--set freenas.protocol=http \
+		--set freenas.allowInsecure=true \
+		--set storageclass.reclaimPolicy=Delete \
+		--set storageclass.datasetParentName=tank/kube-nfs/provisioner \
+		--set storageclass.shareAllowedNetworks=192.168.12.0/24 \
+		--set storageclass.shareRetainPreExisting=false \
 		fp \
 		freenas-provisioner
 
@@ -37,3 +41,7 @@ gonaomi:
 		--namespace tools \
 		gon \
 		gonaomi
+
+.PHONY: check-vault
+check-vault:
+	@vault token lookup >/dev/null 2>&1

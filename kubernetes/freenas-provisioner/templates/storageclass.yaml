@@ -24,7 +24,7 @@ parameters:
   # be created, it *must* exist before provisioner will work
   # example: tank/k8s/mycluster
   # default: tank
-  datasetParentName: tank/kube-nfs
+  datasetParentName: {{ .Values.storageclass.datasetParentName }}
 
   # whether to enforce quotas for each dataset
   # if enabled each newly provisioned dataset will set the appropriate quota
@@ -89,7 +89,7 @@ parameters:
   # Authorized hosts/networks (space-separated) allowed to access the shares
   # default: ""
   #shareAllowedHosts:
-  #shareAllowedNetworks:
+  shareAllowedNetworks: {{ .Values.storageclass.shareAllowedNetworks | quote }}
 
   # Determines root mapping
   # cannot be used simultaneously with shareMapAll{User,Group}
@@ -108,5 +108,5 @@ parameters:
   # provisioner during deletion of the reclaim process
   # ignored if datasetDeterministicNames is disabled (collisions result in failure)
   # default: true
-  #shareRetainPreExisting:
+  shareRetainPreExisting: {{ .Values.storageclass.shareRetainPreExisting | quote }}
 {{- end }}

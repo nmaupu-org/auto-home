@@ -125,6 +125,7 @@ firewall_dns_entries:
     - deluge
     - sickchill
     - plex
+  192.168.12.159:
     - vault
 
 firewall_ports:
