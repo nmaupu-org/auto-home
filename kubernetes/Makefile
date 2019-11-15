@@ -48,7 +48,6 @@ mosquitto:
 		--set deployment.resources.limits.cpu=200m \
 		--set deployment.resources.limits.memory=256Mi \
 		--set deployment.hostNetwork=true \
-		--set mDNS.enabled=true \
 		mos \
 		mosquitto
 
