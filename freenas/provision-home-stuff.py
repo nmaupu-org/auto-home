@@ -124,12 +124,6 @@ def main():
     r = fac.createNfsShareForKube("Photoweb NFS share for kube", "/mnt/tank/kube-nfs/photoweb", True)
     print(r.status_code, r.text)
 
-    # Minio
-    r = fac.createDataset("kube-nfs/minio", "Minio")
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Minio NFS share for kube", "/mnt/tank/kube-nfs/minio", False)
-    print(r.status_code, r.text)
-
     # Vault
     # Creating group vault as in the vault container (gid = 100)
     vault_name = "vault"
@@ -161,33 +155,6 @@ def main():
     # Yes, creating a share with root:vault permission
     r = fac.createNfsShareForKube("Vault NFS share for kube", "/mnt/tank/kube-nfs/vault", False, "root", vault_name)
     print(r.status_code, r.text)
-
-    # Influx DB
-    r = fac.createDataset("kube-nfs/monitoring-influxdb", "InfluxDB Monitoring")
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Monitoring InfluxDB storage for Kube", "/mnt/tank/kube-nfs/monitoring-influxdb", False)
-    print(r.status_code, r.text)
-    # Grafana
-    r = fac.createDataset("kube-nfs/grafana", "Grafana dashboard")
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Grafana for Kube", "/mnt/tank/kube-nfs/grafana", False)
-    print(r.status_code, r.text)
-
-    #Automatic Video Library Manager
-    r = fac.createDataset("kube-nfs/couchpotato", "Couchpotato datadir")
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Couchpotato datadir share", "/mnt/tank/kube-nfs/couchpotato", False)
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Couchpotato downloads share (listen dir)", "/mnt/tank/dls/seedbox", True, all_dirs=True)
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Couchpotato Movies share (on air)", "/mnt/tank/misc/plex", False, all_dirs=True)
-    print(r.status_code, r.text)
-
-    r = fac.createDataset("kube-nfs/sickrage", "Sickrage datadir")
-    print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Sickrage datadir share", "/mnt/tank/kube-nfs/sickrage", False)
-    print(r.status_code, r.text)
-
 
     ###################################
     ## jails and associated datasets ##
