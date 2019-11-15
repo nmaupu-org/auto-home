@@ -17,6 +17,11 @@ stream {
     server {{knode}}:443;
 {% endfor %}
   }
+  upstream kube_nodes_1883 {
+{% for knode in kube_nodes %}
+    server {{knode}}:1883;
+{% endfor %}
+  }
 
   server {
     listen      443;
@@ -25,5 +30,9 @@ stream {
   server {
     listen      80;
     proxy_pass kube_nodes_80;
+  }
+  server {
+    listen      1883;
+    proxy_pass kube_nodes_1883;
   }
 }

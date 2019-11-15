@@ -1,8 +1,11 @@
-.PHONY: tiller
-tiller:
+.PHONY: helm
+helm:
 	kubectl apply -f tiller/deployment.yaml
 	kubectl apply -f tiller/service.yaml
 	kubectl apply -f tiller/service-account.yaml
+	# Needed for installing mosquitto (MQTT) chart
+	helm repo add smizy https://smizy.github.io/charts
+	helm repo update
 
 .PHONY: ingress-controller
 ingress-controller:
@@ -35,12 +38,26 @@ freenas-provisioner: check-vault
 		fp \
 		freenas-provisioner
 
-.PHONY: gonaomi
-gonaomi:
+.PHONY: mosquitto
+mosquitto:
 	helm upgrade --install \
-		--namespace tools \
-		gon \
-		gonaomi
+		--namespace iot \
+		--set persistence.enabled=true \
+		--set persistence.size=20Gi \
+		--set persistence.storageClass=freenas-nfs \
+		--set deployment.resources.limits.cpu=200m \
+		--set deployment.resources.limits.memory=256Mi \
+		--set deployment.hostNetwork=true \
+		--set mDNS.enabled=true \
+		mos \
+		mosquitto
+
+#.PHONY: gonaomi
+#gonaomi:
+#	helm upgrade --install \
+#		--namespace tools \
+#		gon \
+#		gonaomi
 
 .PHONY: check-vault
 check-vault:

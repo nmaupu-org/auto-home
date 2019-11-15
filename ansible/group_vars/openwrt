@@ -8,6 +8,8 @@ firewall_packages:
   - kmod-ipt-ipset
   - vpn-policy-routing
   - luci-app-vpn-policy-routing
+  - avahi-daemon-service-ssh
+  - avahi-daemon-service-http
 
 firewall_network_interfaces:
   lan:
@@ -125,6 +127,7 @@ firewall_dns_entries:
     - deluge
     - sickchill
     - plex
+    - mqtt
   192.168.12.159:
     - vault
 
