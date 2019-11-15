@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: haproxy-ingress
+  name: haproxy-ingress
+  namespace: ingress-controller
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: haproxy-ingress
+  template:
+    metadata:
+      labels:
+        run: haproxy-ingress
+    spec:
+      hostNetwork: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/role
+                operator: NotIn
+                values:
+                - master
+      serviceAccountName: ingress-controller
+      containers:
+      - name: haproxy-ingress
+        image: quay.io/jcmoraisjr/haproxy-ingress:v0.7.2
+        args:
+        - --default-backend-service=$(POD_NAMESPACE)/ingress-default-backend
+        - --configmap=$(POD_NAMESPACE)/haproxy-ingress
+        - --sort-backends
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: stat
+          containerPort: 1936
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      - name: prometheus-exporter
+        image: quay.io/prometheus/haproxy-exporter:v0.9.0
+        args:
+          - --haproxy.scrape-uri=http://127.0.0.1:1936/haproxy?stats;csv
+        ports:
+          - name: prom-metrics
+            containerPort: 9101

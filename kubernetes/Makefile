@@ -1,3 +1,9 @@
+.PHONY: tiller
+tiller:
+	kubectl apply -f tiller/deployment.yaml
+	kubectl apply -f tiller/service.yaml
+	kubectl apply -f tiller/service-account.yaml
+
 .PHONY: ingress-controller
 ingress-controller:
 	helm upgrade --install \

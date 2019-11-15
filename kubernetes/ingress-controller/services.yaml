@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-default-backend
+  namespace: ingress-controller
+spec:
+  ports:
+  - port: 8080
+  selector:
+    run: ingress-default-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: haproxy-prom-metrics
+  name: haproxy-prom-metrics
+  namespace: ingress-controller
+spec:
+  type: ClusterIP
+  ports:
+  - name: prom-metrics
+    port: 9101
+    targetPort: prom-metrics
+  selector:
+    run: haproxy-ingress
+  sessionAffinity: None

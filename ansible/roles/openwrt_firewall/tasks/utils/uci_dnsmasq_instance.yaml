@@ -12,8 +12,15 @@
   uci:
     command: set
     key: dhcp.@dnsmasq[-1]
-    value: "{{ item }}"
+    value: "{{ outer_item.options }}"
   notify: restart dhcp
+
+- name: "Set dnsmasq instance's list configuration"
+  uci:
+    command: add_list
+    key: dhcp.@dnsmasq[-1].address
+    value: "{{ item }}"
+  loop: "{{ outer_item.addresses }}"
 
 - name: "Add boot option"
   uci:
@@ -30,6 +37,12 @@
       filename: pxelinux.0
       serveraddress: "{{ firewall_network_interfaces.lan.ipaddr }}"
       servername: OpenWrt
-      dhcp_option: 209,pxelinux.cfg/default
       force: 1
+  notify: restart dhcp
+
+- name: "Set dhcp_option list"
+  uci:
+    command: add_list
+    key: dhcp.@boot[-1].dhcp_option
+    value: 209,pxelinux.cfg/default
   notify: restart dhcp

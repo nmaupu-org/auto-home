@@ -10,9 +10,9 @@ http {
     sendfile          on;
     keepalive_timeout 65;
 
-    upstream kube_nodes_30080 {
+    upstream kube_nodes_80 {
 {% for knode in kube_nodes %}
-        server {{knode}}:30080;
+        server {{knode}}:80;
 {% endfor %}
     }
 
@@ -21,7 +21,7 @@ http {
         server_name photoweb.*;
 
         location / {
-            proxy_pass http://kube_nodes_30080;
+            proxy_pass http://kube_nodes_80;
             proxy_set_header Host $host;
             auth_basic "Restricted area";
             auth_basic_user_file {{rproxy_conf_dir}}/htpasswd.photoweb;
@@ -73,7 +73,7 @@ http {
         server_name kube-ops-view.*;
 
         location / {
-            proxy_pass http://kube_nodes_30080;
+            proxy_pass http://kube_nodes_80;
             proxy_set_header Host $host;
             proxy_set_header Connection keep-alive;
             proxy_buffering off;
@@ -86,7 +86,7 @@ http {
         server_name  _;
 
         location / {
-            proxy_pass http://kube_nodes_30080;
+            proxy_pass http://kube_nodes_80;
             proxy_set_header Host $host;
         }
     }

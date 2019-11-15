@@ -81,7 +81,7 @@
       tags: ['firewall_redirects']
   tags: ['always']
 
-- name: Processing prometheus
+- name: Processing prometheus exporter
   include_tasks:
     file: prometheus.yaml
     apply:

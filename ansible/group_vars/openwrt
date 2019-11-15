@@ -62,9 +62,13 @@ firewall_dhcp:
     limit: 250
 
 firewall_dnsmasq_config:
-  domain: home.fossar.net
-  enable_tftp: 1
-  tftp_root: /mnt/extstorage/bios
+  options:
+    domain: home.fossar.net
+    enable_tftp: 1
+    tftp_root: /mnt/extstorage/bios
+  addresses:
+    - /foo/192.168.12.157
+    - /foo.home.fossar.net/192.168.12.157
 
 firewall_dhcp_static_leases:
   - name: freenas
@@ -118,17 +122,6 @@ firewall_dns_entries:
     - utils
   192.168.12.157:
     - rproxy
-    - couchpotato
-    - grafana
-    - rproxy
-    - minio
-    - photoweb
-    - sickchill
-    - vault
-    - gonaomi
-  192.168.12.12:
-    - kube
-    - k8s
 
 firewall_ports:
   - target: DNAT

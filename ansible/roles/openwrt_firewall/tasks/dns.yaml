@@ -4,6 +4,17 @@
   uci:
     command: revert
 
+- name: Delete all boot options
+  uci:
+    command: delete
+    key: dhcp.@boot[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 999
+  ignore_errors: true
+  notify: restart dhcp
+
 - name: Delete all dnsmasq entries
   uci:
     command: delete
@@ -18,6 +29,8 @@
 - name: Add dnsmasq instances
   include_tasks: utils/uci_dnsmasq_instance.yaml
   loop: "[{{ firewall_dnsmasq_config }}]"
+  loop_control:
+    loop_var: outer_item
 
 - name: Deleting all dns entries
   uci:
