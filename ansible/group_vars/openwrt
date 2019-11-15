@@ -122,6 +122,10 @@ firewall_dns_entries:
     - utils
   192.168.12.157:
     - rproxy
+    - deluge
+    - sickchill
+    - plex
+    - vault
 
 firewall_ports:
   - target: DNAT
