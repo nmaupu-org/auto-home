@@ -1,0 +1,46 @@
+#!/bin/sh
+
+. /lib/functions.sh
+
+network_mount() {
+    local config="$1"
+    local enabled
+    local target
+    local src
+    local options
+    local network
+    local fstype
+    local delay
+  
+    config_get_bool enabled "$config" enabled 0
+
+    for opt in target src options network fstype delay
+    do
+        config_get "$opt" "$config" "$opt"
+    done
+
+    if [ "$enabled" = 1 -a "$INTERFACE" = "$network" ]
+    then
+        if [ "$ACTION" = "ifup" ]
+        then
+            if [ "$delay" -a $delay -gt 0 ]; then
+                logger "NetMount: $ACTION: Sleep $delay seconds before mount"
+                sleep $delay
+            fi
+            logger "NetMount: $ACTION: Mounting $src in $target"
+            mount -t $fstype -o $options $src $target
+        elif [ "$ACTION" = "ifdown" ]
+        then
+            logger "NetMount: $ACTION: Umounting $src from $target"
+            umount $target
+        elif [ "$ACTION" = "ifupdate" ]
+        then
+            logger "NetMount: $ACTION: DHCP renew. Leaving $src mounted in $target"
+        else
+            logger "NetMount: Unknown action $ACTION: Leaving $src mounted in $target"
+        fi
+    fi
+}
+
+config_load fstab
+config_foreach network_mount netmount

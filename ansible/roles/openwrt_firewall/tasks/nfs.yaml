@@ -1,0 +1,71 @@
+---
+# Base on workaround specified here
+# https://forum.archive.openwrt.org/viewtopic.php?id=32812&p=1#p349731
+# for boot mount
+# Cannot find a way to use NFS locks for now though...
+
+- name: Installing nfs packages
+  opkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - kmod-fs-nfs
+    - kmod-fs-nfs-common
+    - nfs-utils
+    - kmod-fs-nfs-v4
+    - kmod-fs-nfs-v3
+    - portmap
+
+- name: Creating mount directory
+  file:
+    path: "/mnt/{{ firewall_nfs_mount.name }}"
+    state: directory
+    mode: 0755
+
+- name: Deleting old automount sections
+  uci:
+    command: delete
+    key: fstab.@netmount[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 999
+  ignore_errors: true
+  notify: restart fstab
+
+- name: Creating netmount configuration
+  uci:
+    command: add
+    config: fstab
+    type: netmount
+  notify: restart fstab
+
+- name: Creating netmount configuration
+  uci:
+    command: set
+    key: fstab.@netmount[-1]
+    value:
+      enabled: 1
+      target: "/mnt/{{ firewall_nfs_mount.name }}"
+      src: "{{ firewall_nfs_mount.host }}:{{ firewall_nfs_mount.path }}"
+      options: "{{ firewall_nfs_mount.options }}"
+      network: "{{ firewall_nfs_mount.network }}"
+      fstype: "{{ firewall_nfs_mount.fstype }}"
+      delay: 5
+
+# Script executed at boot time, so we are good for next reboot
+- name: Adding hotplug script
+  copy:
+    src: 98-netmount
+    dest: /etc/hotplug.d/iface/98-netmount
+    mode: 0755
+
+# But for now, mounting the fs ourselves to avoid rebooting ;)
+- name: Force mount nfs filesystem
+  mount:
+    fstab: /tmp/fstab # Avoid modifying fstab
+    path: "/mnt/{{ firewall_nfs_mount.name }}"
+    src: "{{ firewall_nfs_mount.host }}:{{ firewall_nfs_mount.path }}"
+    fstype: "{{ firewall_nfs_mount.fstype }}"
+    opts: "{{ firewall_nfs_mount.options }}"
+    state: mounted

@@ -106,3 +106,10 @@
     nginx_port: 8080
     pxe_http_server: "{{ firewall_network_interfaces.lan.ipaddr }}"
   tags: ['firewall_pxe_config']
+
+- name: Processing NFS netmount configuration
+  include_tasks:
+    file: nfs.yaml
+    apply:
+      tags: ['firewall_nfs']
+  tags: ['always']

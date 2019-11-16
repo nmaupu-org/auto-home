@@ -162,3 +162,11 @@ firewall_ports:
 
 firewall_prometheus:
   listen_address: 192.168.12.1
+
+firewall_nfs_mount:
+  name: openwrt
+  host: 192.168.12.8
+  path: /mnt/tank/openwrt
+  options: nolock,noatime,rw
+  network: lan
+  fstype: nfs

@@ -119,3 +119,11 @@ firewall_usb:
       fstype: ext4
       options: rw,sync,noatime
       target: "{{ firewall_pxe.usb_mount_dir }}"
+
+firewall_nfs_mount: {}
+#  name: openwrt
+#  host: nas_ip
+#  path: /remote/nfs/path
+#  options: nolock,noatime,rw
+#  network: lan
+#  fstype: nfs

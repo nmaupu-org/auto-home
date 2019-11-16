@@ -112,8 +112,7 @@ class FreenasApiCaller:
 ##
 def main():
     fac = FreenasApiCaller(nas_addr, nas_login, nas_password)
-    
-    
+
     # Main kube NFS dataset
     r = fac.createDataset("kube-nfs", "Kube NFS dataset")
     print(r.status_code, r.text)
@@ -155,6 +154,12 @@ def main():
     # Yes, creating a share with root:vault permission
     r = fac.createNfsShareForKube("Vault NFS share for kube", "/mnt/tank/kube-nfs/vault", False, "root", vault_name)
     print(r.status_code, r.text)
+    # Creating openwrt dataset and share
+    r = fac.createDataset("openwrt", "openwrt")
+    print(r.status_code, r.text)
+    r = fac.createNfsShareForKube("Openwrt NFS share", "/mnt/tank/openwrt", False)
+    print(r.status_code, r.text)
+
 
     ###################################
     ## jails and associated datasets ##
