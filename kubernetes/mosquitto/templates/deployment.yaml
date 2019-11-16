@@ -18,20 +18,43 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: {{ template "fullname" . }}
         release: {{ .Release.Name }}
     spec:
       hostNetwork: {{ .Values.deployment.hostNetwork }}
+      initContainers:
+        - name: init-creds
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+          command:
+            - sh
+            - -c
+            - touch /mosquitto/creds; mosquitto_passwd -b /mosquitto/creds "${USERNAME}" "${PASSWORD}"
+          env:
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: username
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: password
+          volumeMounts:
+            - name: mosquitto-creds
+              mountPath: /mosquitto
       containers:
-      - image: {{ .Values.image }}
-        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         name: {{ template "fullname" . }}
         ports:
-        - containerPort: 1883
-          name: "mqtt"
-        - containerPort: 9090
-          name: "websocket"
+          - containerPort: 1883
+            name: "mqtt"
+          - containerPort: 9090
+            name: "websocket"
         volumeMounts:
           - name: mosquitto-conf
             mountPath: /mosquitto/config/mosquitto.conf
@@ -40,6 +63,8 @@ spec:
           - name: mosquitto-data
             mountPath: /mosquitto/data
             subPath: mosquitto/data
+          - name: mosquitto-creds
+            mountPath: /mosquitto
         {{- with .Values.deployment.probes }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -48,13 +73,15 @@ spec:
           {{- toYaml . | nindent 10 }}
         {{- end }}
       volumes:
-      - name: mosquitto-conf
-        configMap:
-          name: {{ template "fullname" . }}
-      - name: mosquitto-data
-      {{- if .Values.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ template "fullname" . }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
+        - name: mosquitto-creds
+          emptyDir: {}
+        - name: mosquitto-conf
+          configMap:
+            name: {{ template "fullname" . }}
+        - name: mosquitto-data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "fullname" . }}
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}

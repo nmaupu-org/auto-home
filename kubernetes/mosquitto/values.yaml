@@ -2,9 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-image: smizy/mosquitto:1.4.12-alpine
-
-imagePullPolicy: IfNotPresent
+image:
+  repository: smizy/mosquitto
+  tag: 1.4.12-alpine
+  imagePullPolicy: IfNotPresent
 
 service:
   enabled: true
@@ -37,8 +38,14 @@ deployment:
       cpu: 100m
       memory: 256Mi
 
+creds:
+  username: iot
+  password: iot
+
 config: |-
   log_dest stdout
   listener 1883
   listener 9090
   protocol websockets
+  allow_anonymous false
+  password_file /mosquitto/creds
