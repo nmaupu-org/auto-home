@@ -1,7 +1,6 @@
 [ssh_connection]
 scp_if_ssh=True
 
-
 [work]
 test ansible_host=192.168.12.248 ansible_user=nmaupu
 mbr ansible_host=192.168.12.10 ansible_user=bicnic
@@ -23,7 +22,7 @@ raspbastion ansible_host=192.168.12.11 ansible_user=pi
 [linux:children]
 pxe
 
-[jails-host]
+[jails_host]
 nas         ansible_host=192.168.12.8
 
 [jails]
@@ -33,7 +32,7 @@ vault       ansible_host=192.168.12.159
 sickchill   ansible_host=192.168.12.160
 
 [freebsd:children]
-jails-host
+jails_host
 jails
 
 [freebsd:vars]
@@ -41,17 +40,17 @@ ansible_user=root
 ansible_python_interpreter=/usr/local/bin/python2.7
 #ansible_shell_type=csh
 
-[coreos-controllers]
+[coreos_controllers]
 kcontroller1 ansible_host=192.168.12.12
 
-[coreos-nodes]
+[coreos_nodes]
 knode1       ansible_host=192.168.12.13
 knode2       ansible_host=192.168.12.14
 knode3       ansible_host=192.168.12.15
 
 [coreos:children]
-coreos-controllers
-coreos-nodes
+coreos_controllers
+coreos_nodes
 
 [coreos:vars]
 ansible_ssh_user=core

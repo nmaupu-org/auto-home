@@ -170,3 +170,11 @@ firewall_nfs_mount:
   options: nolock,noatime,rw
   network: lan
   fstype: nfs
+
+firewall_mqtt:
+  enabled: yes
+  port: 1883
+  websocket_port: 9090
+  creds:
+    - username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
+      password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"

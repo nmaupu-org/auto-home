@@ -127,3 +127,13 @@ firewall_nfs_mount: {}
 #  options: nolock,noatime,rw
 #  network: lan
 #  fstype: nfs
+
+firewall_mqtt:
+  enabled: no
+  port: 1883
+  websocket_port: 9090
+# creds:
+#   - name: user
+#     password: pass
+#   - name: user2
+#     password: pass

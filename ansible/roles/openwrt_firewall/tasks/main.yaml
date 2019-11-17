@@ -113,3 +113,12 @@
     apply:
       tags: ['firewall_nfs']
   tags: ['always']
+
+- name: Processing Mosquitto server
+  include_tasks:
+    file: mqtt.yaml
+    apply:
+      tags: ['firewall_mqtt']
+  tags: ['always']
+  when: firewall_mqtt.enabled
+

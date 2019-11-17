@@ -38,18 +38,19 @@ freenas-provisioner: check-vault
 		fp \
 		freenas-provisioner
 
-.PHONY: mosquitto
-mosquitto:
-	helm upgrade --install \
-		--namespace iot \
-		--set persistence.enabled=true \
-		--set persistence.size=20Gi \
-		--set persistence.storageClass=freenas-nfs \
-		--set deployment.resources.limits.cpu=200m \
-		--set deployment.resources.limits.memory=256Mi \
-		--set deployment.hostNetwork=true \
-		mos \
-		mosquitto
+# Installed directly on openwrt router
+# .PHONY: mosquitto
+# mosquitto:
+# 	helm upgrade --install \
+# 		--namespace iot \
+# 		--set persistence.enabled=true \
+# 		--set persistence.size=20Gi \
+# 		--set persistence.storageClass=freenas-nfs \
+# 		--set deployment.resources.limits.cpu=200m \
+# 		--set deployment.resources.limits.memory=256Mi \
+# 		--set deployment.hostNetwork=true \
+# 		mos \
+# 		mosquitto
 
 #.PHONY: gonaomi
 #gonaomi:
