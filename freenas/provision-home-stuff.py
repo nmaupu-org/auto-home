@@ -21,9 +21,9 @@ class FreenasApiCaller:
         self.nas_login = nas_login
         self.nas_password = nas_password
 
-    def createNfsShareForKube(self, nfs_comment, nfs_path, nfs_ro=True, mapall_user="root", mapall_group="wheel", all_dirs=False):
+    def createNfsShare(self, nfs_comment, nfs_path, nfs_ro=True, mapall_user="root", mapall_group="wheel", all_dirs=False, nfs_hosts=""):
         return requests.post(
-            "https://%s/api/v1.0/sharing/nfs/" % self.nas_addr,
+            "%s/api/v1.0/sharing/nfs/" % self.nas_addr,
             auth=(self.nas_login, self.nas_password),
             headers={"Content-Type": "application/json"},
             verify=False,
@@ -32,15 +32,18 @@ class FreenasApiCaller:
                 "nfs_paths": [nfs_path],
                 "nfs_ro": nfs_ro,
                 "nfs_alldirs": all_dirs,
-                "nfs_hosts": "knode1 knode2 knode3",
+                "nfs_hosts": nfs_hosts,
                 "nfs_mapall_user": mapall_user,
                 "nfs_mapall_group": mapall_group,
             }),
         )
 
+    def createNfsShareForKube(self, nfs_comment, nfs_path, nfs_ro=True, mapall_user="root", mapall_group="wheel", all_dirs=False):
+        return self.createNfsShare(nfs_comment, nfs_path, nfs_ro, mapall_user, mapall_group, all_dirs, "knode1 knode2 knode3")
+
     def createDataset(self, name, comment):
         return requests.post(
-            "https://%s/api/v1.0/storage/volume/tank/datasets/" % self.nas_addr,
+            "%s/api/v1.0/storage/volume/tank/datasets/" % self.nas_addr,
             auth=(self.nas_login, self.nas_password),
             headers={"Content-Type": "application/json"},
             verify=False,
@@ -52,7 +55,7 @@ class FreenasApiCaller:
 
     def createUser(self, name, uid, group_id):
         return requests.post(
-            "https://%s/api/v1.0/account/users/" % self.nas_addr,
+            "%s/api/v1.0/account/users/" % self.nas_addr,
             auth=(self.nas_login, self.nas_password),
             headers={"Content-Type": "application/json"},
             verify=False,
@@ -68,7 +71,7 @@ class FreenasApiCaller:
 
     def createGroup(self, name, gid):
         return requests.post(
-            "https://%s/api/v1.0/account/groups/" % self.nas_addr,
+            "%s/api/v1.0/account/groups/" % self.nas_addr,
             auth=(self.nas_login, self.nas_password),
             headers={"Content-Type": "application/json"},
             verify=False,
@@ -80,7 +83,7 @@ class FreenasApiCaller:
 
     def createJail(self, name, ip, mask):
         return requests.post(
-            "https://%s/api/v1.0/jails/jails/" % self.nas_addr,
+            "%s/api/v1.0/jails/jails/" % self.nas_addr,
              auth=(self.nas_login, self.nas_password),
              headers={"Content-Type": "application/json"},
              verify=False,
@@ -95,7 +98,7 @@ class FreenasApiCaller:
 
     def associateDataset(self, jail_name, src, dst, readonly=True):
         return requests.post(
-             "https://%s/api/v1.0/jails/mountpoints/" % self.nas_addr,
+             "%s/api/v1.0/jails/mountpoints/" % self.nas_addr,
              auth=(self.nas_login, self.nas_password),
              headers={"Content-Type": "application/json"},
              verify=False,
@@ -134,7 +137,7 @@ def main():
     except:
         # Group already exists, getting its id
         r = requests.get(
-            "https://%s/api/v1.0/account/groups" % nas_addr,
+            "%s/api/v1.0/account/groups" % nas_addr,
             auth=(nas_login, nas_password),
             headers={"Content-Type": "application/json"},
             verify=False,
@@ -157,7 +160,7 @@ def main():
     # Creating openwrt dataset and share
     r = fac.createDataset("openwrt", "openwrt")
     print(r.status_code, r.text)
-    r = fac.createNfsShareForKube("Openwrt NFS share", "/mnt/tank/openwrt", False)
+    r = fac.createNfsShare("Openwrt NFS share", "/mnt/tank/openwrt", False)
     print(r.status_code, r.text)
 
 

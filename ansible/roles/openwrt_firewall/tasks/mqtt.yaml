@@ -17,6 +17,15 @@
     mode: 644
   notify: restart mosquitto
 
+- name: Mosquitto - Creating persistence directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0777
+  with_items:
+    - "{{ firewall_mqtt.persistence.path }}/data"
+    - "{{ firewall_mqtt.persistence.path }}/logs"
+
 - name: Mosquitto - Creating empty password file
   file:
     path: /etc/mosquitto/passwd

@@ -130,6 +130,8 @@ firewall_nfs_mount: {}
 
 firewall_mqtt:
   enabled: no
+  persistence:
+    path: /var/lib/mosquitto
   port: 1883
   websocket_port: 9090
 # creds:

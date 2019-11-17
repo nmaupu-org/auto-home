@@ -7,3 +7,10 @@ protocol websockets
 
 allow_anonymous false
 password_file /etc/mosquitto/passwd
+
+persistence true
+persistence_location {{ firewall_mqtt.persistence.path }}/data/
+
+log_type all 
+log_dest file {{ firewall_mqtt.persistence.path }}/logs/mosquitto.log
+log_facility 5

@@ -114,6 +114,9 @@ firewall_dhcp_static_leases:
     ip: 192.168.12.36
 
 firewall_dns_entries:
+  192.168.12.1:
+    - fw
+    - mqtt
   192.168.12.158:
     - deluge
   192.168.12.8:
@@ -127,7 +130,6 @@ firewall_dns_entries:
     - deluge
     - sickchill
     - plex
-    - mqtt
   192.168.12.159:
     - vault
 
@@ -173,6 +175,8 @@ firewall_nfs_mount:
 
 firewall_mqtt:
   enabled: yes
+  persistence:
+    path: /mnt/openwrt/mosquitto
   port: 1883
   websocket_port: 9090
   creds:
