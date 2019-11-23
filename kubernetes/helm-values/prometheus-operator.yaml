@@ -1,0 +1,158 @@
+commonLabels:
+  monitor: home
+
+prometheusOperator:
+  createCustomResource: true
+  image:
+    repository: quay.io/coreos/prometheus-operator
+    tag: v0.34.0
+  configmapReloadImage:
+    repository: quay.io/coreos/configmap-reload
+    tag: v0.0.1
+  prometheusConfigReloaderImage:
+    repository: quay.io/coreos/prometheus-config-reloader
+    tag: v0.34.0
+  resources:
+    limits:
+      cpu: 200m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
+
+prometheus:
+  enabled: true
+  prometheusSpec:
+    image:
+      repository: quay.io/prometheus/prometheus
+      tag: v2.14.0
+    replicas: 1
+    retention: 720d
+    serviceMonitorSelector:
+      matchLabels:
+        monitor: home
+    ruleSelector:
+      matchLabels:
+        monitor: home
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: freenas-nfs
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 200Gi
+    resources:
+      limits:
+        cpu: 500m
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 1Gi
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.foo.home.fossar.net
+
+grafana:
+  enabled: true
+  defaultDashboardsEnabled: true
+  sidecar:
+    dashboards:
+      enabled: true
+      provider:
+        disableDelete: true
+  ingress:
+    enabled: true
+    hosts:
+    - grafana.foo.home.fossar.net
+  image:
+    repository: grafana/grafana
+    tag: 6.4.4
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+alertmanager:
+  ingress:
+    enabled: true
+    hosts:
+    - alertmanager.foo.home.fossar.net
+  alertmanagerSpec:
+    image:
+      repository: quay.io/prometheus/alertmanager
+      tag: v0.19.0
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['job']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'home-slack'
+      routes:
+      - match:
+          alertname: DeadMansSwitch
+        continue: true
+      - match:
+          severity: warning
+        continue: true
+        receiver: 'home-slack'
+      - match:
+          severity: critical
+        continue: true
+        receiver: 'home-slack'
+      - match:
+          severity: critical
+        continue: true
+        receiver: 'home-slack'
+      - match:
+          severity: critical
+        continue: true
+        receiver: 'home-slack'
+      - match:
+          severity: warning
+        continue: true
+        receiver: 'home-slack'
+    receivers:
+    - name: 'home-slack'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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'
+        channel: '#kube-home'
+        text: '{{ template "slack.home" . }}'
+    templates:
+    - '/etc/alertmanager/config/template_1.tmpl'
+  templateFiles:
+    template_1.tmpl: |-
+      {{ define "cluster" }}{{ .ExternalURL | reReplaceAll ".*alertmanager\\.(.*)" "$1" }}{{ end }}
+      {{ define "slack.home" }}
+      {{- $root := . -}}
+      {{ range .Alerts }}
+        *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
+        *Cluster:*  {{ template "cluster" $root }}
+        *Description:* {{ .Annotations.description }}
+        *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+        *Runbook:* <{{ .Annotations.runbook }}|:spiral_note_pad:>
+        *Details:*
+          {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+          {{ end }}
+      {{ end }}
+      {{ end }}
+
+kubeEtcd:
+  enabled: false
+
+# subcharts configuration
+prometheus-node-exporter:
+  image:
+    repository: quay.io/prometheus/node-exporter
+    tag: v0.18.1
+kube-state-metrics:
+  image:
+    repository: quay.io/coreos/kube-state-metrics
+    tag: v1.7.2

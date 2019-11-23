@@ -1,0 +1,4 @@
+mqtt:
+  username: username
+  password: password
+  host: host

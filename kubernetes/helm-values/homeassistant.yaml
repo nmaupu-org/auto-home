@@ -1,0 +1,28 @@
+---
+ingress:
+  enabled: true
+  hosts:
+    - home-assistant.foo.home.fossar.net
+
+persistence:
+  enabled: true
+  size: 20Gi
+
+extraEnvSecrets:
+  MQTT_USERNAME:
+    secret: mqtt
+    key: username
+  MQTT_PASSWORD:
+    secret: mqtt
+    key: password
+  MQTT_HOST:
+    secret: mqtt
+    key: host
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

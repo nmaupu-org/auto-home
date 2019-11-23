@@ -1,23 +1,13 @@
 .PHONY: helm
 helm:
-	kubectl apply -f tiller/deployment.yaml
-	kubectl apply -f tiller/service.yaml
-	kubectl apply -f tiller/service-account.yaml
+	kubectl apply -f misc/tiller
 	# Needed for installing mosquitto (MQTT) chart
 	helm repo add smizy https://smizy.github.io/charts
 	helm repo update
 
 .PHONY: ingress-controller
 ingress-controller:
-	helm upgrade --install \
-		--namespace proxy \
-		--set controller.service.type=NodePort \
-		--set controller.service.externalTrafficPolicy=Cluster \
-		--set controller.service.enableHttps=false \
-		--set controller.service.nodePorts.http=30080 \
-		--set rbac.create=true \
-		ingco \
-		stable/nginx-ingress
+	kubectl apply -f misc/ingress-controller
 
 .PHONY: freenas-provisioner
 .SILENT: freenas-provisioner
@@ -28,15 +18,62 @@ freenas-provisioner: check-vault
 		--set freenas.username=$(shell vault read -field username secret/nas) \
 		--set freenas.password=$(shell vault read -field password secret/nas) \
 		--set freenas.host=$(shell vault read -field ip secret/nas) \
-		--set freenas.port=:80 \
-		--set freenas.protocol=http \
-		--set freenas.allowInsecure=true \
-		--set storageclass.reclaimPolicy=Delete \
-		--set storageclass.datasetParentName=tank/kube-nfs/provisioner \
-		--set storageclass.shareAllowedNetworks=192.168.12.0/24 \
-		--set storageclass.shareRetainPreExisting=false \
+		-f helm-values/freenas-provisioner.yaml \
 		fp \
-		freenas-provisioner
+		charts/freenas-provisioner
+
+.PHONY: homeassistant
+.SILENT: homeassistant
+homeassistant: check-vault
+	helm upgrade --install \
+		--namespace iot \
+		--set mqtt.username=$(vault read -field username secret/mqtt) \
+		--set mqtt.password=$(vault read -field password secret/mqtt) \
+		--set mqtt.host=$(vault read -field host secret/mqtt) \
+		iot \
+		charts/iot
+	helm upgrade --install \
+		--version 0.9.10 \
+		--namespace iot \
+		--set configurator.enabled=true \
+		--set configurator.hassApiPassword=$(vault read -field apiPassword secret/home-assistant) \
+		--set configurator.username=$(vault read -field username secret/home-assistant) \
+		--set configurator.password=$(vault read -field password secret/home-assistant) \
+		-f helm-values/homeassistant.yaml \
+		hass \
+		stable/home-assistant
+
+.PHONY: prometheus-operator
+prometheus-operator:
+	helm upgrade --install \
+		--namespace monitoring \
+        --version 8.2.0 \
+		-f helm-values/prometheus-operator.yaml \
+		p8s \
+		stable/prometheus-operator
+
+.PHONY: mqtt-gateway
+.SILENT: mqtt-gateway
+mqttgateway: check-vault
+	helm upgrade --install \
+		--namespace iot \
+		--version 1.0 \
+		--set mqtt.address=tcp://192.168.12.1:1883 \
+		--set mqtt.username=$(shell vault read -field username secret/mqtt) \
+		--set mqtt.password=$(shell vault read -field password secret/mqtt) \
+		-f helm-values/mqttgateway.yaml \
+		mg \
+		charts/mqttgateway
+
+.PHONY: gladys
+gladys:
+	helm upgrade --install \
+		--namespace iot \
+		--set ingress.enabled=true \
+		--set ingress.hosts[0].host=gladys.foo.home.fossar.net \
+		--set ingress.hosts[0].paths[0]=/ \
+		g \
+		charts/gladys
 
 # Installed directly on openwrt router
 # .PHONY: mosquitto
@@ -50,14 +87,14 @@ freenas-provisioner: check-vault
 # 		--set deployment.resources.limits.memory=256Mi \
 # 		--set deployment.hostNetwork=true \
 # 		mos \
-# 		mosquitto
+# 		charts/mosquitto
 
 #.PHONY: gonaomi
 #gonaomi:
 #	helm upgrade --install \
 #		--namespace tools \
 #		gon \
-#		gonaomi
+#		charts/gonaomi
 
 .PHONY: check-vault
 check-vault:

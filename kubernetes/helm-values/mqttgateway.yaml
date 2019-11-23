@@ -1,0 +1,16 @@
+---
+image:
+  repository: nmaupu/mqttgateway
+  tag: latest
+  pullPolicy: Always
+
+deployment:
+  extraArgs:
+    - --log.level=debug
+    - --mqtt.topic=#
+    - --mqtt.prefix=
+
+serviceMonitor:
+  enabled: true
+  extraLabels:
+    monitor: home

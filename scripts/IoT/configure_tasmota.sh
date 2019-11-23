@@ -19,5 +19,5 @@ stty -f ${TTY} ${BAUD_RATE} | cat << EOF > ${TTY}
 
 Backlog ssid1 ${WIFI_SSID_1}; password1 ${WIFI_PASSWORD_1}; ssid2 ${WIFI_SSID_2}; password2 ${WIFI_PASSWORD_2};
 Backlog mqtthost ${MQTT_HOST}; mqttuser ${MQTT_USER}; mqttpassword ${MQTT_PASSWORD}; topic ${MQTT_TOPIC};
-Backlog setoption53 1; powerretain on; teleperiod 60;
+Backlog SetOption19 1; setoption53 1; powerretain on; teleperiod 60;
 EOF

@@ -1,0 +1,27 @@
+{{- if .Values.serviceMonitor.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "mqtt-gateway.fullname" . }}
+  generation: 1
+  labels:
+    {{- include "mqtt-gateway.labels" . | nindent 4 }}
+    {{- if .Values.serviceMonitor.extraLabels }}
+    {{- toYaml .Values.serviceMonitor.extraLabels | nindent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+  - interval: 10s
+    honorLabels: true
+    port: http
+    path: /metrics
+  jobLabel: {{ .Release.Name }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mqtt-gateway.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
