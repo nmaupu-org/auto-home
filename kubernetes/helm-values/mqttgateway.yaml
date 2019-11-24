@@ -6,7 +6,7 @@ image:
 
 deployment:
   extraArgs:
-    - --log.level=debug
+    - --log.level=info
     - --mqtt.topic=#
     - --mqtt.prefix=
 

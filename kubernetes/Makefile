@@ -52,6 +52,10 @@ prometheus-operator:
 		p8s \
 		stable/prometheus-operator
 
+.PHONY: grafana-dashboards
+grafana-dashboards:
+	kubectl apply -f grafana-dashboards
+
 .PHONY: mqtt-gateway
 .SILENT: mqtt-gateway
 mqttgateway: check-vault

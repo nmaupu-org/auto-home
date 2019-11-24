@@ -1,0 +1,363 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-home-confort
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  home-confort.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "Prometheus",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "iteration": 1574625935326,
+      "links": [],
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "datasource": "Prometheus",
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 4,
+          "links": [],
+          "options": {
+            "fieldOptions": {
+              "calcs": [
+                "last"
+              ],
+              "defaults": {
+                "decimals": 1,
+                "mappings": [
+                  {
+                    "id": 0,
+                    "op": "=",
+                    "text": "N/A",
+                    "type": 1,
+                    "value": "null"
+                  }
+                ],
+                "max": 100,
+                "min": 0,
+                "nullValueMode": "connected",
+                "thresholds": [
+                  {
+                    "color": "orange",
+                    "value": null
+                  },
+                  {
+                    "color": "green",
+                    "value": 40
+                  },
+                  {
+                    "color": "red",
+                    "value": 60
+                  }
+                ],
+                "unit": "percent"
+              },
+              "override": {},
+              "values": false
+            },
+            "orientation": "horizontal",
+            "showThresholdLabels": true,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "6.4.4",
+          "targets": [
+            {
+              "expr": "avg(humidity{job=\"$location\",metric=\"SENSOR\"})",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Current Humidity",
+          "type": "gauge"
+        },
+        {
+          "cacheTimeout": null,
+          "datasource": "Prometheus",
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 5,
+          "links": [],
+          "options": {
+            "fieldOptions": {
+              "calcs": [
+                "last"
+              ],
+              "defaults": {
+                "decimals": 1,
+                "mappings": [
+                  {
+                    "id": 0,
+                    "op": "=",
+                    "text": "N/A",
+                    "type": 1,
+                    "value": "null"
+                  }
+                ],
+                "max": 45,
+                "min": 0,
+                "nullValueMode": "connected",
+                "thresholds": [
+                  {
+                    "color": "light-blue",
+                    "value": null
+                  },
+                  {
+                    "color": "green",
+                    "value": 18
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 22
+                  },
+                  {
+                    "color": "orange",
+                    "value": 25
+                  },
+                  {
+                    "color": "semi-dark-red",
+                    "value": 28
+                  }
+                ],
+                "unit": "celsius"
+              },
+              "override": {},
+              "values": false
+            },
+            "orientation": "horizontal",
+            "showThresholdLabels": true,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "6.4.4",
+          "targets": [
+            {
+              "expr": "avg(temperature{job=\"$location\",metric=\"SENSOR\"})",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Current Temperature",
+          "type": "gauge"
+        },
+        {
+          "aliasColors": {
+            "Heat Index": "red",
+            "Humidity": "orange",
+            "Temperature": "purple"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Prometheus",
+          "decimals": 1,
+          "fill": 0,
+          "fillGradient": 3,
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 6
+          },
+          "id": 2,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "connected",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Humidity",
+              "fill": 1,
+              "linewidth": 2,
+              "yaxis": 2
+            },
+            {
+              "alias": "Temperature",
+              "dashes": true
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(temperature{job=\"$location\",metric=\"SENSOR\"})",
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "Temperature",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(humidity{job=\"$location\",metric=\"SENSOR\"})",
+              "legendFormat": "Humidity",
+              "refId": "B"
+            },
+            {
+              "expr": "-8.78469475556+1.61139411*sum(temperature{job=\"$location\",metric=\"SENSOR\"})+2.33854883889*sum(humidity{job=\"$location\",metric=\"SENSOR\"})-0.14611605*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})-0.012308094*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(temperature{job=\"$location\",metric=\"SENSOR\"})-0.0164248277778*sum(humidity{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})+0.002211732*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})+0.00072546*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})-0.000003582*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})",
+              "legendFormat": "Heat Index",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "ok",
+              "fill": true,
+              "line": false,
+              "op": "gt",
+              "value": 40,
+              "yaxis": "right"
+            },
+            {
+              "colorMode": "ok",
+              "fill": true,
+              "line": false,
+              "op": "lt",
+              "value": 60,
+              "yaxis": "right"
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Temperature / Humidity",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "celsius",
+              "label": "Temperature",
+              "logBase": 1,
+              "max": "40",
+              "min": "0",
+              "show": true
+            },
+            {
+              "decimals": 0,
+              "format": "percent",
+              "label": "Humidity",
+              "logBase": 1,
+              "max": "100",
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "refresh": false,
+      "schemaVersion": 20,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "allValue": null,
+            "current": {
+              "text": "estrade",
+              "value": "estrade"
+            },
+            "datasource": "Prometheus",
+            "definition": "label_values(temperature, job)",
+            "hide": 0,
+            "includeAll": false,
+            "label": "location",
+            "multi": false,
+            "name": "location",
+            "options": [],
+            "query": "label_values(temperature, job)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          }
+        ]
+      },
+      "time": {
+        "from": "now-12h",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ]
+      },
+      "timezone": "",
+      "title": "Home confort",
+      "uid": "J45F0oxZz",
+      "version": 1
+    }
