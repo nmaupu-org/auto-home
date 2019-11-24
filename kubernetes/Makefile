@@ -27,28 +27,30 @@ freenas-provisioner: check-vault
 homeassistant: check-vault
 	helm upgrade --install \
 		--namespace iot \
-		--set mqtt.username=$(vault read -field username secret/mqtt) \
-		--set mqtt.password=$(vault read -field password secret/mqtt) \
-		--set mqtt.host=$(vault read -field host secret/mqtt) \
+		--set mqtt.username=$(shell vault read -field username secret/mqtt) \
+		--set mqtt.password=$(shell vault read -field password secret/mqtt) \
+		--set mqtt.host=$(shell vault read -field host secret/mqtt) \
 		iot \
 		charts/iot
 	helm upgrade --install \
 		--version 0.9.10 \
 		--namespace iot \
 		--set configurator.enabled=true \
-		--set configurator.hassApiPassword=$(vault read -field apiPassword secret/home-assistant) \
-		--set configurator.username=$(vault read -field username secret/home-assistant) \
-		--set configurator.password=$(vault read -field password secret/home-assistant) \
+		--set configurator.hassApiPassword=$(shell vault read -field apiPassword secret/home-assistant) \
+		--set configurator.username=$(shell vault read -field username secret/home-assistant) \
+		--set configurator.password=$(shell vault read -field password secret/home-assistant) \
 		-f helm-values/homeassistant.yaml \
 		hass \
 		stable/home-assistant
 
 .PHONY: prometheus-operator
-prometheus-operator:
+.SILENT: prometheus-operator
+prometheus-operator: check-vault
 	helm upgrade --install \
 		--namespace monitoring \
         --version 8.2.0 \
 		-f helm-values/prometheus-operator.yaml \
+		--set grafana.adminPassword="$(shell vault read -field password secret/grafana)" \
 		p8s \
 		stable/prometheus-operator
 
