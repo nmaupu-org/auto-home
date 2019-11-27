@@ -38,3 +38,9 @@
   with_items: "{{ firewall_mqtt.creds }}"
   no_log: True
   notify: restart mosquitto
+
+- name: Ensuring mosquitto is enabled
+  service:
+    name: mosquitto
+    enabled: yes
+  
