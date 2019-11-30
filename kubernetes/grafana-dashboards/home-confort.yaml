@@ -24,7 +24,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "iteration": 1574625935326,
+      "iteration": 1575139904468,
       "links": [],
       "panels": [
         {
@@ -84,6 +84,7 @@ data:
           "targets": [
             {
               "expr": "avg(humidity{job=\"$location\",metric=\"SENSOR\"})",
+              "instant": true,
               "refId": "A"
             }
           ],
@@ -157,6 +158,7 @@ data:
           "targets": [
             {
               "expr": "avg(temperature{job=\"$location\",metric=\"SENSOR\"})",
+              "instant": true,
               "refId": "A"
             }
           ],
@@ -237,11 +239,6 @@ data:
               "expr": "sum(humidity{job=\"$location\",metric=\"SENSOR\"})",
               "legendFormat": "Humidity",
               "refId": "B"
-            },
-            {
-              "expr": "-8.78469475556+1.61139411*sum(temperature{job=\"$location\",metric=\"SENSOR\"})+2.33854883889*sum(humidity{job=\"$location\",metric=\"SENSOR\"})-0.14611605*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})-0.012308094*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(temperature{job=\"$location\",metric=\"SENSOR\"})-0.0164248277778*sum(humidity{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})+0.002211732*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})+0.00072546*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})-0.000003582*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(temperature{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})*sum(humidity{job=\"$location\",metric=\"SENSOR\"})",
-              "legendFormat": "Heat Index",
-              "refId": "C"
             }
           ],
           "thresholds": [
@@ -305,10 +302,12 @@ data:
           }
         }
       ],
-      "refresh": false,
+      "refresh": "30s",
       "schemaVersion": 20,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "IoT"
+      ],
       "templating": {
         "list": [
           {
@@ -359,5 +358,5 @@ data:
       "timezone": "",
       "title": "Home confort",
       "uid": "J45F0oxZz",
-      "version": 1
+      "version": 3
     }
