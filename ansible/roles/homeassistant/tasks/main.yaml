@@ -1,0 +1,193 @@
+---
+
+- name: Installing required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3
+    - python3-bcrypt
+    - python3-dev
+    - python3-venv
+    - python3-pip
+    - libffi-dev
+    - libssl-dev
+    - python-setuptools
+    - jq
+    - curl
+    - avahi-daemon
+    - dbus
+    - socat
+
+- name: Ensuring modemmanager is uninstalled
+  package:
+    name: modemmanager
+    state: absent
+
+#- name: Installing docker-ce
+#  include_role:
+#    name: haxorof.docker_ce
+#
+#- name: Installing Hass.io
+#  shell: |
+#    curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh | bash -s -- -m raspberrypi4-64
+#  args:
+#    creates: /etc/hassio.json
+
+- name: Added an account for home-assistant
+  user:
+    name: homeassistant
+    groups: dialout,gpio,i2c
+    append: yes
+    system: yes
+
+- name: Creating homeassistant directory
+  file:
+    path: /srv/homeassistant
+    state: directory
+    owner: homeassistant
+    group: homeassistant
+    mode: '0700'
+
+- name: Copying create_password.py file
+  copy:
+    src: create_password.py
+    dest: /srv/homeassistant/create_password.py
+    owner: homeassistant
+    group: homeassistant
+    mode: '0700'
+
+- name: Installing python virtualenv for homeassistant
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  shell: |
+    cd /srv/homeassistant
+    python3 -m venv .
+  args:
+    creates: /srv/homeassistant/pyvenv.cfg
+
+- name: Installing required python packages via pip
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  pip:
+    name:
+      - wheel
+      - homeassistant
+    virtualenv: /srv/homeassistant
+    virtualenv_python: python3
+
+- name: Preparing configuration directory
+  file:
+    path: "/home/homeassistant/.homeassistant"
+    state: absent
+  notify:
+    - restart homeassistant
+  tags:
+    - config
+
+- name: Creating .homeassistant directory
+  file:
+    path: /home/homeassistant/.homeassistant
+    state: directory
+    mode: '0700'
+    owner: homeassistant
+    group: homeassistant
+  notify:
+    - restart homeassistant
+  tags:
+    - config
+
+- name: Creating secrets.yaml file
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  copy:
+    content: |
+      {{ hass.secrets_yaml }}
+    dest: /home/homeassistant/.homeassistant/secrets.yaml
+  notify:
+    - restart homeassistant
+  tags:
+    - config
+
+- name: Creating .storage directory
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  file:
+    state: directory
+    path: /home/homeassistant/.homeassistant/.storage
+    owner: homeassistant
+    group: homeassistant
+    mode: '0700'
+  tags:
+    - config
+
+- name: Creating .storage/onboarding file
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  copy:
+    src: onboarding
+    dest: /home/homeassistant/.homeassistant/.storage/onboarding
+    mode: '0644'
+  tags:
+    - config
+
+- name: hashing default user password
+  shell: |
+    /srv/homeassistant/create_password.py
+  args:
+    stdin: "{{ hass.defaults.user.password }}"
+  register: passwd_hash
+  tags:
+    - config
+
+- name: Creating .storage/auth_provider.homeassistant file
+  template:
+    src: auth_provider.homeassistant.j2
+    dest: /home/homeassistant/.homeassistant/.storage/auth_provider.homeassistant
+    owner: homeassistant
+    group: homeassistant
+    mode: '0600'
+  vars:
+    pwd: "{{ passwd_hash.stdout }}"
+  notify:
+    - restart homeassistant
+  tags:
+    - config
+
+- name: Getting configuration via git
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  shell: |
+    set -e
+    cd /home/homeassistant/.homeassistant
+    git init
+    git remote add origin https://github.com/nmaupu/hass-config.git
+    git pull origin master
+    git branch --set-upstream-to=origin/master master
+  args:
+    creates: /home/homeassistant/.homeassistant/.git/config
+  notify:
+    - restart homeassistant
+  tags:
+    - config
+
+- name: Installing systemd configuration file
+  copy:
+    src: files/systemd.conf
+    dest: /etc/systemd/system/homeassistant.service
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Enabling homeassistant service
+  systemd:
+    name: homeassistant
+    daemon_reload: yes
+    enabled: yes
+    state: started

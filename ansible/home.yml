@@ -29,7 +29,6 @@
     - linux-base
   tags:
     - linux
-#    - always
 
 ## Raspbastion
 - name: Installing raspbastion stuff
@@ -40,3 +39,11 @@
     - { role: kubectl, tags: ['kubectl'] }
     - { role: irssi, tags: ['irc'] }
     - { role: irssi-autodl, tags: ['irc-autodl'] }
+
+## IoT Raspbian
+- name: Installing IoT raspbian
+  gather_facts: no
+  hosts: iot-raspbian
+  become: yes
+  roles:
+    - { role: homeassistant, tags: ['homeassistant'] }

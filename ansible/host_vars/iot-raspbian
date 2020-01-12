@@ -1,0 +1,13 @@
+---
+
+linux_hostname: iot-raspbian
+
+# Users
+users:
+  - home: /root
+    user: root
+  - home: /home/pi
+    user: pi
+
+linux_base_extra_packages:
+  - aptitude

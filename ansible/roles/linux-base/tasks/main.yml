@@ -14,6 +14,10 @@
     - tmux
     - "{{linux_base_extra_packages}}"
 
+- name: Setting up hostname
+  hostname:
+    name: "{{ linux_hostname }}"
+
 - name: Ensuring users are existing
   user:
     name: "{{item.user}}"

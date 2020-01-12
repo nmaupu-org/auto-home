@@ -16,11 +16,15 @@ aps
 ansible_remote_tmp=/tmp/ansible
 scp_if_ssh=True
 
+[iot]
+iot-raspbian ansible_host=192.168.12.35 ansible_user=pi
+
 [pxe]
 raspbastion ansible_host=192.168.12.11 ansible_user=pi
 
 [linux:children]
 pxe
+iot
 
 [jails_host]
 nas         ansible_host=192.168.12.8

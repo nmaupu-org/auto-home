@@ -1,4 +1,6 @@
 ---
+linux_hostname: raspbastion
+
 # Users
 users:
   - home: /root

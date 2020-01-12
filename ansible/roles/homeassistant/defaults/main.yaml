@@ -1,0 +1,9 @@
+---
+
+hass:
+  defaults:
+    user:
+      username: "{{ lookup('vault', 'secret/hass', 'username') }}"
+      password: "{{ lookup('vault', 'secret/hass', 'password') }}"
+  secrets_yaml: |
+    {{ lookup('vault', 'secret/hass', 'secrets.yaml') }}

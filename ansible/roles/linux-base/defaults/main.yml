@@ -1,6 +1,7 @@
 ---
 
 linux_base_extra_packages: []
+linux_hostname: todefine
 
 users:
   - home: /root

@@ -112,6 +112,9 @@ firewall_dhcp_static_leases:
   - name: naomi
     mac: 00:d0:f1:01:2e:a0
     ip: 192.168.12.36
+  - name: iot-raspbian
+    mac: DC:A6:32:54:73:91
+    ip: 192.168.12.35
 
 firewall_dns_entries:
   192.168.12.1:

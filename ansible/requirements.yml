@@ -1,3 +1,4 @@
 - src: defunctzombie.coreos-bootstrap
 - src: willshersystems.sshd
 - src: gekmihesg.openwrt
+- src: haxorof.docker_ce
