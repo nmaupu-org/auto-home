@@ -19,6 +19,15 @@
     - dbus
     - socat
 
+- name: Configuring server to Paris time
+  timezone:
+    name: Europe/Paris
+  tags:
+    - timezone
+    - config
+  notify:
+    - restart homeassistant
+
 - name: Ensuring modemmanager is uninstalled
   package:
     name: modemmanager
