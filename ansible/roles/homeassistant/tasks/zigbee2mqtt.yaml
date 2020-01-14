@@ -1,0 +1,71 @@
+---
+
+- name: "[zigbee2mqtt] Installing node.js repository"
+  shell: |
+    curl -sL https://deb.nodesource.com/setup_12.x | bash -
+
+- name: "[zigbee2mqtt] Installing required packages"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nodejs
+    - git
+    - make
+    - g++
+    - gcc
+
+- name: "[zigbee2mqtt] Creating zigbee install dir"
+  file:
+    path: /opt/zigbee
+    state: directory
+    owner: pi
+    group: pi
+    mode: '0755'
+
+- name: "[zigbee2mqtt] Cloning zigbee2mqtt"
+  become: yes
+  become_user: pi
+  become_method: sudo
+  git:
+    repo: 'https://github.com/Koenkk/zigbee2mqtt.git'
+    dest: /opt/zigbee/zigbee2mqtt
+    update: yes
+    force: yes
+  notify:
+    - restart zigbee2mqtt
+
+- name: "[zigbee2mqtt] Installing zigbee2mqtt"
+  shell: |
+    cd /opt/zigbee/zigbee2mqtt && npm install
+  notify:
+    - restart zigbee2mqtt
+
+- name: "[zigbee2mqtt] Creating zigbee2mqtt configuration file"
+  template:
+    src: zigbee2mqtt.conf.j2
+    dest: /opt/zigbee/zigbee2mqtt/data/configuration.yaml
+    owner: pi
+    group: pi
+    mode: '0600'
+  tags:
+    - zigbee_conf
+  notify:
+    - restart zigbee2mqtt
+
+- name: "[zigbee2mqtt] Installing systemctl service"
+  copy:
+    src: files/zigbee2mqtt.service
+    dest: /etc/systemd/system/zigbee2mqtt.service
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    - restart zigbee2mqtt
+
+- name: "[zigbee2mqtt] Enabling zigbee2mqtt service"
+  systemd:
+    name: zigbee2mqtt
+    daemon_reload: yes
+    enabled: yes
+    state: started

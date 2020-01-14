@@ -200,3 +200,10 @@
     daemon_reload: yes
     enabled: yes
     state: started
+
+- name: Installing zigbee2mqtt
+  include_tasks:
+    file: zigbee2mqtt.yaml
+    apply:
+      tags: ['zigbee']
+  tags: ['always']
