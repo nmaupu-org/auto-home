@@ -1,5 +1,9 @@
 ---
 
+# After installation, create a /home/homeassistant/.hass-cli file containing
+#   export HASS_SERVER=http://127.0.0.1:8123
+#   export HASS_TOKEN=my_token
+
 - name: Installing required packages
   package:
     name: "{{ item }}"
@@ -84,6 +88,7 @@
     name:
       - wheel
       - homeassistant
+      - homeassistant-cli
     virtualenv: /srv/homeassistant
     virtualenv_python: python3
 
@@ -207,3 +212,24 @@
     apply:
       tags: ['zigbee']
   tags: ['always']
+
+- name: Installing crontab script to auto update GIT repo
+  copy:
+    src: files/update-hass-config.sh
+    dest: /usr/local/bin/update-hass-config.sh
+    owner: root
+    group: root
+    mode: '0755'
+  tags:
+    - config
+    - config_git
+
+- name: Installing GIT auto-update crontab
+  cron:
+    name: "Auto update Home Assistant configuration from git"
+    state: present
+    user: homeassistant
+    job: "/usr/local/bin/update-hass-config.sh"
+  tags:
+    - config
+    - config_git
