@@ -117,6 +117,8 @@ firewall_dhcp_static_leases:
     ip: 192.168.12.35
 
 firewall_dns_entries:
+  192.168.12.35:
+    - hass
   192.168.12.1:
     - fw
     - mqtt
@@ -137,6 +139,15 @@ firewall_dns_entries:
     - vault
 
 firewall_ports:
+  - target: DNAT
+    enabled: 0
+    src: wan
+    dest: lan
+    proto: tcp
+    src_dport: 8123
+    dest_port: 8123
+    dest_ip: 192.168.12.35
+    name: home assistant
   - target: DNAT
     enabled: 1
     src: wan
