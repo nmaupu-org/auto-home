@@ -140,6 +140,15 @@ firewall_dns_entries:
 
 firewall_ports:
   - target: DNAT
+    enabled: 1
+    src: wan
+    dest: lan
+    proto: tcp
+    src_dport: 80
+    dest_port: 80
+    dest_ip: 192.168.12.156
+    name: Certbot
+  - target: DNAT
     enabled: 0
     src: wan
     dest: lan
