@@ -162,6 +162,8 @@ def main():
     print(r.status_code, r.text)
     r = fac.createNfsShare("Openwrt NFS share", "/mnt/tank/openwrt", False)
     print(r.status_code, r.text)
+    r = fac.createNfsShare("LE NFS share", "/mnt/tank/le-certs", True)
+    print(r.status_code, r.text)
 
 
     ###################################
