@@ -1,5 +1,10 @@
 ---
 
+certs:
+  nfs:
+    ip: 192.168.12.8
+    path: /mnt/tank/le-certs
+
 hass:
   defaults:
     user:
