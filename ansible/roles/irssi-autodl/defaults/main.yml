@@ -12,7 +12,7 @@ tl_rsskey: "{{lookup('vault', 'secret/deluge', 'tl_rsskey')}}"
 autodl_filters:
   movies_hd:
     enabled: "true"
-    max-downloads: 2
+    max-downloads: 1
     max-downloads-per: day
     max-size: 10GB
     download-duplicates: "false"
@@ -20,7 +20,7 @@ autodl_filters:
     resolutions: 720p,1080p
   series_hd:
     enabled: "true"
-    max-downloads: 5
+    max-downloads: 2
     max-downloads-per: day
     max-size: 10GB
     download-duplicates: "false"
@@ -28,7 +28,7 @@ autodl_filters:
     resolutions: 720p,1080p
   series:
     enabled: "true"
-    max-downloads: 10
+    max-downloads: 5
     max-downloads-per: day
     max-size: 2GB
     download-duplicates: "false"

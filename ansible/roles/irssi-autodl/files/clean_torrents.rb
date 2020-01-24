@@ -35,7 +35,7 @@ torrents.each { |key, value|
   tracker_status = value["tracker_status"]
   all_time_download = value["all_time_download"]
 
-  max_seeding_time = 61*3600
+  max_seeding_time = 97*3600
   percent_time = ((seeding_time.to_f*100) / max_seeding_time).round(1)
 
   message = "[id=#{torrent_id} state=#{state}, ratio=#{ratio}, seeding_time=#{seeding_time} (#{percent_time}%)] #{name} - "
