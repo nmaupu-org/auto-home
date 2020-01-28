@@ -1,6 +1,6 @@
 ---
 
-autodl_url: https://github.com/autodl-community/autodl-irssi/releases/download/community-v1.65/autodl-irssi-community-v1.65.zip
+autodl_url: https://github.com/autodl-community/autodl-irssi/releases/download/2.6.1/autodl-irssi-v2.6.1.zip
 
 deluge_server_address: "{{lookup('vault', 'secret/deluge', 'daemon_server')}}"
 deluge_server_port: "{{lookup('vault', 'secret/deluge', 'daemon_port')}}"
