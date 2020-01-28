@@ -60,6 +60,7 @@ grafana:
   sidecar:
     dashboards:
       enabled: true
+      label: grafana_dashboard
       provider:
         disableDelete: true
   ingress:
@@ -122,7 +123,7 @@ alertmanager:
     receivers:
     - name: 'home-slack'
       slack_configs:
-      - api_url: 'https://hooks.slack.com/services/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'
+      - api_url: 'https://hooks.slack.com/services/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'
         channel: '#kube-home'
         text: '{{ template "slack.home" . }}'
     templates:
