@@ -24,7 +24,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "iteration": 1575139904468,
+      "iteration": 1580417162906,
       "links": [],
       "panels": [
         {
@@ -32,74 +32,8 @@ data:
           "datasource": "Prometheus",
           "gridPos": {
             "h": 6,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 0
-          },
-          "id": 4,
-          "links": [],
-          "options": {
-            "fieldOptions": {
-              "calcs": [
-                "last"
-              ],
-              "defaults": {
-                "decimals": 1,
-                "mappings": [
-                  {
-                    "id": 0,
-                    "op": "=",
-                    "text": "N/A",
-                    "type": 1,
-                    "value": "null"
-                  }
-                ],
-                "max": 100,
-                "min": 0,
-                "nullValueMode": "connected",
-                "thresholds": [
-                  {
-                    "color": "orange",
-                    "value": null
-                  },
-                  {
-                    "color": "green",
-                    "value": 40
-                  },
-                  {
-                    "color": "red",
-                    "value": 60
-                  }
-                ],
-                "unit": "percent"
-              },
-              "override": {},
-              "values": false
-            },
-            "orientation": "horizontal",
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-          },
-          "pluginVersion": "6.4.4",
-          "targets": [
-            {
-              "expr": "avg(humidity{job=\"$location\",metric=\"SENSOR\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Current Humidity",
-          "type": "gauge"
-        },
-        {
-          "cacheTimeout": null,
-          "datasource": "Prometheus",
-          "gridPos": {
-            "h": 6,
-            "w": 12,
-            "x": 12,
             "y": 0
           },
           "id": 5,
@@ -168,6 +102,160 @@ data:
           "type": "gauge"
         },
         {
+          "cacheTimeout": null,
+          "datasource": "Prometheus",
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
+          "id": 4,
+          "links": [],
+          "options": {
+            "fieldOptions": {
+              "calcs": [
+                "last"
+              ],
+              "defaults": {
+                "decimals": 1,
+                "mappings": [
+                  {
+                    "id": 0,
+                    "op": "=",
+                    "text": "N/A",
+                    "type": 1,
+                    "value": "null"
+                  }
+                ],
+                "max": 100,
+                "min": 0,
+                "nullValueMode": "connected",
+                "thresholds": [
+                  {
+                    "color": "orange",
+                    "value": null
+                  },
+                  {
+                    "color": "green",
+                    "value": 40
+                  },
+                  {
+                    "color": "red",
+                    "value": 60
+                  }
+                ],
+                "unit": "percent"
+              },
+              "override": {},
+              "values": false
+            },
+            "orientation": "horizontal",
+            "showThresholdLabels": true,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "6.4.4",
+          "targets": [
+            {
+              "expr": "avg(humidity{job=\"$location\",metric=\"SENSOR\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Current Humidity",
+          "type": "gauge"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorPostfix": false,
+          "colorPrefix": false,
+          "colorValue": true,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "datasource": null,
+          "decimals": 0,
+          "description": "Battery status if available for this device",
+          "format": "percent",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 7,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "options": {},
+          "pluginVersion": "6.4.4",
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true,
+            "ymax": 100,
+            "ymin": 0
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "min(battery{job=\"$location\",metric=\"SENSOR\"})",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "25,50",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Battery Status",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
           "aliasColors": {
             "Heat Index": "red",
             "Humidity": "orange",
@@ -181,7 +269,7 @@ data:
           "fill": 0,
           "fillGradient": 3,
           "gridPos": {
-            "h": 9,
+            "h": 8,
             "w": 24,
             "x": 0,
             "y": 6
@@ -313,8 +401,10 @@ data:
           {
             "allValue": null,
             "current": {
-              "text": "estrade",
-              "value": "estrade"
+              "selected": false,
+              "tags": [],
+              "text": "living_hum_temp",
+              "value": "living_hum_temp"
             },
             "datasource": "Prometheus",
             "definition": "label_values(temperature, job)",
@@ -338,7 +428,7 @@ data:
         ]
       },
       "time": {
-        "from": "now-12h",
+        "from": "now-24h",
         "to": "now"
       },
       "timepicker": {
@@ -358,5 +448,5 @@ data:
       "timezone": "",
       "title": "Home confort",
       "uid": "J45F0oxZz",
-      "version": 3
-    }
+      "version": 4
+      }

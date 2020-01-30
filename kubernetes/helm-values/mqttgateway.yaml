@@ -38,7 +38,77 @@ mqttgateway:
           pattern: SaveCount
         - name: loadAvg
           pattern: LoadAvg
+      - topic: zigbee2mqtt/kitchen_hum_temp
+        patterns:
+          - name: battery
+            pattern: "battery"
+          - name: voltage
+            pattern: "voltage"
+          - name: temperature
+            pattern: "temperature"
+          - name: humidity
+            pattern: "humidity"
+          - name: pressure
+            pattern: "pressure"
+          - name: linkquality
+            pattern: linkquality
       - topic: zigbee2mqtt/living_hum_temp
+        patterns:
+          - name: battery
+            pattern: "battery"
+          - name: voltage
+            pattern: "voltage"
+          - name: temperature
+            pattern: "temperature"
+          - name: humidity
+            pattern: "humidity"
+          - name: pressure
+            pattern: "pressure"
+          - name: linkquality
+            pattern: linkquality
+      - topic: zigbee2mqtt/bedroom_hum_temp
+        patterns:
+          - name: battery
+            pattern: "battery"
+          - name: voltage
+            pattern: "voltage"
+          - name: temperature
+            pattern: "temperature"
+          - name: humidity
+            pattern: "humidity"
+          - name: pressure
+            pattern: "pressure"
+          - name: linkquality
+            pattern: linkquality
+      - topic: zigbee2mqtt/blue_hum_temp
+        patterns:
+          - name: battery
+            pattern: "battery"
+          - name: voltage
+            pattern: "voltage"
+          - name: temperature
+            pattern: "temperature"
+          - name: humidity
+            pattern: "humidity"
+          - name: pressure
+            pattern: "pressure"
+          - name: linkquality
+            pattern: linkquality
+      - topic: zigbee2mqtt/pink_hum_temp
+        patterns:
+          - name: battery
+            pattern: "battery"
+          - name: voltage
+            pattern: "voltage"
+          - name: temperature
+            pattern: "temperature"
+          - name: humidity
+            pattern: "humidity"
+          - name: pressure
+            pattern: "pressure"
+          - name: linkquality
+            pattern: linkquality
+      - topic: zigbee2mqtt/basement_main_hum_temp
         patterns:
           - name: battery
             pattern: "battery"
