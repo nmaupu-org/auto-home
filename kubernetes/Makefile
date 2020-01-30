@@ -22,27 +22,6 @@ freenas-provisioner: check-vault
 		fp \
 		charts/freenas-provisioner
 
-.PHONY: homeassistant
-.SILENT: homeassistant
-homeassistant: check-vault
-	helm upgrade --install \
-		--namespace iot \
-		--set mqtt.username=$(shell vault read -field username secret/mqtt) \
-		--set mqtt.password=$(shell vault read -field password secret/mqtt) \
-		--set mqtt.host=$(shell vault read -field host secret/mqtt) \
-		iot \
-		charts/iot
-	helm upgrade --install \
-		--version 0.9.10 \
-		--namespace iot \
-		--set configurator.enabled=true \
-		--set configurator.hassApiPassword=$(shell vault read -field apiPassword secret/home-assistant) \
-		--set configurator.username=$(shell vault read -field username secret/home-assistant) \
-		--set configurator.password=$(shell vault read -field password secret/home-assistant) \
-		-f helm-values/homeassistant.yaml \
-		hass \
-		stable/home-assistant
-
 .PHONY: prometheus-operator
 .SILENT: prometheus-operator
 prometheus-operator: check-vault
