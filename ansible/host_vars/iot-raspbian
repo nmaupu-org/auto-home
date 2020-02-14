@@ -11,3 +11,28 @@ users:
 
 linux_base_extra_packages:
   - aptitude
+
+zigbee2mqtt:
+  devices:
+    '0x00158d000309a473':
+      friendly_name: 'living_hum_temp'
+    '0x00158d00040be394':
+      friendly_name: 'basement_leak'
+    '0x00124b001d37aec2':
+      friendly_name: 'elec_router'
+    '0x00158d000464aed2':
+      friendly_name: 'basement_main_hum_temp'
+    '0x00158d00031b1a5d':
+      friendly_name: 'basement_vibr_escalier'
+    '0x00158d0003d477c1':
+      friendly_name: 'kitchen_vibr_window'
+    '0x00158d000464aec6':
+      friendly_name: 'blue_hum_temp'
+    '0x00158d00045b0072':
+      friendly_name: 'pink_hum_temp'
+    '0x00158d00045b289c':
+      friendly_name: 'bedroom_hum_temp'
+    '0x00158d00045b0095':
+      friendly_name: 'kitchen_hum_temp'
+    '0x00158d000465a382':
+      friendly_name: 'hall_hum_temp'

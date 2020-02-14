@@ -60,8 +60,8 @@
     owner: root
     group: root
     mode: '0755'
-  notify:
-    - restart zigbee2mqtt
+    #notify:
+    #  - restart zigbee2mqtt
 
 - name: "[zigbee2mqtt] Enabling zigbee2mqtt service"
   systemd:
