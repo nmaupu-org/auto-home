@@ -122,3 +122,17 @@ mqttgateway:
             pattern: "pressure"
           - name: linkquality
             pattern: linkquality
+      - topic: zigbee2mqtt/hall_hum_temp
+        patterns:
+          - name: battery
+            pattern: "battery"
+          - name: voltage
+            pattern: "voltage"
+          - name: temperature
+            pattern: "temperature"
+          - name: humidity
+            pattern: "humidity"
+          - name: pressure
+            pattern: "pressure"
+          - name: linkquality
+            pattern: linkquality
