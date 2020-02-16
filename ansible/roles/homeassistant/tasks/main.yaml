@@ -47,7 +47,7 @@
 #  args:
 #    creates: /etc/hassio.json
 
-- name: Added an account for home-assistant
+- name: Adding an account for home-assistant
   user:
     name: homeassistant
     groups: dialout,gpio,i2c
