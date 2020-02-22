@@ -13,10 +13,14 @@
     - git
     - tmux
     - "{{linux_base_extra_packages}}"
+  tags:
+    - configuration
 
 - name: Setting up hostname
   hostname:
     name: "{{ linux_hostname }}"
+  tags:
+    - configuration
 
 - name: Ensuring users are existing
   user:
@@ -30,7 +34,8 @@
     ssh_key_file: ".ssh/id_rsa"
   with_items: "{{users}}"
   register: userscomputed
-  tags: users
+  tags:
+    - users
 
 - name: Ensure .ssh directories exist
   file:
@@ -40,7 +45,8 @@
     owner: "{{item.user}}"
     group: "{{item.user}}"
   with_items: "{{users}}"
-  tags: users
+  tags:
+    - users
 
 # Iterate through register variable to get ssh_public_key
 # from current user
@@ -68,3 +74,5 @@
     name: ntp
     state: started
     enabled: yes
+  tags:
+    - ntp
