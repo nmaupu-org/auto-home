@@ -87,6 +87,10 @@
     chdir: /home/pi/.node-red
   notify:
     - Restart node-red
+  tags:
+    - nodered-install
+    - nodered-dependencies
+    - nodered-config
 
 - name: Configuring node-red
   copy:
