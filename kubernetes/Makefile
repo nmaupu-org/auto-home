@@ -75,11 +75,11 @@ gladys:
 # 		charts/mosquitto
 
 #.PHONY: gonaomi
-#gonaomi:
-#	helm upgrade --install \
-#		--namespace tools \
-#		gon \
-#		charts/gonaomi
+gonaomi:
+	helm upgrade --install \
+		--namespace tools \
+		gon \
+		charts/gonaomi
 
 .PHONY: check-vault
 check-vault:
