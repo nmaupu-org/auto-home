@@ -20,6 +20,8 @@ zigbee2mqtt:
     url: "mqtt://{{ lookup('vault', 'secret/mqtt', 'host') }}"
   serial:
     port: /dev/ttyACM0
+    baudrate: 115200
+    rtscts: false
   base_topic: zigbee2mqtt
   permit_join: true
   homeassistant: true
