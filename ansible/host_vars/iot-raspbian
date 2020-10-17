@@ -14,12 +14,14 @@ linux_base_extra_packages:
 
 zigbee2mqtt:
   devices:
+    '0x00124b001f320298':
+      friendly_name: living_router
+    '0x00124b001d37aec2':
+      friendly_name: 'elec_router'
     '0x00158d000309a473':
       friendly_name: 'living_hum_temp'
     '0x00158d00040be394':
       friendly_name: 'basement_leak'
-    '0x00124b001d37aec2':
-      friendly_name: 'elec_router'
     '0x00158d000464aed2':
       friendly_name: 'basement_main_hum_temp'
     '0x00158d00031b1a5d':
