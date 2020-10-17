@@ -49,6 +49,14 @@
     - { role: homeassistant, tags: ['homeassistant'] }
     - { role: nodered,       tags: ['nodered'] }
   tasks:
+    - name: disabling bluetooth (conflict with hardware serial) - needs reboot
+      lineinfile:
+        path: /boot/config.txt
+        line: dtoverlay=pi3-disable-bt
+    - name: disabling hciuart service
+      service: hciuart
+      state: stopped
+      enabled: no
     - name: Generating openssh key pair
       openssh_keypair:
         path: /home/pi/.ssh/id_rsa
