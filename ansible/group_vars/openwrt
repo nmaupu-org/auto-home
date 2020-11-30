@@ -125,21 +125,20 @@ firewall_dns_entries:
   192.168.12.1:
     - fw
     - mqtt
-  192.168.12.158:
-    - deluge
   192.168.12.8:
     - nas
   192.168.12.5:
     - printer
-  192.168.12.156:
-    - utils
-  192.168.12.157:
-    - rproxy
-    - deluge
-    - sickchill
+  192.168.12.155:
     - plex
+  192.168.12.156:
+    - sickchill
+  192.168.12.157:
+    - deluge
   192.168.12.159:
     - vault
+  192.168.12.160:
+    - certbot
 
 firewall_ports:
   - target: DNAT
@@ -149,7 +148,7 @@ firewall_ports:
     proto: tcp
     src_dport: 80
     dest_port: 80
-    dest_ip: 192.168.12.156
+    dest_ip: 192.168.12.160
     name: Certbot
   - target: DNAT
     enabled: 0
@@ -185,7 +184,7 @@ firewall_ports:
     proto: tcp
     src_dport: 6800-7000
     dest_port: 6800-7000
-    dest_ip: 192.168.12.158
+    dest_ip: 192.168.12.157
     name: torrent
 
 firewall_prometheus:
