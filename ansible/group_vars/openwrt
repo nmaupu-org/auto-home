@@ -132,13 +132,11 @@ firewall_dns_entries:
   192.168.12.155:
     - plex
   192.168.12.156:
-    - sickchill
+    - le-validator
   192.168.12.157:
     - deluge
   192.168.12.159:
     - vault
-  192.168.12.160:
-    - certbot
 
 firewall_ports:
   - target: DNAT
