@@ -122,15 +122,29 @@
     - mount
     - config
 
+- name: Adding update-hass-certs.sh script
+  copy:
+    src: files/update-hass-certs.sh
+    dest: /usr/local/bin/update-hass-certs.sh
+    owner: root
+    group: root
+    mode: '0755'
+  tags:
+    - mount
+    - config
+    - cron_cert
+
 - name: Adding crontab to copy certs to homeassistant directory
   cron:
     name: "rsync certs directory from NFS to homeassistant"
-    job: "rsync -aP --delete --copy-links /mnt/certs/letsencrypt/live/hass.home.fossar.net/ /home/homeassistant/certs && chown -R homeassistant: /home/homeassistant/certs"
+    job: "/usr/local/bin/update-hass-certs.sh"
+    minute: '*/10'
   notify:
     - restart homeassistant
   tags:
     - mount
     - config
+    - cron_cert
 
 - name: Preparing configuration directory
   file:

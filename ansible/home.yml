@@ -54,9 +54,10 @@
         path: /boot/config.txt
         line: dtoverlay=pi3-disable-bt
     - name: disabling hciuart service
-      service: hciuart
-      state: stopped
-      enabled: no
+      service:
+        name: hciuart
+        state: stopped
+        enabled: no
     - name: Generating openssh key pair
       openssh_keypair:
         path: /home/pi/.ssh/id_rsa
