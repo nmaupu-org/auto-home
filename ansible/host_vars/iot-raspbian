@@ -38,3 +38,5 @@ zigbee2mqtt:
       friendly_name: 'kitchen_hum_temp'
     '0x00158d000465a382':
       friendly_name: 'hall_hum_temp'
+    '0x60a423fffe0381d2':
+      friendly_name: 'bedroom_bed_light_left'
