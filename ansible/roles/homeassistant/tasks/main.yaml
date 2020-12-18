@@ -3,6 +3,16 @@
 # After installation, create a /home/homeassistant/.hass-cli file containing
 #   export HASS_SERVER=http://127.0.0.1:8123
 #   export HASS_TOKEN=my_token
+##
+# Upgrade can be done using the following commands:
+#   $ systemctl stop homeassistant
+#   $ su - homeassistant
+#   $ source /srv/homeassistant/bin/activate
+#   $ python3 -m pip install --upgrade homeassistant
+#   $ python3 -m pip install --upgrade homeassistant-cli
+#   $ exit
+#   $ systemctl start homeassistant
+# https://www.home-assistant.io/docs/installation/virtualenv/
 
 - name: Installing required packages
   package:
@@ -36,16 +46,6 @@
   package:
     name: modemmanager
     state: absent
-
-#- name: Installing docker-ce
-#  include_role:
-#    name: haxorof.docker_ce
-#
-#- name: Installing Hass.io
-#  shell: |
-#    curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh | bash -s -- -m raspberrypi4-64
-#  args:
-#    creates: /etc/hassio.json
 
 - name: Adding an account for home-assistant
   user:
