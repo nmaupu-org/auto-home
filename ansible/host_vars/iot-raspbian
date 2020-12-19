@@ -39,4 +39,6 @@ zigbee2mqtt:
     '0x00158d000465a382':
       friendly_name: 'hall_hum_temp'
     '0x60a423fffe0381d2':
-      friendly_name: 'bedroom_bed_light_left'
+      friendly_name: 'bedroom_left_dimmer'
+    '0x60a423fffe035c19':
+      friendly_name: 'poutre_dimmer'
