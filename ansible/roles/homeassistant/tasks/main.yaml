@@ -13,6 +13,7 @@
 #   $ exit
 #   $ systemctl start homeassistant
 # https://www.home-assistant.io/docs/installation/virtualenv/
+# https://www.ramoonus.nl/2019/10/23/how-to-install-python-3-8-on-raspberry-pi/
 
 - name: Installing required packages
   package:
