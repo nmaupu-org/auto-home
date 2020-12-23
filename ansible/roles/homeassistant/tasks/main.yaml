@@ -293,8 +293,6 @@
       name: mini-graph-card-bundle.js
     - url: https://raw.githubusercontent.com/nmaupu/home-assistant-config/master/ui/darksky/dark-sky-weather-card.js
       name: custom_ui/dark-sky-weather-card.js
-    - url: https://github.com/azuwis/zigbee2mqtt-networkmap/releases/download/v0.6.0/zigbee2mqtt-networkmap.js
-      name: zigbee2mqtt-networkmap.js
   notify:
     - restart homeassistant
   tags:
