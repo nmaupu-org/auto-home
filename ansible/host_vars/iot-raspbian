@@ -15,7 +15,7 @@ linux_base_extra_packages:
 zigbee2mqtt:
   devices:
     '0x00124b001f320298':
-      friendly_name: living_router
+      friendly_name: 'hall_router'
     '0x00124b001d37aec2':
       friendly_name: 'elec_router'
     '0x00158d000309a473':
