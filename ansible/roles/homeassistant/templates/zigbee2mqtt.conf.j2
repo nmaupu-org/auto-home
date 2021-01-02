@@ -24,6 +24,28 @@ advanced:
   log_level: info
   #baudrate: {{ zigbee2mqtt.serial.baudrate }}
   #rtscts: {{ zigbee2mqtt.serial.rtscts }}
+  elapsed: true
+
+# Optional: networkmap options
+map_options:
+  graphviz:
+    # Optional: Colors to be used in the graphviz network map (default: shown below)
+    colors:
+      fill:
+        enddevice: '#fff8ce'
+        coordinator: '#e04e5d'
+        router: '#4ea3e0'
+      font:
+        coordinator: '#ffffff'
+        router: '#ffffff'
+        enddevice: '#000000'
+      line:
+        active: '#009900'
+        inactive: '#994444'
+
+frontend:
+  port: 8080
+  host: 0.0.0.0
 
 devices:
   {{ zigbee2mqtt.devices | to_yaml | indent(width=2, indentfirst=False) }}
