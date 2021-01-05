@@ -42,3 +42,5 @@ zigbee2mqtt:
       friendly_name: 'bedroom_left_dimmer'
     '0x60a423fffe035c19':
       friendly_name: 'poutre_dimmer'
+    '0x00158d00013d350f':
+      friendly_name: 'zigbee_remote_bedroom'
