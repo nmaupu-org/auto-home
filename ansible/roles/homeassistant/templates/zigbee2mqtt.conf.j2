@@ -50,3 +50,5 @@ frontend:
 
 devices:
   {{ zigbee2mqtt.devices | to_yaml | indent(width=2, indentfirst=False) }}
+groups:
+  {{ zigbee2mqtt.groups | to_yaml | indent(width=2, indentfirst=False) }}

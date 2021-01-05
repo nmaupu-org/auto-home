@@ -44,3 +44,18 @@ zigbee2mqtt:
       friendly_name: 'poutre_dimmer'
     '0x00158d00013d350f':
       friendly_name: 'zigbee_remote_bedroom'
+  groups:
+    '16388':
+      friendly_name: group_bedroom_left
+      retain: false
+      transition: 2
+      optimistic: true
+      devices:
+        - '0x60a423fffe0381d2'
+    '16389':
+      friendly_name: group_living_poutre
+      retain: false
+      transition: 2
+      optimistic: true
+      devices:
+        - '0x60a423fffe035c19'
