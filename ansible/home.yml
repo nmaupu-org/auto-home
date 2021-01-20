@@ -48,6 +48,7 @@
   roles:
     - { role: homeassistant, tags: ['homeassistant'] }
     - { role: nodered,       tags: ['nodered'] }
+    - { role: mosquitto,     tags: ['mosquitto'] }
   tasks:
     - name: disabling bluetooth (conflict with hardware serial) - needs reboot
       lineinfile:

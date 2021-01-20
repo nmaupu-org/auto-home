@@ -1,46 +1,48 @@
----
-
-- name: Mosquitto - Installing MQTT required packages
-  opkg:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - mosquitto-ssl
-    - mosquitto-client-ssl
-    - libmosquitto-ssl
-  notify: restart mosquitto
-
-- name: Mosquitto - Configuring server
-  template:
-    src: mosquitto.conf.j2
-    dest: /etc/mosquitto/mosquitto.conf
-    mode: 644
-  notify: restart mosquitto
-
-- name: Mosquitto - Creating persistence directory
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0777
-  with_items:
-    - "{{ firewall_mqtt.persistence.path }}/data"
-    - "{{ firewall_mqtt.persistence.path }}/logs"
-
-- name: Mosquitto - Creating empty password file
-  file:
-    path: /etc/mosquitto/passwd
-    mode: 0644
-    state: touch
-
-- name: Mosquitto - Creating passwords file for Mosquitto
-  shell: |
-    mosquitto_passwd -b /etc/mosquitto/passwd "{{ item.username }}" "{{ item.password }}"
-  with_items: "{{ firewall_mqtt.creds }}"
-  no_log: True
-  notify: restart mosquitto
-
-- name: Ensuring mosquitto is enabled
-  service:
-    name: mosquitto
-    enabled: yes
-  
+# Disabling mosquitto server from openwrt, installing it to iot-raspbian instead
+##
+#---
+#
+#- name: Mosquitto - Installing MQTT required packages
+#  opkg:
+#    name: "{{ item }}"
+#    state: present
+#  with_items:
+#    - mosquitto-ssl
+#    - mosquitto-client-ssl
+#    - libmosquitto-ssl
+#  notify: restart mosquitto
+#
+#- name: Mosquitto - Configuring server
+#  template:
+#    src: mosquitto.conf.j2
+#    dest: /etc/mosquitto/mosquitto.conf
+#    mode: 644
+#  notify: restart mosquitto
+#
+#- name: Mosquitto - Creating persistence directory
+#  file:
+#    path: "{{ item }}"
+#    state: directory
+#    mode: 0777
+#  with_items:
+#    - "{{ firewall_mqtt.persistence.path }}/data"
+#    - "{{ firewall_mqtt.persistence.path }}/logs"
+#
+#- name: Mosquitto - Creating empty password file
+#  file:
+#    path: /etc/mosquitto/passwd
+#    mode: 0644
+#    state: touch
+#
+#- name: Mosquitto - Creating passwords file for Mosquitto
+#  shell: |
+#    mosquitto_passwd -b /etc/mosquitto/passwd "{{ item.username }}" "{{ item.password }}"
+#  with_items: "{{ firewall_mqtt.creds }}"
+#  no_log: True
+#  notify: restart mosquitto
+#
+#- name: Ensuring mosquitto is enabled
+#  service:
+#    name: mosquitto
+#    enabled: yes
+#  

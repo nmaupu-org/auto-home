@@ -123,15 +123,15 @@ firewall_dhcp_static_leases:
     ip: 192.168.12.155
 
 firewall_dns_entries:
-  192.168.12.35:
-    - hass
   192.168.12.1:
     - fw
-    - mqtt
   192.168.12.8:
     - nas
   192.168.12.5:
     - printer
+  192.168.12.35:
+    - hass
+    - mqtt
   192.168.12.155:
     - plex
   192.168.12.156:
@@ -198,13 +198,3 @@ firewall_nfs_mount:
   options: nolock,noatime,rw
   network: lan
   fstype: nfs
-
-firewall_mqtt:
-  enabled: yes
-  persistence:
-    path: /mnt/openwrt/mosquitto
-  port: 1883
-  websocket_port: 9090
-  creds:
-    - username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
-      password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"

@@ -1,0 +1,39 @@
+---
+
+- name: Installing required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - mosquitto
+    - mosquitto-clients
+
+- name: Configuring mosquitto
+  template:
+    src: mosquitto.conf.j2
+    dest: /etc/mosquitto/conf.d/custom.conf
+    mode: 0644
+  notify: restart mosquitto
+
+- name: Creating empty password file
+  file:
+    path: /etc/mosquitto/passwd
+    mode: 0644
+    state: touch
+  tags:
+    - mosquitto_conf
+
+- name: Creating passwords file
+  shell: |
+    mosquitto_passwd -b /etc/mosquitto/passwd "{{ item.username }}" "{{ item.password }}"
+  with_items: "{{ mosquitto.creds }}"
+  no_log: True
+  notify: restart mosquitto
+  tags:
+    - mosquitto_conf
+
+- name: Enabling mosquitto service
+  service:
+    name: mosquitto
+    enabled: true
+    state: started

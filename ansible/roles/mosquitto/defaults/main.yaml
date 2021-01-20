@@ -1,0 +1,11 @@
+---
+mosquitto:
+  port: 1883
+  websocket_port: 9090
+# creds:
+#   - name: user
+#     password: pass
+#   - name: user2
+#     password: pass
+
+

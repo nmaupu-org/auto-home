@@ -59,3 +59,8 @@ zigbee2mqtt:
       optimistic: true
       devices:
         - '0x60a423fffe035c19'
+
+mosquitto:
+  creds:
+    - username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
+      password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"

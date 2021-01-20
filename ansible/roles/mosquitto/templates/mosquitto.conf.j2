@@ -1,0 +1,12 @@
+
+listener {{ mosquitto.port }}
+
+listener {{ mosquitto.websocket_port }}
+protocol websockets
+
+allow_anonymous false
+password_file /etc/mosquitto/passwd
+
+log_dest stdout
+log_type all 
+log_facility 5
