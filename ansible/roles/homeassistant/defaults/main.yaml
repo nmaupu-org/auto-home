@@ -14,6 +14,7 @@ hass:
     {{ lookup('vault', 'secret/hass', 'secrets.yaml') }}
 
 zigbee2mqtt:
+  pan_id: 0x1a63
   mqtt:
     username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
     password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"

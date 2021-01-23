@@ -18,9 +18,10 @@ mqtt:
 serial:
   # Location of CC253X USB sniffer
   port: {{ zigbee2mqtt.serial.port }}
-  disable_led: true
+  #disable_led: true
 
 advanced:
+  pan_id: {{ zigbee2mqtt.pan_id}}
   log_level: info
   #baudrate: {{ zigbee2mqtt.serial.baudrate }}
   #rtscts: {{ zigbee2mqtt.serial.rtscts }}
