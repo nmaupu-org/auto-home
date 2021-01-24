@@ -1,28 +1,5 @@
 ---
 
-- name: "[zigbee2mqtt] Installing node.js repository"
-  shell: |
-    curl -sL https://deb.nodesource.com/setup_12.x | bash -
-
-- name: "[zigbee2mqtt] Installing required packages"
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - nodejs
-    - git
-    - make
-    - g++
-    - gcc
-
-- name: "[zigbee2mqtt] Creating zigbee install dir"
-  file:
-    path: /opt/zigbee
-    state: directory
-    owner: pi
-    group: pi
-    mode: '0755'
-
 - name: "[zigbee2mqtt] Cloning zigbee2mqtt"
   become: yes
   become_user: pi

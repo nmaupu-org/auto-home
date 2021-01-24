@@ -1,0 +1,9 @@
+- name: restart zigbee2mqtt
+  service:
+    name: zigbee2mqtt
+    state: restarted
+
+- name: restart zigbee2mqtt_xiaomi
+  service:
+    name: zigbee2mqtt_xiaomi
+    state: restarted

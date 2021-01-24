@@ -12,17 +12,3 @@ hass:
       password: "{{ lookup('vault', 'secret/hass', 'password') }}"
   secrets_yaml: |
     {{ lookup('vault', 'secret/hass', 'secrets.yaml') }}
-
-zigbee2mqtt:
-  pan_id: 0x1a63
-  mqtt:
-    username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
-    password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"
-    url: "mqtt://{{ lookup('vault', 'secret/mqtt', 'host') }}"
-  serial:
-    port: /dev/ttyACM0
-    baudrate: 115200
-    rtscts: false
-  base_topic: zigbee2mqtt
-  permit_join: true
-  homeassistant: true

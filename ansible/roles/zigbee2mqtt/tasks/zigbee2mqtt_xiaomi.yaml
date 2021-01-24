@@ -1,0 +1,48 @@
+---
+
+- name: "[zigbee2mqtt_xiaomi] Cloning zigbee2mqtt"
+  become: yes
+  become_user: pi
+  become_method: sudo
+  git:
+    repo: 'https://github.com/Koenkk/zigbee2mqtt.git'
+    dest: /opt/zigbee/zigbee2mqtt_xiaomi
+    update: yes
+    force: yes
+  notify:
+    - restart zigbee2mqtt_xiaomi
+
+- name: "[zigbee2mqtt_xiaomi] Installing zigbee2mqtt"
+  shell: |
+    cd /opt/zigbee/zigbee2mqtt_xiaomi && npm install
+  notify:
+    - restart zigbee2mqtt_xiaomi
+
+- name: "[zigbee2mqtt_xiaomi] Creating zigbee2mqtt configuration file"
+  template:
+    src: zigbee2mqtt_xiaomi.conf.j2
+    dest: /opt/zigbee/zigbee2mqtt_xiaomi/data/configuration.yaml
+    owner: pi
+    group: pi
+    mode: '0600'
+  tags:
+    - zigbee_conf
+  notify:
+    - restart zigbee2mqtt_xiaomi
+
+- name: "[zigbee2mqtt_xiaomi] Installing systemctl service"
+  copy:
+    src: files/zigbee2mqtt_xiaomi.service
+    dest: /etc/systemd/system/zigbee2mqtt_xiaomi.service
+    owner: root
+    group: root
+    mode: '0755'
+    #notify:
+    #  - restart zigbee2mqtt
+
+- name: "[zigbee2mqtt_xiaomi] Enabling zigbee2mqtt service"
+  systemd:
+    name: zigbee2mqtt_xiaomi
+    daemon_reload: yes
+    enabled: yes
+    state: started

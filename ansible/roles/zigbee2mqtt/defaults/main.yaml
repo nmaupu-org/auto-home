@@ -1,0 +1,31 @@
+zigbee2mqtt_global:
+  mqtt:
+    username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
+    password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"
+    url: "mqtt://{{ lookup('vault', 'secret/mqtt', 'host') }}"
+
+zigbee2mqtt:
+  mqtt_base_topic: zigbee2mqtt
+  pan_id: 0x1a63
+  channel: 11
+  serial:
+    port: /dev/ttyUSB0
+    baudrate: 115200
+    rtscts: false
+  permit_join: false
+  homeassistant: true
+  frontend_port: 8080
+
+zigbee2mqtt_xiaomi:
+  mqtt_base_topic: zigbee2mqtt_xiaomi
+  pan_id: 0x1a64
+  channel: 15
+  serial:
+    port: /dev/ttyACM0
+    baudrate: 115200
+    rtscts: false
+    disable_led: 'true'
+  base_topic: zigbee2mqtt
+  permit_join: false
+  homeassistant: true
+  frontend_port: 8081
