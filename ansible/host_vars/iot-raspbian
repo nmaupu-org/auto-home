@@ -14,6 +14,30 @@ linux_base_extra_packages:
 
 zigbee2mqtt:
   devices:
+    '0x60a423fffe0381d2':
+      friendly_name: 'bedroom_left_dimmer'
+    '0x60a423fffe035c19':
+      friendly_name: 'poutre_dimmer'
+    '0x00158d00013d350f':
+      friendly_name: 'zigbee_remote_bedroom'
+  groups:
+    '16388':
+      friendly_name: group_bedroom_left
+      retain: false
+      transition: 2
+      optimistic: true
+      devices:
+        - '0x60a423fffe0381d2'
+    '16389':
+      friendly_name: group_living_poutre
+      retain: false
+      transition: 2
+      optimistic: true
+      devices:
+        - '0x60a423fffe035c19'
+
+zigbee2mqtt_xiaomi:
+  devices:
     '0x00124b001f320298':
       friendly_name: 'hall_router'
     '0x00124b001d37aec2':
@@ -38,27 +62,6 @@ zigbee2mqtt:
       friendly_name: 'kitchen_hum_temp'
     '0x00158d000465a382':
       friendly_name: 'hall_hum_temp'
-    '0x60a423fffe0381d2':
-      friendly_name: 'bedroom_left_dimmer'
-    '0x60a423fffe035c19':
-      friendly_name: 'poutre_dimmer'
-    '0x00158d00013d350f':
-      friendly_name: 'zigbee_remote_bedroom'
-  groups:
-    '16388':
-      friendly_name: group_bedroom_left
-      retain: false
-      transition: 2
-      optimistic: true
-      devices:
-        - '0x60a423fffe0381d2'
-    '16389':
-      friendly_name: group_living_poutre
-      retain: false
-      transition: 2
-      optimistic: true
-      devices:
-        - '0x60a423fffe035c19'
 
 mosquitto:
   creds:

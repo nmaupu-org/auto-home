@@ -1,0 +1,43 @@
+# Two zigbee2mqtt instances are running:
+#   - One for Xiaomi compatible devices
+#   - One for all other Zigbee devices (Samotech SM-309, etc...)
+# The reason for this is because some main powered zigbee devices have a router built-in which is not compatible with somw Xiaomi devices...
+# When timing out, Xiaomi battery powered device try to pair with the nearest router but those devices are not compatible with SM-309.
+# This ends with the Xiaomi device not being able to join the network until reset...
+
+- name: "[zigbee2mqtt] Installing node.js repository"
+  shell: |
+    curl -sL https://deb.nodesource.com/setup_12.x | bash -
+
+- name: "[zigbee2mqtt] Installing required packages"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nodejs
+    - git
+    - make
+    - g++
+    - gcc
+
+- name: "[zigbee2mqtt] Creating zigbee install dir"
+  file:
+    path: /opt/zigbee
+    state: directory
+    owner: pi
+    group: pi
+    mode: '0755'
+
+- name: Installing zigbee2mqtt
+  include_tasks:
+    file: zigbee2mqtt.yaml
+    apply:
+      tags: ['zigbee2mqtt']
+  tags: ['always']
+
+- name: Installing zigbee2mqtt_xiaomi
+  include_tasks:
+    file: zigbee2mqtt_xiaomi.yaml
+    apply:
+      tags: ['zigbee2mqtt_xiaomi']
+  tags: ['always']

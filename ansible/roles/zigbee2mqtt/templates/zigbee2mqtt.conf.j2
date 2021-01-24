@@ -6,19 +6,16 @@ permit_join: {{ zigbee2mqtt.permit_join }}
 
 # MQTT settings
 mqtt:
-  # MQTT base topic for zigbee2mqtt MQTT messages
-  base_topic: {{ zigbee2mqtt.base_topic }}
-  # MQTT server URL
-  server: '{{ zigbee2mqtt.mqtt.url }}'
-  # MQTT server authentication, uncomment if required:
-  user: {{ zigbee2mqtt.mqtt.username }}
-  password: {{ zigbee2mqtt.mqtt.password }}
+  base_topic: {{ zigbee2mqtt.mqtt_base_topic }}
+  server: '{{ zigbee2mqtt_global.mqtt.url }}'
+  user: {{ zigbee2mqtt_global.mqtt.username }}
+  password: {{ zigbee2mqtt_global.mqtt.password }}
 
 # Serial settings
 serial:
-  # Location of CC253X USB sniffer
+  # Location of coordinator
   port: {{ zigbee2mqtt.serial.port }}
-  #disable_led: true
+  disable_led: {{ zigbee2mqtt.serial.disable_led | default("false") }}
 
 advanced:
   pan_id: {{ zigbee2mqtt.pan_id}}
@@ -27,6 +24,7 @@ advanced:
   #rtscts: {{ zigbee2mqtt.serial.rtscts }}
   elapsed: true
   last_seen: 'ISO_8601_local'
+  channel: {{ zigbee2mqtt.channel }}
 
 # Optional: networkmap options
 map_options:
@@ -46,10 +44,13 @@ map_options:
         inactive: '#994444'
 
 frontend:
-  port: 8080
+  port: {{ zigbee2mqtt.frontend_port }}
   host: 0.0.0.0
 
 devices:
   {{ zigbee2mqtt.devices | to_yaml | indent(width=2, indentfirst=False) }}
+
+{% if zigbee2mqtt.groups is defined %}
 groups:
   {{ zigbee2mqtt.groups | to_yaml | indent(width=2, indentfirst=False) }}
+{% endif %}
