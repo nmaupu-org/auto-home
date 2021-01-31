@@ -67,3 +67,10 @@ mosquitto:
   creds:
     - username: "{{ lookup('vault', 'secret/mqtt', 'username') }}"
       password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"
+
+gotomation:
+  version: 0.0.9
+  arch: linux_arm
+  user: pi
+  group: pi
+  config: /home/pi/gotomation.yaml

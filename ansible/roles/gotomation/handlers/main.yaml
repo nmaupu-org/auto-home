@@ -1,0 +1,10 @@
+---
+
+- name: restart gotomation
+  service:
+    name: gotomation
+    state: restarted
+
+- name: systemctl reload
+  systemd:
+    daemon_reload: true

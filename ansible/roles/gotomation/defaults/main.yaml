@@ -1,0 +1,5 @@
+gotomation:
+  version: undef
+  arch: linux_amd64
+  config: /tmp/gotomation.yaml
+  user: nobody

@@ -50,6 +50,7 @@
     - { role: zigbee2mqtt,   tags: ['zigbee2mqtt'] }
     - { role: nodered,       tags: ['nodered'] }
     - { role: mosquitto,     tags: ['mosquitto'] }
+    - { role: gotomation,    tags: ['gotomation'] }
   tasks:
     - name: disabling bluetooth (conflict with hardware serial) - needs reboot
       lineinfile:

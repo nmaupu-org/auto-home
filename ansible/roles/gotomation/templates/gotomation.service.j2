@@ -1,0 +1,14 @@
+[Unit]
+Description=Gotomation
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/gotomation-{{ gotomation.arch }}-{{ gotomation.version }} -c {{ gotomation.config }}
+WorkingDirectory=/etc
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User={{ gotomation.user }}
+
+[Install]
+WantedBy=multi-user.target
