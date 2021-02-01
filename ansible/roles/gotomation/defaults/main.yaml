@@ -3,3 +3,5 @@ gotomation:
   arch: linux_amd64
   config: /tmp/gotomation.yaml
   user: nobody
+  hass_token: my_token
+  config_url: http://url

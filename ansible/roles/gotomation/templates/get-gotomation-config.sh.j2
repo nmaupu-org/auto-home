@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+TMP_CONF=/tmp/gotomation.yaml
+CONF={{ gotomation.config }}
+
+curl -fSsL -H 'Cache-Control: no-cache' -o "${TMP_CONF}" "{{ gotomation.config_url }}"
+DGST_NEW=$(md5sum "${TMP_CONF}" | awk '{print $1}')
+DGST_OLD=$(md5sum "${CONF}"   | awk '{print $1}')
+
+if [ "x${DGST_NEW}" != "x${DGST_OLD}" ]; then
+  cp "${TMP_CONF}" "${CONF}"
+fi
+
+rm -f "${TMP_CONF}"

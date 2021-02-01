@@ -3,7 +3,7 @@ Description=Gotomation
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/gotomation-{{ gotomation.arch }}-{{ gotomation.version }} -c {{ gotomation.config }}
+ExecStart=/usr/local/bin/gotomation -c {{ gotomation.config }} -t {{ gotomation.hass_token }}
 WorkingDirectory=/etc
 StandardOutput=inherit
 StandardError=inherit

@@ -7,13 +7,25 @@
     state: present
 
 - name: Downloading gotomation binary
-  uri:
+  get_url:
     url: https://github.com/nmaupu/gotomation/releases/download/{{ gotomation.version }}/gotomation-{{ gotomation.arch }}-{{ gotomation.version }}
     dest: /usr/local/bin/gotomation-{{ gotomation.arch }}-{{ gotomation.version }}
     mode: 0755
-    status_code: 200
+  register: gotomation_binary
   notify:
     - restart gotomation
+
+- name: Linking new binary
+  file:
+    state: link
+    force: yes
+    src: /usr/local/bin/gotomation-{{ gotomation.arch }}-{{ gotomation.version }}
+    dest: /usr/local/bin/gotomation
+
+- name: Cleaning old releases
+  shell: |
+    ls -1 /usr/local/bin/gotomation-* | grep -v "{{ gotomation.arch }}-{{ gotomation.version }}" | xargs rm -f
+
 
 - name: Installing systemctl service file
   template:
@@ -26,13 +38,20 @@
     - systemctl reload
     - restart gotomation
 
-- name: Updating gotomation configuration
+- name: Installing gotomation update conf script
   template:
-    src: gotomation.yaml.j2
-    dest: "{{ gotomation.config }}"
-    owner: "{{ gotomation.user }}"
-    group: "{{ gotomation.group }}"
-    mode: 0600
+    src: get-gotomation-config.sh.j2
+    dest: /usr/local/bin/get-gotomation-config.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Installing cron to auto udpate config
+  cron:
+    name: Getting gotomation config
+    state: present
+    job: /usr/local/bin/get-gotomation-config.sh
+    user: "{{ gotomation.user }}"
 
 - name: Activating gotomation service
   service:
