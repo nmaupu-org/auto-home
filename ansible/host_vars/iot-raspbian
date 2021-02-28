@@ -69,10 +69,10 @@ mosquitto:
       password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"
 
 gotomation:
-  version: 0.0.19
+  version: 0.0.20
   arch: linux_arm
   user: pi
   group: pi
-  config_url: https://raw.githubusercontent.com/nmaupu/gotomation-config/master/gotomation.yaml
-  config: /home/pi/gotomation.yaml
+  repo: https://github.com/nmaupu/gotomation-config.git
+  config: /home/pi/gotomation-config
   hass_token: "{{ lookup('vault', 'secret/gotomation', 'hass_token') }}"

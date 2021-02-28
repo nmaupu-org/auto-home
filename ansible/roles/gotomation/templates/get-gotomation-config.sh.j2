@@ -3,15 +3,14 @@
 set -e
 set -o pipefail
 
-TMP_CONF=/tmp/gotomation.yaml
-CONF={{ gotomation.config }}
+CONF="{{ gotomation.config }}"
+TMP=/tmp/gotomation-config
 
-curl -fSsL -H 'Cache-Control: no-cache' -o "${TMP_CONF}" "{{ gotomation.config_url }}"
-DGST_NEW=$(md5sum "${TMP_CONF}" | awk '{print $1}')
-DGST_OLD=$(md5sum "${CONF}"   | awk '{print $1}')
-
-if [ "x${DGST_NEW}" != "x${DGST_OLD}" ]; then
-  cp "${TMP_CONF}" "${CONF}"
+if [ ! -e ${TMP} ]; then
+  git clone "{{ gotomation.repo }}" "${TMP}"
 fi
 
-rm -f "${TMP_CONF}"
+cd ${TMP} && \
+  git fetch --all && \
+  git reset --hard origin/master
+rsync -a --delete "${TMP}/" "${CONF}"

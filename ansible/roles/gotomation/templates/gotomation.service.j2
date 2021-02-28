@@ -3,8 +3,9 @@ Description=Gotomation
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/gotomation -c {{ gotomation.config }} -t {{ gotomation.hass_token }}
-WorkingDirectory=/etc
+ExecStart=/usr/local/bin/gotomation -c {{ gotomation.config }}/gotomation.yaml -t {{ gotomation.hass_token }}
+# Using gotomation config for working directory so we can use relative path inside conf
+WorkingDirectory={{ gotomation.config }}
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
