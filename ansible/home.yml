@@ -48,7 +48,7 @@
   roles:
     - { role: homeassistant, tags: ['homeassistant'] }
     - { role: zigbee2mqtt,   tags: ['zigbee2mqtt'] }
-    - { role: nodered,       tags: ['nodered'] }
+    #- { role: nodered,       tags: ['nodered'] }
     - { role: mosquitto,     tags: ['mosquitto'] }
     - { role: gotomation,    tags: ['gotomation'] }
   tasks:
@@ -93,42 +93,3 @@
       tags:
         - ssh
         - ssh-public
-    - name: Creating nodered projects directory
-      file:
-        path: /home/pi/.node-red/{{ item }}
-        state: directory
-        owner: pi
-        group: pi
-        mode: '0755'
-      with_items:
-        - projects/.sshkeys
-      tags:
-        - nodered-projects
-    - name: Adding nodered git ssh keys
-      copy:
-        src: "{{ item.path }}"
-        dest: "{{ item.dest }}"
-        remote_src: true
-      with_items:
-        - path: /home/pi/.ssh/id_rsa
-          dest: /home/pi/.node-red/projects/.sshkeys/__default_github-nodered
-        - path: /home/pi/.ssh/id_rsa.pub
-          dest: /home/pi/.node-red/projects/.sshkeys/__default_github-nodered.pub
-      tags:
-        - nodered-projects
-    - name: Adding git repo for home configuration
-      become: yes
-      become_user: pi
-      become_method: sudo
-      git:
-        repo: git@github.com:nmaupu/nodered-config.git
-        dest: /home/pi/.node-red/projects/nodered-config
-        accept_hostkey: yes
-      tags:
-        - nodered-projects
-    - name: Restarting nodered
-      service:
-        name: nodered
-        state: restarted
-      tags:
-        - nodered-projects
