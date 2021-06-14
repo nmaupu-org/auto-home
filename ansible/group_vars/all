@@ -78,8 +78,6 @@ dns_hosts:
     - knode2
   192.168.12.15:
     - knode3
-  192.168.12.156:
-    - utils
   192.168.12.157:
     - couchpotato
     - deluge
@@ -95,7 +93,5 @@ dns_hosts:
     - traefik
     - vault
     - gonaomi
-  192.168.12.158:
-    - deluge-daemon
   192.168.12.159:
     - vault

@@ -136,7 +136,7 @@ firewall_dns_entries:
     - plex
   192.168.12.156:
     - le-validator
-  192.168.12.157:
+  192.168.12.154:
     - deluge
   192.168.12.159:
     - vault
@@ -185,7 +185,7 @@ firewall_ports:
     proto: tcp
     src_dport: 6800-7000
     dest_port: 6800-7000
-    dest_ip: 192.168.12.157
+    dest_ip: 192.168.12.154
     name: torrent
 
 firewall_prometheus:
