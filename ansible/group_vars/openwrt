@@ -152,7 +152,7 @@ firewall_ports:
     dest_ip: 192.168.12.156
     name: Certbot
   - target: DNAT
-    enabled: 0
+    enabled: 1
     src: wan
     dest: lan
     proto: tcp
