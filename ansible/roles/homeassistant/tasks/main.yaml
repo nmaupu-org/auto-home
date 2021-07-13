@@ -35,6 +35,9 @@
     - avahi-daemon
     - dbus
     - socat
+    - libxml2
+    - libxslt1.1
+    - ffmpeg
 
 - name: Configuring server to Paris time
   timezone:
