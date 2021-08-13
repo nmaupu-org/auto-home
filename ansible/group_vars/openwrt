@@ -121,6 +121,9 @@ firewall_dhcp_static_leases:
   - name: plex
     mac: d0:50:99:30:63:78
     ip: 192.168.12.155
+  - name: nmop-desktop-lan
+    mac: 24:4b:fe:05:0a:8d
+    ip: 192.168.12.38
 
 firewall_dns_entries:
   192.168.12.1:
@@ -187,6 +190,24 @@ firewall_ports:
     dest_port: 6800-7000
     dest_ip: 192.168.12.154
     name: torrent
+  - target: DNAT
+    enabled: 1
+    src: wan
+    dest: lan
+    proto: udp
+    src_dport: 6672
+    dest_port: 6672
+    dest_ip: 192.168.12.38
+    name: Rockstar Social Club 1
+  - target: DNAT
+    enabled: 1
+    src: wan
+    dest: lan
+    proto: udp
+    src_dport: 61455-61458
+    dest_port: 61455-61458
+    dest_ip: 192.168.12.38
+    name: Rockstar Social Club 2
 
 firewall_prometheus:
   listen_address: 192.168.12.1
