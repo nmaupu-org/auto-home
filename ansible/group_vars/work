@@ -102,9 +102,7 @@ linux_base_extra_packages:
   - util-linux
   - vagrant
   - wget
-  - wicd
-  - wicd-cli
-  - wicd-gtk
+  - connman
   - wireshark
   - whois
   - xclip

@@ -17,17 +17,13 @@ USER_FULLNAME="$4"
 : "${ARCH:=amd64}"
 : "${PRESEED_ONLY:=false}"
 
-#: "${DEBIAN_RELEASE:=stretch}"
-#DEBIAN_VERSION=9.2.1
-#: "${REMOTE_ISO:=https://cdimage.debian.org/debian-cd/current/${ARCH}/iso-cd/debian-${DEBIAN_VERSION}-${ARCH}-netinst.iso}"
-: "${DEBIAN_RELEASE:=buster}"
 # Version has to match latest vmlinuz and initrd downloaded later
-# Verify that alphaX is the latest version
-: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/buster_di_alpha3/amd64/iso-cd/debian-buster-DI-alpha3-amd64-netinst.iso}"
+: "${DEBIAN_RELEASE:=bookworm}"
+: "${REMOTE_ISO:=https://cdimage.debian.org/cdimage/weekly-builds/amd64/iso-cd/debian-testing-amd64-netinst.iso}"
 : "${MOUNTPOINT:=/mnt/usb}"
 
 # KALI is available only using uefi
-: "${KALI_ISO_URL:=http://ftp.free.fr/pub/kali-images/kali-2018.2/kali-linux-lxde-2018.2-amd64.iso}"
+: "${KALI_ISO_URL:=https://www.securiteinfo.com/live-cd-hacking-dernieres-versions/kali-linux-2021.3-live-amd64.iso}"
 : "${KALI_ENABLED:=false}"
 
 ISO_NAME="${REMOTE_ISO##*/}"
@@ -48,9 +44,9 @@ Use the following command to do so (mkpasswd is part of whois package):
   mkpasswd -m sha-512 -S $(pwgen -ns 16 1)
 
 Overriding options via environment variables
-DEBIAN_RELEASE  Release of Debian (default: stretch)
-DEBIAN_MIRROR   Debian mirror (default: http://ftp.debian.org)
-ARCH            Architecture (default: amd64)
+DEBIAN_RELEASE  Release of Debian (default: ${DEBIAN_RELEASE})
+DEBIAN_MIRROR   Debian mirror (default: ${DEBIAN_MIRROR})
+ARCH            Architecture (default: ${ARCH})
 USER_PASSWORD   Regular user password
 ROOT_PASSWORD   Password to use for root
 MOUNTPOINT      Mountpoint to use for preparing the usb key
@@ -79,7 +75,7 @@ format_dos() {
   PART="${disk}1"
 
   echo "Wiping out beginning of ${disk}"
-  dd if=/dev/zero of="${disk}" bs=2M count=1
+  dd if=/dev/zero of="${disk}" bs=2048k count=1
 
   echo "Preparing disk partitions"
   (echo n; echo p; echo 1; echo ; echo ; echo w) | fdisk "${disk}"
@@ -93,7 +89,7 @@ format_gpt() {
   disk=${1}
 
   echo "Wiping out beginning of ${disk}"
-  dd if=/dev/zero of="${disk}" bs=2M count=1
+  dd if=/dev/zero of="${disk}" bs=2048k count=1
 
   echo "Preparing disk partitions"
   parted -a optimal ${disk} --script \
@@ -220,8 +216,13 @@ if [ "${PRESEED_ONLY}" = "false" ]; then
 
   echo "Download the initrd image"
   mkdir -p "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}"
-  wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/vmlinuz"
-  wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/initrd.gz"
+  # Kernel mismatches with the one from the archive
+  #wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/vmlinuz"
+  #wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "${DEBIAN_MIRROR}/debian/dists/${DEBIAN_RELEASE}/main/installer-${ARCH}/current/images/hd-media/initrd.gz"
+  # Using alternative urls to download hdmedia kernel/initrd compatible
+  wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/vmlinuz"   "https://d-i.debian.org/daily-images/amd64/daily/hd-media/vmlinuz"
+  wget -O  "${MOUNTPOINT}/hdmedia-${DEBIAN_RELEASE}/initrd.gz" "https://d-i.debian.org/daily-images/amd64/daily/hd-media/initrd.gz"
+
 
 
   echo "Getting ISO"

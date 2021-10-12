@@ -10,5 +10,5 @@ set -o pipefail
 
 # Download and install
 curl -SsL -o "${TMP_DIR}/tasmota.bin" https://github.com/arendst/Tasmota/releases/download/${TASMOTA_VERSION}/tasmota.bin
-esptool.py -p ${TTY} erase_flash
-esptool.py -p ${TTY} write_flash -fm dio 0x00000 "${TMP_DIR}/tasmota.bin"
+#esptool.py -p ${TTY} erase_flash
+esptool.py --port ${TTY} write_flash -fs 1MB -fm dout 0x0 ${TMP_DIR}/tasmota.bin

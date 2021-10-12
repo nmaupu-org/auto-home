@@ -31,40 +31,19 @@ git clone --depth 1 --branch "${BRANCH}" https://github.com/nmaupu/auto-home "${
 ## From now on, we use script from freshly cloned repo
 
 # Ansible version should be too old to provision everything, we will do it with docker
-ansible-galaxy install -p /etc/ansible/roles angstwad.docker_ubuntu,v3.3.2
-
-## Ugly hack if debian is buster (testing in 2017)
-# angstwad.docker_ubuntu is not ready for buster version of debian
-# docker apt repo neither
-if grep -q buster /etc/debian_version; then
-  sed -i -e 's/stretch/buster/g' /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml
-  sed -i -e 's/{{ ansible_lsb.codename|lower }}/stretch/' /etc/ansible/roles/angstwad.docker_ubuntu/defaults/main.yml
-fi
-
-# Installing docker on docker's stretch repo is failing on the first service start
-# because it seems that docker is starting using init script (instead of systemd) and thus
-# the socket does not exist and everything fails (socket is nowhere to be found).
-# It finally works because systemd retries later and creates the socket
-# (because a socket unit creates it). We can thus ignore this fail when installing
-# but it is indeed very ugly.
-cat << EOF | patch -i - /etc/ansible/roles/angstwad.docker_ubuntu/tasks/main.yml || true
-@@ -113,6 +113,7 @@
-     state: "{{ 'latest' if update_docker_package else 'present' }}"
-     update_cache: "{{ update_docker_package }}"
-     cache_valid_time: "{{ docker_apt_cache_valid_time }}"
-+  ignore_errors: true
-
- - name: Set systemd playbook var
-   set_fact:
-EOF
-## End ugly hack for buster
+ansible-galaxy install -p /etc/ansible/roles geerlingguy.docker,4.1.0
 
 cat << EOF > "${CLONE_DIR}/bootstrap.yml"
 ---
-- name: Run docker.ubuntu
+- name: Run docker installation playbook
   hosts: all
+  vars:
+    - docker_service_state: started
+    - docker_service_enabled: true
+    - docker_restart_handler_state: restarted
+    - docker_apt_repository: "deb [arch={{ docker_apt_arch }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }} bullseye {{ docker_apt_release_channel }}"
   roles:
-    - angstwad.docker_ubuntu
+    - geerlingguy.docker
 EOF
 ansible-playbook -u root -i "localhost, " -c local "${CLONE_DIR}/bootstrap.yml"
 

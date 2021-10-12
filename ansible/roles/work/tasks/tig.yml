@@ -4,7 +4,7 @@
     - name: Installing pre-requisites
       package:
         name: "{{ item }}"
-        state: installed
+        state: present
       with_items:
         - libncurses-dev
 
