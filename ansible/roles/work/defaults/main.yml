@@ -69,7 +69,7 @@ tig:
   url: https://github.com/jonas/tig/releases/download/tig-{{ tig_version }}/tig-{{ tig_version }}.tar.gz
   installdir: /usr/local
 
-onepassword_version: 0.4.1
+onepassword_version: 1.12.2
 onepassword:
   version: "{{ onepassword_version }}"
   url: https://cache.agilebits.com/dist/1P/op/pkg/v{{ onepassword_version }}/op_linux_amd64_v{{ onepassword_version }}.zip
