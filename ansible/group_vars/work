@@ -79,6 +79,7 @@ linux_base_extra_packages:
   - git
   - graphviz
   - grub-efi-amd64-bin
+  - imagemagick
   - irssi
   - jq
   - libreoffice

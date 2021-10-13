@@ -124,6 +124,9 @@ firewall_dhcp_static_leases:
   - name: nmop-desktop-lan
     mac: 24:4b:fe:05:0a:8d
     ip: 192.168.12.38
+  - name: nmaupu-laptop
+    mac: 5c:5f:67:40:18:89
+    ip: 192.168.12.39
 
 firewall_dns_entries:
   192.168.12.1:

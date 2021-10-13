@@ -15,5 +15,7 @@ autocutsel -f -s PRIMARY -buttonup
 ssh-agent &
 pkill xscreensaver; xscreensaver -no-splash -no-capture-stderr &
 stalonetray &
+blueman-applet &
+telegram -startintray &
 feh --bg-scale /usr/share/wallpapers/debian.png &
 exec xmonad
