@@ -18,8 +18,11 @@
     - import_tasks: firefox.yml
       tags: firefox
       when: ansible_os_family != 'Darwin'
-    - import_tasks: rxvt-unicode.yml
+    # - import_tasks: rxvt-unicode.yml
+    #   tags: rxvt
+    - import_tasks: rxvt-unicode-apt.yml
       tags: rxvt
+      when: ansible_os_family != 'Darwin'
     - import_tasks: zsh.yml
       tags: zsh
     - import_tasks: fzf.yml

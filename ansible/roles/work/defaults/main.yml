@@ -6,7 +6,7 @@ urxvt_font_size:
 
 dircolors:
   url: https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark
-  checksum: sha1:a69a89705554ca0c66a7848496f8db7a3d6e2278
+  checksum: sha1:0da81c21e028b9e741cd89e331505ef6ad5a1b24
 
 antigen:
   url: http://git.io/antigen

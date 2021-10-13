@@ -32,6 +32,7 @@
         name: "{{item}}"
         state: present
       with_items:
+        - build-essential
         - git
         - libperl-dev
         - libx11-dev
@@ -53,22 +54,22 @@
         - libptytty
       tags: urxvt_git
 
-    - name: Copying installation script to remote
-      copy:
-        src: urxvt-widechars.patch
-        dest: /tmp/rxvt-unicode
+    #- name: Copying installation script to remote
+    #  copy:
+    #    src: urxvt-widechars.patch
+    #    dest: /tmp/rxvt-unicode
 
-    - name: Patching urxvt
-      shell: patch -Np1 -i urxvt-widechars.patch
-      args:
-        chdir: /tmp/rxvt-unicode
+    #- name: Patching urxvt
+    #  shell: patch -Np1 -i urxvt-widechars.patch
+    #  args:
+    #    chdir: /tmp/rxvt-unicode
 
-    - name: Installing urxvt unicode build dependencies
-      become: yes
-      become_user: root
-      apt:
-        state: build-dep
-        pkg: rxvt-unicode-256color
+    #- name: Installing urxvt unicode build dependencies
+    #  become: yes
+    #  become_user: root
+    #  apt:
+    #    state: build-dep
+    #    pkg: rxvt-unicode-256color
 
     - name: Configuring urxvt
       shell: ./configure --prefix="/usr/local" --enable-everything --enable-256-color --enable-unicode3 --enable-xft --enable-transparency --enable-font-styles --enable-frills

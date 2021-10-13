@@ -1,0 +1,9 @@
+---
+- name: Installing rxvt-unicode related packages
+  become: yes
+  become_user: root
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - rxvt-unicode
