@@ -78,3 +78,7 @@ onepassword:
 slack_version: 4.20.0
 slack:
   url: https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb
+
+qwertyfr_version: 0.5
+qwertyfr:
+  url: http://marin.jb.free.fr/qwerty-fr/xkb-qwerty-fr_{{ qwertyfr_version }}_all.deb

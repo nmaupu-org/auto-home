@@ -61,6 +61,9 @@
     - import_tasks: helm.yml
       tags: helm
       when: ansible_os_family != 'Darwin'
+    - import_tasks: keyboard-layout.yml
+      tags: keyboard
+      when: ansible_os_family != 'Darwin'
     #- import_tasks: slack.yml
     #  tags: slack
     #  when: ansible_os_family != 'Darwin'
