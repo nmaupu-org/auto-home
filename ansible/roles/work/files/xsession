@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+exec >> .session.log 2>> .session.err
+
+echo "xinitrc : `date`"
+echo 1>&2 "xinitrc : `date`"
+
+setxkbmap us  -variant qwerty-fr
+
 [ -f .screenlayout/myscreens.sh ] && sudo xrandr --setprovideroutputsource 1 0 && .screenlayout/myscreens.sh
 xrdb -merge ~/.Xresources
 autocutsel -f
