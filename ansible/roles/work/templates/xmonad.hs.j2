@@ -44,7 +44,7 @@ myBorderWidth     = 2
 myWorkspaces      = take {{xmonad_num_workspaces}} $ map show [1..]
 dzenFontBold      = "-xos4-terminus-bold-r-normal-*-14-*-*-*-*-*-iso8859-15"
 dzenFontNormal    = "-xos4-terminus-*-r-normal-*-14-*-*-*-*-*-iso8859-15"
-dmenuFont         = "xft:DejaVu Sans Mono:pixelsize=13,style=Regular,xft:Inconsolata for Powerline:pixelsize=14"
+dmenuFont         = "xft:DejaVu Sans Mono:pixelsize=15,style=Regular,xft:Inconsolata for Powerline:pixelsize=15"
 iconDir           = ".xmonad/icons"
 iconSep           = iconDir ++ "/separator.xbm"
 colBG             = "#0f0f0f"
@@ -65,7 +65,7 @@ dmenuProg         = "prog=`" ++ dmenuCommandProg  ++ "` && eval \"exec ${prog}\"
 dmenuServ         = "param=`"++ scriptServer  ++" -l | " ++ dmenuCommandBasic  ++ " -b` && eval \""++ scriptServer  ++" -e ${param}\""
 dmenuBrightness   = "param=`/usr/bin/seq 0 5 100 | " ++ dmenuCommandBasic  ++ " -b` && eval " ++ scriptBrightness ++" ${param}"
 lxappearance      = "lxappearance"
-wicdclient        = "wicd-client"
+wifiClient        = "wicd-client"
 
 
 ------------------------------------------------------------------------
@@ -81,7 +81,7 @@ keyBindings conf@(XConfig {XMonad.modMask = modMask}) =
   addKeyBinding cModCtrl      xK_space  (setLayout $ XMonad.layoutHook conf) $
   addKeyBinding modMask       xK_p      (spawn dmenuProg) $
   addKeyBinding cModCtrl      xK_p      (spawn lxappearance) $
-  addKeyBinding cModCtrl      xK_r      (spawn wicdclient) $
+  addKeyBinding cModCtrl      xK_r      (spawn wifiClient) $
   addKeyBinding modMask       xK_s      (spawn dmenuServ) $
   -- Resize viewed windows to the correct size
   addKeyBinding cModShift     xK_n      refresh $
