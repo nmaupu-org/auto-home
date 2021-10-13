@@ -58,8 +58,8 @@
     - import_tasks: helm.yml
       tags: helm
       when: ansible_os_family != 'Darwin'
-    - import_tasks: slack.yml
-      tags: slack
-      when: ansible_os_family != 'Darwin'
+    #- import_tasks: slack.yml
+    #  tags: slack
+    #  when: ansible_os_family != 'Darwin'
   become: yes
   become_user: "{{me}}"

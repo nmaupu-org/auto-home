@@ -76,7 +76,6 @@ onepassword:
   url: https://cache.agilebits.com/dist/1P/op/pkg/v{{ onepassword_version }}/op_linux_amd64_v{{ onepassword_version }}.zip
   installdir: /opt/bin
 
-slack_version: 4.0.0
-slack_arch: amd64
+slack_version: 4.20.0
 slack:
-  url: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-{{ slack_arch }}.deb
+  url: https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb
