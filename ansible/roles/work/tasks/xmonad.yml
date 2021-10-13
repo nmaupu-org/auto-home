@@ -89,7 +89,7 @@
 - name: Configuring xmonad
   template:
     src: xmonad.hs.j2
-    dest: .xmonad/xmonad.hs
+    dest: "{{home}}/.xmonad/xmonad.hs"
   notify:
     - recompile xmonad
   tags: xmonad-config
