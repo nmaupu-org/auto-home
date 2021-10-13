@@ -12,6 +12,9 @@
     - import_tasks: init.yml
       tags: init
       when: ansible_os_family != 'Darwin'
+    - import_tasks: wifi.yml
+      tags: wifi
+      when: ansible_os_family != 'Darwin'
     - import_tasks: golang.yml
       tags: golang
       when: ansible_os_family != 'Darwin'

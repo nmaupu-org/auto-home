@@ -1,0 +1,15 @@
+---
+
+- block:
+    - name: Installing prerequisites packages
+      package:
+        name: connman
+        state: present
+ 
+    - name: Connman configuration
+      copy:
+        src: connman-main.conf
+        dest: /etc/connman/main.conf
+        mode: 0644
+  become: yes
+  become_user: root

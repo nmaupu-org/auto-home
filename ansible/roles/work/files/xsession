@@ -7,8 +7,6 @@ autocutsel -f -s PRIMARY -buttonup
 #redshift-gtk &
 ssh-agent &
 pkill xscreensaver; xscreensaver -no-splash -no-capture-stderr &
-wicd-client -t &
-solaar &
 stalonetray &
 feh --bg-scale /usr/share/wallpapers/debian.png &
 exec xmonad

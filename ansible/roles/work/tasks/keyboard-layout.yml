@@ -1,7 +1,7 @@
 ---
 
 - block:
-  - name: Installing qwerty-fr keyboard layout
+    - name: Installing qwerty-fr keyboard layout
       apt:
         deb: "{{ qwertyfr.url }}"
   become: yes
