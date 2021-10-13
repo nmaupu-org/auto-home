@@ -23,6 +23,9 @@
     - import_tasks: rxvt-unicode-apt.yml
       tags: rxvt
       when: ansible_os_family != 'Darwin'
+    - import_tasks: rxvt-unicode-config.yml
+      tags: rxvt
+      when: ansible_os_family != 'Darwin'
     - import_tasks: zsh.yml
       tags: zsh
     - import_tasks: fzf.yml

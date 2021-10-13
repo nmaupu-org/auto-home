@@ -1,5 +1,4 @@
 ---
-
 # Compile manually urxvt because the one from Debian has a bug :
 # it does not support wide glyphs used in powerline fonts
 - name: Verifying urxvt installation
@@ -100,42 +99,3 @@
         path: /usr/local/urxvt-installed
         state: touch
   when: urxvt_installed.stat.exists is not defined or not urxvt_installed.stat.exists
-
-# Conf part
-- name: Creating some directories
-  file:
-    state: directory
-    mode: 0755
-    path: "{{item}}"
-  with_items:
-    - "{{home}}/.urxvt"
-    - "{{home}}/.urxvt/ext"
-    - "{{home}}/.config"
-    - "{{home}}/.config/fontconfig"
-    - "{{home}}/.config/fontconfig/conf.d"
-    - "{{home}}/.local"
-    - "{{home}}/.local/share"
-    - "{{home}}/.local/share/fonts"
-
-- name: Installing urxvt-font-size
-  get_url:
-    url: "{{urxvt_font_size.url}}"
-    dest: "{{home}}/.urxvt/ext/font-size"
-
-- name: Installing powerline fonts
-  git:
-    repo: https://github.com/powerline/fonts
-    dest: "{{home}}/.powerline-fonts"
-    depth: 1
-    update: yes
-
-- name: Installing powerline fonts
-  shell: ./install.sh && cp fontconfig/*.conf {{home}}/.config/fontconfig/conf.d && touch {{home}}/.powerline-fonts/installed
-  args:
-    chdir: "{{home}}/.powerline-fonts"
-    creates: "{{home}}/.powerline-fonts/installed"
-
-- name: Installing .Xresources file
-  template:
-    src: Xresources.j2
-    dest: "{{home}}/.Xresources"
