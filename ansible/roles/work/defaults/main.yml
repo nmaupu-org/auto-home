@@ -39,8 +39,7 @@ minikube:
   url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
   installdir: /opt/bin
 
-vault_version: 0.10.3
-vault_arch: linux/amd64
+vault_version: 1.8.4
 vault:
   url: https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip
   installdir: /opt/bin
