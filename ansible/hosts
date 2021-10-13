@@ -4,7 +4,7 @@ scp_if_ssh=True
 [work]
 test ansible_host=192.168.12.248 ansible_user=nmaupu
 mbr ansible_host=192.168.12.10 ansible_user=bicnic
-nmaupu-laptop ansible_host=192.168.75.129 ansible_user=nmaupu
+nmaupu-laptop ansible_host=192.168.12.230 ansible_user=nmaupu
 
 [aps]
 ap1 ansible_host=192.168.12.1 ansible_user=root
