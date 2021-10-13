@@ -27,7 +27,6 @@ useless_dirs:
   - Templates
   - Videos
 useful_dirs:
-  - bin
   - work
   - work/tmp
   - work/go
@@ -87,6 +86,7 @@ linux_base_extra_packages:
   - lxappearance
   - meld
   - mlocate
+  - network-manager
   - ngrep
   - pavucontrol
   - pssh
