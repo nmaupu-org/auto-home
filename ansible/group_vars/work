@@ -30,6 +30,7 @@ useful_dirs:
   - work
   - work/tmp
   - work/go
+  - work/perso
   - downloads
 
 sshd:
@@ -89,6 +90,7 @@ linux_base_extra_packages:
   - mlocate
   - network-manager
   - ngrep
+  - pasystray
   - pavucontrol
   - pssh
   - pulseaudio
