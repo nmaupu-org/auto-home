@@ -7,7 +7,7 @@
         state: latest
       with_items:
         - make
-    
+
     - name: Installing golang
       unarchive:
         src: "{{golang.url}}"

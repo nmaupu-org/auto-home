@@ -55,6 +55,9 @@
     - import_tasks: kubectl.yml
       tags: kubectl
       when: ansible_os_family != 'Darwin'
+    - import_tasks: krew.yml
+      tags: krew
+      when: ansible_os_family != 'Darwin'
     - import_tasks: k9s.yml
       tags: k9s
       when: ansible_os_family != 'Darwin'
