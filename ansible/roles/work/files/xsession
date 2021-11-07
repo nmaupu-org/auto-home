@@ -5,6 +5,10 @@ exec >> .session.log 2>> .session.err
 echo "xinitrc : `date`"
 echo 1>&2 "xinitrc : `date`"
 
+# Adding missing resolution for C49RG90 wide monitor
+xrandr --newmode "4096x1440_30.00" 234.17 4096 4288 4712 5328 1440 1441 1444 1465 -HSync +Vsync
+xrandr --addmode DP-1-1 "4096x1440_30.00"
+
 setxkbmap us  -variant qwerty-fr
 
 [ -f .screenlayout/myscreens.sh ] && sudo xrandr --setprovideroutputsource 1 0 && .screenlayout/myscreens.sh
