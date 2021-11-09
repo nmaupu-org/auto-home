@@ -1,0 +1,10 @@
+---
+
+- block:
+    - name: Creating trackpad configuration
+      copy:
+        src: 50-trackpad-custom.conf
+        dest: /usr/share/X11/xorg.conf.d/50-trackpad-custom.conf
+        mode: 0644
+  become: yes
+  become_user: root

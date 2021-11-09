@@ -5,7 +5,7 @@
       package:
         name: connman
         state: present
- 
+
     - name: Connman configuration
       copy:
         src: connman-main.conf
