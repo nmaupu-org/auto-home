@@ -157,6 +157,13 @@ myLayout = (toggleLayouts $ avoidStruts winDecoTabbed) $ stdLayouts
 ------------------------------------------------------------------------
 -- Window rules:
 --
+manageScratchThirdRight = customFloating (W.RationalRect l t w h)
+  where
+    h = 0.94
+    w = 0.30
+    t = (1-h)/2
+    l = 1-w-0.005
+
 manageScratchFromBottom = customFloating (W.RationalRect l t w h)
   where
     h = 0.94    -- terminal height
@@ -187,7 +194,7 @@ myScratchpads = [ NS "htop"          spawnHtop          findHtop          manage
     -- vim scratchpad
     spawnVimScratchpad  = myTerminal ++ " -name vimScratchpad -e zsh -c 'vim ~/.scratchpad'"
     findVimScratchpad   = resource =? "vimScratchpad"
-    manageVimScratchpad = manageScratchFromBottom
+    manageVimScratchpad = manageScratchThirdRight
 
 myManageHook = composeAll
     [ title =? "GNU Image Manipulation Program" --> doFloat
