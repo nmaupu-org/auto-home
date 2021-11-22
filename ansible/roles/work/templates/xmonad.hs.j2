@@ -66,6 +66,7 @@ dmenuServ         = "param=`"++ scriptServer  ++" -l | " ++ dmenuCommandBasic  +
 dmenuBrightness   = "param=`/usr/bin/seq 0 5 100 | " ++ dmenuCommandBasic  ++ " -b` && eval " ++ scriptBrightness ++" ${param}"
 lxappearance      = "lxappearance"
 wifiClient        = "wicd-client"
+screenshot        = "deepin-screenshot"
 
 
 ------------------------------------------------------------------------
@@ -95,6 +96,7 @@ keyBindings conf@(XConfig {XMonad.modMask = modMask}) =
   addKeyBinding modMask       xK_Up     (sendMessage Expand) $
   addKeyBinding modMask       xK_f      (sendMessage ToggleLayout) $
   addKeyBinding modMask       xK_u      focusUrgent $
+  addKeyBinding cModShift     xK_F4     (spawn screenshot) $
 
   -- scratchpads
   addKeyBinding cModShift     xK_t         (namedScratchpadAction myScratchpads "htop") $

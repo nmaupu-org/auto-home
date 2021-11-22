@@ -71,6 +71,7 @@ linux_base_extra_packages:
   - bc
   - clusterssh
   - curl
+  - deepin-screenshot
   - dnsutils
   - evince
   # Wallpaper tool
