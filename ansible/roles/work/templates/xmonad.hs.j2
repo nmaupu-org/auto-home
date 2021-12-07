@@ -202,9 +202,9 @@ myManageHook = composeAll
     [ title =? "GNU Image Manipulation Program" --> doFloat
     , title =? "GIMP"                           --> doFloat
     , className =? "Skype"                      --> doShift "14"
-    , className =? "Firefox"                    --> doShift "1"
     , className =? "jetbrains-pycharm"          --> doShift "6"
     , className =? "jetbrains-idea"             --> doShift "6"
+    , className =? "microsoft teams - preview"  --> doShift "10"
     ]
     <+> namedScratchpadManageHook myScratchpads
     <+> manageDocks
