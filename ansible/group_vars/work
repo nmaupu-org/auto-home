@@ -59,7 +59,7 @@ zsh_antigen:
   - antigen bundle vagrant
   - antigen bundle zsh-users/zsh-completions
   - antigen bundle zsh-users/zsh-syntax-highlighting
-  - antigen theme bhilburn/powerlevel9k powerlevel9k
+  - antigen theme romkatv/powerlevel10k
 
 linux_base_extra_packages:
   - acpi

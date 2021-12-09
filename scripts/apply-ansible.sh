@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASEDIR="$(cd $(dirname $0)/.. && pwd)"
+BASEDIR=$(cd "$(dirname "$0")/.." && pwd)
 
 usage() {
   cat << EOF
@@ -14,12 +14,14 @@ EOF
 [ $# -lt 1 ] && usage && exit 2
 
 YAML_FILE="$1"; shift
-EXTRA_OPTS="$@"
-ANSIBLE_DIR="/workspace/ansible"
-: ${SSH_KEYS_DIR:="${HOME}/.ssh"}
-: ${INVENTORY_FILE:="${ANSIBLE_DIR}/hosts"}
+EXTRA_OPTS="$*"
+WORK_DIR="/workspace"
+HOME_DIR="/home/builder"
+ANSIBLE_DIR="${WORK_DIR}/ansible"
+: "${SSH_KEYS_DIR:=${HOME}/.ssh}"
+: "${INVENTORY_FILE:=${ANSIBLE_DIR}/hosts}"
 #CMD="ansible-playbook -i "${INVENTORY_FILE}" -c paramiko ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
-CMD="ansible-playbook -i "${INVENTORY_FILE}" ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
+CMD="ansible-playbook -i ${INVENTORY_FILE} ${EXTRA_OPTS} "${ANSIBLE_DIR}/${YAML_FILE}""
 
-OTHER_VOLUMES="-v ${SSH_KEYS_DIR}:/root/.ssh" \
+OTHER_VOLUMES="-v ${SSH_KEYS_DIR}:${HOME_DIR}/.ssh" \
   "${BASEDIR}/scripts/apply-wrapper.sh" "${CMD}"
