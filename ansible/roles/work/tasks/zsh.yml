@@ -45,6 +45,11 @@
     - zshrc.d/java
     - zshrc.d/k8s-and-misc
 
+- name: Configuring p10k
+  copy:
+    src: p10k.zsh
+    dest: "{{home}}/.p10k.zsh"
+
 - name: Configuring zsh
   template:
     src: zshrc.j2

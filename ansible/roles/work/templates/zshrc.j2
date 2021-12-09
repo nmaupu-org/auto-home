@@ -1,9 +1,4 @@
-########################
-# Prompt customization #
-########################
-# https://github.com/bhilburn/powerlevel9k
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+# Powerlevel10k is configured using ~/.p10k.zsh
 
 ###########
 # History #
@@ -176,3 +171,6 @@ fi
 # Trying to fix problem with autocompletion commands
 # https://github.com/zsh-users/antigen/issues/583#issuecomment-336903466
 source $HOME/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/kubectl/kubectl.plugin.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
