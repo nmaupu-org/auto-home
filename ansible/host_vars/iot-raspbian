@@ -45,7 +45,7 @@ zigbee2mqtt_xiaomi:
     '0x00158d000309a473':
       friendly_name: 'living_hum_temp'
     '0x00158d00040be394':
-      friendly_name: 'basement_leak'
+      friendly_name: 'dehumidifier_water_sensor'
     '0x00158d000464aed2':
       friendly_name: 'basement_main_hum_temp'
     '0x00158d00031b1a5d':

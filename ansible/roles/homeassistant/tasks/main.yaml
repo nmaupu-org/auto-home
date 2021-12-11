@@ -86,6 +86,20 @@
   args:
     creates: /srv/homeassistant/pyvenv.cfg
 
+## Needed since hass v2021.10 to compile cryptography package for python
+- name: Downloading rust install script
+  get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/rust.sh
+    mode: '0755'
+
+- name: Executing rust install script
+  become: yes
+  become_user: homeassistant
+  become_method: sudo
+  ansible.builtin.shell: /tmp/rust.sh -y --profile default
+##
+
 - name: Installing required python packages via pip
   become: yes
   become_user: homeassistant
