@@ -3,7 +3,7 @@ Description=Gotomation
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/gotomation -c {{ gotomation.config }}/gotomation.yaml -t {{ gotomation.hass_token }}
+ExecStart=/usr/local/bin/gotomation -c {{ gotomation.config }}/gotomation.yaml -t {{ gotomation.hass_token }} --senderConfig {{ gotomation.hass_senderConfigTelegram }}
 # Using gotomation config for working directory so we can use relative path inside conf
 WorkingDirectory={{ gotomation.config }}
 StandardOutput=inherit

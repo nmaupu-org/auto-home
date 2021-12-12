@@ -76,3 +76,4 @@ gotomation:
   repo: https://github.com/nmaupu/gotomation-config.git
   config: /home/pi/gotomation-config
   hass_token: "{{ lookup('vault', 'secret/gotomation', 'hass_token') }}"
+  hass_senderConfigTelegram: "{{ lookup('vault', 'secret/gotomation', 'hass_senderConfigTelegram') | b64encode }}"
