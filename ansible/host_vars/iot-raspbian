@@ -62,6 +62,8 @@ zigbee2mqtt_xiaomi:
       friendly_name: 'kitchen_hum_temp'
     '0x00158d000465a382':
       friendly_name: 'hall_hum_temp'
+    '0x00158d00045b01ac':
+      friendly_name: 'outside_hum_temp'
 
 mosquitto:
   creds:
