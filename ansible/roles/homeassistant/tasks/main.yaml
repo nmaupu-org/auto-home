@@ -27,7 +27,7 @@
     - python3-pip
     - libffi-dev
     - libssl-dev
-    - libjpeg8-dev
+    - libjpeg9-dev
     - zlib1g-dev
     - python-setuptools
     - jq

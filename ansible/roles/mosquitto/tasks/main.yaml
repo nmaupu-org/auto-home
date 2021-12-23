@@ -1,5 +1,9 @@
 ---
 
+## TODO Might have a problem with the default pid file
+## maybe need to move it to /var/run/mosquitto (chown to mosquitto)
+## but main configuration file contains pid conf and might be erased when upgrading mosquitto package...
+
 - name: Installing required packages
   package:
     name: "{{ item }}"
@@ -13,6 +17,8 @@
     src: mosquitto.conf.j2
     dest: /etc/mosquitto/conf.d/custom.conf
     mode: 0644
+  tags:
+    - mosquitto_conf
   notify: restart mosquitto
 
 - name: Creating empty password file
