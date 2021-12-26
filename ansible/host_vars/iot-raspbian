@@ -11,6 +11,7 @@ users:
 
 linux_base_extra_packages:
   - aptitude
+  - lvm2
 
 zigbee2mqtt:
   devices:
