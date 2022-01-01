@@ -123,7 +123,7 @@ mosquitto:
       password: "{{ lookup('vault', 'secret/mqtt', 'password') }}"
 
 gotomation:
-  version: 1.0.6
+  version: 1.0.7
   arch: linux_arm
   user: pi
   group: pi
