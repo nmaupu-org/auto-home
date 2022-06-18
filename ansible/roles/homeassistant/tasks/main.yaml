@@ -257,12 +257,13 @@
   with_items:
     - www
     - www/icons/weather_icons
-    - www/custom_ui
+    - www/community/lovelace-meteofrance-weather-card/icons
   notify:
     - restart homeassistant
   tags:
     - config
     - hass-plugins
+    - other-plugins
 
 - name: Adding background images
   copy:
@@ -308,8 +309,40 @@
       name: custom-header.js
     - url: https://github.com/kalkih/mini-graph-card/releases/download/v0.9.2/mini-graph-card-bundle.js
       name: mini-graph-card-bundle.js
-    - url: https://raw.githubusercontent.com/nmaupu/home-assistant-config/master/ui/darksky/dark-sky-weather-card.js
-      name: custom_ui/dark-sky-weather-card.js
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/meteofrance-weather-card.js
+      name: community/lovelace-meteofrance-weather-card/meteofrance-weather-card.js
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/meteofrance-weather-card-editor.js
+      name: community/lovelace-meteofrance-weather-card/meteofrance-weather-card-editor.js
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy-day-3.svg
+      name: community/lovelace-meteofrance-weather-card/icons/cloudy-day-3.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy-night-3.svg
+      name: community/lovelace-meteofrance-weather-card/icons/cloudy-night-3.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy.svg
+      name: community/lovelace-meteofrance-weather-card/icons/cloudy.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/day.svg
+      name: community/lovelace-meteofrance-weather-card/icons/day.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/fog.svg
+      name: community/lovelace-meteofrance-weather-card/icons/fog.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/lightning-rainy.svg
+      name: community/lovelace-meteofrance-weather-card/icons/lightning-rainy.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/night.svg
+      name: community/lovelace-meteofrance-weather-card/icons/night.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-5.svg
+      name: community/lovelace-meteofrance-weather-card/icons/rainy-5.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-6.svg
+      name: community/lovelace-meteofrance-weather-card/icons/rainy-6.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-7.svg
+      name: community/lovelace-meteofrance-weather-card/icons/rainy-7.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/snowy-6.svg
+      name: community/lovelace-meteofrance-weather-card/icons/snowy-6.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/snowy-rainy.svg
+      name: community/lovelace-meteofrance-weather-card/icons/snowy-rainy.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/thunder.svg
+      name: community/lovelace-meteofrance-weather-card/icons/thunder.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/windy-night.svg
+      name: community/lovelace-meteofrance-weather-card/icons/windy-night.svg
+    - url: https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/windy.svg
+      name: community/lovelace-meteofrance-weather-card/icons/windy.svg
   notify:
     - restart homeassistant
   tags:
