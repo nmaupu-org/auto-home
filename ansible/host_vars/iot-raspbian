@@ -124,6 +124,14 @@ zigbee2mqtt_xiaomi:
           enabled_by_default: true
         last_seen:
           enabled_by_default: true
+    '0x00158d0007f29f08':
+      friendly_name: 'basement_cave_hum_temp'
+      debounce: 1
+      homeassistant:
+        linkquality:
+          enabled_by_default: true
+        last_seen:
+          enabled_by_default: true
 
 mosquitto:
   creds:
