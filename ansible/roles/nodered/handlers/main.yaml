@@ -1,6 +1,0 @@
----
-
-- name: Restart node-red
-  service:
-    name: nodered
-    state: restarted

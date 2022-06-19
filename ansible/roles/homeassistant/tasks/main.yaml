@@ -134,7 +134,7 @@
 - name: Mounting NFS share regarding TLS certificates
   mount:
     src: "{{ certs.nfs.ip }}:{{ certs.nfs.path }}"
-    path: /mnt/certs
+    path: "{{ certs.nfs.mountPath}}"
     fstype: nfs
     opts: ro,noatime,auto
     state: mounted
@@ -143,8 +143,8 @@
     - config
 
 - name: Adding update-hass-certs.sh script
-  copy:
-    src: files/update-hass-certs.sh
+  template:
+    src: update-hass-certs.sh.j2
     dest: /usr/local/bin/update-hass-certs.sh
     owner: root
     group: root

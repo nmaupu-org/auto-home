@@ -4,8 +4,10 @@ set -e
 set -o pipefail
 
 # Activing required python virtualenv
+# shellcheck source=/dev/null
 source /srv/homeassistant/bin/activate
 # Load hass-cli configuration env vars
+# shellcheck source=/dev/null
 source /home/homeassistant/.hass-cli
 
 HASS_DIR=/home/homeassistant/.homeassistant/
