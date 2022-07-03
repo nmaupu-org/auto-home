@@ -1,6 +1,13 @@
 #!/bin/ash
 # shellcheck shell=dash
 
+# Client static keys don't expire, CA does
+# CA expiry date:
+# openssl x509 -in /etc/easy-rsa/pki/ca.crt -noout -enddate
+# To renew CA and/or reinstall, delete ${OVPN_DIR}/ovpn_bootstrapped and rerun this script
+# It will regenerate everything, so client configurations is to be replaced.
+# They are located in /etc/openvpn/client*.ovpn
+
 set -x
 
 # Install packages
@@ -29,7 +36,7 @@ OVPN_SERV="${NET_ADDR}"
 export EASYRSA_PKI="${OVPN_PKI}"
 export EASYRSA_REQ_CN="ovpnca"
 export EASYRSA_BATCH="1"
-export EASYRSA_CERT_EXPIRE="3650" # Increases the client cert expiry from the default of 825 days to match the CA expiry
+export EASYRSA_CERT_EXPIRE="3650"
 
 # Remove and re-initialize PKI directory
 easyrsa init-pki
@@ -40,20 +47,21 @@ easyrsa gen-dh
 # Create a new CA
 easyrsa build-ca nopass
 
-# Generate server keys and certificate
-easyrsa build-server-full server nopass
-#openvpn --genkey tls-crypt-v2-server "${EASYRSA_PKI}/private/server.pem"
-openvpn --genkey --secret "${EASYRSA_PKI}/private/server.pem"
-
-# Generate client keys and certificate
-easyrsa build-client-full client nopass
-#openvpn --tls-crypt-v2 "${EASYRSA_PKI}/private/server.pem" \
-#  --genkey tls-crypt-v2-client "${EASYRSA_PKI}/private/client.pem"
-openvpn --tls-crypt "${EASYRSA_PKI}/private/server.pem" \
-  --genkey --secret "${EASYRSA_PKI}/private/client.pem"
-
+# Generate tls-auth key
 openvpn --genkey --secret ${OVPN_DIR}/ta.key
 
+# Generate server keys and certificate
+easyrsa build-server-full server nopass
+openvpn --genkey --secret "${EASYRSA_PKI}/private/server.pem"
+
+# Generate clients' key and certificate
+easyrsa build-client-full client-N nopass
+openvpn --tls-crypt "${EASYRSA_PKI}/private/server.pem" \
+  --genkey --secret "${EASYRSA_PKI}/private/client-N.pem"
+
+easyrsa build-client-full client-B nopass
+openvpn --tls-crypt "${EASYRSA_PKI}/private/server.pem" \
+  --genkey --secret "${EASYRSA_PKI}/private/client-B.pem"
 
 # Configure firewall
 uci rename firewall.@zone[0]="lan"
