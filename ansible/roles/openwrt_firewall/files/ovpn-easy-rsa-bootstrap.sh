@@ -1,12 +1,20 @@
 #!/bin/ash
 # shellcheck shell=dash
+# Author: nmaupu
 
-# Client static keys don't expire, CA does
+# Client static keys don't expire
+# Clients certs expire with same duration than CA for simplicity
+#
 # CA expiry date:
 # openssl x509 -in /etc/easy-rsa/pki/ca.crt -noout -enddate
+#
+# Clients expiry date:
+# openssl x509 -in /etc/easy-rsa/pki/issued/client-*.crt -noout -enddate
+#
 # To renew CA and/or reinstall, delete ${OVPN_DIR}/ovpn_bootstrapped and rerun this script
 # It will regenerate everything, so client configurations is to be replaced.
 # They are located in /etc/openvpn/client*.ovpn
+# To create a new client, use /usr/bin/ovpn-add-client.sh
 
 set -x
 
