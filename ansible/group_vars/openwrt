@@ -4,6 +4,7 @@ firewall_packages:
   - curl
   - tcpdump
   - openvpn-openssl
+  - openvpn-easy-rsa
   - libustream-mbedtls
   - kmod-ipt-ipset
   - vpn-policy-routing

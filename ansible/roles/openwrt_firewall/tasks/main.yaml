@@ -122,3 +122,9 @@
   tags: ['always']
   when: firewall_mqtt.enabled
 
+- name: Processing openvpn server configuration
+  include_tasks:
+    file: ovpn.yaml
+    apply:
+      tags: ['openvpn_server']
+  tags: ['openvpn_server']

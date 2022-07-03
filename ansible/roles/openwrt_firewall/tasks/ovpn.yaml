@@ -1,0 +1,14 @@
+---
+
+- name: Copy ovpn bootstrap script
+  ansible.builtin.copy:
+    src: files/ovpn-easy-rsa-bootstrap.sh
+    dest: /usr/bin/ovpn-easy-rsa-bootstrap.sh
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Execute script
+  ansible.builtin.shell:
+    cmd: /usr/bin/ovpn-easy-rsa-bootstrap.sh
+    creates: /etc/openvpn/ovpn_bootstrapped
