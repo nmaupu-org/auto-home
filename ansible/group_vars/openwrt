@@ -147,6 +147,8 @@ firewall_dns_entries:
     - deluge
   192.168.12.159:
     - vault
+  192.168.12.153:
+    - sickchill
 
 firewall_ports:
   - target: DNAT
