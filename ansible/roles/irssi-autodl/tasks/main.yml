@@ -91,12 +91,15 @@
     name: "clean torrents {{item.name}}"
     state: present
     user: "{{irssi_config_owner}}"
-    job: "{{irssi_config_dir}}/../.autodl/scripts/clean_torrents.rb {{deluge_server_address}} {{deluge_server_port}} {{deluge_server_username}} {{deluge_server_password}} {{item.name}} >/tmp/clean-{{item.name}}.log 2>&1"
+    job: "{{irssi_config_dir}}/../.autodl/scripts/clean_torrents.rb {{deluge_server_address}} {{deluge_server_port}} {{deluge_server_username}} {{deluge_server_password}} {{item.name}} {{item.seed_time_days}} >/tmp/clean-{{item.name}}.log 2>&1"
     minute: "{{item.minute}}"
   with_items:
     - name: tl_autoratio
       minute: "*"
+      seed_time_days: 10
     - name: sickrage
       minute: 10
+      seed_time_days: 10
     - name: couchpotato
       minute: 15
+      seed_time_days: 10

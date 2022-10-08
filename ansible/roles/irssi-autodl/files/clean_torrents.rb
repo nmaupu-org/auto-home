@@ -7,6 +7,7 @@ arg_port = ARGV[1]
 arg_login = ARGV[2]
 arg_password = ARGV[3]
 arg_label = ARGV[4]
+arg_max_seed_time = ARGV[5]*24*3600
 
 # https://github.com/t3hk0d3/deluge-rpc
 # http://www.rasterbar.com/products/libtorrent/manual.html#status
@@ -35,7 +36,6 @@ torrents.each { |key, value|
   tracker_status = value["tracker_status"]
   all_time_download = value["all_time_download"]
 
-  max_seeding_time = 97*3600
   percent_time = ((seeding_time.to_f*100) / max_seeding_time).round(1)
 
   message = "[id=#{torrent_id} state=#{state}, ratio=#{ratio}, seeding_time=#{seeding_time} (#{percent_time}%)] #{name} - "
