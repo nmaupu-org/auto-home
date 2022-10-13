@@ -11,7 +11,7 @@ upload-delay-secs = 5
 {% for filter in autodl_filters %}
 
 [filter {{filter}}]
-{% for key, val in autodl_filters[filter].iteritems() %}
+{% for key, val in autodl_filters[filter].items() %}
 {{key}} = {{val}}
 {% endfor %}
 {% endfor %}
