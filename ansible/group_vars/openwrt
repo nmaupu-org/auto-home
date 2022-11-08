@@ -139,16 +139,17 @@ firewall_dns_entries:
   192.168.12.35:
     - hass
     - mqtt
+    - iot-raspbian
+  192.168.12.153:
+    - sickchill
+  192.168.12.154:
+    - torrent
   192.168.12.155:
     - plex
   192.168.12.156:
     - le-validator
-  192.168.12.154:
-    - deluge
   192.168.12.159:
     - vault
-  192.168.12.153:
-    - sickchill
 
 firewall_ports:
   - target: DNAT
