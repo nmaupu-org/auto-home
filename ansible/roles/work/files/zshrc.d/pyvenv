@@ -1,0 +1,23 @@
+#VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+#VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv
+#export PATH=/usr/local/bin:$PATH
+#export WORKON_HOME=~/.virtualenvs
+#source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+
+export VENVS_HOME=~/.pyvenv
+
+venv_create() {
+  python3 -m venv "${VENVS_HOME}/$1"
+}
+
+venv_delete() {
+  rm -rf "${VENVS_HOME}/$1"
+}
+
+venv_list() {
+  find ~/.pyvenv/ -mindepth 1 -maxdepth 1 -type d | xargs -n1 basename
+}
+
+venv_activate() {
+  source "${VENVS_HOME}/$1/bin/activate"
+}

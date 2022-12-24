@@ -210,6 +210,12 @@ map! <silent> <C-S-W>     <ESC>:tabclose<CR>
 map <silent> <F7> "<ESC>:silent setlocal spell! spelllang=en<CR>"
 map <silent> <F6> "<ESC>:silent setlocal spell! spelllang=fr<CR>"
 
+" Resize nerdtree pane
+map  <C-S-Right> <ESC>:vertical res +5<CR>
+map  <C-S-Left>  <ESC>:vertical res -5<CR>
+map! <C-S-Right> <ESC>:vertical res +5<CR>
+map! <C-S-Left>  <ESC>:vertical res -5<CR>
+
 " Disable "ex mode" shortcut
 map Q <Nop>
 

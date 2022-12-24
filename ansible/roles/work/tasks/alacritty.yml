@@ -1,0 +1,23 @@
+- name: Installing alacritty
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - alacritty
+  become: yes
+  become_user: root
+
+- name: Making alacritty configuration directory
+  file:
+    state: directory
+    mode: 0755
+    path: "{{home}}/{{item}}"
+  with_items:
+    - .config
+    - .config/alacritty
+
+- name: Installing alacritty configuration
+  copy:
+    src: "alacritty.yml"
+    dest: "{{ home }}/.config/alacritty/alacritty.yml"
+    mode: 0644

@@ -44,6 +44,9 @@
   with_items:
     - zshrc.d/java
     - zshrc.d/k8s-and-misc
+    - zshrc.d/brightness
+    - zshrc.d/pyvenv
+    - zshrc.d/eol
 
 - name: Configuring p10k
   copy:
