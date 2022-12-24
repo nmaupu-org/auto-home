@@ -2,10 +2,8 @@
 
 [ $# -ne 1 ] && exit 1
 
-MAX=5000
-
 PERCENT=${1}
-VALUE=$((${MAX}*${PERCENT}/100))
-echo ${VALUE} > /sys/class/backlight/intel_backlight/brightness
+VALUE=$(echo "scale=2; ${PERCENT}/100" | bc)
+xrandr --output "$(xrandr | grep " connected" | cut -f1 -d " ")" --brightness "${VALUE}"
 
 exit 0
