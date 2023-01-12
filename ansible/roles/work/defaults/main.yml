@@ -12,7 +12,7 @@ antigen:
   url: http://git.io/antigen
 
 golang:
-  url: https://dl.google.com/go/go1.18.6.linux-amd64.tar.gz
+  url: https://dl.google.com/go/go1.19.5.linux-amd64.tar.gz
   installdir: /usr/local
 
 terraform_version: 0.12.0
