@@ -288,6 +288,9 @@
     - repo: https://github.com/thomasloven/lovelace-auto-entities.git
       name: auto-entities
       version: "1.12.1"
+    - repo: https://github.com/thomasloven/lovelace-template-entity-row
+      name: template-entity-row
+      version: "1.3.2"
     - repo: https://github.com/rodrigofragadf/lovelace-cards.git
       name: lovelace-cards
       version: "c246a4f960d94f4adc6658f6268391caf5716e6a" # committed on Jan 6, 2019
