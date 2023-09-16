@@ -38,6 +38,7 @@
     - libxml2
     - libxslt1.1
     - ffmpeg
+    - libatlas-base-dev
 
 - name: Configuring server to Paris time
   timezone:
