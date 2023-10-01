@@ -128,6 +128,9 @@ firewall_dhcp_static_leases:
   - name: nmaupu-laptop
     mac: 5c:5f:67:40:18:89
     ip: 192.168.12.39
+  - name: hass-metrics
+    mac: d6:50:99:9e:99:20
+    ip: 192.168.12.40
 
 firewall_dns_entries:
   192.168.12.1:
