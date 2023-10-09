@@ -40,6 +40,8 @@
     - ffmpeg
     - libatlas-base-dev
     - libavdevice-dev
+    - libavdevice59
+    - libavformat59
 
 - name: Configuring server to Paris time
   timezone:
