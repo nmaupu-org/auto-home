@@ -131,6 +131,9 @@ firewall_dhcp_static_leases:
   - name: hass-metrics
     mac: d6:50:99:9e:99:20
     ip: 192.168.12.40
+  - name: nmop-desktop
+    mac: 3c:58:c2:c6:d3:29
+    ip: 192.168.12.41
 
 firewall_dns_entries:
   192.168.12.1:
