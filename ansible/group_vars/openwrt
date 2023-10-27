@@ -122,9 +122,6 @@ firewall_dhcp_static_leases:
   - name: plex
     mac: d0:50:99:30:63:78
     ip: 192.168.12.155
-  - name: nmop-desktop-lan
-    mac: 24:4b:fe:05:0a:8d
-    ip: 192.168.12.38
   - name: nmaupu-laptop
     mac: 5c:5f:67:40:18:89
     ip: 192.168.12.39
@@ -134,6 +131,9 @@ firewall_dhcp_static_leases:
   - name: nmop-desktop
     mac: 3c:58:c2:c6:d3:29
     ip: 192.168.12.41
+  - name: nmop-desktop-lan
+    mac: 24:4b:fe:05:0a:8d
+    ip: 192.168.12.38
 
 firewall_dns_entries:
   192.168.12.1:
