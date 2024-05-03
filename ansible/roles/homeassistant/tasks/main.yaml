@@ -298,6 +298,9 @@
     - repo: https://github.com/rodrigofragadf/lovelace-cards.git
       name: lovelace-cards
       version: "c246a4f960d94f4adc6658f6268391caf5716e6a" # committed on Jan 6, 2019
+    - repo: https://github.com/thomasloven/lovelace-layout-card.git
+      name: lovelace-layout-cards
+      version: "2.4.4"
   notify:
     - restart homeassistant
   tags:
@@ -359,7 +362,7 @@
 
 - name: Installing AM chart icons (animated weather icons)
   unarchive:
-    src: https://s3.amazonaws.com/amcharts-downloads/1.0/amcharts_weather_icons_1.0.0.zip
+    src: https://download.amcharts.com/1.0/amcharts_weather_icons_1.0.0.zip
     dest: /home/homeassistant/.homeassistant/www/icons/weather_icons/
     remote_src: true
     owner: homeassistant
