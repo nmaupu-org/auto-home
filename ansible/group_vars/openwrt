@@ -146,6 +146,8 @@ firewall_dns_entries:
     - hass
     - mqtt
     - iot-raspbian
+  192.168.12.152:
+    - nzbget
   192.168.12.153:
     - sickchill
   192.168.12.154:
