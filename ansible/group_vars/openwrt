@@ -119,9 +119,6 @@ firewall_dhcp_static_leases:
   - name: octopi
     mac: DC:A6:32:A2:67:82
     ip: 192.168.12.37
-  - name: plex
-    mac: d0:50:99:30:63:78
-    ip: 192.168.12.155
   - name: nmaupu-laptop
     mac: 5c:5f:67:40:18:89
     ip: 192.168.12.39
@@ -146,8 +143,6 @@ firewall_dns_entries:
     - hass
     - mqtt
     - iot-raspbian
-  192.168.12.155:
-    - plex
   192.168.12.156:
     - le-validator
   192.168.12.159:
@@ -188,7 +183,7 @@ firewall_ports:
     proto: tcp
     src_dport: 32400
     dest_port: 32400
-    dest_ip: 192.168.12.155
+    dest_ip: 192.168.12.8
     name: plex
   - target: DNAT
     enabled: 1
