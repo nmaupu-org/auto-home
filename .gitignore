@@ -10,3 +10,4 @@ assets/
 *.iso
 terraform/
 ansible/plugins/lookup/ansible-vault/
+*key.json

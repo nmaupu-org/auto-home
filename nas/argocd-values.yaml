@@ -1,0 +1,19 @@
+---
+configs:
+  cm:
+    statusbadge.enabled: true
+
+server:
+  certificate:
+    enabled: true
+    domain: argocd.knas.home.fossar.net
+    issuer:
+      kind: ClusterIssuer
+      name: google-dns-issuer-staging
+  ingress:
+    enabled: true
+    tls: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    hostname: argocd.knas.home.fossar.net
