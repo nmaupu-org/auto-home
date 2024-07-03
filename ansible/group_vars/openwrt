@@ -70,8 +70,7 @@ firewall_dnsmasq_config:
     enable_tftp: 1
     tftp_root: /mnt/extstorage/bios
   addresses:
-    - /foo/192.168.12.157
-    - /foo.home.fossar.net/192.168.12.157
+    - /knas.home.fossar.net/192.168.12.100
 
 firewall_dhcp_static_leases:
   - name: asrock
