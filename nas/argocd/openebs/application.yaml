@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: openebs
+    name: in-cluster
+  source:
+    chart: openebs
+    repoURL: https://openebs.github.io/openebs
+    targetRevision: 4.0.1
+    helm:
+      releaseName: openebs
+      valuesObject:
+        openebs-crds:
+          csi:
+            volumeSnapshots:
+              enabled: true
+        engines:
+          local:
+            lvm:
+              enabled: false
+          zfs:
+            enabled: true
+          replicated:
+            mayastor:
+              enabled: false
+        mayastor:
+          enabled: false
+        lvm-localpv:
+          enabled: false
+        localpv-provisioner:
+          hostpathClass:
+            enabled: false
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
