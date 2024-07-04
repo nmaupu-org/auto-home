@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-crds
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: ingress-controller
+    name: in-cluster
+  sources:
+    - chart: traefik-crds
+      repoURL: tccr.io/truecharts
+      targetRevision: 3.1.0
+      helm:
+        releaseName: traefik-crds
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

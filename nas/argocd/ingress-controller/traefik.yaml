@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: ingress-controller
+    name: in-cluster
+  sources:
+    - chart: traefik
+      repoURL: tccr.io/truecharts
+      targetRevision: 29.1.6
+      helm:
+        releaseName: traefik
+        valueFiles:
+          - $values/nas/argocd/ingress-controller/traefik-values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
