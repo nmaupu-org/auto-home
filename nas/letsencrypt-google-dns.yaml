@@ -9,16 +9,16 @@ metadata:
   name: google-dns-issuer-staging
 spec:
   acme:
-    email: @@EMAIL_ADDRESS@@
+    email: "@@EMAIL_ADDRESS@@"
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: google-dns-issuer-staging
     solvers:
       - dns01:
           cloudDNS:
-            project: @@GOOGLE_PROJECT_ID@@
+            project: "@@GOOGLE_PROJECT_ID@@"
             serviceAccountSecretRef:
-              name: google-dns-sa
+              name: google-dns01-solver
               key: google-key.json
 
 ---
@@ -28,14 +28,14 @@ metadata:
   name: google-dns-issuer-prod
 spec:
   acme:
-    email: @@EMAIL_ADDRESS@@
+    email: "@@EMAIL_ADDRESS@@"
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: google-dns-issuer-prod
     solvers:
       - dns01:
           cloudDNS:
-            project: @@GOOGLE_PROJECT_ID@@
+            project: "@@GOOGLE_PROJECT_ID@@"
             serviceAccountSecretRef:
-              name: google-dns-sa
+              name: google-dns01-solver
               key: google-key.json

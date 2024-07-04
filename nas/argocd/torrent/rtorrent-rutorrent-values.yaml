@@ -1,0 +1,122 @@
+---
+service:
+  torrent-in:
+    enabled: true
+    type: LoadBalancer
+    expandObjectName: true
+    loadBalancerIP: 192.168.12.102
+    ports:
+      torrent-in:
+        enabled: true
+        targetSelector: rtorrent-rutorrent
+        port: 62820
+        protocol: tcp
+        targetPort: 62820
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: rutorrent.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+metrics:
+  main:
+    enabled: false
+
+persistence:
+  downloads:
+    enabled: false
+  data:
+    enabled: true
+    mountPath: /data
+    readOnly: false
+    size: 10Gi
+    static:
+      mode: disabled
+    storageClass: ""
+    type: pvc
+    targetSelectAll: true
+  passwd:
+    enabled: true
+    mountPath: /passwd
+    readOnly: false
+    size: 100Mi
+    static:
+      mode: disabled
+    type: pvc
+  incoming:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/dls-tmp/incoming-rtorrent
+    mountPath: /mnt/incoming-rtorrent
+  completed:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/incoming/torrent
+    mountPath: /mnt/incoming
+  torrent:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/torrent
+    mountPath: /mnt/torrent
+  configmap:
+    enabled: true
+    targetSelectAll: true
+    type: configmap
+    objectName: rtorrent-config
+    expandObjectName: false
+    defaultMode: "0664"
+    mountPath: /cm
+    items:
+      - key: rtorrent.rc
+        path: rtorrent.rc
+
+release_name: rtorrent-rutorrent
+
+resources:
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+  requests:
+    cpu: 10m
+    memory: 50Mi
+
+securityContext:
+  container:
+    PUID: 1001
+    UMASK: "0022"
+  pod:
+    fsGroup: 1001
+
+workload:
+  main:
+    podSpec:
+      initContainers:
+        main:
+          enabled: true
+          type: init
+          imageSelector: image
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              cp /cm/rtorrent.rc /data/rtorrent/.rtorrent.rc

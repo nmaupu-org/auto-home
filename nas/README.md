@@ -11,7 +11,6 @@ Install gcloud and create a service account for cert-manager DNS-01 challenge so
 PROJECT_ID="..."
 gcloud iam service-accounts create home-dns01-solver --display-name "home-dns01-solver"
 gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:home-dns01-solver@$PROJECT_ID.iam.gserviceaccount.com --role roles/dns.admin
-gcloud iam service-accounts create home-dns01-solver
 ```
 
 After create, key can be retrieve with the following command (this is done in Makefile automatically):

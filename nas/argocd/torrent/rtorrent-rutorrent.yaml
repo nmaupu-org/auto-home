@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rtorrent-rutorrent
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: rtorrent-rutorrent
+    name: in-cluster
+  sources:
+    - chart: rtorrent-rutorrent
+      repoURL: tccr.io/truecharts
+      targetRevision: 6.1.4
+      helm:
+        releaseName: rtorrent-rutorrent
+        valueFiles:
+          - $values/nas/argocd/torrent/rtorrent-rutorrent-values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

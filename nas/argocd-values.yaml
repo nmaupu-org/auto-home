@@ -9,7 +9,7 @@ server:
     domain: argocd.knas.home.fossar.net
     issuer:
       kind: ClusterIssuer
-      name: google-dns-issuer-staging
+      name: google-dns-issuer-prod
   ingress:
     enabled: true
     tls: true

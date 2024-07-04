@@ -8,8 +8,8 @@ all: argocd
 google-key.json:
 	# The google service account "home-dns01-solver" needs to exist beforehand
 	# Check README to know how to create it
-	gcloud iam service-accounts keys create google-key.json --iam-account home-dns01-solver@$GOOGLE_PROJECT_ID.iam.gserviceaccount.co
-	kubectl create ns cert-manager
+	gcloud iam service-accounts keys create google-key.json --iam-account home-dns01-solver@$(GOOGLE_PROJECT_ID).iam.gserviceaccount.com
+	kubectl create ns cert-manager || true
 	kubectl create secret generic google-dns01-solver --from-file=google-key.json --namespace cert-manager
 
 .PHONY:cert-manager
