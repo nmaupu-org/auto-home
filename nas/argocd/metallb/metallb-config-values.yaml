@@ -1,0 +1,28 @@
+---
+L2Advertisements:
+  - name: l2adv
+    addressPools:
+      - apps
+
+ipAddressPools:
+  - name: apps
+    autoAssign: true
+    avoidBuggyIPs: false
+    addresses:
+      - 192.168.12.100-192.168.12.150
+
+operator:
+  metallb:
+    namespace: metallb
+
+portal:
+  open:
+    enabled: false
+
+service:
+  main:
+    enabled: false
+    ports:
+      main:
+        enabled: false
+        port: 9999

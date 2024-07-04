@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-config
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: metallb
+    name: in-cluster
+  sources:
+    - chart: metallb-config
+      repoURL: tccr.io/truecharts
+      targetRevision: 8.1.4
+      helm:
+        releaseName: metallb-config
+        valueFiles:
+          - $values/nas/argocd/metallb/metallb-config-values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

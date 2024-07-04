@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: metallb
+    name: in-cluster
+  source:
+    chart: metallb
+    repoURL: tccr.io/truecharts
+    targetRevision: 16.1.1
+    helm:
+      releaseName: metallb
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
