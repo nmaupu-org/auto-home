@@ -1,0 +1,66 @@
+---
+image:
+  repository: ghcr.io/onedr0p/plex
+  pullPolicy: IfNotPresent
+  tag: 1.40.3.8555-fef15d30c
+
+service:
+  main:
+    ports:
+      main:
+        enabled: true
+        loadBalancerIP: 192.168.12.103
+        type: LoadBalancer
+        protocol: http
+        port: 32400
+        targetPort: 32400
+
+persistence:
+  library:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/plex
+    mountPath: /mnt/library
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/plex
+  transcode:
+    enabled: true
+    mountPath: "/transcode"
+    type: emptyDir
+    medium: Memory
+    targetSelectAll: true
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: plex.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
