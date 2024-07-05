@@ -114,17 +114,24 @@
       tags: ['firewall_nfs']
   tags: ['always']
 
-- name: Processing Mosquitto server
-  include_tasks:
-    file: mqtt.yaml
-    apply:
-      tags: ['firewall_mqtt']
-  tags: ['always']
-  when: firewall_mqtt.enabled
+# - name: Processing Mosquitto server
+#   include_tasks:
+#     file: mqtt.yaml
+#     apply:
+#       tags: ['firewall_mqtt']
+#   tags: ['always']
+#   when: firewall_mqtt.enabled
 
 - name: Processing openvpn server configuration
   include_tasks:
     file: ovpn.yaml
     apply:
       tags: ['openvpn_server']
+  tags: ['always']
+
+- name: Processing BGP configuration
+  include_tasks:
+    file: bgp.yaml
+    apply:
+      tags: ['bgp']
   tags: ['always']

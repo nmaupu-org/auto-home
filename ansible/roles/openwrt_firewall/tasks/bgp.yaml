@@ -1,0 +1,12 @@
+---
+
+- name: Configuring BGP with vtysh
+  ansible.builtin.shell: |
+    conf t
+    router bgp 65000
+    neighbor 192.168.12.8 remote-as 65001
+    neighbor 192.168.12.8 description home-nas
+    exit
+    exit
+  args:
+    executable: vtysh
