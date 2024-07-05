@@ -149,15 +149,6 @@ firewall_dns_entries:
 
 firewall_ports:
   - target: DNAT
-    enabled: 1
-    src: wan
-    dest: lan
-    proto: tcp
-    src_dport: 80
-    dest_port: 80
-    dest_ip: 192.168.12.156
-    name: Certbot
-  - target: DNAT
     enabled: 0
     src: wan
     dest: lan
@@ -167,7 +158,7 @@ firewall_ports:
     dest_ip: 192.168.12.35
     name: home assistant
   - target: DNAT
-    enabled: 1
+    enabled: 0
     src: wan
     dest: lan
     proto: tcp
@@ -189,12 +180,12 @@ firewall_ports:
     src: wan
     dest: lan
     proto: tcp
-    src_dport: 6800-7000
-    dest_port: 6800-7000
-    dest_ip: 192.168.12.154
+    src_dport: 62820
+    dest_port: 62820
+    dest_ip: 192.168.12.102
     name: torrent
   - target: DNAT
-    enabled: 1
+    enabled: 0
     src: wan
     dest: lan
     proto: udp
@@ -203,7 +194,7 @@ firewall_ports:
     dest_ip: 192.168.12.38
     name: Rockstar Social Club 1
   - target: DNAT
-    enabled: 1
+    enabled: 0
     src: wan
     dest: lan
     proto: udp
