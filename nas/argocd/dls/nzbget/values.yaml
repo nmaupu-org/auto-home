@@ -1,0 +1,71 @@
+---
+image:
+  repository: ghcr.io/geek-cookbook/nzbget
+  pullPolicy: IfNotPresent
+  tag: 24.1@sha256:a7ba9009d17893bfaa8ccac4bd912fedf8bd8b1752618d56f4526d6d8bd14f4a
+
+persistence:
+  # data dir to store nzb and other internal stuff, not a download dir per se
+  downloads:
+    enabled: true
+    type: emptyDir
+    size: 1Gi
+    medium: ""
+    mountPath: /var/nzbget-downloads
+    readOnly: false
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/nzbget
+    mountPath: "/config"
+  intermediate:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/dls-tmp/nzbget-intermediate
+    mountPath: /mnt/intermediate
+  completed:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/incoming/nzb
+    mountPath: /mnt/completed
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: nzbget.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+          probes:
+            liveness:
+              enabled: false
+            readiness:
+              enabled: false
+            startup:
+              enabled: false
