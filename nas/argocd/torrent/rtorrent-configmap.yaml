@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rtorrent-config
-  namespace: rtorrent-rutorrent
+  namespace: dls
 data:
   rtorrent.rc: |
     # Instance layout (base paths)
