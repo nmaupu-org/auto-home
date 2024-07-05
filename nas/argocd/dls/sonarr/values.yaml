@@ -1,0 +1,41 @@
+---
+service:
+  metrics:
+    enabled: false
+    ports:
+      metrics:
+        enabled: false
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+  exportarr:
+    podSpec:
+      containers:
+        exportarr:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+
+persistence:
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/sonarr
+    targetSelector:
+      main:
+        main:
+          mountPath: /config
+      exportarr:
+        exportarr:
+          mountPath: /config
+          readOnly: true
+
+metrics:
+  main:
+    enabled: false
