@@ -72,17 +72,18 @@ persistence:
     type: hostPath
     hostPath: /mnt/tank/dls/incoming/torrent
     mountPath: /mnt/incoming
-  torrent:
-    enabled: true
-    type: hostPath
-    hostPath: /mnt/tank/dls/torrent
-    mountPath: /mnt/torrent
   rtorrent-session:
     enabled: true
     type: device
     hostPath: /dev/zvol/tank/dls/rtorrent-session
     hostPathType: BlockDevice
     mountPath: /disks/rtorrent-session
+  blackhole:
+    enabled: true
+    type: emptyDir
+    size: 50Mi
+    medium: ""
+    mountPath: /black-hole
   configmap:
     enabled: true
     targetSelectAll: true
@@ -149,9 +150,9 @@ configmap:
     data:
       rtorrent.rc: |
         # Instance layout (base paths)
-        method.insert = cfg.blackhole, private|const|string, (cat,"/mnt/torrent/black-hole")
+        method.insert = cfg.blackhole, private|const|string, (cat,"/black-hole")
         method.insert = cfg.incoming,  private|const|string, (cat,"/mnt/incoming-rtorrent")
-        method.insert = cfg.completed, private|const|string, (cat,"/mnt/completed")
+        method.insert = cfg.completed, private|const|string, (cat,"/mnt/incoming")
         method.insert = cfg.rtorrent_session, private|const|string, (cat,"/mnt/rtorrent-session")
 
         # Create instance directories
