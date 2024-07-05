@@ -1,4 +1,7 @@
 ---
+global:
+  domain: argocd.knas.home.fossar.net
+
 configs:
   cm:
     statusbadge.enabled: true
