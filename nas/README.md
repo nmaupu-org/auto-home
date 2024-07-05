@@ -13,6 +13,7 @@ Create the following dataset/directories (chown with 1001)
 - tank/dls/configs/plex
 - tank/dls/configs/prowlarr
 - tank/dls/configs/sonarr
+- tank/dls/configs/heimdall
 
 
 # Bootstrapping
