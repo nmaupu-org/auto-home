@@ -77,12 +77,18 @@ persistence:
     type: hostPath
     hostPath: /mnt/tank/dls/torrent
     mountPath: /mnt/torrent
+  rtorrent-session:
+    enabled: true
+    type: device
+    hostPath: /dev/zvol/tank/dls/rtorrent-session
+    hostPathType: BlockDevice
+    mountPath: /disks/rtorrent-session
   configmap:
     enabled: true
     targetSelectAll: true
     type: configmap
-    objectName: rtorrent-config
-    expandObjectName: false
+    objectName: config
+    expandObjectName: true
     defaultMode: "0664"
     mountPath: /cm
     items:
@@ -109,6 +115,20 @@ securityContext:
 workload:
   main:
     podSpec:
+      containers:
+        main:
+          lifecycle:
+            postStart:
+              type: exec
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  set -e
+                  mkdir -p /mnt/rtorrent-session
+                  chown rtorrent:rtorrent /mnt/rtorrent-session
+                  mount /disks/rtorrent-session /mnt/rtorrent-session
+                  rm -f /mnt/rtorrent-session/rtorrent.lock
       initContainers:
         main:
           enabled: true
@@ -119,4 +139,103 @@ workload:
             - -c
             - |
               set -e
+              mkdir -p /data/rtorrent
               cp /cm/rtorrent.rc /data/rtorrent/.rtorrent.rc
+
+configmap:
+  config:
+    enabled: true
+    namespace: dls
+    data:
+      rtorrent.rc: |
+        # Instance layout (base paths)
+        method.insert = cfg.blackhole, private|const|string, (cat,"/mnt/torrent/black-hole")
+        method.insert = cfg.incoming,  private|const|string, (cat,"/mnt/incoming-rtorrent")
+        method.insert = cfg.completed, private|const|string, (cat,"/mnt/completed")
+        method.insert = cfg.rtorrent_session, private|const|string, (cat,"/mnt/rtorrent-session")
+
+        # Create instance directories
+        execute.throw = bash,-c, \
+            (cat, \
+              "builtin cd \"", (cfg.blackhole), "\" ", \
+              "&& mkdir -p load start")
+
+        # Session directory
+        session.path.set = (cat,(cfg.rtorrent_session))
+
+        # Default directory to save the downloaded torrents
+        directory.default.set = (cat,(cfg.incoming))
+
+        # Listening port for incoming peer traffic (fixed; you can also randomize it)
+        network.port_range.set = 62820-62820
+        network.port_random.set = no
+
+        # Maximum and minimum number of peers to connect to per torrent
+        throttle.min_peers.normal.set = 20
+        throttle.max_peers.normal.set = 100
+
+        # Same as above but for seeding completed torrents (-1 = same as downloading)
+        throttle.min_peers.seed.set = 30
+        throttle.max_peers.seed.set = 80
+
+        # Maximum number of simultanious uploads per torrent
+        throttle.max_uploads.set = 100
+
+        # Global upload and download rate in KiB. "0" for unlimited
+        throttle.global_down.max_rate.set_kb = 0
+        throttle.global_up.max_rate.set_kb = 0
+
+        # Enable DHT support for trackerless torrents or when all trackers are down
+        # May be set to "disable" (completely disable DHT), "off" (do not start DHT),
+        # "auto" (start and stop DHT as needed), or "on" (start DHT immediately)
+        dht.mode.set = disable
+
+        # Enable peer exchange (for torrents not marked private)
+        protocol.pex.set = no
+
+        # Check hash for finished torrents. Might be usefull until the bug is
+        # fixed that causes lack of diskspace not to be properly reported
+        pieces.hash.on_completion.set = yes
+
+        # Set whether the client should try to connect to UDP trackers
+        trackers.use_udp.set = no
+
+        # Set the max amount of memory address space used to mapping file chunks. This refers to memory mapping, not
+        # physical memory allocation. Default: 1GB (max_memory_usage)
+        # This may also be set using ulimit -m where 3/4 will be allocated to file chunks
+        #pieces.memory.max.set = 1GB
+
+        # Alternative calls to bind and ip that should handle dynamic ip's
+        #schedule2 = ip_tick,0,1800,ip=rakshasa
+        #schedule2 = bind_tick,0,1800,bind=rakshasa
+
+        # Encryption options, set to none (default) or any combination of the following:
+        # allow_incoming, try_outgoing, require, require_RC4, enable_retry, prefer_plaintext
+        protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
+
+        # Set the umask for this process, which is applied to all files created by the program
+        system.umask.set = 0022
+
+        # Add a preferred filename encoding to the list
+        encoding.add = UTF-8
+
+        ##view.sort_current = seeding, greater=d.ratio=
+        schedule2 = monitor_diskspace, 15, 60, ((close_low_diskspace, 1000M))
+
+        # Watch a directory for new torrents, and stop those that have been deleted
+        #directory.watch.added = (cat,(cfg.watch)), load.start
+        #schedule2 = untied_directory, 5, 5, (cat,"stop_untied=",(cfg.watch),"*.torrent")
+        # Watch directories (add more as you like, but use unique schedule names)
+        schedule2 = watch_start, 5, 5, ((load.start_verbose, (cat, (cfg.blackhole), "/start/*.torrent"), d.custom1.set=sonarr, d.delete_tied=))
+        schedule2 = watch_load,  6, 5, ((load.verbose,       (cat, (cfg.blackhole), "/load/*.torrent"),  d.custom1.set=sonarr, d.delete_tied=))
+
+        # Close torrents when diskspace is low
+        schedule2 = monitor_diskspace, 15, 60, ((close_low_diskspace,1000M))
+
+        # Move finished (no need Autotools/Automove plugin on ruTorrent)
+        #method.insert = d.get_finished_dir, simple, "cat=$cfg.download_complete=,$d.custom1="
+        #method.insert = d.move_to_complete, simple, "d.directory.set=$argument.1=; execute=mkdir,-p,$argument.1=; execute=mv,-u,$argument.0=,$argument.1=; d.save_full_session="
+        #method.set_key = event.download.finished,move_complete,"d.move_to_complete=$d.data_path=,$d.get_finished_dir="
+        method.insert = d.move_completed, simple, "d.directory.set=(cat,(cfg.completed))"
+        method.set_key = event.download.finished,move_complete,\
+          "d.directory.set=(cat,(cfg.completed));execute=mv,$d.base_path=,(cat,(cfg.completed)); d.save_full_session="
