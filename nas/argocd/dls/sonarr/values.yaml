@@ -35,6 +35,11 @@ persistence:
         exportarr:
           mountPath: /config
           readOnly: true
+  online:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls
+    mountPath: /mnt/dls
 
 metrics:
   main:
