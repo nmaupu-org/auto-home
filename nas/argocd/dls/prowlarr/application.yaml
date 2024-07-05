@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prowlarr
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: dls
+    name: in-cluster
+  sources:
+    - chart: prowlarr
+      repoURL: tccr.io/truecharts
+      targetRevision: 18.2.1
+      helm:
+        releaseName: prowlarr
+        valueFiles:
+          - $values/nas/argocd/dls/prowlarr/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      allowEmpty: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
