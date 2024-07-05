@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: metallb-config
         valueFiles:
-          - $values/nas/argocd/metallb/metallb-config-values.yaml
+          - $values/nas/argocd/metallb/config-values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
