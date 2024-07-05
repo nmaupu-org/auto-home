@@ -11,6 +11,10 @@ firewall_packages:
   - luci-app-vpn-policy-routing
   - avahi-daemon-service-ssh
   - avahi-daemon-service-http
+  - quagga
+  - quagga-zebra
+  - quagga-bgpd
+  - quagga-vtysh
 
 firewall_network_interfaces:
   lan:

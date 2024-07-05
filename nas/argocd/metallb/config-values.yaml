@@ -4,12 +4,36 @@ L2Advertisements:
     addressPools:
       - apps
 
+BGPAdvertisements:
+  - name: bgpadv
+    addressPools:
+      - appsBGP
+    aggregationLength: 24
+    #localpref: 100
+    communities:
+      - 65001:1
+    peers:
+      - home-router
+
+Peers:
+  - name: home-router
+    myASN: 65001
+    peerAddress: 192.168.12.1
+    peerPort: 179
+    peerASN: 65000
+
+
 ipAddressPools:
   - name: apps
     autoAssign: true
     avoidBuggyIPs: false
     addresses:
       - 192.168.12.100-192.168.12.150
+  - name: appsbgp
+    autoAssign: true
+    avoidBuggyIPs: false
+    addresses:
+      - 192.168.99.0/24
 
 operator:
   metallb:
@@ -17,12 +41,12 @@ operator:
 
 portal:
   open:
-    enabled: false
+    enabled: true
 
 service:
   main:
-    enabled: false
+    enabled: true
     ports:
       main:
-        enabled: false
+        enabled: true
         port: 9999
