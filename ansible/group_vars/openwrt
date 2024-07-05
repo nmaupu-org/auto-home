@@ -74,7 +74,7 @@ firewall_dnsmasq_config:
     enable_tftp: 1
     tftp_root: /mnt/extstorage/bios
   addresses:
-    - /knas.home.fossar.net/192.168.12.100
+    - /knas.home.fossar.net/192.168.99.1
 
 firewall_dhcp_static_leases:
   - name: asrock
@@ -170,7 +170,7 @@ firewall_ports:
     proto: tcp
     src_dport: 32400
     dest_port: 32400
-    dest_ip: 192.168.12.8
+    dest_ip: 192.168.99.3
     name: plex
   - target: DNAT
     enabled: 1
@@ -179,7 +179,7 @@ firewall_ports:
     proto: tcp
     src_dport: 62820
     dest_port: 62820
-    dest_ip: 192.168.12.102
+    dest_ip: 192.168.99.2
     name: torrent
   - target: DNAT
     enabled: 0
