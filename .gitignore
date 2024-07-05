@@ -11,3 +11,4 @@ assets/
 terraform/
 ansible/plugins/lookup/ansible-vault/
 *key.json
+*/sealed-secrets.key

@@ -21,8 +21,23 @@ cert-manager: google-key.json
 	sed -e 's/@@EMAIL_ADDRESS@@/$(EMAIL_ADDRESS)/' -e 's/@@GOOGLE_PROJECT_ID@@/$(GOOGLE_PROJECT_ID)/' letsencrypt-google-dns.yaml | \
     kubectl apply -f -
 
+sealed-secrets.crt:
+	$(error please create sealed-secrets.crt here)
+
+sealed-secrets.key:
+	$(error please create sealed-secrets.key here)
+
+.PHONY: sealed-secrets
+sealed-secrets: sealed-secrets.crt sealed-secrets.key
+	kubectl create ns sealed-secrets
+	kubectl -n sealed-secrets create secret tls mycustomkeys \
+		--cert="sealed-secrets.crt" --key="sealed-secrets.key"
+	kubectl -n sealed-secrets label secret mycustomkeys \
+		sealedsecrets.bitnami.com/sealed-secrets-key=active
+	
+
 .PHONY: argocd
-argocd: cert-manager
+argocd: cert-manager sealed-secrets
 	# Argo repo must first be added to the helm repo list
   # helm repo add argo https://argoproj.github.io/argo-helm
   # helm repo update

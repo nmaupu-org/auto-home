@@ -19,6 +19,10 @@ After create, key can be retrieve with the following command (this is done in Ma
 gcloud iam service-accounts keys create google-key.json --iam-account home-dns01-solver@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
+## Sealed-secrets
+
+Get `sealed-secrets.key` from password manager and save it in this directory.
+
 ## Bootstrap
 
 To bootstrap, finally execute:
