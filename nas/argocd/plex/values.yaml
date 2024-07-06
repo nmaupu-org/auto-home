@@ -63,6 +63,9 @@ global:
       - name: chain-basic
         namespace: ingress-controller
 
+plex:
+  additionalAdvertiseURL: https://plex.home.fossar.net:443
+
 workload:
   main:
     podSpec:
