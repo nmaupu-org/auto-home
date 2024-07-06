@@ -67,7 +67,3 @@ workload:
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
-          envFrom:
-            - secretRef:
-                name: plex-claim-token
-                expandObjectName: false
