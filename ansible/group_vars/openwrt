@@ -15,6 +15,10 @@ firewall_packages:
   - quagga-zebra
   - quagga-bgpd
   - quagga-vtysh
+  - nfs-utils
+  - kmod-fs-nfs
+  - kmod-fs-nfs-v3
+  - kmod-fs-nfs-v4
 
 firewall_network_interfaces:
   lan:

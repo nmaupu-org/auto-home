@@ -135,3 +135,10 @@
     apply:
       tags: ['bgp']
   tags: ['always']
+
+- name: Installing crontab for GUI certificate sync
+  include_tasks:
+    file: cert.yaml
+    apply:
+      tags: ['cert']
+  tags: ['always']

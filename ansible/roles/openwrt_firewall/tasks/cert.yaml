@@ -1,0 +1,18 @@
+---
+# Managing certs via nfs share from cert-manager installed on nas
+
+- name: Installing cert script
+  ansible.builtin.copy:
+    src: files/sync-nginx-cert.sh
+    dest: /sbin/sync-nginx-cert.sh
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Installing cron entry
+  ansible.builtin.cron:
+    name: "Sync GUI certificate"
+    minute: "0"
+    hour: "1"
+    job: "/sbin/sync-nginx-cert.sh"
+    user: root
