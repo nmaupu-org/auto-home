@@ -1,0 +1,15 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: le-certs-nas-token
+  namespace: argocd
+spec:
+  encryptedData:
+    NAS_TOKEN: AgBKS5K9i9POpv7vljFtmJvmqZtVyJqGKWCQnPXwbBXahwT9l7ZNi/ZFr81QTuWGWLo180T73jaNpjNkICmuMl+ieK059Glr0YLwqszvD/yz9uP0Oj4A39lwPYBycOPtByyZDPsFEISOc0cKEeYIAC6iO+oawcBZ/nHN4RHwmH/fARvrUzGp1YH0a7TPpz8wH1NeW1IBrIRBVqs/AxVEzMu4uiuUNW+xnoZnU8ZcRcb/opPBHIKQG8y7SYDoXD+wksQtWb1vJL6Vwhu/ov77bkP9SqSxOYbOH8dA8a4toj4vvCJIl5IQK3DvdPYdlbDb/q/USdv9d+WbgjhHq6OFod9UeUGXeskOkGquqzrKfwSy/mx7Oy78GIZcnZIUfvF1wIVDOcI8qbHyO660z4BDrjaceKKjlUI94J9jIMWBDlRZOzM9XX22prx76fy8OgTYOGK8yLFgdR6AycjgEsC7E9T5Rrbgodq6kTuf73vho+IZ4Ii5MkOKtbzhVXUgfBNuKewRcxXoTzZHChDLHO5nM/Puwx+uXKocm6L1h386EDH4nx4PeTWRFU1ge5w8uhnDuidf+fwd8oD747uqNXiCifzgQhSRwC5wYVAYMTvZqzt1IWNKdrC4AmxDKuhYbk7Zsl1pgvbkkZpQvF2ZKZcmpXeIRzjXn0IOPKnudAJUeANUrqFEPcoRZXmlyRN5vRRGE58I44pQQM2Kgzv6XHMtgA95hCTzyrCOjlkDF9ZxC+umyZoI11WDKhZtuTNO1u54RpZjVWocGyaVekC8WZt4g3qbZT0=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: le-certs-nas-token
+      namespace: argocd

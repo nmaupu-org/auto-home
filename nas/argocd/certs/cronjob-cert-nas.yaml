@@ -1,0 +1,61 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: le-certs-sync-nas
+  namespace: argocd
+spec:
+  schedule: "0 23 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: le-certs-sync
+          containers:
+            - name: le-certs-nas
+              image: nmaupu/nas-cert-renewer:1.0.0
+              command:
+                - /usr/bin/bash
+                - -c
+                - |
+                  set -euo pipefail
+
+                  cat << EOF > /tmp/config
+                  [deploy]
+                  api_key = $NAS_TOKEN
+                  cert_fqdn = nas.home.fossar.net
+                  connect_host = nas.home.fossar.net
+                  verify = false
+                  privkey_path = /le-certs/nas-cert.key
+                  fullchain_path = /le-certs/nas-cert.crt
+                  protocol = https://
+                  port = 443
+                  ui_certificate_enabled = true
+                  s3_enabled = false
+                  ftp_enabled = true
+                  webdav_enabled = false
+                  apps_enabled = false
+                  apps_only_matching_san = false
+                  cert_base_name = letsencrypt
+                  EOF
+
+                  /usr/bin/deploy_freenas.py --config /tmp/config
+              volumeMounts:
+                - name: le-certs
+                  mountPath: /le-certs
+              securityContext:
+                capabilities:
+                  drop:
+                    - ALL
+                runAsUser: 1001
+                runAsGroup: 1001
+                runAsNonRoot: true
+              envFrom:
+                - secretRef:
+                    name: le-certs-nas-token
+
+          restartPolicy: OnFailure
+          volumes:
+            - name: le-certs
+              hostPath:
+                path: /mnt/tank/le-certs
