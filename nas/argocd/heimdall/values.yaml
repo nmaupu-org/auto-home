@@ -15,6 +15,10 @@ ingress:
   main:
     enabled: true
     hosts:
+      - host: dashboard.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
       - host: heimdall.knas.home.fossar.net
         paths:
           - path: /

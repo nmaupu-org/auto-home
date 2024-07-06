@@ -143,6 +143,8 @@ firewall_dns_entries:
     - hass
     - mqtt
     - iot-raspbian
+  192.168.99.1:
+    - dashboard
 
 firewall_ports:
   - target: DNAT
