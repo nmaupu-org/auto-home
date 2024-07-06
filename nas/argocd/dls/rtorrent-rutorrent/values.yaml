@@ -46,13 +46,9 @@ persistence:
     enabled: false
   data:
     enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/rtorrent-rutorrent
     mountPath: /data
-    readOnly: false
-    size: 10Gi
-    static:
-      mode: disabled
-    storageClass: ""
-    type: pvc
     targetSelectAll: true
   passwd:
     enabled: true
