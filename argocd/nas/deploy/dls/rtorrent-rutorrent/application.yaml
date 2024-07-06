@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: rtorrent-rutorrent
         valueFiles:
-          - $values/nas/argocd/dls/rtorrent-rutorrent/values.yaml
+          - $values/argocd/nas/deploy/dls/rtorrent-rutorrent/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

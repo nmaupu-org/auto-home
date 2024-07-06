@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: flaresolverr
         valueFiles:
-          - $values/nas/argocd/dls/flaresolverr/values.yaml
+          - $values/argocd/nas/deploy/dls/flaresolverr/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

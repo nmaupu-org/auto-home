@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: heimdall
         valueFiles:
-          - $values/nas/argocd/heimdall/values.yaml
+          - $values/argocd/nas/deploy/heimdall/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: sonarr
         valueFiles:
-          - $values/nas/argocd/dls/sonarr/values.yaml
+          - $values/argocd/nas/deploy/dls/sonarr/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

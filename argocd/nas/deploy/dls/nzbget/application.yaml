@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: nzbget
         valueFiles:
-          - $values/nas/argocd/dls/nzbget/values.yaml
+          - $values/argocd/nas/deploy/dls/nzbget/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

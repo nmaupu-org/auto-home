@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: plex
         valueFiles:
-          - $values/nas/argocd/plex/values.yaml
+          - $values/argocd/nas/deploy/plex/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

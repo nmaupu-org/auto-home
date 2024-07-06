@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: traefik
         valueFiles:
-          - $values/nas/argocd/traefik/values.yaml
+          - $values/argocd/nas/deploy/traefik/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values

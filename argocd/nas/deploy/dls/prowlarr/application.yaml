@@ -16,7 +16,7 @@ spec:
       helm:
         releaseName: prowlarr
         valueFiles:
-          - $values/nas/argocd/dls/prowlarr/values.yaml
+          - $values/argocd/nas/deploy/dls/prowlarr/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
