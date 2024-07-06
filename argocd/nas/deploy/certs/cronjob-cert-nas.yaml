@@ -5,6 +5,8 @@ metadata:
   name: le-certs-sync-nas
   namespace: argocd
 spec:
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 5
   schedule: "0 23 * * *"
   jobTemplate:
     spec:
