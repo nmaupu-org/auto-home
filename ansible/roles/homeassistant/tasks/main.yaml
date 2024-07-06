@@ -162,7 +162,7 @@
   cron:
     name: "rsync certs directory from NFS to homeassistant"
     job: "/usr/local/bin/update-hass-certs.sh"
-    minute: '*/10'
+    hour: 2
   notify:
     - restart homeassistant
   tags:

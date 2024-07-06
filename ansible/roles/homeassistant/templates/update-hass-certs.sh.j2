@@ -1,14 +1,24 @@
 #!/bin/bash
 
-set -eo pipefail
+set -euo pipefail
 
-# Ensure NFS is mounted (I had cases where NFS is unavailable after power outage)
-NFS_MOUNT={{ certs.nfs.mountPath }}
-mount "${NFS_MOUNT}"
-
-if rsync -ai --delete --copy-links /mnt/certs/letsencrypt/live/hass.home.fossar.net/ /home/homeassistant/certs | grep -q '^>'; then
-  chown -R homeassistant: /home/homeassistant/certs && \
-    systemctl restart homeassistant
-else
+cert_perms() {
+  chmod 644 /home/homeassistant/certs/homeassistant-cert.crt
+  chmod 600 /home/homeassistant/certs/homeassistant-cert.key
   chown -R homeassistant: /home/homeassistant/certs
+}
+
+: "${NAS:=192.168.12.8}"
+: "${MOUNTPOINT:=/mnt/le-certs}"
+
+mkdir -p "$MOUNTPOINT"
+mount -t nfs "$NAS":/mnt/tank/le-certs "$MOUNTPOINT" -o nolock,ro
+
+if rsync -ai --delete --include='./' --include='homeassistant-cert.*' --exclude='*' "$MOUNTPOINT/" /home/homeassistant/certs | grep -q '^>'; then
+  cert_perms
+  systemctl restart homeassistant
+else
+  cert_perms
 fi
+
+umount "$MOUNTPOINT"
