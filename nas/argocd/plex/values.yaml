@@ -43,6 +43,10 @@ ingress:
         paths:
           - path: /
             pathType: Prefix
+      - host: plex.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
     integrations:
       certManager:
         certificateIssuer: google-dns-issuer-prod
