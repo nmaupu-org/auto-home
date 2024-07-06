@@ -9,12 +9,17 @@ spec:
   destination:
     namespace: metallb
     name: in-cluster
-  source:
-    chart: metallb
-    repoURL: tccr.io/truecharts
-    targetRevision: 16.1.1
-    helm:
-      releaseName: metallb
+  sources:
+    - chart: metallb
+      repoURL: tccr.io/truecharts
+      targetRevision: 16.1.1
+      helm:
+        releaseName: metallb
+        valueFiles:
+          - $values/argocd/nas/deploy/metallb/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
 
   syncPolicy:
     automated:
