@@ -26,18 +26,8 @@ raspbastion ansible_host=192.168.12.11 ansible_user=pi
 bastion
 iot
 
-[jails_host]
+[nas_host]
 nas         ansible_host=192.168.12.8
-
-[jails]
-kube-rproxy ansible_host=192.168.12.157
-seedbox     ansible_host=192.168.12.158
-vault       ansible_host=192.168.12.159
-sickchill   ansible_host=192.168.12.160
-
-[freebsd:children]
-jails_host
-jails
 
 [freebsd:vars]
 ansible_user=root
