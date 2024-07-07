@@ -1,7 +1,11 @@
 ---
 app:
   ingress:
+    useDefaultIngressClass: true
     enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
       - k8s-dash.knas.home.fossar.net
     issuer:
