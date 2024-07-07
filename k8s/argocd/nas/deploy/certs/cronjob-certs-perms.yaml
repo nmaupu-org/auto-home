@@ -5,9 +5,6 @@ automountServiceAccountToken: true
 metadata:
   name: le-certs-sync
   namespace: argocd
-  labels:
-    app.kubernetes.io/instance: custom-external-certs
-    argocd.argoproj.io/instance: custom-external-certs
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -15,9 +12,6 @@ kind: Role
 metadata:
   name: le-certs-sync-role
   namespace: argocd
-  labels:
-    app.kubernetes.io/instance: custom-external-certs
-    argocd.argoproj.io/instance: custom-external-certs
 rules:
   - apiGroups:
       - ""
@@ -33,9 +27,6 @@ kind: RoleBinding
 metadata:
   name: le-certs-sync-rolebinding
   namespace: argocd
-  labels:
-    app.kubernetes.io/instance: custom-external-certs
-    argocd.argoproj.io/instance: custom-external-certs
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
