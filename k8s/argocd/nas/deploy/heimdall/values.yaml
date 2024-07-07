@@ -45,9 +45,26 @@ persistence:
     type: hostPath
     hostPath: /mnt/tank/dls/configs/heimdall
 
+# To change the GID, need to set fsGroup
 securityContext:
   container:
     readOnlyRootFilesystem: false
     runAsNonRoot: false
     runAsUser: 0
     runAsGroup: 0
+  pod:
+    fsGroup: 1001
+
+# UID can be changed using fixedEnv (for GID, using fsGroup above)
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          fixedEnv:
+            PUID: 1001
+            USER_ID: 1001
+            UID: 1001
+            PGID: 1001
+            GROUP_ID: 1001
+            GID: 1001
