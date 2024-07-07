@@ -1,0 +1,68 @@
+---
+image:
+  repository: ghcr.io/onedr0p/radarr
+  pullPolicy: IfNotPresent
+  tag: 5.7.0.8882@sha256:67cf7fa3b10fbb9771ef11c62a215d50956a238c1a27b4195f19bdc92b796cc7
+exportarrImage:
+  repository: ghcr.io/onedr0p/exportarr
+  pullPolicy: IfNotPresent
+  tag: v2.0.1@sha256:727e7bc8f2f0934a2117978c59f4476b954018b849a010ea6cfb380bd6539644
+
+persistence:
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/radarr
+    targetSelector:
+      main:
+        main:
+          mountPath: /config
+      exportarr:
+        exportarr:
+          mountPath: /config
+          readOnly: true
+  online:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls
+    mountPath: /mnt/dls
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: radarr.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+  exportarr:
+    podSpec:
+      containers:
+        exportarr:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
