@@ -51,3 +51,12 @@ securityContext:
     runAsNonRoot: false
     runAsUser: 0
     runAsGroup: 0
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
