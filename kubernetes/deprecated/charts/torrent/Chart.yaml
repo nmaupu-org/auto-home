@@ -1,4 +1,0 @@
-apiVersion: v1
-description: downloads
-name: dls
-version: 0.0.6

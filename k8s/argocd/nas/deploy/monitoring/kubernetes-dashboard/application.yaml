@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-dashboard
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: monitoring
+    name: in-cluster
+  sources:
+    - chart: kubernetes-dashboard
+      repoURL: https://kubernetes.github.io/dashboard
+      targetRevision: 7.5.0
+      helm:
+        releaseName: kubernetes-dashboard
+        valueFiles:
+          - $values/k8s/argocd/nas/deploy/monitoring/kubernetes-dashboard/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

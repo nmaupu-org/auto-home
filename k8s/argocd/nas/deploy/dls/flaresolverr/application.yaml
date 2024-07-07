@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flaresolverr
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: dls
+    name: in-cluster
+  sources:
+    - chart: flaresolverr
+      repoURL: tccr.io/truecharts
+      targetRevision: 15.1.5
+      helm:
+        releaseName: flaresolverr
+        valueFiles:
+          - $values/k8s/argocd/nas/deploy/dls/flaresolverr/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
