@@ -148,6 +148,8 @@ firewall_dns_entries:
     - mqtt
     - iot-raspbian
   192.168.99.1:
+    - plex
+    - grafana
     - dashboard
 
 firewall_ports:
