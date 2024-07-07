@@ -35,6 +35,8 @@ prometheus:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: google-dns-issuer-prod
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
       - p8s.knas.home.fossar.net
       - prometheus.knas.home.fossar.net
