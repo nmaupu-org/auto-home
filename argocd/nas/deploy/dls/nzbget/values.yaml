@@ -1,16 +1,15 @@
 ---
 image:
-  repository: ghcr.io/geek-cookbook/nzbget
+  repository: nmaupu/nzbget
   pullPolicy: IfNotPresent
-  tag: 24.1@sha256:a7ba9009d17893bfaa8ccac4bd912fedf8bd8b1752618d56f4526d6d8bd14f4a
+  tag: "24.1"
 
 persistence:
   # data dir to store nzb and other internal stuff, not a download dir per se
   downloads:
     enabled: true
-    type: emptyDir
+    type: pvc
     size: 1Gi
-    medium: ""
     mountPath: /var/nzbget-downloads
     readOnly: false
   config:
@@ -59,6 +58,9 @@ workload:
     podSpec:
       containers:
         main:
+          resources:
+            limits:
+              cpu: 700m
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
