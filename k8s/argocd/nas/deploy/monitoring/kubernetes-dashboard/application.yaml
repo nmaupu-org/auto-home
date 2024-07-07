@@ -22,10 +22,11 @@ spec:
       ref: values
 
   ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jqPathExpressions:
-        - .spec.template.spec.hostUsers
+    - group: v1
+      kind: Secret
+      name: kubernetes-dashboard-csrf
+      jsonPointers:
+        - /data/private.key
 
   syncPolicy:
     automated:
