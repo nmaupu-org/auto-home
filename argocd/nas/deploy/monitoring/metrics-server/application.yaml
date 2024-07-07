@@ -1,0 +1,24 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metrics-server
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: monitoring
+    name: in-cluster
+  source:
+    chart: metrics-server
+    repoURL: tccr.io/truecharts
+    targetRevision: 0.0.1
+    helm:
+      releaseName: metrics-server
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
