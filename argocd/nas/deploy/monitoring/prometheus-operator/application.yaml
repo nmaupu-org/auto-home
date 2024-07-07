@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-operator
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: monitoring
+    name: in-cluster
+  sources:
+    - chart: prometheus-operator
+      repoURL: tccr.io/truecharts
+      targetRevision: 8.1.1
+      helm:
+        releaseName: prometheus-operator
+        valueFiles:
+          - $values/argocd/nas/deploy/monitoring/prometheus-operator/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
