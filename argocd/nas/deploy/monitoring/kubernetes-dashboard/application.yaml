@@ -21,6 +21,12 @@ spec:
       targetRevision: master
       ref: values
 
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
   syncPolicy:
     automated:
       prune: true
