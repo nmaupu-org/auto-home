@@ -4,6 +4,9 @@ kind: Certificate
 metadata:
   name: nas
   namespace: argocd
+  labels:
+    app.kubernetes.io/instance: custom-external-certs
+    argocd.argoproj.io/instance: custom-external-certs
 spec:
   dnsNames:
     - nas.home.fossar.net

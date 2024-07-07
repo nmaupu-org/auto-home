@@ -4,6 +4,9 @@ kind: CronJob
 metadata:
   name: le-certs-sync-nas
   namespace: argocd
+  labels:
+    app.kubernetes.io/instance: custom-external-certs
+    argocd.argoproj.io/instance: custom-external-certs
 spec:
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 5
