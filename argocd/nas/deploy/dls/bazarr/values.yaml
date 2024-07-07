@@ -22,3 +22,27 @@ global:
     fixedMiddlewares:
       - name: chain-basic
         namespace: ingress-controller
+
+persistence:
+  config:
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/bazarr
+    mountPath: "/config"
+  tmp:
+    enabled: true
+    medium: ""
+  varlogs:
+    enabled: true
+    medium: ""
+  varrun:
+    enabled: true
+    medium: ""
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
