@@ -28,8 +28,6 @@ prometheus:
           - prometheus.knas.home.fossar.net
 
 grafana:
-  service:
-    type: LoadBalancer
   ingress:
     enabled: true
     annotations:
