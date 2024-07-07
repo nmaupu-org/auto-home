@@ -1,10 +1,13 @@
 ---
 alertmanager:
   enabled: false
+
 kubeEtcd:
   enabled: false
+
 kubeProxy:
   enabled: false
+
 prometheus:
   enabled: true
   ingress:
@@ -23,3 +26,21 @@ prometheus:
         hosts:
           - p8s.knas.home.fossar.net
           - prometheus.knas.home.fossar.net
+
+grafana:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: google-dns-issuer-prod
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    hosts:
+      - grafana.knas.home.fossar.net
+      - grafana.home.fossar.net
+    paths:
+      - /
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+          - grafana.knas.home.fossar.net
+          - grafana.home.fossar.net
