@@ -5,6 +5,7 @@ global:
 configs:
   cm:
     statusbadge.enabled: true
+    timeout.reconciliation: 600s
 
 server:
   certificate:
