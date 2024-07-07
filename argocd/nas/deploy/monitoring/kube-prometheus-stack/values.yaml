@@ -22,3 +22,26 @@
 #     fixedMiddlewares:
 #       - name: chain-basic
 #         namespace: ingress-controller
+
+alertmanager:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+prometheus:
+  enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: google-dns-issuer-prod
+    hosts:
+      - p8s.knas.home.fossar.net
+      - prometheus.knas.home.fossar.net
+    paths:
+      - /
+    tls:
+      - secretName: prometheus-general-tls
+        hosts:
+          - p8s.knas.home.fossar.net
+          - prometheus.knas.home.fossar.net

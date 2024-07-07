@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-operator
+  name: kube-prometheus-stack
   namespace: argocd
 spec:
   project: default
@@ -10,22 +10,16 @@ spec:
     namespace: monitoring
     name: in-cluster
   sources:
-    - chart: prometheus-operator
-      repoURL: tccr.io/truecharts
-      targetRevision: 8.1.1
+    - chart: kube-prometheus-stack
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 61.2.0
       helm:
-        releaseName: prometheus-operator
+        releaseName: kube-prometheus-stack
         valueFiles:
-          - $values/argocd/nas/deploy/monitoring/prometheus-operator/values.yaml
+          - $values/argocd/nas/deploy/monitoring/kube-prometheus-stack/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
-
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jqPathExpressions:
-        - .spec.template.spec.hostUsers
 
   syncPolicy:
     automated:
