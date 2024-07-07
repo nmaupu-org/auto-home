@@ -1,24 +1,9 @@
 ---
-ingress:
-  main:
+app:
+  ingress:
     enabled: true
     hosts:
       - host: k8s-dash.knas.home.fossar.net
-        paths:
-          - path: /
-            pathType: Prefix
-    integrations:
-      certManager:
-        certificateIssuer: google-dns-issuer-prod
-        enabled: true
-      traefik:
-        allowCors: false
-        enabled: true
-        entrypoints:
-          - websecure
-
-global:
-  traefik:
-    fixedMiddlewares:
-      - name: chain-basic
-        namespace: ingress-controller
+    issuer:
+      name: google-dns-issuer-prod
+      scope: cluster
