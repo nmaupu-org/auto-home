@@ -1,0 +1,9 @@
+---
+app:
+  ingress:
+    enabled: true
+    hosts:
+      - k8s-dash.knas.home.fossar.net
+    issuer:
+      name: google-dns-issuer-prod
+      scope: cluster
