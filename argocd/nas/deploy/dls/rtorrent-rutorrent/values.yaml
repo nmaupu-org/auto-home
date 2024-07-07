@@ -114,6 +114,9 @@ workload:
     podSpec:
       containers:
         main:
+          resources:
+            limits:
+              cpu: 700m
           lifecycle:
             postStart:
               type: exec
