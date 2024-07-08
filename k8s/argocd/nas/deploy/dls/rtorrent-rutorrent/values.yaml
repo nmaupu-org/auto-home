@@ -94,14 +94,6 @@ persistence:
 
 release_name: rtorrent-rutorrent
 
-resources:
-  limits:
-    cpu: 4000m
-    memory: 8Gi
-  requests:
-    cpu: 10m
-    memory: 50Mi
-
 securityContext:
   container:
     PUID: 1001
@@ -116,7 +108,11 @@ workload:
         main:
           resources:
             limits:
-              cpu: 700m
+              cpu: 800m
+              memory: 800Mi
+            requests:
+              cpu: 200m
+              memory: 250Mi
           lifecycle:
             postStart:
               type: exec
