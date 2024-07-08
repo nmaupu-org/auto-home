@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: kubernetes-dashboard
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   destination:
