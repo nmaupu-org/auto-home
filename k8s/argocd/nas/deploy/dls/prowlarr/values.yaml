@@ -17,8 +17,6 @@ service:
     ports:
       main:
         port: 9696
-  metrics:
-    enabled: false
 
 persistence:
   config:
@@ -33,10 +31,6 @@ persistence:
         exportarr:
           mountPath: /config
           readOnly: true
-
-metrics:
-  main:
-    enabled: false
 
 ingress:
   main:
