@@ -8,13 +8,6 @@ exportarrImage:
   pullPolicy: IfNotPresent
   tag: v2.0.1@sha256:727e7bc8f2f0934a2117978c59f4476b954018b849a010ea6cfb380bd6539644
 
-service:
-  metrics:
-    enabled: false
-    ports:
-      metrics:
-        enabled: false
-
 workload:
   main:
     podSpec:
@@ -50,10 +43,6 @@ persistence:
     hostPath: /mnt/tank/dls
     mountPath: /mnt/dls
 
-metrics:
-  main:
-    enabled: false
-
 ingress:
   main:
     enabled: true
@@ -77,3 +66,8 @@ global:
     fixedMiddlewares:
       - name: chain-basic
         namespace: ingress-controller
+
+metrics:
+  main:
+    labels:
+      release: kube-prometheus-stack
