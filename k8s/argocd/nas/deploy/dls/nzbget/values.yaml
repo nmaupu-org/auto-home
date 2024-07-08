@@ -60,7 +60,11 @@ workload:
         main:
           resources:
             limits:
-              cpu: 700m
+              cpu: 500m
+              memory: 2Gi
+            requests:
+              cpu: 200m
+              memory: 1Gi
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
