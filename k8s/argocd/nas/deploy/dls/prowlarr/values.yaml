@@ -72,3 +72,8 @@ workload:
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
+
+metrics:
+  main:
+    labels:
+      release: kube-prometheus-stack

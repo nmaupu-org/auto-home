@@ -44,3 +44,12 @@ grafana:
         hosts:
           - grafana.knas.home.fossar.net
           - grafana.home.fossar.net
+  sidecar:
+    datasources:
+      alertmanager:
+        enabled: false
+  additionalDataSources:
+    - name: Prom
+      uid: prom
+      type: prometheus
+      url: http://{{ printf "%s-prometheus.monitoring" .Release.Name }}:9090
