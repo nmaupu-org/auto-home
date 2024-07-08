@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: nzbget
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   destination:
@@ -29,6 +31,7 @@ spec:
 
   syncPolicy:
     automated:
+      allowEmpty: true
       prune: true
       selfHeal: true
     syncOptions:

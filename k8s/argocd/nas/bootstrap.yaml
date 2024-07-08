@@ -17,6 +17,6 @@ spec:
       recurse: true
   syncPolicy:
     automated:
-      allowEmpty: false
+      allowEmpty: true
       prune: true
       selfHeal: true
