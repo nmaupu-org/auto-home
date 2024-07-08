@@ -37,6 +37,16 @@ persistence:
   varrun:
     enabled: true
     medium: ""
+  movies:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/plex/Movies
+    mountPath: /mnt/movies
+  tv:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/plex/TVShows-sonaar/
+    mountPath: /mnt/tv
 
 workload:
   main:
