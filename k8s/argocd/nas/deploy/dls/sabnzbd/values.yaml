@@ -1,0 +1,70 @@
+---
+image:
+  repository: ghcr.io/onedr0p/sabnzbd
+  pullPolicy: IfNotPresent
+  tag: 4.3.2
+exportarrImage:
+  repository: ghcr.io/onedr0p/exportarr
+  pullPolicy: IfNotPresent
+  tag: v2.0.1
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: sabnzbd.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+
+persistence:
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/configs/sabnzbd
+    targetSelector:
+      main:
+        main:
+          mountPath: /config
+      exportarr:
+        exportarr:
+          mountPath: /config
+          readOnly: true
+  intermediate:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/dls-tmp/sabnzbd-intermediate
+    mountPath: /mnt/intermediate
+  completed:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/incoming/nzb
+    mountPath: /mnt/completed
+
+portal:
+  open:
+    enabled: true
