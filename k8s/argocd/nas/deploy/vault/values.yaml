@@ -2,6 +2,27 @@
 
 # Default values but dropped here to be sure it never changes
 server:
+  # Override config to use file storage instead of raft as we have only one node.
+  # Moreover, my old data format is file, not raft.
+  # It would need a data migration to go the raft route!
+  config: |
+    disable_mlock = true
+    ui = true
+    listener "tcp" {
+      tls_disable = 1
+      address = "[::]:{{ .Values.server.containerPorts.http }}"
+      cluster_address = "[::]:{{ .Values.server.containerPorts.internal }}"
+      {{- if .Values.server.metrics.enabled }}
+      # Enable unauthenticated metrics access (necessary for Prometheus Operator)
+      telemetry {
+        unauthenticated_metrics_access = "true"
+      }
+      {{- end }}
+    }
+    storage "file" {
+      path = "{{ .Values.server.persistence.mountPath }}"
+    }
+
   podSecurityContext:
     fsGroup: 1001
 
@@ -9,14 +30,36 @@ server:
     runAsUser: 1001
     runAsGroup: 1001
 
+  customReadinessProbe:
+    httpGet:
+      path: /v1/sys/health
+      port: http
+    initialDelaySeconds: 5
+    failureThreshold: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 5
+
+  # As we are not HA, need to set this label for svc to match labels' selector
+  podLabels:
+    vault-active: "true"
+
   ingress:
     enabled: true
+    pathType: Prefix
     hostname: vault.home.fossar.net
     tls: true
     extraHosts:
-      - vault.knas.home.fossar.net
+      - name: vault.knas.home.fossar.net
+        path: /
+    extraTls:
+      - hosts:
+          - vault.knas.home.fossar.net
+        secretName: vault.knas.home.fossar.net-tls
     annotations:
       cert-manager.io/cluster-issuer: google-dns-issuer-prod
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
 
   persistence:
     enabled: true
