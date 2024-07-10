@@ -6,6 +6,8 @@ configs:
   cm:
     statusbadge.enabled: true
     timeout.reconciliation: 600s
+  params:
+    server.disable.auth: true
 
 server:
   certificate:
