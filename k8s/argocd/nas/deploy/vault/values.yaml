@@ -1,0 +1,30 @@
+---
+
+# Default values but dropped here to be sure it never changes
+server:
+  podSecurityContext:
+    fsGroup: 1001
+
+  containerSecurityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+
+  ingress:
+    enabled: true
+    hostname: vault.home.fossar.net
+    tls: true
+    extraHosts:
+      - vault.knas.home.fossar.net
+    annotations:
+      cert-manager.io/cluster-issuer: google-dns-issuer-prod
+
+  persistence:
+    enabled: true
+    size: 1Gi
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack

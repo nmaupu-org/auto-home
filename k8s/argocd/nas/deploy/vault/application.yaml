@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: vault
+    name: in-cluster
+  sources:
+    - chart: vault
+      repoURL: https://bitnami-labs.github.io/vault
+      targetRevision: 1.4.12
+      helm:
+        releaseName: vault
+        valueFiles:
+          - $values/k8s/argocd/nas/deploy/vault/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
