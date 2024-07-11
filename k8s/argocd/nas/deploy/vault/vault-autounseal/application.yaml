@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vault
+  name: vault-autounseal
   namespace: argocd
 spec:
   project: default
@@ -10,23 +10,16 @@ spec:
     namespace: vault
     name: in-cluster
   sources:
-    - chart: vault
-      repoURL: registry-1.docker.io/bitnamicharts
-      targetRevision: 1.4.12
+    - path: charts/vault-autounseal
+      repoURL: https://github.com/nmaupu/vault-autounseal.git
+      targetRevision: HEAD
       helm:
-        releaseName: vault
+        releaseName: vault-autounseal
         valueFiles:
-          - $values/k8s/argocd/nas/deploy/vault/values.yaml
+          - $values/k8s/argocd/nas/deploy/vault/vault-autounseal/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
-
-  ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      name: vault-vault-injector
-      jqPathExpressions:
-        - .webhooks[]?.clientConfig.caBundle
 
   syncPolicy:
     automated:

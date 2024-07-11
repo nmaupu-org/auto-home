@@ -1,0 +1,13 @@
+---
+
+image:
+  repository: opennix/vault-autounseal
+  pullPolicy: Always
+  tag: latest
+
+settings:
+  vault_url: http://vault-server.vault.svc.cluster.local:8200
+  vault_keys_secret: vault-autounseal-keys
+  vault_root_token_secret: vault-autounseal-root-token
+  scan_delay: 5
+  vault_label_selector: app.kubernetes.io/component=server

@@ -1,5 +1,8 @@
 ---
 
+injector:
+  enabled: false
+
 # Default values but dropped here to be sure it never changes
 server:
   # Override config to use file storage instead of raft as we have only one node.
