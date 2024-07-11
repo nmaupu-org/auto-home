@@ -10,6 +10,22 @@ kubeProxy:
 
 prometheus:
   enabled: true
+  prometheusSpec:
+    retention: 360d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 500Gi
+    securityContext:
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      fsGroup: 1001
+      seccompProfile:
+        type: RuntimeDefault
   ingress:
     enabled: true
     annotations:
