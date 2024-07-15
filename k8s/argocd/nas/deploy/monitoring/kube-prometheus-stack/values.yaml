@@ -11,7 +11,7 @@ kubeProxy:
 prometheus:
   enabled: true
   prometheusSpec:
-    retention: 360d
+    retention: 720d
     storageSpec:
       volumeClaimTemplate:
         spec:
