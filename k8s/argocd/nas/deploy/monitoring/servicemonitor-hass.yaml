@@ -1,0 +1,37 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: home-assistant
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+    app: home-assistant
+spec:
+  staticConfigs:
+    - targets: ['hass.home.fossar.net:8123']
+      labels:
+        job: prometheus
+  metricsPath: /api/prometheus
+  scheme: HTTPS
+  authorization:
+    type: Bearer
+    credentials:
+      name: home-assistant-prometheus-token
+      key: token
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: home-assistant-prometheus-token
+  namespace: monitoring
+spec:
+  encryptedData:
+    token: AgAJfSZL0WYLSpn5TVQpEYNEdNLJOcLlJdzCs81oR6eTCXZTVg3elt5z9ag0cDMq+SrTr4X3jRvWVEv7gRDXFHUTAUEI0GgSsVCFpexbvQxGoMpMXfmGXLFMu/JIkz7DOdI+y+ThoowNTN6+oPJR1Bkn4cjWFh8ayAvRCJeuORctWvKpSL1LbV7zhxiTHPdn+/c2la/yswj0v8qNRtp4RBU20aG736ZH6ePOqgsbU8s8V23P+ML7/o0ryoaHC3LdvvvkXOwIMx4c5eET2/5gX3EA9LUK46+izaGDN5yY7pvRlcS9m8mA/xOkkDqA6SBqeNJsOsmIphMApMWsIFi6fCsExo7QSAY+I/zAPqmu8qAhmn63yKPtlBxbSBiIPZppJCsCxpi+iIwnUQ/LnIQHx41VyFzv3xOJr5u/iGN3duWvTNRHEbgem3Kq9ct78cKB1xEj9zdGj9HsLOPASfia5DxJcnH3APWTnpY2QyO2IPz1yQ4fQusXuNbxhJBmNHx9zfMONUBqfeEeq1OEnVovkaO+lyaSWS+e6qVdN8SVjxoH5XnBmsOkFnZRvRD6riPj5Ji8tPjjzPPVz39DQ3y8nfdmEyslb/NFOajYk5nsaJ6ZLAtWZuNZGvRcQ+5CS8+l4NS/ipkfQihMEGEI8Wki3saRMzUezuehkbsuWty+rNtNCYr2oBj9MMRJsQWxs+F7xAzTK1J1Hbcqtb5gW04qRj3kAJ+yKo5QEiIs/GSEoJ5tlHRl4E6WqLmglJCaDL4CwYWLYld4M1yRO89sPWSVMoqzYOZLejnikDDNJ25IB9jCENb5R74N8ip3KKXVG1VUi3Gp3qVeFqWXlooLQOjsJddQcKfzC8qpRkDE9qCTjdptIGTvT3VUPRfIGMy6Ok6kAjUFGcY2dWRsCSp8RUYGOFIrYGUegepdYC+zw3xsuHUqc/1+N3b4u3U=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: home-assistant-prometheus-token
+      namespace: monitoring
