@@ -17,6 +17,7 @@ pxe_menu_items:
   - debian-live-xfce.include
   - get-mac-addr.include
   - ubuntu.include
+  - talos.include
 
 ipxe_lkrn_url: http://boot.ipxe.org/ipxe.lkrn
 ipxe_scripts_dir: bios/ipxe-scripts
@@ -45,3 +46,9 @@ ubuntu:
   initrd: initrd.gz
   preseed: ubuntu.preseed
 ubuntu_root_password: toor
+
+talos_version: 1.7.5
+talos:
+  pxe:
+    - https://github.com/siderolabs/talos/releases/download/v{{talos_version}}/vmlinuz-amd64
+    - https://github.com/siderolabs/talos/releases/download/v{{talos_version}}/initramfs-amd64.xz

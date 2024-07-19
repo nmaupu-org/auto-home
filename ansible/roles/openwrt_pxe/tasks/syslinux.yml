@@ -52,9 +52,10 @@
 - name: Creating ipxe scripts
   template:
     src: templates/{{ item }}.j2
-    dest: "{{ tftproot_dir }}/bios/ipxe-scripts/{{ item }}"
+    dest: "{{ tftproot_dir }}/{{ ipxe_scripts_dir }}/{{ item }}"
     mode: 0644
   with_items:
     - ubuntu.ipxe
     - debian-live-xfce.ipxe
     - get-mac-addr.ipxe
+    - talos.ipxe

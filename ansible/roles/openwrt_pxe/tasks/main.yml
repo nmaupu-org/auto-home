@@ -10,6 +10,8 @@
   tags: pxe-debian-live-xfce
 - import_tasks: pxe-ubuntu-install.yml
   tags: pxe-ubuntu
+- import_tasks: pxe-talos.yml
+  tags: pxe-talos
 
 - name: Adding rc.local script to mount iso at boot
   template:
