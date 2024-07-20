@@ -1,4 +1,5 @@
-firewall_packages: []
+firewall_packages:
+  - python3
 
 firewall_network_interfaces:
   lan:

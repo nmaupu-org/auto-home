@@ -61,7 +61,7 @@
         state: stopped
         enabled: no
     - name: Generating openssh key pair
-      openssh_keypair:
+      community.crypto.openssh_keypair:
         path: /home/pi/.ssh/id_rsa
         force: no
         owner: pi

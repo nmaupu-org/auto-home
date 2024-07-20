@@ -12,7 +12,7 @@
     tmp_dest: "{{ nginx_http_pxe_dir }}/ubuntu"
   with_items:
     - linux
-    - initrd.gz
+    - initrd
 
 - name: Creating preseed file for ubuntu
   template:

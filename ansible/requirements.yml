@@ -1,4 +1,10 @@
-- src: defunctzombie.coreos-bootstrap
-- src: willshersystems.sshd
-- src: gekmihesg.openwrt
-- src: haxorof.docker_ce
+roles:
+  - src: defunctzombie.coreos-bootstrap
+  - src: willshersystems.sshd
+  - src: gekmihesg.openwrt
+  - src: haxorof.docker_ce
+
+collections:
+  - name: community.crypto
+  - name: community.general
+  - name: ansible.posix

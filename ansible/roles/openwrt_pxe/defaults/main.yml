@@ -25,7 +25,7 @@ ipxe_scripts_dir: bios/ipxe-scripts
 nginx_http_dir: /var/www
 nginx_http_pxe_url: /pxe
 nginx_http_pxe_dir: "{{ nginx_http_dir }}/{{ nginx_http_pxe_url }}"
-nginx_port: 80
+nginx_port: 8080
 
 debian_live_iso_version: 10.1.0
 debian_live_iso_arch: amd64
@@ -37,13 +37,12 @@ debian_live_iso:
   kernel: vmlinuz-4.19.0-6-amd64
   initrd: initrd.img-4.19.0-6-amd64
 
-ubuntu_version: bionic
+ubuntu_version: mantic
 ubuntu_arch: amd64
 ubuntu:
-  baseurl: http://archive.ubuntu.com/ubuntu/dists/{{ ubuntu_version }}-updates/main/installer-{{ ubuntu_arch }}/current/images/netboot/ubuntu-installer/{{ ubuntu_arch }}
-  checksum: sha1:a1c3272c6cfc96e1d3024825fbe1e015e4350be4
+  baseurl: https://releases.ubuntu.com/{{ ubuntu_version }}/netboot/{{ ubuntu_arch }}
   kernel: linux
-  initrd: initrd.gz
+  initrd: initrd
   preseed: ubuntu.preseed
 ubuntu_root_password: toor
 

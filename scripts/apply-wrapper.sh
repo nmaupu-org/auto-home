@@ -14,7 +14,7 @@ EOF
 
 SCRIPT="$1"
 
-DOCKER_IMAGE="${DOCKER_ID_USER}/builder:1.2"
+DOCKER_IMAGE="${DOCKER_ID_USER}/builder:2.0"
 HOME_DIR="/home/builder"
 WORK_DIR="/workspace"
 ANSIBLE_DIR="${WORK_DIR}/ansible"
@@ -24,6 +24,7 @@ USER_ID="${USER_ID:-${UID}}"
 [ -f "${HOME}"/.kube/kubeconfig-home ] && OTHER_VOLUMES="${OTHER_VOLUMES} -v ${HOME}/.kube:${HOME_DIR}/.kube"
 [ -d /etc/ansible ]                    && OTHER_VOLUMES="${OTHER_VOLUMES} -v /etc/ansible:/etc/ansible"
 [ -d /usr/local/etc/ansible ]          && OTHER_VOLUMES="${OTHER_VOLUMES} -v /usr/local/etc/ansible:/usr/local/etc/ansible"
+[ -d "${HOME}/.ansible" ]              && OTHER_VOLUMES="${OTHER_VOLUMES} -v ${HOME}/.ansible:${HOME_DIR}/.ansible"
 
 docker run "${DOCKER_OPTS}" --rm \
   --network=host \

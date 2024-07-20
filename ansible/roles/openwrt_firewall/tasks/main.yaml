@@ -3,15 +3,15 @@
 ##
 ## Packages
 
-- name: Installing alternative repository
-  shell: |
-    echo -e -n 'untrusted comment: OpenWrt usign key of Stan Grishin\nRWR//HUXxMwMVnx7fESOKO7x8XoW4/dRidJPjt91hAAU2L59mYvHy0Fa\n' > /tmp/stangri-repo.pub && \
-    opkg-key add /tmp/stangri-repo.pub
-    ! grep -q 'stangri_repo' /etc/opkg/customfeeds.conf && echo 'src/gz stangri_repo https://raw.githubusercontent.com/stangri/openwrt-repo/master' >> /etc/opkg/customfeeds.conf && \
-    touch /etc/stangri_repo_added
-  args:
-    creates: /etc/stangri_repo_added
-  tags: ['firewall_packages']
+#- name: Installing alternative repository
+#  shell: |
+#    echo -e -n 'untrusted comment: OpenWrt usign key of Stan Grishin\nRWR//HUXxMwMVnx7fESOKO7x8XoW4/dRidJPjt91hAAU2L59mYvHy0Fa\n' > /tmp/stangri-repo.pub && \
+#    opkg-key add /tmp/stangri-repo.pub
+#    ! grep -q 'stangri_repo' /etc/opkg/customfeeds.conf && echo 'src/gz stangri_repo https://raw.githubusercontent.com/stangri/openwrt-repo/master' >> /etc/opkg/customfeeds.conf && \
+#    touch /etc/stangri_repo_added
+#  args:
+#    creates: /etc/stangri_repo_added
+#  tags: ['firewall_packages']
 
 - name: Updating opkg
   shell: |
@@ -19,11 +19,11 @@
   tags: ['firewall_packages']
 
 - name: Installing packages
-  opkg:
+  community.general.opkg:
     name: "{{item}}"
     state: present
   with_items:
-      - "{{ firewall_packages }}"
+    - "{{ firewall_packages }}"
   tags: ['firewall_packages']
 
 ##
@@ -107,12 +107,12 @@
     pxe_http_server: "{{ firewall_network_interfaces.lan.ipaddr }}"
   tags: ['firewall_pxe_config']
 
-- name: Processing NFS netmount configuration
-  include_tasks:
-    file: nfs.yaml
-    apply:
-      tags: ['firewall_nfs']
-  tags: ['always']
+# - name: Processing NFS netmount configuration
+#   include_tasks:
+#     file: nfs.yaml
+#     apply:
+#       tags: ['firewall_nfs']
+#   tags: ['always']
 
 # - name: Processing Mosquitto server
 #   include_tasks:

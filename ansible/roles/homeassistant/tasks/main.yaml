@@ -136,7 +136,7 @@
     - config
 
 - name: Mounting NFS share regarding TLS certificates
-  mount:
+  ansible.posix.mount:
     src: "{{ certs.nfs.ip }}:{{ certs.nfs.path }}"
     path: "{{ certs.nfs.mountPath}}"
     fstype: nfs

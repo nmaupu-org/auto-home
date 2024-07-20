@@ -12,6 +12,8 @@
     - kmod-fs-nfs
     - kmod-fs-nfs-common
     - kmod-loop
+    - kmod-usb2
+    - kmod-usb3
     - mount-utils
     - losetup
     - e2fsprogs

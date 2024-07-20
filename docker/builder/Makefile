@@ -2,10 +2,10 @@ default: push
 .PHONY: default clean build tag tag-latest check-docker-hub
 
 NAME=builder
-VERSION=1.2
+VERSION=2.0
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
-KUBECTL_VERSION=1.22.4
+KUBECTL_VERSION=1.28.2
 
 ARCH=amd64
 PLATFORM=linux

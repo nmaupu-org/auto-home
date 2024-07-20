@@ -2,7 +2,7 @@
 
 - name: Installing nginx server
   opkg:
-    name: nginx
+    name: luci-ssl-nginx
     state: present
     update_cache: yes
 
