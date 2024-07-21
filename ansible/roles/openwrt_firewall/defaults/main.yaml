@@ -66,7 +66,7 @@ firewall_dnsmasq_config:
     authoritative: 1
     readethers: 1
     leasefile: /tmp/dhcp.leases
-    resolvfile: /tmp/resolv.conf.auto
+    resolvfile: /tmp/resolv.conf
     nonwildcard: 1
     localservice: 1
 
