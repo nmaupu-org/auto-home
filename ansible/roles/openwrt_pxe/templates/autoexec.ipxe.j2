@@ -1,0 +1,32 @@
+#!ipxe
+
+set menu-timeout 9000000
+set submenu-timeout ${menu-timeout}
+isset ${menu-default} || set menu-default item3
+set server_ip 192.168.12.1
+
+menu
+item --gap --           -------------SÉPARATION 1----------------
+item item1            	Item 1
+item --gap --           -------------SÉPARATION 2----------------
+item item2      	Item 2
+item item3		Item 3
+item shell              Shell iPXE
+item exit              	Exit
+
+choose --timeout ${menu-timeout} --default ${menu-default} target && goto ${target}
+
+:item1
+#Paramètres de démarrage pour item 1
+
+:item2
+#Paramètres de démarrage pour item 2
+
+:item3
+#Paramètres de démarrage pour item 3
+
+:shell
+shell
+
+:exit
+exit

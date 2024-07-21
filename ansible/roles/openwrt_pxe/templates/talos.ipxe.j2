@@ -1,6 +1,0 @@
-#!ipxe
-
-kernel https://pxe.factory.talos.dev/image/0afcd77609583c0959c4eceee03f24075653f53654dc99aabea3bdd9f3e63800/v1.7.5/kernel-amd64 talos.platform=metal console=ttyS0 console=tty0 init_on_alloc=1 slab_nomerge pti=on consoleblank=0 nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512
-initrd https://pxe.factory.talos.dev/image/0afcd77609583c0959c4eceee03f24075653f53654dc99aabea3bdd9f3e63800/v1.7.5/initramfs-amd64.xz
-boot
-

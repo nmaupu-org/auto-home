@@ -76,7 +76,7 @@ firewall_dnsmasq_config:
   options:
     domain: home.fossar.net
     enable_tftp: 1
-    tftp_root: /mnt/extstorage/bios
+    tftp_root: /mnt/extstorage/pxe
   addresses:
     - /knas.home.fossar.net/192.168.99.1
 

@@ -10,5 +10,5 @@ LABEL ssd
   MENU default
 
 {% for item in pxe_menu_items %}
-INCLUDE pxelinux.cfg/{{item}}
+INCLUDE grub-entries/{{item}}
 {% endfor %}

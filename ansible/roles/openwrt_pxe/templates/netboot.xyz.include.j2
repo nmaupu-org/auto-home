@@ -1,4 +1,4 @@
 LABEL netboot.xyz
   MENU LABEL netboot.xyz
-  KERNEL ipxe.lkrn
+  KERNEL ipxe.{{ item.arch }}
   initrd ipxe-scripts/netboot.xyz.ipxe

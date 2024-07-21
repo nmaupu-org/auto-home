@@ -4,14 +4,6 @@
   tags: pxe-syslinux
 - import_tasks: http-server.yml
   tags: pxe-http-server
-- import_tasks: pxe-get-mac-addr.yml
-  tags: pxe-get-mac-addr
-- import_tasks: pxe-debian-live-xfce.yml
-  tags: pxe-debian-live-xfce
-- import_tasks: pxe-ubuntu-install.yml
-  tags: pxe-ubuntu
-- import_tasks: pxe-talos.yml
-  tags: pxe-talos
 - import_tasks: pxe-netboot.xyz.yml
   tags: pxe-netboot-xyz
 

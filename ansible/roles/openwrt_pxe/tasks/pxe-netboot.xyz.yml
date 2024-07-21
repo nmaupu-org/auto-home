@@ -2,6 +2,10 @@
 
 - name: Creating pxe menu for netboot.xyz
   template:
-    src: templates/netboot.xyz.include.j2
-    dest: "{{ tftproot_dir }}/bios/pxelinux.cfg/netboot.xyz.include"
+    src: templates/{{ item.file }}.j2
+    dest: "{{ tftproot_dir }}/pxe/{{ item.subpath }}/grub-entries/{{ item.file }}"
     mode: 0644
+  with_items:
+    - file: netboot.xyz.include
+      subpath: bios
+      arch: lkrn

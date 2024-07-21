@@ -1,7 +1,0 @@
----
-
-- name: Creating pxe menu for talos
-  template:
-    src: templates/talos.include.j2
-    dest: "{{ tftproot_dir }}/bios/pxelinux.cfg/talos.include"
-    mode: 0644

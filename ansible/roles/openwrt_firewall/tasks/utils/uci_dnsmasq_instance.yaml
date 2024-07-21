@@ -21,28 +21,31 @@
     key: dhcp.@dnsmasq[-1].address
     value: "{{ item }}"
   loop: "{{ outer_item.addresses }}"
-
-- name: "Add boot option"
-  uci:
-    command: add
-    config: dhcp
-    type: boot
   notify: restart dhcp
 
-- name: "Set boot options"
+- name: "Creating dnsmasq custom confdir"
+  file:
+    state: directory
+    mode: 0755
+    path: /etc/dnsmasq.d
+  notify: restart dhcp
+
+- name: "Copying dnsmasq custom boot configuration"
+  template:
+    src: templates/dnsmasq-boot-pxe.conf.j2
+    dest: /etc/dnsmasq.d/boot-pxe.conf
+    mode: 0644
+  vars:
+    server_address: "{{ firewall_network_interfaces.lan.ipaddr }}"
+    # Those hard-coded files will be available when openwrt_pxe is executed
+    pxe_files:
+      efi: efi/ipxe.efi
+      bios: bios/pxelinux.0
+  notify: restart dhcp
+
+- name: "Set dnsmasq external configuration for boot"
   uci:
     command: set
-    key: dhcp.@boot[-1]
-    value:
-      filename: pxelinux.0
-      serveraddress: "{{ firewall_network_interfaces.lan.ipaddr }}"
-      servername: OpenWrt
-      force: 1
-  notify: restart dhcp
-
-- name: "Set dhcp_option list"
-  uci:
-    command: add_list
-    key: dhcp.@boot[-1].dhcp_option
-    value: 209,pxelinux.cfg/default
+    key: dhcp.@dnsmasq[-1].confdir
+    value: /etc/dnsmasq.d
   notify: restart dhcp

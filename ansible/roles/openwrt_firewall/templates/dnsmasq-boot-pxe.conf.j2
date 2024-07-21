@@ -1,0 +1,6 @@
+dhcp-match=set:bios-x86,option:client-arch,0
+dhcp-boot=tag:bios-x86,{{ pxe_files.efi }}
+dhcp-match=set:efi-x86_64,option:client-arch,7
+dhcp-match=set:efi-x86_64,option:client-arch,9
+dhcp-boot=tag:efi-x86_64,{{ pxe_files.efi }}
+dhcp-boot=tag:bios-x86,{{ pxe_files.bios }},,{{ server_address }}

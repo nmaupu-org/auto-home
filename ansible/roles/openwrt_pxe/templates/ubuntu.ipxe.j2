@@ -1,9 +1,0 @@
-#!ipxe
-
-dhcp
-kernel http://{{ pxe_http_server }}:{{ nginx_port }}/{{ nginx_http_pxe_url }}/ubuntu/{{ ubuntu.kernel }}
-initrd http://{{ pxe_http_server }}:{{ nginx_port }}/{{ nginx_http_pxe_url }}/ubuntu/{{ ubuntu.initrd }}
-imgargs {{ ubuntu.kernel }} priority=critical vga=788 --- \
-  root=/dev/ram0 ramdisk_size=3000000 ip=dhcp \
-  url=https://cdimage.ubuntu.com/ubuntu-server/daily-live/20231011/mantic-live-server-amd64.iso
-boot

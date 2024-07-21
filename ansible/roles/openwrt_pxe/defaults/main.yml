@@ -1,54 +1,23 @@
 ---
 
 tftproot_dir: /var/lib/tftproot
-tftpdir: /tftproot
 tmpdir: /tmp
 tftpd_opts: -4 --secure -v -v -v
 
-syslinux_major_ver: 6.03
-syslinux_flavor: pre20
+syslinux_version: 6.03
 syslinux_url: https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/{{syslinux_major_ver}}
-syslinux_version: "{{syslinux_major_ver}}-{{syslinux_flavor}}"
+syslinux_baseurl: https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux
 
 pxe_timeout: 60
 pxe_title: PXE
 pxe_http_server: "{{ ansible_default_ipv4.address }}"
+
 pxe_menu_items:
-  - debian-live-xfce.include
-  - get-mac-addr.include
-  - ubuntu.include
-  - talos.include
   - netboot.xyz.include
 
-ipxe_lkrn_url: http://boot.ipxe.org/ipxe.lkrn
-ipxe_scripts_dir: bios/ipxe-scripts
+ipxe_url: http://boot.ipxe.org
 
 nginx_http_dir: /var/www
 nginx_http_pxe_url: /pxe
 nginx_http_pxe_dir: "{{ nginx_http_dir }}/{{ nginx_http_pxe_url }}"
 nginx_port: 8080
-
-debian_live_iso_version: 10.1.0
-debian_live_iso_arch: amd64
-debian_live_iso_flavor: xfce
-debian_live_iso:
-  url: https://cdimage.debian.org/debian-cd/current-live/{{debian_live_iso_arch}}/iso-hybrid/debian-live-{{debian_live_iso_version}}-{{debian_live_iso_arch}}-{{debian_live_iso_flavor}}.iso
-  image_name: debian-live-{{debian_live_iso_version}}-{{debian_live_iso_arch}}-{{debian_live_iso_flavor}}.iso
-  checksum: sha1:a199de6251480dc9649a3270582d40b5b91a351d
-  kernel: vmlinuz-4.19.0-6-amd64
-  initrd: initrd.img-4.19.0-6-amd64
-
-ubuntu_version: mantic
-ubuntu_arch: amd64
-ubuntu:
-  baseurl: https://releases.ubuntu.com/{{ ubuntu_version }}/netboot/{{ ubuntu_arch }}
-  kernel: linux
-  initrd: initrd
-  preseed: ubuntu.preseed
-ubuntu_root_password: toor
-
-talos_version: 1.7.5
-talos:
-  pxe:
-    - https://github.com/siderolabs/talos/releases/download/v{{talos_version}}/vmlinuz-amd64
-    - https://github.com/siderolabs/talos/releases/download/v{{talos_version}}/initramfs-amd64.xz
