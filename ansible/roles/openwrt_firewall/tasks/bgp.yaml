@@ -12,5 +12,6 @@
     neighbor 192.168.12.8 description home-nas
     exit
     exit
+    copy running-config startup-config
   args:
     executable: vtysh
