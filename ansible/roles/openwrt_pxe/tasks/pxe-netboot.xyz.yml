@@ -1,0 +1,7 @@
+---
+
+- name: Creating pxe menu for netboot.xyz
+  template:
+    src: templates/netboot.xyz.include.j2
+    dest: "{{ tftproot_dir }}/bios/pxelinux.cfg/netboot.xyz.include"
+    mode: 0644

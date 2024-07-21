@@ -59,3 +59,4 @@
     - debian-live-xfce.ipxe
     - get-mac-addr.ipxe
     - talos.ipxe
+    - netboot.xyz.ipxe

@@ -18,6 +18,7 @@ pxe_menu_items:
   - get-mac-addr.include
   - ubuntu.include
   - talos.include
+  - netboot.xyz.include
 
 ipxe_lkrn_url: http://boot.ipxe.org/ipxe.lkrn
 ipxe_scripts_dir: bios/ipxe-scripts

@@ -12,6 +12,8 @@
   tags: pxe-ubuntu
 - import_tasks: pxe-talos.yml
   tags: pxe-talos
+- import_tasks: pxe-netboot.xyz.yml
+  tags: pxe-netboot-xyz
 
 - name: Adding rc.local script to mount iso at boot
   template:
