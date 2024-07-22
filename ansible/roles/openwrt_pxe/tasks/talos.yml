@@ -1,0 +1,22 @@
+---
+
+- name: Creating talos www directory
+  file:
+    state: directory
+    path: "{{ nginx_http_pxe_dir }}/talos"
+    mode: 0755
+
+- name: Getting talos boot files
+  get_url:
+    url: "{{ talos_baseurl }}/{{ item }}"
+    dest: "{{ nginx_http_pxe_dir }}/talos/{{ item }}"
+    mode: 0644
+  with_items:
+    - kernel-amd64
+    - initramfs-amd64.xz
+
+- name: Creating Talos boot menu
+  template:
+    src: templates/talos.ipxe.j2
+    dest: "{{ nginx_http_pxe_dir }}/talos/talos.ipxe"
+    mode: 0644

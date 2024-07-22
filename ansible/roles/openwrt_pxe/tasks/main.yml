@@ -1,11 +1,11 @@
 ---
 
-- import_tasks: syslinux.yml
-  tags: pxe-syslinux
+- import_tasks: ipxe.yml
+  tags: pxe-ipxe
 - import_tasks: http-server.yml
   tags: pxe-http-server
-- import_tasks: pxe-netboot.xyz.yml
-  tags: pxe-netboot-xyz
+- import_tasks: talos.yml
+  tags: pxe-talos
 
 - name: Adding rc.local script to mount iso at boot
   template:

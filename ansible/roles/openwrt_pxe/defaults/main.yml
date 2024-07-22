@@ -4,20 +4,16 @@ tftproot_dir: /var/lib/tftproot
 tmpdir: /tmp
 tftpd_opts: -4 --secure -v -v -v
 
-syslinux_version: 6.03
-syslinux_url: https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/{{syslinux_major_ver}}
-syslinux_baseurl: https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux
-
-pxe_timeout: 60
-pxe_title: PXE
 pxe_http_server: "{{ ansible_default_ipv4.address }}"
 
-pxe_menu_items:
-  - netboot.xyz.include
+## Released images don't support https, using a custom one
+# ipxe_url: http://boot.ipxe.org
+ipxe_url: https://github.com/nmaupu/ipxe-docker-compile/releases/download/v0.0.1
 
-ipxe_url: http://boot.ipxe.org
+talos_version: 1.7.5
+talos_baseurl: https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v{{ talos_version }}
 
 nginx_http_dir: /var/www
-nginx_http_pxe_url: /pxe
+nginx_http_pxe_url: pxe
 nginx_http_pxe_dir: "{{ nginx_http_dir }}/{{ nginx_http_pxe_url }}"
 nginx_port: 8080

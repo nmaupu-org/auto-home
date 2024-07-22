@@ -1,0 +1,53 @@
+---
+
+- name: Creating some directories under {{tftproot_dir}}
+  file:
+    dest: "{{ tftproot_dir }}/{{ item }}"
+    mode: 0755
+    state: directory
+  with_items:
+    - pxe
+    - pxe/bios
+    - pxe/bios/ipxe-scripts
+    - pxe/efi
+    - pxe/efi/ipxe-scripts
+  notify:
+    - restart dnsmasq
+
+- name: Dowloading and copying ipxe binary file
+  get_url:
+    url: "{{ ipxe_url }}/{{ item.file }}"
+    dest: "{{ tftproot_dir }}/pxe/{{ item.subpath }}/{{ item.file }}"
+    mode: 0755
+  with_items:
+    - file: ipxe.lkrn
+      subpath: bios
+    - file: ipxe.efi
+      subpath: efi
+    - file: undionly.kpxe
+      subpath: bios
+  notify:
+    - restart dnsmasq
+
+- name: Creating ipxe scripts
+  template:
+    src: templates/{{ item.file }}.j2
+    dest: "{{ tftproot_dir }}/pxe/{{ item.subpath }}/ipxe-scripts/{{ item.file }}"
+    mode: 0644
+  with_items:
+    - file: netboot.xyz.ipxe
+      subpath: bios
+      arch: lkrn
+    - file: netboot.xyz.ipxe
+      subpath: efi
+      arch: efi
+  notify:
+    - restart dnsmasq
+
+- name: Setting autoexec entry file for ipxe
+  template:
+    src: templates/autoexec.ipxe.j2
+    dest: "{{ tftproot_dir }}/pxe/autoexec.ipxe"
+    mode: 0644
+  notify:
+    - restart dnsmasq

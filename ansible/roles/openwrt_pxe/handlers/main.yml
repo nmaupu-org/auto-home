@@ -4,6 +4,11 @@
     name: nginx
     state: restarted
 
+- name: restart dnsmasq
+  service:
+    name: dnsmasq
+    state: restarted
+
 - name: restart fstab
   shell: |
     block mount

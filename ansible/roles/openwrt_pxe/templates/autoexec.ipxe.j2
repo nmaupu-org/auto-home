@@ -1,29 +1,31 @@
 #!ipxe
 
-set menu-timeout 9000000
+set menu-timeout 20000
 set submenu-timeout ${menu-timeout}
-isset ${menu-default} || set menu-default item3
-set server_ip 192.168.12.1
+isset ${menu-default} || set menu-default local
+set server_ip {{ pxe_http_server }}
 
 menu
-item --gap --           -------------SÉPARATION 1----------------
-item item1            	Item 1
-item --gap --           -------------SÉPARATION 2----------------
-item item2      	Item 2
-item item3		Item 3
-item shell              Shell iPXE
-item exit              	Exit
+item --gap --   -------------Main----------------
+item local      Local
+item netboot    Netboot.xyz
+item talos      Talos
+item --gap --   -------------Misc----------------
+item shell      Shell iPXE
+item exit       Exit
 
 choose --timeout ${menu-timeout} --default ${menu-default} target && goto ${target}
 
-:item1
-#Paramètres de démarrage pour item 1
+:local
+sanboot --no-describe --drive 0x80
 
-:item2
-#Paramètres de démarrage pour item 2
+:netboot
+dhcp
+chain --autofree https://boot.netboot.xyz
 
-:item3
-#Paramètres de démarrage pour item 3
+:talos
+dhcp
+chain --autofree http://{{ pxe_http_server }}:{{ nginx_port }}/{{ nginx_http_pxe_url }}/talos/talos.ipxe
 
 :shell
 shell

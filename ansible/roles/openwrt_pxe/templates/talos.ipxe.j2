@@ -1,0 +1,17 @@
+#!ipxe
+
+# NOTE: This is important, without that, not enough memory for the kernel to boot!
+imgfree
+
+set boot_params printk.devkmsg=on slab_nomerge pti=on console=ttyS0 console=tty0 init_on_alloc=1 consoleblank=0 nvme_core.io_timeout=4294967295 ima_template=ima-ng ima_appraise=fix ima_hash=sha512 talos.platform=metal panic=10
+kernel http://{{ pxe_http_server }}:{{ nginx_port }}/{{ nginx_http_pxe_url }}/talos/kernel-amd64 ${boot_params}
+initrd http://{{ pxe_http_server }}:{{ nginx_port }}/{{ nginx_http_pxe_url }}/talos/initramfs-amd64.xz
+
+echo
+echo Booting with the following kernel args:
+echo ${boot_params}
+echo
+echo MD5sums:
+md5sum kernel-amd64 initramfs-amd64.xz
+
+boot
