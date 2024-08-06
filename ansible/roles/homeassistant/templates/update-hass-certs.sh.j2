@@ -14,7 +14,8 @@ cert_perms() {
 mkdir -p "$MOUNTPOINT"
 mount -t nfs "$NAS":/mnt/tank/le-certs "$MOUNTPOINT" -o nolock,ro
 
-if rsync -ai --delete --include='./' --include='homeassistant-cert.*' --exclude='*' "$MOUNTPOINT/" /home/homeassistant/certs | grep -q '^>'; then
+# Using --checksum here to avoid rsync from replacing files if timestamp changes (cronjob syncing cert files replace them with the same ones every day)
+if rsync -ai --checksum --delete --include='./' --include='homeassistant-cert.*' --exclude='*' "$MOUNTPOINT/" /home/homeassistant/certs | grep -q '^>'; then
   cert_perms
   systemctl restart homeassistant
 else
