@@ -116,14 +116,6 @@
     virtualenv: /srv/homeassistant
     virtualenv_python: python3
 
-- name: Preparing certs directory mounted from NFS
-  file:
-    path: /mnt/certs
-    state: directory
-  tags:
-    - mount
-    - config
-
 - name: Preparing certs directory for homeassistant user
   file:
     path: /home/homeassistant/certs
@@ -131,17 +123,6 @@
     owner: homeassistant
     group: homeassistant
     mode: '0700'
-  tags:
-    - mount
-    - config
-
-- name: Mounting NFS share regarding TLS certificates
-  ansible.posix.mount:
-    src: "{{ certs.nfs.ip }}:{{ certs.nfs.path }}"
-    path: "{{ certs.nfs.mountPath}}"
-    fstype: nfs
-    opts: ro,noatime,auto
-    state: mounted
   tags:
     - mount
     - config
