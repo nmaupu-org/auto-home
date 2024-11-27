@@ -8,15 +8,16 @@ conky.config = {
 }
 
 conky.text = [[
-  ^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/net_wired.xbm)^fg(\#00aa4a) ^i(/home/nmaupu/.xmonad/icons/net_down_03.xbm)${downspeed wlp2s0}^fg(\#ff6633) ^i(/home/nmaupu/.xmonad/icons/net_up_03.xbm)${upspeed wlp2s0} \
-  ^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/bat_full_02.xbm) \
+  ^fg(\#9dc3f9)^i(/home/nmaupu/.config/xmonad/icons/net_wired.xbm)^fg(\#00aa4a) ^i(/home/nmaupu/.config/xmonad/icons/net_down_03.xbm)${downspeed wlp2s0}^fg(\#ff6633) ^i(/home/nmaupu/.config/xmonad/icons/net_up_03.xbm)${upspeed wlp2s0} \
+  ^fg(\#9dc3f9)^i(/home/nmaupu/.config/xmonad/icons/bat_full_02.xbm) \
   ${if_match ${exec acpi -a | grep 'on-line' | wc -l} > 0}\
   ^fg(\#00aa4a)\
   ${else}\
   ^fg(\#ff6600)\
   ${endif}\
   ${execi 5 acpi -b | cut -d' ' -f4 | tr -d ','} \
-  ^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/cpu.xbm) ^fg(\#e8e8e8)${cpu}% \
-  ^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/mem.xbm) ^fg(\#e8e8e8)${memperc}% \
-  ^fg(\#9dc3f9)^i(/home/nmaupu/.xmonad/icons/clock.xbm) ^fg(\#e8e8e8)${time %Y.%m.%d} ^fg(\#FF6633)${time %H:%M:%S}^fg(\#e8e8e8)/^fg(\#00ffff)${utime %R} UTC
+  ^fg(\#9dc3f9)^i(/home/nmaupu/.config/xmonad/icons/cpu.xbm) ^fg(\#e8e8e8)${cpu}% \
+  ^fg(\#9dc3f9)^i(/home/nmaupu/.config/xmonad/icons/mem.xbm) ^fg(\#e8e8e8)${memperc}% \
+  ^fg(\#9dc3f9)^i(/home/nmaupu/.config/xmonad/icons/clock.xbm) ^fg(\#e8e8e8)${time %Y.%m.%d} ^fg(\#FF6633)${time %H:%M:%S}^fg(\#e8e8e8)/^fg(\#00ffff)${utime %R} UTC
+  ^fg(\#9dc3f9)^i(/home/nmaupu/.config/xmonad/icons/clock.xbm) ^fg(\#e8e8e8)${time %Y.%m.%d} ^fg(\#FF6633)${time %H:%M:%S}^fg(\#e8e8e8)/^fg(\#00aa4a)${tztime America/Montreal %H:%M} CA^fg(\#e8e8e8)/^fg(\#00ffff)${utime %R} UTC
 ]]
