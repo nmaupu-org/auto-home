@@ -100,3 +100,45 @@ SSH_KEYS_DIR=/tmp VAULT_ADDR=not-used ./scripts/apply-ansible.sh home.yml --limi
 ```
 
 - Boot from PXE and select Talos !
+
+- Once done, the node should be in maintenance mode. Get configs:
+
+``` bash
+vault read -field talosconfig secret/talos-iot > talosconfig
+vault read -field controlplane.yaml secret/talos-iot > controlplane.yaml
+```
+
+Note: initial configuration has been generated with the following command:
+
+```bash
+talosctl gen config iot https://192.168.12.40:6443 -f
+```
+
+Be careful to use to custom image from [Talos dev factory](https://factory.talos.dev/) with **i915** and **mei** activated !
+One can also activate linux-util package.
+
+- Apply the configuration with:
+
+``` bash
+talosctl apply-config --insecure --nodes 192.168.12.40 --file controlplane.yaml
+```
+
+- Once rebooted, bootstrap the cluster:
+
+``` bash
+talosctl bootstrap -e 192.168.12.40 -n 192.168.12.40 --talosconfig talosconfig
+```
+
+The node is bootstrapping. This operation can take several minutes to complete...
+
+- When the cluster is ready, get the kubeconfig with:
+
+``` bash
+talosctl kubeconfig --nodes 192.168.12.40 --endpoints 192.168.12.40 --talosconfig talosconfig
+```
+
+- To start over and reset from the beginning:
+
+``` bash
+talosctl reset --nodes 192.168.12.40 -e 192.168.12.40 --talosconfig talosconfig --reboot --graceful=false
+```
