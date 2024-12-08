@@ -10,8 +10,8 @@ pxe_http_server: "{{ ansible_default_ipv4.address }}"
 # ipxe_url: http://boot.ipxe.org
 ipxe_url: https://github.com/nmaupu/ipxe-docker-compile/releases/download/v0.0.1
 
-talos_version: 1.7.5
-talos_baseurl: https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v{{ talos_version }}
+talos_version: 1.8.3
+talos_baseurl: https://factory.talos.dev/image/f892bcd627ef28c5718b7b394ebe287ea7fbfe901f4e183c73e748cd1e1b5dee/v{{ talos_version }}
 
 nginx_http_dir: /var/www
 nginx_http_pxe_url: pxe
