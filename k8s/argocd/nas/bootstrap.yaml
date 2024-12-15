@@ -9,12 +9,17 @@ spec:
   destination:
     namespace: argocd
     name: in-cluster
-  source:
-    path: ./k8s/argocd/nas/deploy
-    repoURL: https://github.com/nmaupu-org/auto-home.git
-    targetRevision: master
-    directory:
-      recurse: true
+  sources:
+    - path: ./k8s/argocd/nas/deploy
+      repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      directory:
+        recurse: true
+    - path: ./k8s/argocd/iot/deploy
+      repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      directory:
+        recurse: true
   syncPolicy:
     automated:
       allowEmpty: true
