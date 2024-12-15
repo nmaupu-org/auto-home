@@ -1,0 +1,58 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-openebs
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: openebs
+    name: iot
+  source:
+    chart: openebs
+    repoURL: https://openebs.github.io/openebs
+    targetRevision: 4.1.1
+    helm:
+      releaseName: iot-openebs
+      valuesObject:
+        engines:
+          local:
+            lvm:
+              enabled: false
+            zfs:
+              enabled: false
+          replicated:
+            mayastor:
+              enabled: false
+
+        mayastor:
+          enabled: false
+
+        lvm-localpv:
+          enabled: false
+          crds:
+            lvmLocalPv:
+              enabled: false
+
+        zfs-localpv:
+          enabled: false
+          crds:
+            zfsLocalPv:
+              enabled: false
+
+        localpv-provisioner:
+          enabled: true
+          hostpathClass:
+            enabled: true
+            isDefaultClass: true
+            basePath: /var/openebs/local
+          xfsQuota:
+            enabled: true
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
