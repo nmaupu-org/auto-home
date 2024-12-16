@@ -11,8 +11,8 @@ spec:
     name: iot
   sources:
     - path: charts/zigbee2mqtt
-      repoURL: https://github.com/Koenkk/zigbee2mqtt-chart.git
-      targetRevision: 1.42.0
+      repoURL: https://github.com/nmaupu/zigbee2mqtt-chart.git
+      targetRevision: fix-secret-mount-datadir
       helm:
         releaseName: zigbee2mqtt-xiaomi
         valueFiles:
