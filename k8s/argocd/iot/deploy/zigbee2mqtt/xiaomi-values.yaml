@@ -3,7 +3,10 @@ service:
 
 statefulset:
   storage:
-    enabled: false
+    enabled: true
+    size: 1Gi
+    storageClassName: openebs-hostpath
+
   resources:
     requests:
       memory: 600Mi
