@@ -142,3 +142,13 @@ talosctl kubeconfig --nodes 192.168.12.40 --endpoints 192.168.12.40 --talosconfi
 ``` bash
 talosctl reset --nodes 192.168.12.40 -e 192.168.12.40 --talosconfig talosconfig --reboot --graceful=false
 ```
+
+- To bootstrap sealed-secrets
+
+``` bash
+kubectl create ns sealed-secrets
+kubectl -n sealed-secrets create secret tls mycustomkeys \
+  --cert="sealed-secrets.crt" --key="sealed-secrets.key"
+kubectl -n sealed-secrets label secret mycustomkeys \
+  sealedsecrets.bitnami.com/sealed-secrets-key=active
+```
