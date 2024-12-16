@@ -28,10 +28,6 @@ statefulset:
 zigbee2mqtt:
   homeassistant:
     enabled: true
-    discovery_topic: 'homeassistant'
-    status_topic: 'hass/status'
-    legacy_entity_attributes: true
-    legacy_triggers: false
   timezone: Europe/Paris
   mqtt:
     server: '!secret.yaml server'
