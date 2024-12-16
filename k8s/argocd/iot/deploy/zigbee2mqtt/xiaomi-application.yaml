@@ -17,7 +17,7 @@ spec:
         releaseName: zigbee2mqtt-xiaomi
         valueFiles:
           - $values/k8s/argocd/iot/deploy/zigbee2mqtt/xiaomi-values.yaml
-    - repourl: https://github.com/nmaupu-org/auto-home.git
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
 
