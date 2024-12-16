@@ -152,3 +152,9 @@ kubectl -n sealed-secrets create secret tls mycustomkeys \
 kubectl -n sealed-secrets label secret mycustomkeys \
   sealedsecrets.bitnami.com/sealed-secrets-key=active
 ```
+
+Note: Sealed secrets have to be encrypted using the following command (with the current context pointing to the target cluster):
+
+``` bash
+cat secret.yaml | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets --format yaml > secret-sealed.yaml
+```

@@ -1,0 +1,49 @@
+service:
+  type: ClusterIP
+
+statefulset:
+  storage:
+    enabled: false
+  resources:
+    requests:
+      memory: 600Mi
+      cpu: 200m
+    limits:
+      memory: 600Mi
+      cpu: 200m
+  # Existing secret (sealed-secrets) created under ../../secrets
+  secrets:
+    name: zigbee2mqtt
+  volumeMounts:
+    - name: usb-device
+      mountPath: /dev/usb
+  volumes:
+    - name: usb-device
+      hostPath:
+        path: /dev/ttyACM0
+
+zigbee2mqtt:
+  homeassistant:
+    enabled: true
+    discovery_topic: 'homeassistant'
+    status_topic: 'hass/status'
+    legacy_entity_attributes: true
+    legacy_triggers: false
+  timezone: Europe/Paris
+  mqtt:
+    server: '!secret.yaml server'
+    user: '!secret.yaml user'
+    password: '!secret.yaml password'
+  serial:
+    port: "/dev/usb"
+    disable_led: false
+  frontend:
+    port: 8080
+  advanced:
+    timestamp_format: 'YYYY-MM-DD HH:mm:ss'
+    last_seen: 'ISO_8601_local'
+    # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
+    elapsed: true
+
+ingress:
+  enabled: false

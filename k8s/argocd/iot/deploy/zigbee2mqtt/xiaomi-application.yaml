@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zigbee2mqtt-xiaomi
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: zigbee2mqtt
+    name: iot
+  sources:
+    - chart: zigbee2mqtt
+      repoURL: github.com/Koenkk/zigbee2mqtt
+      targetRevision: 1.42.0
+      helm:
+        releaseName: zigbee2mqtt-xiaomi
+        valueFiles:
+          - $values/k8s/argocd/iot/deploy/zigbee2mqtt/xiaomi-values.yaml
+    - repourl: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -21,6 +21,8 @@ Create the following dataset/directories (chown with 1001)
 As of 2024, I migrated home nas to Truenas Scale (k8s with k3s instead of jails + debian os).
 iX Systems tries to make everything using the GUI, this is unacceptable so we will be using argocd!
 
+Beware: DO NOT UPGRADE truenas as k3s is deprecated and will be removed!
+
 ## Preamble
 
 Install gcloud and create a service account for cert-manager DNS-01 challenge solving:
@@ -60,3 +62,11 @@ kubectl -n plex port-forward svc/plex 32400:32400
 ```
 
 Connect with a browser to http://localhost:32400/web and sign-in the server.
+
+## Creating a sealed secrets
+
+Secrets can be sealed using using the following command (with the current k8s context pointing to the target cluster with sealed secret pod running):
+
+``` bash
+cat secret.yaml | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets --format yaml > secret-sealed.yaml
+```
