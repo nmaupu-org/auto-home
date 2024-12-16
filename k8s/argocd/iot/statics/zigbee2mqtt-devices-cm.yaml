@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: devices
+  namespace: zigbee2mqtt
+  labels:
+    app.kubernetes.io/instance: zigbee2mqtt-xiaomi
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: zigbee2mqtt
+    app.kubernetes.io/version: 1.42.0
+    argocd.argoproj.io/instance: zigbee2mqtt-xiaomi
+    helm.sh/chart: zigbee2mqtt-1.42.0
+data:
+  devices.yaml: |
+    '0x00158d0007f29fae':
+      debounce: 1
+      friendly_name: aqara_test
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true

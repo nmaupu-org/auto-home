@@ -20,10 +20,17 @@ statefulset:
   volumeMounts:
     - name: usb-device
       mountPath: /dev/usb
+    - name: devices
+      mountPath: /app/data/devices.yaml
+      subPath: devices.yaml
   volumes:
     - name: usb-device
       hostPath:
         path: /dev/ttyACM0
+    - name: devices
+      configMap:
+        defaultMode: 420
+        name: devices
 
 zigbee2mqtt:
   homeassistant:
