@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bootstrap
+  name: bootstrap-iot
   namespace: argocd
 spec:
   project: default
@@ -10,7 +10,7 @@ spec:
     namespace: argocd
     name: in-cluster
   sources:
-    - path: ./k8s/argocd/nas/deploy
+    - path: ./k8s/argocd/iot/deploy
       repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       directory:
