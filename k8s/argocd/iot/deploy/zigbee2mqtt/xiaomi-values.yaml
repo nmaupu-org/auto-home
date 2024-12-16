@@ -3,9 +3,9 @@ service:
 
 statefulset:
   storage:
-    enabled: true
-    size: 1Gi
-    storageClassName: openebs-hostpath
+    enabled: false
+    #size: 1Gi
+    #storageClassName: openebs-hostpath
 
   resources:
     requests:
