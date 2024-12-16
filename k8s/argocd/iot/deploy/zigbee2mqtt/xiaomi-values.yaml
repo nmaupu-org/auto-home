@@ -30,6 +30,7 @@ zigbee2mqtt:
     enabled: true
   timezone: Europe/Paris
   mqtt:
+    base_topic: z2m-xiaomi-iot
     server: '!secret.yaml server'
     user: '!secret.yaml user'
     password: '!secret.yaml password'
