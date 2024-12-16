@@ -10,8 +10,8 @@ spec:
     namespace: zigbee2mqtt
     name: iot
   sources:
-    - chart: zigbee2mqtt
-      repoURL: github.com/Koenkk/zigbee2mqtt
+    - path: charts/zigbee2mqtt
+      repoURL: https://github.com/Koenkk/zigbee2mqtt-chart.git
       targetRevision: 1.42.0
       helm:
         releaseName: zigbee2mqtt-xiaomi
