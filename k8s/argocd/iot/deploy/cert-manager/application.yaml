@@ -1,0 +1,32 @@
+---
+# NOTE: Cluster issuers prod and staging have been manually copied from nas cluster which
+# are bootstrapped with a Makefile
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: cert-manager
+    name: iot
+  sources:
+    - chart: cert-manager
+      repoURL: tccr.io/truecharts
+      targetRevision: 6.2.3
+      helm:
+        releaseName: cert-manager
+        valuesObject:
+          certmanager:
+            prometheus:
+              enabled: false
+              servicemonitor:
+                enabled: false
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

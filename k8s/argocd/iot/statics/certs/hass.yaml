@@ -1,0 +1,19 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: homeassistant
+  namespace: default
+spec:
+  dnsNames:
+    - hass-test.home.fossar.net
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: google-dns-issuer-staging
+  privateKey:
+    rotationPolicy: Always
+  secretName: homeassistant-cert
+  secretTemplate:
+    labels:
+      nmaupu/cert: external
