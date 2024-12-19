@@ -4,12 +4,15 @@
 # vtysh > show running
 # vtysh > show bgp summary
 # if no traffic, delete metallb speaker pod
+
 - name: Configuring BGP with vtysh
   ansible.builtin.shell: |
     conf t
     router bgp 65000
     neighbor 192.168.12.8 remote-as 65001
     neighbor 192.168.12.8 description home-nas
+    neighbor 192.168.12.40 remote-as 66001
+    neighbor 192.168.12.40 description iot
     exit
     exit
     copy running-config startup-config
