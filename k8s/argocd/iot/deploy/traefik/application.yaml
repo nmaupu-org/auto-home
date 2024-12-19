@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-traefik
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: ingress-controller
+    name: iot
+  sources:
+    - chart: traefik
+      repoURL: tccr.io/truecharts
+      targetRevision: 29.1.6
+      helm:
+        releaseName: traefik
+        valueFiles:
+          - $values/k8s/argocd/iot/deploy/traefik/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
