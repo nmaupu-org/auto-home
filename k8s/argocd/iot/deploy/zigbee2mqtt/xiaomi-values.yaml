@@ -53,4 +53,20 @@ zigbee2mqtt:
     elapsed: true
 
 ingress:
-  enabled: false
+  enabled: true
+  ingressClassName: null
+  annotations:
+    cert-manager.io/cluster-issuer: google-dns-issuer-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - host: z2m-xiaomi.iot.home.fossar.net
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+        - path: /api
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: zigbee2mqtt-xiaomi
+      hosts:
+        - z2m-xiaomi.iot.home.fossar.net
