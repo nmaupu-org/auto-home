@@ -4,12 +4,14 @@ default: push
 NAME=argocd
 VERSION=2.6.15
 JB_VERSION=0.6.0
+JSONNET_VERSION=0.20.0
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
 build: check-docker-hub
 	docker build \
 		--build-arg ARGOCD_VERSION=$(VERSION) \
 		--build-arg JB_VERSION=$(JB_VERSION) \
+		--build-arg JSONNET_VERSION=$(JSONNET_VERSION) \
 		-t $(NAME):$(VERSION) .
 	$(MAKE) clean
 

@@ -2,9 +2,15 @@ ARG ARGOCD_VERSION
 FROM argoproj/argocd:v${ARGOCD_VERSION}
 
 ARG JB_VERSION
+ARG JSONNET_VERSION
 
 USER root
+RUN apt update && apt install -y jq curl
+
+RUN curl -L -o /tmp/jsonnet-go.deb https://github.com/google/go-jsonnet/releases/download/v${JSONNET_VERSION}/jsonnet-go_${JSONNET_VERSION}_linux_amd64.deb && \
+    dpkg -i /tmp/jsonnet-go.deb
+
 ADD https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v${JB_VERSION}/jb-linux-amd64 /usr/bin/jb
 RUN chmod +x /usr/bin/jb
 
-USER argocd
+USER 999

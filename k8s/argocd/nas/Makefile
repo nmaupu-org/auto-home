@@ -41,6 +41,6 @@ argocd: cert-manager sealed-secrets
 	# Argo repo must first be added to the helm repo list
 	# helm repo add argo https://argoproj.github.io/argo-helm
 	# helm repo update
-	helm upgrade --install --namespace argocd --create-namespace argocd argo/argo-cd --version 7.3.4 \
+	helm upgrade --install --namespace argocd --create-namespace argocd argo/argo-cd --version 7.7.10 \
 		--values argocd-values.yaml
 	kubectl apply -f bootstrap.yaml

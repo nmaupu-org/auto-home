@@ -2,12 +2,33 @@
 global:
   domain: argocd.knas.home.fossar.net
 
+global:
+  image:
+    repository: docker.io/nmaupu/argocd
+    tag: 2.6.15
+    imagePullPolicy: Always
+
 configs:
   cm:
     statusbadge.enabled: true
     timeout.reconciliation: 600s
   params:
     server.disable.auth: true
+  cmp:
+    create: true
+    plugins:
+      jsonnet-bundler:
+        init:
+          command: ["/bin/sh", "-c"]
+          args: ["jb update"]
+        generate:
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "${ARGOCD_APP_PARAMETERS}" | jq '.[] | select(.name == "values") | .content' > values.json
+              find . -name "*.jsonnet" | while read -r file; do
+                jsonnet -J vendor -J . $file
+              done
 
 server:
   certificate:
