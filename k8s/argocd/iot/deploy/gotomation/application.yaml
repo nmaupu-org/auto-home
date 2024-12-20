@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-gotomation
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: gotomation
+    name: iot
+  source:
+    source:
+    repoURL: https://github.com/nmaupu/gotomation.git
+    targetRevision: deploy-as-jsonnet
+    path: deploy
+    plugin:
+      name: custom-jsonnet
+      parameters:
+        - name: values
+          string: >-
+            image:
+              repository: busybox
+              tag: latest
+            gotomation:
+              hassToken: foobar
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

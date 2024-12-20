@@ -1,11 +1,10 @@
-ARG ARGOCD_VERSION
-FROM argoproj/argocd:v${ARGOCD_VERSION}
+FROM bitnami/minideb:bookworm
 
 ARG JB_VERSION
 ARG JSONNET_VERSION
 
 USER root
-RUN apt update && apt install -y jq curl
+RUN apt update && apt install -y jq curl git
 
 RUN curl -L -o /tmp/jsonnet-go.deb https://github.com/google/go-jsonnet/releases/download/v${JSONNET_VERSION}/jsonnet-go_${JSONNET_VERSION}_linux_amd64.deb && \
     dpkg -i /tmp/jsonnet-go.deb
