@@ -22,8 +22,7 @@ spec:
             image:
               repository: busybox
               tag: latest
-            gotomation:
-              hassToken: foobar
+            existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
     syncOptions:
