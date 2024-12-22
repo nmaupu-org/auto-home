@@ -12,7 +12,7 @@ spec:
   source:
     source:
     repoURL: https://github.com/nmaupu/gotomation.git
-    targetRevision: deploy-as-jsonnet
+    targetRevision: main
     path: deploy
     plugin:
       name: custom-jsonnet
@@ -20,10 +20,15 @@ spec:
         - name: values
           string: >-
             image:
-              tag: deploy-as-jsonnet
-              pullPolicy: Always
+              tag: 1.1.3
             existingSecretEnvVars: gotomation-extra-flags
+            git:
+              gotomationConfig:
+                refreshIntervalSeconds: 10
 
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
