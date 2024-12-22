@@ -21,6 +21,7 @@ spec:
           string: >-
             image:
               tag: deploy-as-jsonnet
+              pullPolicy: Always
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
