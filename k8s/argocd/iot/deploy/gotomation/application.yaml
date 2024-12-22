@@ -22,9 +22,6 @@ spec:
             image:
               tag: 1.1.3
             existingSecretEnvVars: gotomation-extra-flags
-            git:
-              gotomationConfig:
-                refreshIntervalSeconds: 10
 
   syncPolicy:
     automated:
