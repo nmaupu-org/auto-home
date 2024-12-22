@@ -20,8 +20,7 @@ spec:
         - name: values
           string: >-
             image:
-              repository: busybox
-              tag: latest
+              tag: deploy-as-jsonnet
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
