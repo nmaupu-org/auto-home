@@ -20,7 +20,8 @@ spec:
         - name: values
           string: >-
             image:
-              tag: 1.1.3
+              tag: 1.1.4
+              pullPolicy: Always
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
