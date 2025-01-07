@@ -11,7 +11,6 @@ spec:
     name: iot
   sources:
     - path: charts/zigbee2mqtt
-      repoURL: https://github.com/nmaupu/zigbee2mqtt-chart.git
       repoURL: https://github.com/Koenkk/zigbee2mqtt-chart.git
       targetRevision: 2.0.0
       helm:

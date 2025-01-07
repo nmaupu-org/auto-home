@@ -30,7 +30,7 @@ statefulset:
     - name: devices
       configMap:
         defaultMode: 420
-        name: zigbee2mqtt-misc-extra-configs
+        name: zigbee2mqtt-xiaomi-extra-configs
 
 zigbee2mqtt:
   homeassistant:
