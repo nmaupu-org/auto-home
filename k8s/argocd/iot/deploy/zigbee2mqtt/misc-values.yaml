@@ -23,10 +23,13 @@ statefulset:
     - name: devices
       mountPath: /app/data/devices.yaml
       subPath: devices.yaml
+    - name: devices
+      mountPath: /app/data/groups.yaml
+      subPath: groups.yaml
   volumes:
     - name: usb-device
       hostPath:
-        path: /dev/ttyACM0
+        path: /dev/ttyUSB0
     - name: devices
       configMap:
         defaultMode: 420
@@ -37,7 +40,7 @@ zigbee2mqtt:
     enabled: true
   timezone: Europe/Paris
   mqtt:
-    base_topic: z2m-xiaomi-iot
+    base_topic: z2m-misc-iot
     server: '!secret.yaml server'
     user: '!secret.yaml user'
     password: '!secret.yaml password'
@@ -47,8 +50,8 @@ zigbee2mqtt:
   frontend:
     port: 8080
   advanced:
-    pan_id: 6756
-    channel: 15
+    pan_id: 6755
+    channel: 11
     timestamp_format: 'YYYY-MM-DD HH:mm:ss'
     last_seen: 'ISO_8601_local'
     # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
@@ -62,13 +65,13 @@ ingress:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
   hosts:
-    - host: z2m-xiaomi.iot.home.fossar.net
+    - host: z2m-misc.iot.home.fossar.net
       paths:
         - path: /
           pathType: ImplementationSpecific
         - path: /api
           pathType: ImplementationSpecific
   tls:
-    - secretName: zigbee2mqtt-xiaomi
+    - secretName: zigbee2mqtt-misc
       hosts:
-        - z2m-xiaomi.iot.home.fossar.net
+        - z2m-misc.iot.home.fossar.net

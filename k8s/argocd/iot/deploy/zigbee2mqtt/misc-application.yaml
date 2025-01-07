@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zigbee2mqtt-misc
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: zigbee2mqtt
+    name: iot
+  sources:
+    - path: charts/zigbee2mqtt
+      repoURL: https://github.com/nmaupu/zigbee2mqtt-chart.git
+      repoURL: https://github.com/Koenkk/zigbee2mqtt-chart.git
+      targetRevision: 2.0.0
+      helm:
+        releaseName: zigbee2mqtt-misc
+        valueFiles:
+          - $values/k8s/argocd/iot/deploy/zigbee2mqtt/misc-values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: devices
+  name: zigbee2mqtt-xiaomi-extra-configs
   namespace: zigbee2mqtt
   labels:
     app.kubernetes.io/instance: zigbee2mqtt-xiaomi
