@@ -11,6 +11,15 @@ metadata:
     argocd.argoproj.io/instance: zigbee2mqtt-misc
     helm.sh/chart: zigbee2mqtt-1.42.0
 data:
+  # When adding a new device to the network, zigbee2mqtt crashes with the following error:
+  # https://github.com/Koenkk/zigbee2mqtt/issues/23589
+  # To workaround that:
+  # - join the device and let it crash
+  # - edit the zigbee2mqtt statefulset, add a command sleep infinity and disable the probes
+  # - enter the container and look for the new device in /app/data/state.json
+  # - add the new device config below and synchronize statics
+  # - restart zigbee2mqtt
+  # - try rejoining the new device as its state is unknown
   devices.yaml: |
     '0x60a423fffe035c19':
       debounce: 1
