@@ -116,7 +116,7 @@ data:
           enabled_by_default: true
     '0x00158d0007f29fae':
       debounce: 1
-      friendly_name: kitchen_fridge_up
+      friendly_name: kitchen_fridge_up_hum_temp
       homeassistant:
         last_seen:
           enabled_by_default: true
