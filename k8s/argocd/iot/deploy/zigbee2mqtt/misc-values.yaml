@@ -1,9 +1,6 @@
 service:
   type: ClusterIP
 
-image:
-  tag: 2.0.0
-
 statefulset:
   storage:
     enabled: true
@@ -26,6 +23,9 @@ statefulset:
     - name: devices
       mountPath: /app/data/devices.yaml
       subPath: devices.yaml
+    - name: devices
+      mountPath: /app/data/groups.yaml
+      subPath: groups.yaml
   volumes:
     - name: usb-device
       hostPath:
