@@ -31,8 +31,8 @@ ipAddressPools:
   #     - 192.168.12.100-192.168.12.150
   - name: appsbgp
     protocol: bgp
-    autoAssign: true
-    avoidBuggyIPs: true
+    autoAssign: "true"
+    avoidBuggyIPs: "true"
     addresses:
       - 192.168.99.0/24
 
