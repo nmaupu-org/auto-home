@@ -26,7 +26,12 @@ service:
     enabled: true
     type: LoadBalancer
     expandObjectName: true
+    # truechart sets the wrong annotation for metallb
+    # (metallb.io instead of metallb.universe.tf so the following line does not work)
+    # So setting the correct annotation manually
     loadBalancerIP: 192.168.99.3
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 192.168.99.3
     ports:
       remote-in:
         enabled: true
