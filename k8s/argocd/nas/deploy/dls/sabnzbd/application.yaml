@@ -12,7 +12,7 @@ spec:
   sources:
     - chart: sabnzbd
       repoURL: tccr.io/truecharts
-      targetRevision: 21.1.3
+      targetRevision: 21.5.0
       helm:
         releaseName: sabnzbd
         valueFiles:
