@@ -12,7 +12,7 @@ spec:
   sources:
     - chart: bazarr
       repoURL: tccr.io/truecharts
-      targetRevision: 21.1.3
+      targetRevision: 21.5.1
       helm:
         releaseName: bazarr
         valueFiles:
