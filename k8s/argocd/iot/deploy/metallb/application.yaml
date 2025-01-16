@@ -12,7 +12,7 @@ spec:
   sources:
     - chart: metallb
       repoURL: tccr.io/truecharts
-      targetRevision: 16.1.1
+      targetRevision: 16.2.0
       helm:
         releaseName: metallb
         valueFiles:
