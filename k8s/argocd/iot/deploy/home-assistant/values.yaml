@@ -1,26 +1,147 @@
 ---
+# Add any image: yaml key is the name used in any imageSelector
+initImage:
+  repository: nmaupu/hass-init
+  tag: 1.0.2
+  pullPolicy: IfNotPresent
+
+workload:
+  main:
+    podSpec:
+      initContainers:
+        init:
+          enabled: true
+          type: init
+          imageSelector: initImage
+          command: /config/init/init.sh
+
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsNonRoot: false
+    runAsUser: 0
+    runAsGroup: 0
+    capabilities:
+      add:
+        - CAP_NET_RAW
+        - CAP_NET_BIND_SERVICE
+
+persistence:
+  hass-secrets:
+    # Existing secret (sealed-secrets) created under ../../statics
+    enabled: true
+    type: secret
+    objectName: hass-secrets
+    mountPath: /hass-secrets
+    expandObjectName: false
+    targetSelectAll: true
+    items:
+      - key: secret.yaml
+        path: secret.yaml
+
 service:
   main:
     type: LoadBalancer
     loadBalancerIP: 192.168.100.20
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 192.168.100.20
     ports:
       main:
         port: 8123
         targetPort: 8123
 
+#persistence:
+#  config:
+#    enabled: true
+#    type: emptyDir
+#    mountPath: /config
+#    targetSelectAll: true
 
 configmap:
   init:
     enabled: true
     data:
       init.sh: |-
-        #!/bin/sh
+        #!/bin/bash
 
-        sleep 9000
+        set -eEuo pipefail
+        set -x
 
         {{- $haDBURL := (printf "%s?client_encoding=utf8" ($.Values.cnpg.main.creds.std | trimAll "\"")) }}
-        config="/config/configuration.yaml"
-        default="/config/init"
+        config_dir=/config
+        config="${config_dir}/configuration.yaml"
+        default="${config_dir}/init"
+
+
+        ##
+        # Cloning config repo
+
+        rm -rf /tmp/hass-config
+        git clone https://github.com/nmaupu/hass-config.git "/tmp/hass-config"
+        cd /tmp/hass-config && git reset --hard origin/master
+        rsync -aP --delete --exclude configuration.yaml --exclude .git/ /tmp/hass-config/ "$config_dir/" || true
+        cp /hass-secrets/secret.yaml "$config_dir/secrets.yaml"
+        rm -f "$config_dir/configuration.yaml"
+
+        ##
+        # Downloading dependencies if needed
+
+        rm -rf "$config_dir/www"
+        if [ ! -e "$config_dir/www" ]; then
+          mkdir -p $config_dir/www/{icons/weather_icons,community/lovelace-meteofrance-weather-card/icons}
+          git -c advice.detachedHead=false clone --depth=1 --branch=1.12.1 https://github.com/thomasloven/lovelace-auto-entities.git "$config_dir/www/auto-entities"
+          git -c advice.detachedHead=false clone --depth=1 --branch=1.3.2 https://github.com/thomasloven/lovelace-template-entity-row "$config_dir/www/template-entity-row"
+          (
+            git -c advice.detachedHead=false clone --depth=1 https://github.com/rodrigofragadf/lovelace-cards.git "$config_dir/www/lovelace-cards" && \
+              cd "$config_dir/www/lovelace-cards" && \
+              git -c advice.detachedHead=false reset --hard c246a4f
+          )
+          git -c advice.detachedHead=false clone --depth=1 --branch=2.4.4 https://github.com/thomasloven/lovelace-layout-card.git "$config_dir/www/template-layout-card"
+
+          curl -L https://github.com/maykar/custom-header/releases/download/1.3.2/custom-header.js \
+            -o "$config_dir/www/custom-header.js"
+          curl -L https://github.com/kalkih/mini-graph-card/releases/download/v0.9.2/mini-graph-card-bundle.js \
+            -o "$config_dir/www/mini-graph-card-bundle.js"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/meteofrance-weather-card.js \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/meteofrance-weather-card.js"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/meteofrance-weather-card-editor.js \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/meteofrance-weather-card-editor.js"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy-day-3.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/cloudy-day-3.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy-night-3.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/cloudy-night-3.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/cloudy.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/day.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/day.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/fog.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/fog.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/lightning-rainy.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/lightning-rainy.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/night.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/night.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-5.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/rainy-5.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-6.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/rainy-6.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-7.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/rainy-7.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/snowy-6.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/snowy-6.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/snowy-rainy.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/snowy-rainy.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/thunder.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/thunder.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/windy-night.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/windy-night.svg"
+          curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/windy.svg \
+            -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/windy.svg"
+          curl -L -o /tmp/amcharts.zip https://download.amcharts.com/1.0/amcharts_weather_icons_1.0.0.zip && \
+            unzip /tmp/amcharts.zip -d "$config_dir/www/icons/weather_icons" && \
+            rm -f /tmp/amcharts.zip
+        fi
+
+
         if [ ! -f "$config" ]; then
           echo "File [$config] does NOT exist. Creating..."
           cp "$default/configuration.yaml.default" "$config"
@@ -73,23 +194,34 @@ configmap:
         rm "/config/custom_components/hacs.zip"
         echo "Installation complete."
       configuration.yaml.default: |-
-        # Configure a default setup of Home Assistant (frontend, api, etc)
-        default_config:
+        homeassistant:
+          # Name of the location where Home Assistant is running
+          name: Pasteur
+          country: FR
+          # Location required to calculate the time the sun rises and sets
+          latitude: !secret latitude
+          longitude: !secret longitude
+          # Impacts weather/sunrise data (altitude above sea level in meters)
+          elevation: !secret elevation
+          # metric for Metric, imperial for Imperial
+          unit_system: metric
+          # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+          time_zone: Europe/Paris
+          # Customization file
+          customize: !include customize.yaml
+          #whitelist_external_dirs:
+          #  - /data/homeassistant
+          #  - /home/homeassistant/maps
+          auth_providers:
+            - type: homeassistant
+            #- type: trusted_networks
+            #  trusted_networks:
+            #    - 192.168.12.0/24
+          auth_mfa_modules:
+            - type: totp
 
-        # Text to speech
-        tts:
-          - platform: google_translate
+        websocket_api:
 
-        group: !include groups.yaml
-        automation: !include automations.yaml
-        script: !include scripts.yaml
-        scene: !include scenes.yaml
-      recorder.default: |-
-        recorder:
-          purge_keep_days: 30
-          commit_interval: 3
-          db_url: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
-      http.default: |-
         http:
           use_x_forwarded_for: true
           trusted_proxies:
@@ -100,3 +232,137 @@ configmap:
             - {{ . }}
               {{- end }}
             {{- end }}
+
+        # See https://www.home-assistant.io/integrations/emulated_roku/
+        # Used to control hass from Logitech Harmony remote
+        emulated_roku:
+          servers:
+            - name: Home Assistant
+              listen_port: 8060
+
+        # Database configuration
+        recorder:
+          purge_keep_days: 30
+          commit_interval: 3
+          db_url: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
+
+        lovelace:
+          mode: yaml
+          resources:
+            - url: /local/template-entity-row/template-entity-row.js
+              type: module
+            - url: /local/auto-entities/auto-entities.js
+              type: module
+            - url: /local/custom-header.js
+              type: module
+            - url: /local/lovelace-cards/tiles-card/tiles-card.js
+              type: js
+            - url: /local/mini-graph-card-bundle.js
+              type: module
+            - url: /local/community/lovelace-meteofrance-weather-card/meteofrance-weather-card.js
+              type: module
+            - url: /local/lovelace-layout-cards/layout-card.js
+              type: module
+
+        default_config:
+
+        frontend:
+          themes: !include_dir_merge_named themes/
+
+        # Text to speech
+        tts:
+          - platform: google_translate
+
+        logger:
+          default: info
+
+        sun:
+
+        prometheus:
+          namespace: hass
+          filter:
+            include_domains:
+              - sensor
+              - light
+              - switch
+
+        emulated_hue:
+          host_ip: 0.0.0.0
+          listen_port: 8061
+          expose_by_default: false
+          exposed_domains:
+            - light
+            - group
+            - switch
+          entities:
+            light.basement_escalier_switch:
+              name: "escalier sous-sol"
+              hidden: false
+            light.bedroom_bathroom_dimmer:
+              name: "chambre douche"
+              hidden: false
+            light.bedroom_left_dimmer:
+              name: "chambre lampe"
+              hidden: false
+            light.blue_light_desk:
+              name: "blue lampe"
+              hidden: false
+            light.entree_switch:
+              name: "entree"
+              hidden: false
+            light.dressing_switch:
+              name: "dressing"
+              hidden: false
+            light.escalier_switch:
+              name: "escalier"
+              hidden: false
+            light.poutre_dimmer:
+              name: "poutre"
+              hidden: false
+            light.kitchen_switch:
+              name: "cuisine"
+              hidden: false
+            light.living_ball_switch:
+              name: "living ball"
+              hidden: false
+            light.piano_switch:
+              name: "piano"
+              hidden: false
+            light.table_dimmer:
+              name: "table"
+              hidden: false
+            light.wled_blue:
+              name: "laideblou"
+              hidden: false
+            light.wled_poutre:
+              name: "laide living"
+              hidden: false
+            light.terrace_switch:
+              name: "terrasse"
+              hidden: false
+            light.bedroom_switch:
+              name: "appliques"
+              hidden: false
+            group.hall_lights:
+              name: "hall"
+              hidden: false
+            group.blue_lights:
+              name: "blou"
+              hidden: false
+            group.upstairs_lights:
+              name: "etage"
+              hidden: false
+            group.bedroom:
+              name: "chambre"
+              hidden: false
+
+        script: !include_dir_merge_named scripts/
+        light: !include_dir_merge_list lights/
+        sensor: !include_dir_merge_list sensors/
+        automation: !include automations.yaml
+        automation mine: !include_dir_merge_list automations/
+        scene: !include_dir_merge_list scenes/
+        group: !include groups.yaml
+        switch: !include_dir_merge_list switches/
+        climate: !include_dir_merge_list climates/
+        input_boolean: !include_dir_merge_named input_booleans/
