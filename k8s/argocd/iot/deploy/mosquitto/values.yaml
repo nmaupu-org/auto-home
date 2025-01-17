@@ -10,7 +10,12 @@ auth:
 service:
   main:
     type: LoadBalancer
+    # truechart sets the wrong annotation for metallb
+    # (metallb.io instead of metallb.universe.tf so the following line does not work)
+    # So setting the correct annotation manually
     loadBalancerIP: 192.168.100.35
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 192.168.100.35
     ports:
       main:
         port: 1883
