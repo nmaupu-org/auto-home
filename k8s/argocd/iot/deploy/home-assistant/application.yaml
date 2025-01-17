@@ -2,21 +2,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: iot-mosquitto
+  name: iot-home-assistant
   namespace: argocd
 spec:
   project: default
   destination:
-    namespace: mosquitto
+    namespace: hass
     name: iot
   sources:
-    - chart: mosquitto
+    - chart: home-assistant
       repoURL: tccr.io/truecharts
-      targetRevision: 16.4.0
+      targetRevision: 27.0.1
       helm:
-        releaseName: mosquitto
+        releaseName: home-assistant
         valueFiles:
-          - $values/k8s/argocd/iot/deploy/mosquitto/values.yaml
+          - $values/k8s/argocd/iot/deploy/home-assistant/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
