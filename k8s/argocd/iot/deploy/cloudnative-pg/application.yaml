@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-cnpg
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: cnpg
+    name: iot
+  sources:
+    - chart: cloudnative-pg
+      repoURL: tccr.io/truecharts
+      targetRevision: 8.2.0
+      helm:
+        releaseName: cnpg
+        valueFiles:
+          - $values/k8s/argocd/iot/deploy/cloudnative-pg/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

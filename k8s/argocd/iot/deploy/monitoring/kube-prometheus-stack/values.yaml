@@ -1,0 +1,21 @@
+---
+alertmanager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+prometheus:
+  enabled: false
+
+grafana:
+  enabled: false
+  ingress:
+    enabled: false
+  sidecar:
+    datasources:
+      alertmanager:
+        enabled: false
