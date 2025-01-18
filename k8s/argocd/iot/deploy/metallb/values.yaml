@@ -1,4 +1,14 @@
 ---
+# Note: 2025/01/18 - Forcing image the new version at the time of writing
+# The reason is that the new annotation metallb.io (metallb.universe.tf are now deprecated) is
+# available in the 0.14.9 image but the last chart comes with 0.14.8...
+# See also:
+#   - https://github.com/truecharts/public/issues/30679
+#   - https://metallb.io/release-notes/index.html
+controller:
+  image:
+    version: 0.14.9
+
 metallb:
   speaker:
     livenessProbe:
