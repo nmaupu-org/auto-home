@@ -1,0 +1,11 @@
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: home-router
+  namespace: metallb
+spec:
+  disableMP: false
+  myASN: 66001
+  peerASN: 65000
+  peerAddress: 192.168.12.1
+  peerPort: 179
