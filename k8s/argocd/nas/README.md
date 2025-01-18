@@ -70,3 +70,12 @@ Secrets can be sealed using using the following command (with the current k8s co
 ``` bash
 cat secret.yaml | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets --format yaml > secret-sealed.yaml
 ```
+
+# Other cluster notes
+
+There are two directories: `deploy/` and `statics`.
+
+- `deploy/` directory contains ArgoCD `Application`s. Any files in that directory will be deployed as is on the cluster hosting ArgoCD.
+- `statics` directory contains static files which have to be deployed in the target cluster (not the one hosting ArgoCD).
+
+So for instance, bgp configuration being custom resources (static files), they are lying in the `statics` directory instead of `deploy` (otherwise, they would be deployed on the ArgoCD cluster which is not what we want!)

@@ -1,4 +1,5 @@
 ---
+# Using bitnami chart as truecharts has deprecated metallb
 # See statics directory for configuration CRD
 apiVersion: argoproj.io/v1alpha1
 kind: Application
