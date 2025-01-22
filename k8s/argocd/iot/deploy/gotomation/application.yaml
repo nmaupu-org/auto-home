@@ -21,7 +21,7 @@ spec:
           string: >-
             image:
               tag: 1.1.5
-              pullPolicy: Always
+              pullPolicy: IfNotPresent
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
