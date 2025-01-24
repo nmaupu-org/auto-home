@@ -22,6 +22,8 @@ spec:
             image:
               tag: 1.1.5
               pullPolicy: IfNotPresent
+            git:
+              pullPolicy: IfNotPresent
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
