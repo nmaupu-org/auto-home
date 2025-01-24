@@ -4,8 +4,28 @@ image:
   tag: 2.0.20@sha256:8b396cec28cd5e8e1a3aba1d9abdbddd42c454c80f703e77c1bec56e152fa54e
   pullPolicy: IfNotPresent
 
+initImage:
+  repository: bash
+  tag: alpine3.21
+  pullPolicy: IfNotPresent
+
 auth:
   enabled: true
+
+workload:
+  main:
+    podSpec:
+      initContainers:
+        init:
+          enabled: true
+          type: init
+          imageSelector: initImage
+          command:
+            - /usr/local/bin/bash
+            - -c
+            - |
+              cp /extra-configs/passwordfile /mosquitto/configinc/passwordfile
+              chmod 0700 /mosquitto/configinc/passwordfile
 
 service:
   main:
@@ -23,7 +43,16 @@ service:
         targetPort: 1883
 
 persistence:
-
+  password:
+    enabled: true
+    type: secret
+    objectName: mosquitto-passwordfile
+    mountPath: /extra-configs
+    expandObjectName: false
+    targetSelectAll: true
+    items:
+      - key: passwordfile
+        path: passwordfile
   data:
     enabled: true
     size: 1Gi
@@ -34,3 +63,4 @@ persistence:
     size: 10Mi
     type: pvc
     storageClassName: openebs-hostpath
+    targetSelectAll: true
