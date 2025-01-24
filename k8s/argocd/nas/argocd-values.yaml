@@ -30,6 +30,7 @@ configs:
             - |
               echo "${ARGOCD_APP_PARAMETERS}" > /tmp/parameters.log
               echo "${ARGOCD_APP_PARAMETERS}" | jq -r '.[] | select(.name == "values") | .string' > values.yaml
+              cp values.yaml > /tmp/values.yaml
               find . -name '*.jsonnet' | while read -r file; do
                 jsonnet -J vendor -J . $file
               done

@@ -24,6 +24,11 @@ spec:
               pullPolicy: IfNotPresent
             git:
               pullPolicy: IfNotPresent
+            gotomation:
+              config:
+                pvc:
+                  storageClassName: openebs-hostpath
+                  size: 10Mi
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
