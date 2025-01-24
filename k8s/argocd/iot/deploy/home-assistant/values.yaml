@@ -38,6 +38,17 @@ persistence:
     items:
       - key: secret.yaml
         path: secret.yaml
+  hass-passwords:
+    # Existing secret (sealed-secrets) created under ../../statics
+    enabled: true
+    type: secret
+    objectName: hass-passwords
+    mountPath: /hass-passwords
+    expandObjectName: false
+    targetSelectAll: true
+    items:
+      - key: hass-passwords.json
+        path: hass-passwords.json
 
 service:
   main:
@@ -59,6 +70,18 @@ configmap:
   init:
     enabled: true
     data:
+      onboarding: |-
+        {
+          "data": {
+            "done": [
+              "user",
+              "core_config",
+              "integration"
+            ]
+          },
+          "key": "onboarding",
+          "version": 3
+        }
       init.sh: |-
         #!/bin/bash
 
@@ -73,18 +96,23 @@ configmap:
 
         ##
         # Cloning config repo
+        if [ ! -e "$config_dir/ui-lovelace.yaml" ]; then
+          rm -rf /tmp/hass-config
+          git clone https://github.com/nmaupu/hass-config.git "/tmp/hass-config"
+          cd /tmp/hass-config && git reset --hard origin/master
+          rsync -aP --delete --exclude configuration.yaml --exclude .git/ /tmp/hass-config/ "$config_dir/" || true
+          cp /hass-secrets/secret.yaml "$config_dir/secrets.yaml"
+          rm -f "$config_dir/configuration.yaml"
+        fi
 
-        rm -rf /tmp/hass-config
-        git clone https://github.com/nmaupu/hass-config.git "/tmp/hass-config"
-        cd /tmp/hass-config && git reset --hard origin/master
-        rsync -aP --delete --exclude configuration.yaml --exclude .git/ /tmp/hass-config/ "$config_dir/" || true
-        cp /hass-secrets/secret.yaml "$config_dir/secrets.yaml"
-        rm -f "$config_dir/configuration.yaml"
+        mkdir -p "$config_dir/.storage"
+        cp /config/init/onboarding "$config_dir/.storage"
+        cp /hass-passwords/hass-passwords.json "$config_dir/.storage/auth_provider.homeassistant"
 
         ##
         # Downloading dependencies if needed
 
-        rm -rf "$config_dir/www"
+        #rm -rf "$config_dir/www"
         if [ ! -e "$config_dir/www" ]; then
           mkdir -p $config_dir/www/{icons/weather_icons,community/lovelace-meteofrance-weather-card/icons}
           git -c advice.detachedHead=false clone --depth=1 --branch=1.12.1 https://github.com/thomasloven/lovelace-auto-entities.git "$config_dir/www/auto-entities"
@@ -94,7 +122,7 @@ configmap:
               cd "$config_dir/www/lovelace-cards" && \
               git -c advice.detachedHead=false reset --hard c246a4f
           )
-          git -c advice.detachedHead=false clone --depth=1 --branch=2.4.4 https://github.com/thomasloven/lovelace-layout-card.git "$config_dir/www/template-layout-card"
+          git -c advice.detachedHead=false clone --depth=1 --branch=2.4.4 https://github.com/thomasloven/lovelace-layout-card.git "$config_dir/www/lovelace-layout-cards"
 
           curl -L https://github.com/maykar/custom-header/releases/download/1.3.2/custom-header.js \
             -o "$config_dir/www/custom-header.js"
@@ -174,23 +202,23 @@ configmap:
         echo "Changing to the custom_components directory..."
         cd "/config/custom_components" || echo "Could not change path to /config/custom_components"
 
-        echo "Downloading HACS"
-        wget "https://github.com/hacs/integration/releases/latest/download/hacs.zip" || exit 0
+        #echo "Downloading HACS"
+        #wget "https://github.com/hacs/integration/releases/latest/download/hacs.zip" || exit 0
 
-        if [ -d "/config/custom_components/hacs" ]; then
-          echo "HACS directory already exist, cleaning up..."
-          rm -R "/config/custom_components/hacs"
-        fi
+        #if [ -d "/config/custom_components/hacs" ]; then
+        #  echo "HACS directory already exist, cleaning up..."
+        #  rm -R "/config/custom_components/hacs"
+        #fi
 
-        echo "Creating HACS directory..."
-        mkdir -p "/config/custom_components/hacs"
+        #echo "Creating HACS directory..."
+        #mkdir -p "/config/custom_components/hacs"
 
-        echo "Unpacking HACS..."
-        unzip "/config/custom_components/hacs.zip" -d "/config/custom_components/hacs" >/dev/null 2>&1
+        #echo "Unpacking HACS..."
+        #unzip "/config/custom_components/hacs.zip" -d "/config/custom_components/hacs" >/dev/null 2>&1
 
-        echo "Removing HACS zip file..."
-        rm "/config/custom_components/hacs.zip"
-        echo "Installation complete."
+        #echo "Removing HACS zip file..."
+        #rm "/config/custom_components/hacs.zip"
+        echo "Initialization complete."
       configuration.yaml.default: |-
         homeassistant:
           # Name of the location where Home Assistant is running
