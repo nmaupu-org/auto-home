@@ -1,4 +1,6 @@
 ---
+TZ: Europe/Paris
+
 # Add any image: yaml key is the name used in any imageSelector
 initImage:
   repository: nmaupu/hass-init
