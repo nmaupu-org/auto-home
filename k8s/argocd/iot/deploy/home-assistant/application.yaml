@@ -31,6 +31,11 @@ spec:
       name: home-assistant-cnpg-main
       jsonPointers:
         - /spec/resources/limits/cpu
+    - group: batch
+      kind: CronJob
+      name: home-assistant-conf-reloader
+      jsonPointers:
+        - /spec/jobTemplate/spec/template/spec/hostUsers
 
   syncPolicy:
     automated:
