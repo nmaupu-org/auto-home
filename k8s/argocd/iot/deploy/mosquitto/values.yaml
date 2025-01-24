@@ -23,6 +23,7 @@ service:
         targetPort: 1883
 
 persistence:
+
   data:
     enabled: true
     size: 1Gi
