@@ -12,7 +12,7 @@ spec:
   sources:
     - chart: traefik
       repoURL: tccr.io/truecharts
-      targetRevision: 29.1.6
+      targetRevision: 30.4.1
       helm:
         releaseName: traefik
         valueFiles:
