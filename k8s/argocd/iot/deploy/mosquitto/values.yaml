@@ -39,28 +39,6 @@ service:
         protocol: tcp
         targetPort: 1883
 
-ingress:
-  main:
-    enabled: true
-    hosts:
-      - host: mqtt.iot.home.fossar.net
-        paths:
-          - path: /
-            pathType: Prefix
-      - host: mqtt.home.fossar.net
-        paths:
-          - path: /
-            pathType: Prefix
-    integrations:
-      certManager:
-        certificateIssuer: google-dns-issuer-prod
-        enabled: true
-      traefik:
-        allowCors: false
-        enabled: true
-        entrypoints:
-          - websecure
-
 persistence:
   password:
     enabled: true
