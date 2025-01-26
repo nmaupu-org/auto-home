@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-sshd
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: tools
+    name: iot
+  sources:
+    - path: .
+      repoURL: https://github.com/nmaupu/sshd-helm-chart.git
+      targetRevision: 0.0.4
+      helm:
+        releaseName: iot-sshd
+        valueFiles:
+          - $values/k8s/argocd/iot/deploy/sshd/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
