@@ -260,6 +260,29 @@ service:
         port: 8123
         targetPort: 8123
 
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: hass.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+      - host: hass.iot.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        enabled: true
+        allowCors: false
+        entrypoints:
+          - websecure
+        enableFixedMiddlewares: false
+
 configmap:
   init:
     enabled: true

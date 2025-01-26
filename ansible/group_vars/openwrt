@@ -149,8 +149,9 @@ firewall_dns_entries:
     - printer
   192.168.12.35:
     - hass
-    - mqtt
     - iot-raspbian
+  192.168.100.35:
+    - mqtt
   192.168.99.1:
     - plex
     - grafana
