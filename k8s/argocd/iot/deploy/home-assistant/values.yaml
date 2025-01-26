@@ -87,12 +87,6 @@ workload:
               cp /config/init/onboarding "$config_dir/.storage/onboarding"
               cp /hass-passwords/hass-passwords.json "$config_dir/.storage/auth_provider.homeassistant"
 
-              # TODO: Delete this when fully migrated and configuration updated on git side
-              cat "$config_dir/configuration.yaml" | grep -v 'ssl_certificate:' | grep -v 'ssl_key' > /tmp/configuration.yaml
-              cp /tmp/configuration.yaml "$config_dir"
-              sed -i -e 's/192.168.12.35/0.0.0.0/g' "$config_dir/configuration.yaml"
-              sed -i -e 's/listen_port: 80$/listen_port: 8080/g' "$config_dir/configuration.yaml"
-
               # handling recorder configuration (db)
               grep -v '^recorder:' "$config_dir/configuration.yaml" > /tmp/configuration.yaml
               cp /tmp/configuration.yaml "$config_dir/configuration.yaml"
@@ -304,16 +298,15 @@ configmap:
         set -x
         date
 
-        conf_reloader_dir=/conf-reloader
+        conf_reloader_dir=/conf-reloader/hass-config
         config_dir=/config
         config="${config_dir}/configuration.yaml"
-        default="${config_dir}/init"
 
         # Getting last configuration from conf-reloader
         rsync -aP --delete \
           --exclude .storage/ \
           --exclude .git/ \
-          --exlude .HA_VERSION \
-          "$conf_reloader_dir/hass-config/" "$config_dir/" || true
+          --exclude .HA_VERSION \
+          "$conf_reloader_dir/" "$config_dir/" || true
         # .storage is used as a local configuration directory (integrations for example) so be sure to not delete anything in it.
-        rsync -aP "$conf_reloader_dir/hass-config/.storage" "$config_dir" || true
+        rsync -aP "$conf_reloader_dir/.storage" "$config_dir" || true
