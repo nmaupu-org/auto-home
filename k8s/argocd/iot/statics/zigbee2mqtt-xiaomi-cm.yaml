@@ -24,8 +24,6 @@ data:
   # - delete the STS and resync via argo
   # - reinterview the device (small 'i' icon in z2m ui) because it should be in unknown state
   devices.yaml: |
-    '0x00124b001f320298':
-      friendly_name: hall_router
     '0x00158d000309a473':
       debounce: 1
       friendly_name: living_hum_temp
