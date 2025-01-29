@@ -91,7 +91,7 @@ Bunch of tags are also available and can be combined:
 
 # Talos Linux installation
 
-- Create an iso from the Factory (some pc requires `i915-ucode` and `mei` to boot successfully !)
+- Create an iso from the Factory (some pc requires `i915-ucode` and `mei` to boot successfully!)
 - Report the ID and the version in `ansible/roles/openwrt_pxe/defaults/main.yml`
 - Update PXE server with:
 
@@ -108,13 +108,33 @@ vault read -field talosconfig secret/talos-iot > talosconfig
 vault read -field controlplane.yaml secret/talos-iot > controlplane.yaml
 ```
 
+Beware to add _udev rules_ for usb devices to avoid a pod to mount the wrong `/dev/tty*`.
+
+To do so, plug the usb device on any linux machine and:
+
+```bash
+sudo udevadm info -a -n /dev/ttyUSB0 | grep -E 'idVendor|idProduct|serial'
+```
+
+Use this information to create an _udev rule_ to add to `controlplane.yaml` (don't forget to update the vault entry when done) like so:
+
+``` bash
+ACTION=="add", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="xxxx", ATTRS{serial}=="abcd", SYMLINK+="my_usb_device"
+```
+
+To apply the new controlplane.yaml, use the following command:
+
+``` bash
+talosctl apply-config -f controlplane.yaml --mode=reboot
+```
+
 Note: initial configuration has been generated with the following command:
 
 ```bash
 talosctl gen config iot https://192.168.12.40:6443 -f
 ```
 
-Be careful to use to custom image from [Talos dev factory](https://factory.talos.dev/) with **i915** and **mei** activated !
+Be careful to use the custom image from [Talos dev factory](https://factory.talos.dev/) with **i915** and **mei** activated !
 One can also activate linux-util package.
 
 - Apply the configuration with:
