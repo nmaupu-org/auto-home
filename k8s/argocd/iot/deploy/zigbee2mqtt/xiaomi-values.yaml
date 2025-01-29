@@ -29,7 +29,7 @@ statefulset:
   volumes:
     - name: usb-device
       hostPath:
-        path: /dev/ttyACM0
+        path: /dev/sonoff_coord_xiaomi
     - name: devices
       configMap:
         defaultMode: 420
