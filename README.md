@@ -178,3 +178,19 @@ Note: Sealed secrets have to be encrypted using the following command (with the 
 ``` bash
 cat secret.yaml | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets --format yaml > secret-sealed.yaml
 ```
+
+# How to flash a Sonoff Zigbee 3.0 usb dongle plus ?
+
+Firmwares can be downloaded from:
+
+- Coordinator: https://github.com/Koenkk/Z-Stack-firmware/tree/master/coordinator/Z-Stack_3.x.0/bin
+- Router: https://github.com/Koenkk/Z-Stack-firmware/tree/master/router/Z-Stack_3.x.0/bin
+
+Take the _launchpad_ version.
+
+``` bash
+git clone https://github.com/JelmerT/cc2538-bsl.git
+cd cc2538-bsl
+venv_activate pyserial # To be created beforehand
+sudo python3 cc2538-bsl.py -p /dev/ttyUSB0 -evw <firmware>.hex --bootloader-sonoff-usb
+```
