@@ -15,11 +15,14 @@ data:
   # https://github.com/Koenkk/zigbee2mqtt/issues/23589
   # To workaround that:
   # - join the device and let it crash
-  # - edit the zigbee2mqtt statefulset, add a command sleep infinity and disable the probes
-  # - enter the container and look for the new device in /app/data/state.json
+  # - edit the zigbee2mqtt statefulset, add a command sleep infinity
+  # - enter the pod, cp data/devices.yaml data/devices.yaml.bak
+  # - edit the sts again and delete the mountpath for devices.yaml
+  # - restart the container (delete the sleep infinity command)
+  # - get the device's ieee in /app/data/devices.yaml
   # - add the new device config below and synchronize statics
-  # - restart zigbee2mqtt
-  # - try rejoining the new device as its state is unknown
+  # - delete the STS and resync via argo
+  # - reinterview the device (small 'i' icon in z2m ui) because it should be in unknown state
   devices.yaml: |
     '0x60a423fffe035c19':
       debounce: 1
