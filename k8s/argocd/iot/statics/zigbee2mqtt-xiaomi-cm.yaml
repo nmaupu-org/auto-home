@@ -125,7 +125,5 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0x00124b00014dd716':
-      friendly_name: upstairs_router
     '0x00124b0030db0422':
       friendly_name: living_router
