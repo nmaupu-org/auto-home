@@ -2,7 +2,7 @@ default: push
 .PHONY: default clean build tag tag-latest check-docker-hub
 
 NAME=sshd
-VERSION=1.0.1
+VERSION=1.0.2
 # Copy the last qonta binary to local directory before building
 QONTA_BIN_PATH ?= ./qonta
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)

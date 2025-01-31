@@ -1,7 +1,7 @@
 ---
 image:
   repository: nmaupu/sshd
-  tag: 1.0.1
+  tag: 1.0.2
 
 pubkey: |
   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdAx40wbnT5SHE0vt3vSsLiuXyjbx5PdhRgZ0jHJTgSqdQEEGalr0u28o/hQJpIyTSNfYETEcdY1nBMbrwviv2WPp2A7QFAZF8eq0Tp4U0x1/8coSgXOyDnMUbDaFlS+b6CUcsEXsvRA1yzvBNoJ4tbmLozY/5IL4Bu9pcd8CZAR2eBkSwQ0j3gjgP+2StsIOqsba1A4FugilxQbdkQ7hRa89Rt0j92rGTEt+AzD9zgWp6VCiwumj7OiwTFbhZ/+OYA18XMQjuIb8O0RSBxQm6RDmF9b1+MFp882ZHRVK9S/FeCe0peErgmPFOjgiIxpqUzJu25rpKm7i77x8lkfOn travelers@local
