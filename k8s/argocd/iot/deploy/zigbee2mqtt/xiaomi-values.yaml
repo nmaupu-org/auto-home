@@ -56,7 +56,7 @@ zigbee2mqtt:
     last_seen: "ISO_8601_local"
     # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
     elapsed: true
-    log_level: debug
+    log_level: info
   ota:
     zigbee_ota_override_index_location: my_index.json
 

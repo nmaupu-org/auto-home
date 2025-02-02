@@ -17,7 +17,7 @@ statefulset:
     limits:
       memory: 600Mi
       cpu: 200m
-  # Existing secret (sealed-secrets) created under ../../statics
+  # Existing secret (sealed-secrets) created under ../../statistics
   secrets:
     name: zigbee2mqtt
   volumeMounts:
@@ -44,9 +44,9 @@ zigbee2mqtt:
   timezone: Europe/Paris
   mqtt:
     base_topic: z2m-misc-iot
-    server: '!secret.yaml server'
-    user: '!secret.yaml user'
-    password: '!secret.yaml password'
+    server: "!secret.yaml server"
+    user: "!secret.yaml user"
+    password: "!secret.yaml password"
   serial:
     port: "/dev/usb"
     disable_led: false
@@ -55,11 +55,11 @@ zigbee2mqtt:
   advanced:
     pan_id: 6755
     channel: 11
-    timestamp_format: 'YYYY-MM-DD HH:mm:ss'
-    last_seen: 'ISO_8601_local'
+    timestamp_format: "YYYY-MM-DD HH:mm:ss"
+    last_seen: "ISO_8601_local"
     # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
     elapsed: true
-    log_level: debug
+    log_level: info
 
 ingress:
   enabled: true
