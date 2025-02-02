@@ -20,7 +20,7 @@ data:
   # - edit the sts again and delete the mountpath for devices.yaml
   # - restart the container (delete the sleep infinity command)
   # - get the device's ieee in /app/data/devices.yaml
-  # - add the new device config below and synchronize statics
+  # - add the new device config below and synchronize statistics
   # - delete the STS and resync via argo
   # - reinterview the device (small 'i' icon in z2m ui) because it should be in unknown state
   devices.yaml: |
@@ -132,6 +132,13 @@ data:
           enabled_by_default: true
     '0x00124b0030db0422':
       friendly_name: ground_floor_router
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0xa4c13811d4abf8bc':
+      friendly_name: test_hum_temp
       homeassistant:
         last_seen:
           enabled_by_default: true
