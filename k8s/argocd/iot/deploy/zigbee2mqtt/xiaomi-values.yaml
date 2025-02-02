@@ -57,8 +57,8 @@ zigbee2mqtt:
     # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
     elapsed: true
     log_level: info
-  ota:
-    zigbee_ota_override_index_location: my_index.json
+  #ota:
+  #  zigbee_ota_override_index_location: my_index.json
 
 ingress:
   enabled: true
