@@ -144,6 +144,13 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
+    '0xa4c1389597010d5e':
+      friendly_name: z03mmc_blue_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
     '0x881a14fffe0380eb':
       friendly_name: basement_router
       homeassistant:
