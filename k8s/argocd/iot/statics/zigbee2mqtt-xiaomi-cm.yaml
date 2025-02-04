@@ -144,10 +144,3 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0xa4c138caa6056c81':
-      friendly_name: z03mmc_blue_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
