@@ -151,3 +151,10 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
+    '0x881a14fffe0380eb':
+      friendly_name: basement_router
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
