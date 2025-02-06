@@ -130,7 +130,7 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0x00124b0030db0422':
+    '0x28dba7fffeefded4':
       friendly_name: ground_floor_router
       homeassistant:
         last_seen:
