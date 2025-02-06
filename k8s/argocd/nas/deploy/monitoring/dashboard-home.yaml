@@ -27,10 +27,101 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 1,
       "links": [],
       "liveNow": false,
       "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "dark-red",
+                    "value": null
+                  },
+                  {
+                    "color": "light-red",
+                    "value": 15
+                  },
+                  {
+                    "color": "orange",
+                    "value": 30
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 50
+                  },
+                  {
+                    "color": "green",
+                    "value": 70
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 6,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sort(hass_sensor_battery_percent{friendly_name=~\".*hum_temp Battery\"})",
+              "instant": true,
+              "legendFormat": "{{ friendly_name }}",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Batteries",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Battery",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "gauge"
+        },
         {
           "datasource": {
             "type": "prometheus",
@@ -43,6 +134,7 @@ data:
                 "seriesBy": "min"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -58,6 +150,7 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineStyle": {
                   "fill": "solid"
@@ -140,7 +233,7 @@ data:
             "h": 13,
             "w": 19,
             "x": 0,
-            "y": 0
+            "y": 4
           },
           "id": 1,
           "options": {
@@ -237,13 +330,15 @@ data:
             "h": 5,
             "w": 5,
             "x": 19,
-            "y": 0
+            "y": 4
           },
           "id": 3,
           "options": {
             "displayMode": "lcd",
+            "maxVizHeight": 300,
             "minVizHeight": 10,
             "minVizWidth": 0,
+            "namePlacement": "auto",
             "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
@@ -253,9 +348,10 @@ data:
               "values": false
             },
             "showUnfilled": true,
+            "sizing": "auto",
             "valueMode": "color"
           },
-          "pluginVersion": "9.5.5",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -308,7 +404,7 @@ data:
             "h": 8,
             "w": 5,
             "x": 19,
-            "y": 5
+            "y": 9
           },
           "id": 5,
           "options": {
@@ -327,7 +423,7 @@ data:
               "color": "rgba(255,0,255,0.7)"
             },
             "filterValues": {
-              "le": 1e-09
+              "le": 1e-9
             },
             "legend": {
               "show": true
@@ -336,7 +432,8 @@ data:
               "layout": "unknown"
             },
             "tooltip": {
-              "show": true,
+              "mode": "single",
+              "showColorScale": false,
               "yHistogram": false
             },
             "yAxis": {
@@ -344,7 +441,7 @@ data:
               "reverse": false
             }
           },
-          "pluginVersion": "9.5.5",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -385,6 +482,7 @@ data:
                 "seriesBy": "last"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -400,6 +498,7 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineStyle": {
                   "fill": "solid"
@@ -466,7 +565,7 @@ data:
             "h": 10,
             "w": 19,
             "x": 0,
-            "y": 13
+            "y": 17
           },
           "id": 2,
           "options": {
@@ -570,7 +669,7 @@ data:
             "h": 10,
             "w": 5,
             "x": 19,
-            "y": 13
+            "y": 17
           },
           "id": 4,
           "options": {
@@ -592,7 +691,7 @@ data:
               "color": "#ff00ffb3"
             },
             "filterValues": {
-              "le": 1e-09
+              "le": 1e-9
             },
             "legend": {
               "show": true
@@ -601,7 +700,8 @@ data:
               "layout": "auto"
             },
             "tooltip": {
-              "show": true,
+              "mode": "single",
+              "showColorScale": false,
               "yHistogram": false
             },
             "yAxis": {
@@ -609,7 +709,7 @@ data:
               "reverse": true
             }
           },
-          "pluginVersion": "9.5.5",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -656,11 +756,116 @@ data:
             }
           ],
           "type": "heatmap"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-RdYlGr"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 100,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 30
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 27
+          },
+          "id": 7,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_battery_percent{friendly_name=~\".*hum_temp Battery\"}",
+              "instant": false,
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Discharge",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Battery",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
         }
       ],
       "refresh": "5s",
-      "schemaVersion": 38,
-      "style": "dark",
+      "schemaVersion": 39,
       "tags": [],
       "templating": {
         "list": []
@@ -673,6 +878,6 @@ data:
       "timezone": "",
       "title": "Home dash",
       "uid": "a841240e-0d62-4aec-a8c3-52223e72f7fa",
-      "version": 16,
+      "version": 2,
       "weekStart": ""
     }
