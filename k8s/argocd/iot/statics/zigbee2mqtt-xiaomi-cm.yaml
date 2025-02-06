@@ -123,8 +123,8 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0x00124b00014dd716':
-      friendly_name: upstairs_router
+    '0x881a14fffe011aad':
+      friendly_name: kitchen_router
       homeassistant:
         last_seen:
           enabled_by_default: true
