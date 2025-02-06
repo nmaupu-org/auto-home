@@ -9,7 +9,7 @@ metadata:
     app: home-assistant
 spec:
   staticConfigs:
-    - targets: ['hass.home.fossar.net:8123']
+    - targets: ['hass.home.fossar.net']
       labels:
         job: prometheus
   metricsPath: /api/prometheus
@@ -29,9 +29,10 @@ metadata:
   namespace: monitoring
 spec:
   encryptedData:
-    token: AgAJfSZL0WYLSpn5TVQpEYNEdNLJOcLlJdzCs81oR6eTCXZTVg3elt5z9ag0cDMq+SrTr4X3jRvWVEv7gRDXFHUTAUEI0GgSsVCFpexbvQxGoMpMXfmGXLFMu/JIkz7DOdI+y+ThoowNTN6+oPJR1Bkn4cjWFh8ayAvRCJeuORctWvKpSL1LbV7zhxiTHPdn+/c2la/yswj0v8qNRtp4RBU20aG736ZH6ePOqgsbU8s8V23P+ML7/o0ryoaHC3LdvvvkXOwIMx4c5eET2/5gX3EA9LUK46+izaGDN5yY7pvRlcS9m8mA/xOkkDqA6SBqeNJsOsmIphMApMWsIFi6fCsExo7QSAY+I/zAPqmu8qAhmn63yKPtlBxbSBiIPZppJCsCxpi+iIwnUQ/LnIQHx41VyFzv3xOJr5u/iGN3duWvTNRHEbgem3Kq9ct78cKB1xEj9zdGj9HsLOPASfia5DxJcnH3APWTnpY2QyO2IPz1yQ4fQusXuNbxhJBmNHx9zfMONUBqfeEeq1OEnVovkaO+lyaSWS+e6qVdN8SVjxoH5XnBmsOkFnZRvRD6riPj5Ji8tPjjzPPVz39DQ3y8nfdmEyslb/NFOajYk5nsaJ6ZLAtWZuNZGvRcQ+5CS8+l4NS/ipkfQihMEGEI8Wki3saRMzUezuehkbsuWty+rNtNCYr2oBj9MMRJsQWxs+F7xAzTK1J1Hbcqtb5gW04qRj3kAJ+yKo5QEiIs/GSEoJ5tlHRl4E6WqLmglJCaDL4CwYWLYld4M1yRO89sPWSVMoqzYOZLejnikDDNJ25IB9jCENb5R74N8ip3KKXVG1VUi3Gp3qVeFqWXlooLQOjsJddQcKfzC8qpRkDE9qCTjdptIGTvT3VUPRfIGMy6Ok6kAjUFGcY2dWRsCSp8RUYGOFIrYGUegepdYC+zw3xsuHUqc/1+N3b4u3U=
+    token: AgA/asmonGXBHrkUonqQn0DAIyzYsS3v/xJrd2ZYWZv5dcT5BWIyBWKsgi9bPQmqw/UVqaMkGRjM+/QId+eYifAF/mU+9CptO5ejtN0tRYSk5X/LVKYHMrEkTvbCasaBDe9ykI9bXwk+oMm+iIl6elAcG/O/q7gc+QcacCRXvxIkp54yeIOkoO9IvTFgcHWWpDdhUIkmy3lZgSJF/mjt8RAq2ek0lNVj9tLjWzgDxiDaZfmByYfAKW8d8PWhc7GT1oOd8zdS74AWtUMse/g/CqkIRuRu1oYZRfZl4jn1wu1MgaQD3OhTmwHQ8BMrW2EnfOM4Ff9b0SkXex5c/nIKF+ipTsXqM6+GEFObgZUfiYMso5K1JYwjU6cZajjjb1MtnA1rbWtj6NgZLlkZ3qFkd7srh+cAFfPGSNK1fHdVNfUGdGuWHcEYjN5+T5a2pXKYXQ/jiRQ9VhIpryq/k4LVL2GthXFI7OJwys7DAPeHnDYCg401WNArFAgZhf77KQd2AJybmGATGDib0HLJlQ/rRiL9aZXsyZ7oZhbJ9XhprPjM8Z9s346Hl0AJguhPh96S256kd1ID0ihNF4TrUGuOfmO/jqwOd90TNRfLYpVvLJB33FkZ0JwbuPP/58mu3floH4ZhU+OJ0GTru7HoMqW62VF/Iavmt2pJczXuQX5MaiDjD2r6iDHTXH4RvldvOmaju+/pD1kF3H+cgqQc5Jd6YW825WpUtii0XL4suZQsmUVlqLdA/Lat48ZmqPwZ4bGN+Gl93q/3frR8YId7zlHGRSXhJvzVZjbEd/kd0A9HuPw/Zkcz/Y/2o1DuVsKOOhD3dCoPxlbHCzc/LOVXk9ua1F7hxCwdTFzlzUZgUh48+GDovlnqMzrbTDlY0lX996Vw7DCC967nw7WIIoxjOB3Veyyn1IgVmGA7VvC9Ro8XHadkU1joKBLn95w=
   template:
     metadata:
       creationTimestamp: null
       name: home-assistant-prometheus-token
       namespace: monitoring
+    type: Opaque
