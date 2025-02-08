@@ -44,6 +44,8 @@ prometheus:
           - prometheus.knas.home.fossar.net
 
 grafana:
+  admin:
+    existingSecret: grafana-admin-creds
   ingress:
     enabled: true
     annotations:
@@ -64,8 +66,8 @@ grafana:
     datasources:
       alertmanager:
         enabled: false
-  additionalDataSources:
-    - name: Prom
-      uid: prom
-      type: prometheus
-      url: http://{{ printf "%s-prometheus.monitoring" .Release.Name }}:9090
+  # additionalDataSources:
+  #   - name: Prom
+  #     uid: prom
+  #     type: prometheus
+  #     url: http://{{ printf "%s-prometheus.monitoring" .Release.Name }}:9090
