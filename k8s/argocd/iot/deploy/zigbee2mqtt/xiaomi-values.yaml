@@ -17,7 +17,7 @@ statefulset:
     limits:
       memory: 600Mi
       cpu: 200m
-  # Existing secret (sealed-secrets) created under ../../statistics
+  # Existing secret (sealed-secrets) created under ../../statics
   secrets:
     name: zigbee2mqtt
   volumeMounts:
