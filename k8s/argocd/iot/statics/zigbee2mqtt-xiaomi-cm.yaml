@@ -195,3 +195,10 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
+    '0xa4c1386c32f607a9':
+      friendly_name: z03mmc_kitchen_fridge_down_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
