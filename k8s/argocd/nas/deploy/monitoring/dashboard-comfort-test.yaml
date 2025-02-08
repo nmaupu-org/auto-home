@@ -27,7 +27,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 30,
       "links": [],
       "panels": [
         {
@@ -43,10 +42,9 @@ data:
               "custom": {
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
-                "axisColorMode": "text",
+                "axisColorMode": "series",
                 "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
+                "axisPlacement": "right",
                 "barAlignment": 0,
                 "drawStyle": "line",
                 "fillOpacity": 0,
@@ -57,7 +55,10 @@ data:
                   "viz": false
                 },
                 "insertNulls": false,
-                "lineInterpolation": "linear",
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
                 "lineWidth": 1,
                 "pointSize": 5,
                 "scaleDistribution": {
@@ -73,6 +74,8 @@ data:
                   "mode": "off"
                 }
               },
+              "decimals": 2,
+              "fieldMinMax": false,
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
@@ -86,44 +89,45 @@ data:
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "celsius"
             },
             "overrides": [
               {
                 "matcher": {
-                  "id": "byRegexp",
-                  "options": "/Humidity/"
+                  "id": "byName",
+                  "options": "Difference"
                 },
                 "properties": [
                   {
-                    "id": "custom.axisPlacement",
-                    "value": "right"
-                  },
-                  {
-                    "id": "custom.axisSoftMax",
-                    "value": 100
+                    "id": "custom.lineWidth",
+                    "value": 0
                   }
                 ]
               }
             ]
           },
           "gridPos": {
-            "h": 8,
+            "h": 14,
             "w": 12,
             "x": 0,
             "y": 0
           },
-          "id": 3,
+          "id": 1,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "last",
+                "mean",
+                "variance"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
-              "sort": "none"
+              "mode": "multi",
+              "sort": "asc"
             }
           },
           "targets": [
@@ -132,60 +136,62 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
+              "disableTextWrap": false,
               "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"kitchen_hum_temp Temperature\"}",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"${sensor}_hum_temp Temperature\"}",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "old",
+              "useBackend": false
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"z03mmc_${sensor}_hum_temp Temperature\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "new"
+            },
+            {
+              "datasource": {
+                "name": "Expression",
+                "type": "__expr__",
+                "uid": "__expr__"
+              },
+              "expression": "abs($old-$new)",
+              "hide": false,
+              "refId": "Difference",
+              "type": "math"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"test_hum_temp Temperature\"} $show_test true",
+              "hide": false,
               "instant": false,
               "legendFormat": "{{friendly_name}}",
               "range": true,
               "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"z03mmc_kitchen_hum_temp Temperature\"}",
-              "hide": false,
-              "instant": false,
-              "legendFormat": "{{friendly_name}}",
-              "range": true,
-              "refId": "B"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "hass_sensor_humidity_percent{friendly_name=\"kitchen_hum_temp Humidity\"}",
-              "hide": false,
-              "instant": false,
-              "legendFormat": "{{friendly_name}}",
-              "range": true,
-              "refId": "C"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "hass_sensor_humidity_percent{friendly_name=\"z03mmc_kitchen_hum_temp Humidity\"}",
-              "hide": false,
-              "instant": false,
-              "legendFormat": "{{friendly_name}}",
-              "range": true,
-              "refId": "D"
             }
           ],
-          "title": "Kitchen",
+          "title": "${sensor} Temperature",
           "transformations": [
             {
               "id": "renameByRegex",
               "options": {
-                "regex": "(.*)_hum_temp (.*)",
-                "renamePattern": "$1-$2"
+                "regex": "^(.*)_hum_temp (.*)$",
+                "renamePattern": "$2 $1"
               }
             }
           ],
@@ -205,10 +211,9 @@ data:
               "custom": {
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
-                "axisColorMode": "text",
+                "axisColorMode": "series",
                 "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
+                "axisPlacement": "right",
                 "barAlignment": 0,
                 "drawStyle": "line",
                 "fillOpacity": 0,
@@ -219,7 +224,10 @@ data:
                   "viz": false
                 },
                 "insertNulls": false,
-                "lineInterpolation": "linear",
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
                 "lineWidth": 1,
                 "pointSize": 5,
                 "scaleDistribution": {
@@ -235,6 +243,8 @@ data:
                   "mode": "off"
                 }
               },
+              "decimals": 2,
+              "fieldMinMax": false,
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
@@ -248,145 +258,45 @@ data:
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "percent"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Difference"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
-            "h": 8,
+            "h": 14,
             "w": 12,
-            "x": 0,
-            "y": 8
+            "x": 12,
+            "y": 0
           },
           "id": 2,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "last",
+                "mean",
+                "variance"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"hall_hum_temp Temperature\"}",
-              "instant": false,
-              "legendFormat": "{{friendly_name}}",
-              "range": true,
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"z03mmc_hall_hum_temp Temperature\"}",
-              "hide": false,
-              "instant": false,
-              "legendFormat": "{{friendly_name}}",
-              "range": true,
-              "refId": "B"
-            }
-          ],
-          "title": "hall",
-          "transformations": [
-            {
-              "id": "renameByRegex",
-              "options": {
-                "regex": "(.*)_hum_temp Temperature",
-                "renamePattern": "$1"
-              }
-            }
-          ],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 16
-          },
-          "id": 1,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
+              "mode": "multi",
+              "sort": "asc"
             }
           },
           "targets": [
@@ -397,13 +307,13 @@ data:
               },
               "disableTextWrap": false,
               "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"living_hum_temp Temperature\"}",
+              "expr": "hass_sensor_humidity_percent{friendly_name=\"${sensor}_hum_temp Humidity\"}",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "instant": false,
               "legendFormat": "{{friendly_name}}",
               "range": true,
-              "refId": "A",
+              "refId": "old",
               "useBackend": false
             },
             {
@@ -412,12 +322,23 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"test_hum_temp Temperature\"}",
+              "expr": "hass_sensor_humidity_percent{friendly_name=\"z03mmc_${sensor}_hum_temp Humidity\"}",
               "hide": false,
               "instant": false,
-              "legendFormat": "{{friendly_name}} ",
+              "legendFormat": "{{friendly_name}}",
               "range": true,
-              "refId": "B"
+              "refId": "new"
+            },
+            {
+              "datasource": {
+                "name": "Expression",
+                "type": "__expr__",
+                "uid": "__expr__"
+              },
+              "expression": "abs($old-$new)",
+              "hide": false,
+              "refId": "Difference",
+              "type": "math"
             },
             {
               "datasource": {
@@ -425,28 +346,21 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "hass_sensor_temperature_celsius{friendly_name=\"z03mmc_living_hum_temp Temperature\"}",
+              "expr": "hass_sensor_humidity_percent{friendly_name=\"test_hum_temp Humidity\"} $show_test true",
               "hide": false,
               "instant": false,
               "legendFormat": "{{friendly_name}}",
               "range": true,
-              "refId": "C"
+              "refId": "A"
             }
           ],
-          "title": "Living",
+          "title": "${sensor} Humidity",
           "transformations": [
             {
               "id": "renameByRegex",
               "options": {
-                "regex": "(.*)_hum_temp Temperature",
-                "renamePattern": "$1"
-              }
-            },
-            {
-              "id": "renameByRegex",
-              "options": {
-                "regex": "test_hum.*",
-                "renamePattern": "test"
+                "regex": "^(.*)_hum_temp (.*)$",
+                "renamePattern": "$2 $1"
               }
             }
           ],
@@ -456,7 +370,98 @@ data:
       "schemaVersion": 39,
       "tags": [],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "kitchen",
+              "value": "kitchen"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "multi": false,
+            "name": "sensor",
+            "options": [
+              {
+                "selected": false,
+                "text": "living",
+                "value": "living"
+              },
+              {
+                "selected": true,
+                "text": "kitchen",
+                "value": "kitchen"
+              },
+              {
+                "selected": false,
+                "text": "hall",
+                "value": "hall"
+              },
+              {
+                "selected": false,
+                "text": "bedroom",
+                "value": "bedroom"
+              },
+              {
+                "selected": false,
+                "text": "blue",
+                "value": "blue"
+              },
+              {
+                "selected": false,
+                "text": "pink",
+                "value": "pink"
+              },
+              {
+                "selected": false,
+                "text": "basement_main",
+                "value": "basement_main"
+              },
+              {
+                "selected": false,
+                "text": "basement_cave",
+                "value": "basement_cave"
+              },
+              {
+                "selected": false,
+                "text": "basement_bedroom",
+                "value": "basement_bedroom"
+              }
+            ],
+            "query": "living, kitchen, hall, bedroom, blue, pink, basement_main, basement_cave, basement_bedroom",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": "Hide",
+              "value": "and"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Test device",
+            "multi": false,
+            "name": "show_test",
+            "options": [
+              {
+                "selected": true,
+                "text": "Hide",
+                "value": "and"
+              },
+              {
+                "selected": false,
+                "text": "Show",
+                "value": "or"
+              }
+            ],
+            "query": "Hide : and, Show : or",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          }
+        ]
       },
       "time": {
         "from": "now-6h",
