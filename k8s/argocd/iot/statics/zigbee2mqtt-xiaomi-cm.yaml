@@ -202,3 +202,9 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
+    '0xa4c138b533bb5a43':
+      friendly_name: basement_cave_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
