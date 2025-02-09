@@ -38,6 +38,8 @@ statefulset:
 zigbee2mqtt:
   homeassistant:
     enabled: true
+    legacy_entity_attributes: false
+    legacy_triggers: false
   timezone: Europe/Paris
   mqtt:
     base_topic: z2m-xiaomi-iot
@@ -57,6 +59,10 @@ zigbee2mqtt:
     # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
     elapsed: true
     log_level: info
+    homeassistant_legacy_entity_attributes: false
+    homeassistant_legacy_triggers: false
+    legacy_api: false
+    legacy_availability_payload: false
   ota:
     zigbee_ota_override_index_location: my_index.json
 
