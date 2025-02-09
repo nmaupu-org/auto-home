@@ -38,6 +38,8 @@ statefulset:
 zigbee2mqtt:
   homeassistant:
     enabled: true
+    legacy_entity_attributes: false
+    legacy_triggers: false
   timezone: Europe/Paris
   mqtt:
     base_topic: z2m-misc-iot
