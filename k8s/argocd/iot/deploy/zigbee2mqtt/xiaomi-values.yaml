@@ -47,6 +47,7 @@ zigbee2mqtt:
     user: "!secret.yaml user"
     password: "!secret.yaml password"
   serial:
+    adapter: zstack
     port: "/dev/usb"
     disable_led: false
   frontend:
