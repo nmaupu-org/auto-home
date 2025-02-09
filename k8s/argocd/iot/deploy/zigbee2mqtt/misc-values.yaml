@@ -23,6 +23,9 @@ statefulset:
     - name: devices
       mountPath: /app/data/devices.yaml
       subPath: devices.yaml
+    - name: devices
+      mountPath: /app/data/groups.yaml
+      subPath: groups.yaml
   volumes:
     - name: usb-device
       hostPath:
@@ -35,8 +38,8 @@ statefulset:
 zigbee2mqtt:
   homeassistant:
     enabled: true
-    legacy_entity_attributes: false
-    legacy_triggers: false
+    discovery_topic: homeassistant
+    status_topic: hass/status
   timezone: Europe/Paris
   mqtt:
     base_topic: z2m-misc-iot
@@ -50,6 +53,7 @@ zigbee2mqtt:
   frontend:
     port: 8080
   advanced:
+    cache_state: true
     pan_id: 6755
     channel: 11
     timestamp_format: "YYYY-MM-DD HH:mm:ss"
@@ -57,10 +61,6 @@ zigbee2mqtt:
     # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
     elapsed: true
     log_level: info
-    homeassistant_legacy_entity_attributes: false
-    homeassistant_legacy_triggers: false
-    legacy_api: false
-    legacy_availability_payload: false
 
 ingress:
   enabled: true
