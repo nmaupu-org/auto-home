@@ -7,9 +7,7 @@ metadata:
     app.kubernetes.io/instance: zigbee2mqtt-misc
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: zigbee2mqtt
-    app.kubernetes.io/version: 1.42.0
     argocd.argoproj.io/instance: zigbee2mqtt-misc
-    helm.sh/chart: zigbee2mqtt-1.42.0
 data:
   # When adding a new device to the network, zigbee2mqtt crashes with the following error:
   # https://github.com/Koenkk/zigbee2mqtt/issues/23589

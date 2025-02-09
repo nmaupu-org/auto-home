@@ -38,8 +38,6 @@ statefulset:
 zigbee2mqtt:
   homeassistant:
     enabled: true
-    discovery_topic: homeassistant
-    status_topic: hass/status
   timezone: Europe/Paris
   mqtt:
     base_topic: z2m-misc-iot
@@ -53,7 +51,6 @@ zigbee2mqtt:
   frontend:
     port: 8080
   advanced:
-    cache_state: true
     pan_id: 6755
     channel: 11
     timestamp_format: "YYYY-MM-DD HH:mm:ss"
