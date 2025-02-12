@@ -17,28 +17,12 @@ data:
   # - z2m will reboot with a writable file
   # - join any devices
   devices.yaml: |
-    '0x00158d000309a473':
-      debounce: 1
-      friendly_name: living_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
     '0x00158d00031b1a5d':
       friendly_name: basement_vibr_escalier
     '0x00158d0003d477c1':
       friendly_name: kitchen_vibr_window
     '0x00158d00040be394':
       friendly_name: dehumidifier_water_sensor
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
-    '0x00158d00045b0072':
-      debounce: 1
-      friendly_name: pink_hum_temp
       homeassistant:
         last_seen:
           enabled_by_default: true
@@ -52,25 +36,9 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0x00158d00045b289c':
-      debounce: 1
-      friendly_name: bedroom_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
     '0x00158d000464aed2':
       debounce: 1
       friendly_name: basement_main_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
-    '0x00158d000465a382':
-      debounce: 1
-      friendly_name: hall_hum_temp
       homeassistant:
         last_seen:
           enabled_by_default: true
@@ -87,22 +55,6 @@ data:
     '0x00158d0007f29f85':
       debounce: 1
       friendly_name: basement_bedroom_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
-    '0x00158d00045b0095':
-      debounce: 1
-      friendly_name: kitchen_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
-    '0x00158d000464aec6':
-      debounce: 1
-      friendly_name: blue_hum_temp
       homeassistant:
         last_seen:
           enabled_by_default: true
