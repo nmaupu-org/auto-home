@@ -124,7 +124,7 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0xa4c138e4fe996a7c':
+    '0xa4c138143b0b4f7f':
       friendly_name: z03mmc_pink_hum_temp
       homeassistant:
         last_seen:
