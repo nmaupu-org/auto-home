@@ -1,0 +1,48 @@
+image:
+  repository: nmaupu/scan-http
+  tag: "1.3"
+
+persistence:
+  scan-share:
+    enabled: true
+    type: hostPath
+    mountPath: /scans
+    hostPath: /mnt/tank/ftp_home/printer
+
+service:
+  main:
+    enabled: true
+    type: LoadBalancer
+    expandObjectName: true
+    loadBalancerIP: 192.168.99.4
+    ports:
+      main:
+        enabled: true
+        targetSelector: scan-http
+        port: 5000
+        protocol: tcp
+        targetPort: 5000
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: scans.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
