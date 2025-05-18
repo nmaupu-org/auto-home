@@ -2,7 +2,7 @@ default: push
 .PHONY: build tag push check-docker-hub
 
 NAME=scan-http
-VERSION=1.3
+VERSION=1.7
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
 build: check-docker-hub
