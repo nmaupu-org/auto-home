@@ -13,6 +13,8 @@ workload:
     primary: true
     type: Deployment
     podSpec:
+      securityContext:
+        fsGroup: 1001
       containers:
         main:
           primary: true

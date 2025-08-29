@@ -55,6 +55,8 @@ workload:
     primary: true
     type: Deployment
     podSpec:
+      securityContext:
+        fsGroup: 1001
       containers:
         main:
           primary: true
@@ -81,6 +83,8 @@ workload:
     enabled: true
     type: Deployment
     podSpec:
+      securityContext:
+        fsGroup: 1001
       containers:
         exportarr:
           enabled: true

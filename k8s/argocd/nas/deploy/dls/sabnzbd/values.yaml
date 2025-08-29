@@ -35,6 +35,8 @@ global:
 workload:
   main:
     podSpec:
+      securityContext:
+        fsGroup: 1001
       containers:
         main:
           securityContext:

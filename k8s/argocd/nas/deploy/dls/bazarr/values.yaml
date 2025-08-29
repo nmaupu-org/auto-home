@@ -52,6 +52,8 @@ workload:
   main:
     primary: true
     podSpec:
+      securityContext:
+        fsGroup: 1001
       containers:
         main:
           primary: true
