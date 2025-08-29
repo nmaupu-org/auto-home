@@ -194,7 +194,7 @@ class DockerImageUpdater:
                 print(f"   ❌ Parse error: {e}")
         
         # Try GitHub releases as fallback
-        if info['namespace'] == 'onedr0p':
+        if info['namespace'] == 'home-operations':
             return self._get_github_release_tag(info)
         elif info['namespace'] == 'flaresolverr':
             # Special case for flaresolverr
@@ -245,7 +245,7 @@ class DockerImageUpdater:
         return None
     
     def _get_github_release_tag(self, info):
-        """Get latest release from GitHub (fallback for onedr0p images)"""
+        """Get latest release from GitHub (fallback for home-operations images)"""
         # Map container names to GitHub repo names
         repo_map = {
             'sonarr': 'Sonarr/Sonarr',
@@ -583,7 +583,7 @@ if __name__ == "__main__":
             test_single_image(sys.argv[2])
         else:
             # Test with a known image
-            test_single_image("ghcr.io/onedr0p/sonarr")
+            test_single_image("ghcr.io/home-operations/sonarr")
     else:
         # Normal mode
         updater = DockerImageUpdater()

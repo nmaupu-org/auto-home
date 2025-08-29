@@ -1,25 +1,64 @@
 ---
 image:
-  repository: ghcr.io/onedr0p/sonarr
+  repository: ghcr.io/home-operations/sonarr
   pullPolicy: IfNotPresent
-  tag: v4.0.15.2941
+  tag: 4.0.15.2940
 exportarrImage:
   repository: ghcr.io/onedr0p/exportarr
   pullPolicy: IfNotPresent
-  tag: v2.0.1@sha256:727e7bc8f2f0934a2117978c59f4476b954018b849a010ea6cfb380bd6539644
+  tag: v2.3.0
 
 workload:
   main:
+    primary: true
+    type: Deployment
     podSpec:
       containers:
         main:
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 8989
+            readiness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 8989
+            startup:
+              enabled: true
+              type: http
+              path: /ping
+              port: 8989
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
   exportarr:
+    enabled: true
+    type: Deployment
     podSpec:
       containers:
         exportarr:
+          enabled: true
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 8989
+            readiness:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 8989
+            startup:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 8989
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
@@ -36,7 +75,6 @@ persistence:
       exportarr:
         exportarr:
           mountPath: /config
-          readOnly: true
   online:
     enabled: true
     type: hostPath

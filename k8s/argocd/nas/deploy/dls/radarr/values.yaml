@@ -1,12 +1,12 @@
 ---
 image:
-  repository: ghcr.io/onedr0p/radarr
+  repository: ghcr.io/home-operations/radarr
   pullPolicy: IfNotPresent
-  tag: v5.26.2.10099
+  tag: 5.26.2.10099
 exportarrImage:
   repository: ghcr.io/onedr0p/exportarr
   pullPolicy: IfNotPresent
-  tag: v2.0.1@sha256:727e7bc8f2f0934a2117978c59f4476b954018b849a010ea6cfb380bd6539644
+  tag: v2.3.0
 
 persistence:
   config:
@@ -20,7 +20,6 @@ persistence:
       exportarr:
         exportarr:
           mountPath: /config
-          readOnly: true
   online:
     enabled: true
     type: hostPath
@@ -53,16 +52,55 @@ global:
 
 workload:
   main:
+    primary: true
+    type: Deployment
     podSpec:
       containers:
         main:
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 7878
+            readiness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 7878
+            startup:
+              enabled: true
+              type: http
+              path: /ping
+              port: 7878
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
   exportarr:
+    enabled: true
+    type: Deployment
     podSpec:
       containers:
         exportarr:
+          enabled: true
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 9706
+            readiness:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 9706
+            startup:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 9706
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001

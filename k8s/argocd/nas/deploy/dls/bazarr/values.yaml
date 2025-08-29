@@ -50,9 +50,27 @@ persistence:
 
 workload:
   main:
+    primary: true
     podSpec:
       containers:
         main:
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 6767
+            readiness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 6767
+            startup:
+              enabled: true
+              type: http
+              path: /ping
+              port: 6767
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
