@@ -1,12 +1,9 @@
 ---
-image:
-  repository: ghcr.io/home-operations/sonarr
-  pullPolicy: IfNotPresent
-  tag: 4.0.15.2940
-exportarrImage:
-  repository: ghcr.io/onedr0p/exportarr
-  pullPolicy: IfNotPresent
-  tag: v2.3.0
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
 
 workload:
   main:

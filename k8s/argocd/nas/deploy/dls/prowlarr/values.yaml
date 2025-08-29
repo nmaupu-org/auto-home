@@ -1,16 +1,9 @@
 ---
-image:
-  repository: ghcr.io/home-operations/prowlarr
-  tag: 2.0.5.5160
-  pullPolicy: IfNotPresent
-exportarrImage:
-  repository: ghcr.io/onedr0p/exportarr
-  pullPolicy: IfNotPresent
-  tag: v2.3.0
-
 securityContext:
   container:
     readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
 
 service:
   main:
@@ -79,9 +72,6 @@ workload:
               type: http
               path: /ping
               port: 9696
-          securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
   exportarr:
     enabled: true
     type: Deployment
@@ -106,9 +96,6 @@ workload:
               type: http
               path: /metrics
               port: 9696
-          securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
 
 metrics:
   main:

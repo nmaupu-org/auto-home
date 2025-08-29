@@ -1,4 +1,10 @@
 ---
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
+
 ingress:
   main:
     enabled: true

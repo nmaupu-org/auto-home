@@ -55,9 +55,6 @@ workload:
       containers:
         main:
           primary: true
-          env:
-            PUID: "1001"
-            PGID: "1001"
           probes:
             liveness:
               enabled: true
@@ -82,9 +79,6 @@ workload:
         exportarr:
           enabled: true
           primary: true
-          env:
-            PUID: "1001"
-            PGID: "1001"
           probes:
             liveness:
               enabled: true

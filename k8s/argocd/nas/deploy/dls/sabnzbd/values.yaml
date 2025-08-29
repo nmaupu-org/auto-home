@@ -1,12 +1,9 @@
 ---
-image:
-  repository: ghcr.io/home-operations/sabnzbd
-  pullPolicy: IfNotPresent
-  tag: 4.5.3
-exportarrImage:
-  repository: ghcr.io/onedr0p/exportarr
-  pullPolicy: IfNotPresent
-  tag: v2.3.0
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
 
 ingress:
   main:
