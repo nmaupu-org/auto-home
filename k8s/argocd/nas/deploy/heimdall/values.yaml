@@ -1,9 +1,4 @@
 ---
-image:
-  repository: linuxserver/heimdall
-  tag: 2.6.1@sha256:9bff1282379516220b39f27261d061f776dfe33cfca0502c03d03ca48f8ecaad
-  pullPolicy: IfNotPresent
-
 service:
   main:
     ports:
