@@ -1,4 +1,3 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -12,7 +11,7 @@ spec:
   sources:
     - chart: mosquitto
       repoURL: tccr.io/truecharts
-      targetRevision: 16.5.0
+      targetRevision: 17.3.2
       helm:
         releaseName: mosquitto
         valueFiles:
@@ -20,13 +19,11 @@ spec:
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
-
   ignoreDifferences:
     - group: apps
       kind: Deployment
       jqPathExpressions:
         - .spec.template.spec.hostUsers
-
   syncPolicy:
     automated:
       prune: true
