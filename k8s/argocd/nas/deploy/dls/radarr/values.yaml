@@ -1,13 +1,4 @@
 ---
-image:
-  repository: ghcr.io/home-operations/radarr
-  pullPolicy: IfNotPresent
-  tag: 5.26.2.10099
-exportarrImage:
-  repository: ghcr.io/onedr0p/exportarr
-  pullPolicy: IfNotPresent
-  tag: v2.3.0
-
 persistence:
   config:
     enabled: true
@@ -25,6 +16,12 @@ persistence:
     type: hostPath
     hostPath: /mnt/tank/dls
     mountPath: /mnt/dls
+
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
 
 ingress:
   main:
@@ -58,6 +55,9 @@ workload:
       containers:
         main:
           primary: true
+          env:
+            PUID: "1001"
+            PGID: "1001"
           probes:
             liveness:
               enabled: true
@@ -74,9 +74,6 @@ workload:
               type: http
               path: /ping
               port: 7878
-          securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
   exportarr:
     enabled: true
     type: Deployment
@@ -93,20 +90,17 @@ workload:
               enabled: true
               type: http
               path: /metrics
-              port: 9706
+              port: 7878
             readiness:
               enabled: true
               type: http
               path: /metrics
-              port: 9706
+              port: 7878
             startup:
               enabled: true
               type: http
               path: /metrics
-              port: 9706
-          securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
+              port: 7878
 
 metrics:
   main:
