@@ -2,7 +2,7 @@
 image:
   repository: ghcr.io/onedr0p/sonarr
   pullPolicy: IfNotPresent
-  tag: 4.0.10.2544
+  tag: v4.0.15.2941
 exportarrImage:
   repository: ghcr.io/onedr0p/exportarr
   pullPolicy: IfNotPresent
