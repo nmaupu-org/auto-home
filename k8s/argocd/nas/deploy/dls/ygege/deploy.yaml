@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ygege
+  namespace: dls
+  labels:
+    app: ygege
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ygege
+  template:
+    metadata:
+      labels:
+        app: ygege
+    spec:
+      containers:
+        - name: ygege
+          image: ghcr.io/uwudev/ygege@sha256:090d23aa93dd28950c1414784a0304edeae9620828a789662592308bfd9f926a
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8715
+          volumeMounts:
+            - name: ygege-config
+              mountPath: /app/config.json
+              subPath: config.json
+              readOnly: true
+            - name: ygege-sessions
+              mountPath: /app/sessions
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: ygege-config
+          secret:
+            secretName: ygege
+        - name: ygege-sessions
+          persistentVolumeClaim:
+            claimName: ygege-sessions

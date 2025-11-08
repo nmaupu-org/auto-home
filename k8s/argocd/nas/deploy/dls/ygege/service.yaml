@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ygege
+  namespace: dls
+  labels:
+    app: ygege
+spec:
+  type: ClusterIP
+  selector:
+    app: ygege
+  ports:
+    - name: http
+      port: 8715
+      targetPort: http
+      protocol: TCP
