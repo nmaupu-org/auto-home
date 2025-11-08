@@ -30,6 +30,25 @@ spec:
               readOnly: true
             - name: ygege-sessions
               mountPath: /app/sessions
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 2
+            timeoutSeconds: 2
+            failureThreshold: 5
           resources:
             requests:
               cpu: 50m
