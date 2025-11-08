@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: prowlarr
       repoURL: tccr.io/truecharts
-      targetRevision: 20.4.3
+      targetRevision: 21.0.0
       helm:
         releaseName: prowlarr
         valueFiles:
