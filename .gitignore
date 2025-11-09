@@ -13,3 +13,4 @@ ansible/plugins/lookup/ansible-vault/
 *key.json
 **/sealed-secrets.key
 **/qonta
+vendor/

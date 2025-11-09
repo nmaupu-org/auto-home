@@ -1,0 +1,34 @@
+image:
+  repository: ghcr.io/uwudev/ygege
+  tag: master
+  tagMode: tag # must be tag or digest
+  pullPolicy: IfNotPresent
+
+pvc:
+  sessions:
+    size: 1Gi
+    storageClass: myStorageClass
+
+container:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 10Mi
+    limits:
+      cpu: 10m
+      memory: 10Mi
+  startupProbe:
+    initialDelaySeconds: 0
+    periodSeconds: 2
+    timeoutSeconds: 2
+    failureThreshold: 5
+  readinessProbe:
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+  livenessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 20
+    timeoutSeconds: 2
+    failureThreshold: 3

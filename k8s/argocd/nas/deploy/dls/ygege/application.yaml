@@ -1,0 +1,42 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ygege
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: dls
+    name: in-cluster
+  source:
+    source:
+    repoURL: https://github.com/nmaupu-org/auto-home.git
+    targetRevision: master
+    path: k8s/argocd/nas/jsonnet/ygege
+    plugin:
+      name: custom-jsonnet
+      parameters:
+        - name: values
+          string: >-
+            image:
+              tag: sha256:090d23aa93dd28950c1414784a0304edeae9620828a789662592308bfd9f926a
+              tagMode: digest
+            pvc:
+              sessions:
+                size: 1Gi
+                storageClass: openebs-zfs
+            container:
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 16Mi
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
