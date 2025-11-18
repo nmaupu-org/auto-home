@@ -89,14 +89,10 @@ workload:
               cp /hass-passwords/hass-passwords.json "$config_dir/.storage/auth_provider.homeassistant"
 
               # handling recorder configuration (db)
-              grep -v '^recorder:' "$config_dir/configuration.yaml" > /tmp/configuration.yaml
-              cp /tmp/configuration.yaml "$config_dir/configuration.yaml"
-              echo "" >> "$config_dir/configuration.yaml"
-              cat << EOF >> "$config_dir/configuration.yaml"
-              recorder:
-                purge_keep_days: 30
-                commit_interval: 3
-                db_url: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
+              cat << EOF > "$config_dir/recorder.yaml"
+              purge_keep_days: 30
+              commit_interval: 3
+              db_url: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
               EOF
 
               # MQTT must be configured in the UI now...
