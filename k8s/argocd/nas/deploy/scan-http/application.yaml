@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: app-template
       repoURL: tccr.io/truecharts
-      targetRevision: 15.4.11
+      targetRevision: 15.24.48
       helm:
         releaseName: scan-http
         valueFiles:

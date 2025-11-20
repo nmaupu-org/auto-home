@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: heimdall
       repoURL: tccr.io/truecharts
-      targetRevision: 24.3.2
+      targetRevision: 24.11.3
       helm:
         releaseName: heimdall
         valueFiles:

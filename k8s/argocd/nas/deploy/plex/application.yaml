@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: plex
       repoURL: tccr.io/truecharts
-      targetRevision: 20.4.2
+      targetRevision: 21.0.0
       helm:
         releaseName: plex
         valueFiles:

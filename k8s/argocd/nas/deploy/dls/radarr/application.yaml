@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: radarr
       repoURL: tccr.io/truecharts
-      targetRevision: 24.4.4
+      targetRevision: 26.0.1
       helm:
         releaseName: radarr
         valueFiles:
