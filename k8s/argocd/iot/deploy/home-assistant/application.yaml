@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: home-assistant
       repoURL: tccr.io/truecharts
-      targetRevision: 28.4.4
+      targetRevision: 28.15.2
       helm:
         releaseName: home-assistant
         valueFiles:
