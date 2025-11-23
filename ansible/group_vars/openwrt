@@ -89,7 +89,7 @@ firewall_dhcp_static_leases:
     mac: 00:1B:A9:FA:0A:81
     ip: 192.168.12.5
   - name: mbp
-    mac: a4:83:e7:6c:19:0d
+    mac: 3C:06:30:32:1F:8B
     ip: 192.168.12.7
   - name: freenas
     mac: d0:50:99:c2:be:3d
