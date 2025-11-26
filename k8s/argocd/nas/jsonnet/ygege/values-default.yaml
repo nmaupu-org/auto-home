@@ -9,6 +9,12 @@ pvc:
     size: 1Gi
     storageClass: myStorageClass
 
+ingress:
+  host: host
+  certManager:
+    certificateIssuer: issuer
+  extraAnnotations: {}
+
 container:
   resources:
     requests:

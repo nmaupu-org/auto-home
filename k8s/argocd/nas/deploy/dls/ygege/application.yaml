@@ -20,12 +20,19 @@ spec:
         - name: values
           string: >-
             image:
-              tag: sha256:090d23aa93dd28950c1414784a0304edeae9620828a789662592308bfd9f926a
+              tag: sha256:0437f3c86c8306a7957b216202afc5b32c289c8f859c23836b01ca668fcd4be3
               tagMode: digest
             pvc:
               sessions:
                 size: 1Gi
                 storageClass: openebs-zfs
+            ingress:
+              host: ygege.knas.home.fossar.net
+              certManager:
+                certificateIssuer: google-dns-issuer-prod
+              extraAnnotations:
+                traefik.ingress.kubernetes.io/router.entrypoints: websecure
+                traefik.ingress.kubernetes.io/router.tls: "true"
             container:
               resources:
                 requests:

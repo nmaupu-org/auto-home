@@ -36,17 +36,20 @@ local mainContainer =
     vmountConfig,
     vmountSessions,
   ])
-  + (c.livenessProbe.tcpSocket.withPort(g.containerPort)
+  + ( c.livenessProbe.httpGet.withPath("/health")
+    + c.livenessProbe.httpGet.withPort(g.containerPort)
     + c.livenessProbe.withInitialDelaySeconds(v.container.livenessProbe.initialDelaySeconds)
     + c.livenessProbe.withPeriodSeconds(v.container.livenessProbe.periodSeconds)
     + c.livenessProbe.withTimeoutSeconds(v.container.livenessProbe.timeoutSeconds)
     + c.livenessProbe.withFailureThreshold(v.container.livenessProbe.failureThreshold))
-  + (c.readinessProbe.tcpSocket.withPort(g.containerPort)
+  + ( c.readinessProbe.httpGet.withPath("/health")
+    + c.readinessProbe.httpGet.withPort(g.containerPort)
     + c.readinessProbe.withInitialDelaySeconds(v.container.readinessProbe.initialDelaySeconds)
     + c.readinessProbe.withPeriodSeconds(v.container.readinessProbe.periodSeconds)
     + c.readinessProbe.withTimeoutSeconds(v.container.readinessProbe.timeoutSeconds)
     + c.readinessProbe.withFailureThreshold(v.container.readinessProbe.failureThreshold))
-  + (c.startupProbe.tcpSocket.withPort(g.containerPort)
+  + ( c.startupProbe.httpGet.withPath("/health")
+    + c.startupProbe.httpGet.withPort(g.containerPort)
     + c.startupProbe.withInitialDelaySeconds(v.container.startupProbe.initialDelaySeconds)
     + c.startupProbe.withPeriodSeconds(v.container.startupProbe.periodSeconds)
     + c.startupProbe.withTimeoutSeconds(v.container.startupProbe.timeoutSeconds)
@@ -68,7 +71,7 @@ d.new(
   ],
 )
 + d.metadata.withLabels(g.labels)
-+ d.spec.selector.withMatchLabels(g.labels)
++ d.spec.selector.withMatchLabels(g.selectorLabels)
 + d.spec.template.metadata.withLabels(g.labels)
 + d.spec.template.spec.withVolumes([
   vol.fromPersistentVolumeClaim('sessions', 'ygege-sessions'),

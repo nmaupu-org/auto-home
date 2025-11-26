@@ -12,3 +12,9 @@ jb update
 ```
 
 to make/update the vendor directory!
+
+Generate:
+
+``` bash
+jsonnet -J vendor -J . manifests/deploy.jsonnet
+```
