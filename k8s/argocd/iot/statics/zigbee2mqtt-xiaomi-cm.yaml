@@ -114,13 +114,6 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0xa4c1381432f6dc91':
-      friendly_name: z03mmc_basement_bedroom_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
     '0xa4c138e1f78117b5':
       friendly_name: z03mmc_networkbox_hum_temp
       homeassistant:
