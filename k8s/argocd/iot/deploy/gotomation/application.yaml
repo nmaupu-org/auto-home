@@ -20,7 +20,7 @@ spec:
         - name: values
           string: >-
             image:
-              tag: 1.1.11
+              tag: 1.1.14
               pullPolicy: IfNotPresent
             git:
               pullPolicy: IfNotPresent
