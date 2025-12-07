@@ -21,7 +21,7 @@ statefulset:
     - name: usb-device
       mountPath: /dev/usb
     - name: devices
-      mountPath: /app/data/devices.yaml
+      mountPath: /app/data/cm-devices.yaml
       subPath: devices.yaml
   volumes:
     - name: usb-device

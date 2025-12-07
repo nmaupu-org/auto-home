@@ -12,7 +12,7 @@ spec:
   sources:
     - path: charts/zigbee2mqtt
       repoURL: https://github.com/Koenkk/zigbee2mqtt-chart.git
-      targetRevision: 2.6.3
+      targetRevision: 2.7.1
       helm:
         releaseName: zigbee2mqtt-xiaomi
         valueFiles:
