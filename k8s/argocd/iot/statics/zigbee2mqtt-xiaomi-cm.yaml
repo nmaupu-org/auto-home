@@ -86,13 +86,6 @@ data:
           enabled_by_default: true
         linkquality:
           enabled_by_default: true
-    '0xa4c138143b0b4f7f':
-      friendly_name: z03mmc_pink_hum_temp
-      homeassistant:
-        last_seen:
-          enabled_by_default: true
-        linkquality:
-          enabled_by_default: true
     '0xa4c1380330e5f55d':
       friendly_name: z03mmc_bedroom_hum_temp
       homeassistant:
