@@ -20,7 +20,7 @@ spec:
         - name: values
           string: >-
             image:
-              tag: sha256:bbfcafe192c14499ddb4b34370cf47b89bec35666227b28b0567358ba5f80a18
+              tag: sha256:cf278cb6ffb0985db7c09895bcf02b09389e141d
               tagMode: digest
             pvc:
               sessions:
