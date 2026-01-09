@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cocktails
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: cocktails
+    name: in-cluster
+  sources:
+    - chart: app-template
+      repoURL: tccr.io/truecharts
+      targetRevision: 15.24.48
+      helm:
+        releaseName: cocktails
+        valueFiles:
+          - $values/k8s/argocd/nas/deploy/cocktails/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

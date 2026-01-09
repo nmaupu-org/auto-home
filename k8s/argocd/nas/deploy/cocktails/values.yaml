@@ -1,0 +1,60 @@
+image:
+  repository: nmaupu/cocktails
+  tag: "1.0.0"
+
+persistence:
+  data:
+    enabled: true
+    type: pvc
+    mountPath: /data
+    targetSelectAll: true
+    storageClass: openebs-zfs
+    size: 200Mi
+
+service:
+  main:
+    enabled: true
+    type: LoadBalancer
+    expandObjectName: true
+    loadBalancerIP: 192.168.99.6
+    ports:
+      main:
+        enabled: true
+        targetSelector: cocktails
+        port: 5000
+        protocol: tcp
+        targetPort: 5000
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: cocktails.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          env:
+            STATE_DIR: /data
+            ADMIN_PASSWORD: bartender
+            SECRET_KEY: flask_key
