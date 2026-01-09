@@ -1,6 +1,6 @@
 image:
   repository: nmaupu/cocktails
-  tag: "1.0.0"
+  tag: "1.0.3"
 
 persistence:
   data:
