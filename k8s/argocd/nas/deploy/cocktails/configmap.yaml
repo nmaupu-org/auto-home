@@ -76,7 +76,7 @@ data:
       category:
         en: Rum
         fr: Rhum
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/don-beachcomber.jpg
       ingredients:
       - name:
           en: White Rum
@@ -98,7 +98,7 @@ data:
           fr: Sirop simple
         qty: 5
     - name: Basil Smash
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/basil-smash.jpg
       ingredients:
       - name:
           en: Gin
@@ -193,7 +193,7 @@ data:
     - name: Oriental
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/oriental.jpg
       ingredients:
       - name:
           en: Rye Whiskey
@@ -213,7 +213,7 @@ data:
     - name: Whiskey Smash
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/whiskey-smash.jpg
       ingredients:
       - name:
           en: Bourbon
@@ -233,7 +233,7 @@ data:
     - name: Boulevardier
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/boulevardier.jpg
       ingredients:
       - name:
           en: Bourbon
@@ -248,7 +248,7 @@ data:
     - name: Highlander
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/highlander.jpg
       ingredients:
       - name:
           en: Scotch Whisky
@@ -265,7 +265,7 @@ data:
     - name: Manhattan
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/manhattan.jpg
       ingredients:
       - name:
           en: Bourbon
@@ -375,7 +375,7 @@ data:
           en: Ginger Beer
         qty: Top Up
     - name: Moscow Mule
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/moscow-mule.jpg
       ingredients:
       - name:
           en: Vodka
@@ -388,7 +388,7 @@ data:
           fr: Jus de citron vert
         qty: 10
     - name: Balalaika
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/balalaika.jpg
       ingredients:
       - name:
           en: Vodka
@@ -423,7 +423,7 @@ data:
           fr: Jus d'orange
         qty: 22.5
     - name: Paloma
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/paloma.jpg
       ingredients:
       - name:
           en: Tequila
@@ -459,7 +459,7 @@ data:
     - name: Whiskey sour
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/whiskey-sour.jpg
       ingredients:
       - name:
           en: Bourbon
@@ -504,7 +504,7 @@ data:
     - name: Celtic Margarita
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/celtic-margarita.jpg
       ingredients:
       - name:
           en: Scotch Whisky
@@ -566,7 +566,7 @@ data:
           fr: Sirop simple
         qty: 15
     - name: Negroski
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/negroski.jpg
       ingredients:
       - name:
           en: Vodka
@@ -581,7 +581,7 @@ data:
     - name: Old Fashioned
       category:
         en: Whisky
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/old-fashioned.jpg
       ingredients:
       - name:
           en: Bourbon
@@ -596,7 +596,7 @@ data:
       - name:
           en: Water
           fr: Eau
-        qty: 1
+        qty: 1 splash
     - name: Pink Gin
       image: ./images/pink-gin.jpg
       ingredients:
@@ -624,7 +624,7 @@ data:
           fr: Jus de citron
         qty: 20
     - name: Aviation
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/aviation.jpg
       ingredients:
       - name:
           en: Gin
