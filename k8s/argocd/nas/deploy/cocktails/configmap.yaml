@@ -14,7 +14,7 @@ data:
       category:
         en: Custom
         fr: Créations
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/smoke-on-the-cynar.jpg
+      image: ./images/smoke-on-the-cynar.jpg
       ingredients:
       - name:
           en: Mezcal
@@ -38,7 +38,7 @@ data:
       category:
         en: Creation
         fr: Créations
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/mexican-dream.jpg
+      image: ./images/mexican-dream.jpg
       ingredients:
       - name:
           en: Tequila
@@ -56,7 +56,7 @@ data:
       category:
         en: Rum
         fr: Rhum
-      image: https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&h=400&fit=crop
+      image: ./images/between-the-sheets.jpg
       ingredients:
       - name:
           en: White Rum
@@ -116,7 +116,7 @@ data:
           fr: Basilic vert
         qty: 15 leaves
     - name: Jasmine
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/jasmine.jpg
       ingredients:
       - name:
           en: Gin
@@ -136,7 +136,7 @@ data:
           fr: Sirop simple
         qty: 2 drops
     - name: Casino
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/casino.jpg
       ingredients:
       - name:
           en: Gin
@@ -154,7 +154,7 @@ data:
           fr: Jus de citron
         qty: 10
     - name: Manhattan Island
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/manhattan-island.jpg
+      image: ./images/manhattan-island.jpg
       ingredients:
       - name:
           en: Cognac
@@ -174,7 +174,7 @@ data:
       category:
         en: Miscs
         fr: Divers
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/naked-and-famous.jpg
       ingredients:
       - name:
           en: Mezcal
@@ -278,7 +278,7 @@ data:
           en: Angostura
         qty: 1 dash
     - name: Margarita
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/margarita.jpg
       ingredients:
       - name:
           en: Tequila
@@ -293,7 +293,7 @@ data:
     - name: Martinez
       category:
         en: Gin
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/martinez.jpg
       ingredients:
       - name:
           en: Gin
@@ -313,7 +313,7 @@ data:
     - name: Mezcal Negroni
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/mezcal-negroni.jpg
+      image: ./images/mezcal-negroni.jpg
       ingredients:
       - name:
           en: Mezcal
@@ -328,7 +328,7 @@ data:
     - name: Negroni
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/negroni.jpg
+      image: ./images/negroni.jpg
       ingredients:
       - name:
           en: Gin
@@ -343,7 +343,7 @@ data:
     - name: Negroni Sbagliato
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/negroni-sbagliato.jpg
+      image: ./images/negroni-sbagliato.jpg
       ingredients:
       - name:
           en: Prosecco
@@ -356,7 +356,7 @@ data:
           en: Campari
         qty: 30
     - name: Suffering Bastard
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/suffering-bastard.jpg
       ingredients:
       - name:
           en: Gin
@@ -405,7 +405,7 @@ data:
           fr: Eau
         qty: 10
     - name: Bee's Knees
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/bees-knees.jpg
       ingredients:
       - name:
           en: Gin
@@ -443,7 +443,7 @@ data:
     - name: Americano
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/americano.jpg
+      image: ./images/americano.jpg
       ingredients:
       - name:
           en: Campari
@@ -476,7 +476,7 @@ data:
       category:
         en: Miscs
         fr: Divers
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/aperol-spritz.jpg
       ingredients:
       - name:
           en: Prosecco
@@ -488,7 +488,7 @@ data:
           en: Angostura
         qty: 2 dashes
     - name: Caipirihna
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/caipirihna.jpg
+      image: ./images/caipirihna.jpg
       ingredients:
       - name:
           en: Cachaça
@@ -521,7 +521,7 @@ data:
       category:
         en: Rum
         fr: Rhum
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/daiquiri.jpg
       ingredients:
       - name:
           en: White Rum
@@ -538,7 +538,7 @@ data:
     - name: Garibaldi
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/garibaldi.jpg
+      image: ./images/garibaldi.jpg
       ingredients:
       - name:
           en: Campari
@@ -552,7 +552,7 @@ data:
           fr: Jus d'orange
         qty: On Top
     - name: Gimlet
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: ./images/gimlet.jpg
       ingredients:
       - name:
           en: Gin
@@ -598,7 +598,7 @@ data:
           fr: Eau
         qty: 1
     - name: Pink Gin
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: ./images/pink-gin.jpg
       ingredients:
       - name:
           en: Gin
@@ -611,7 +611,7 @@ data:
           en: Angostura
         qty: 4 dashes
     - name: Sidecar
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/sidecar.jpg
+      image: ./images/sidecar.jpg
       ingredients:
       - name:
           en: Cognac
