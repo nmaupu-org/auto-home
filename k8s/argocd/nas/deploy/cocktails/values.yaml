@@ -1,6 +1,6 @@
 image:
   repository: nmaupu/cocktails
-  tag: "1.0.3"
+  tag: "1.1.1"
 
 persistence:
   data:
@@ -10,6 +10,16 @@ persistence:
     targetSelectAll: true
     storageClass: openebs-zfs
     size: 200Mi
+  cocktails-config:
+    enabled: true
+    type: configmap
+    objectName: cocktails-data
+    expandObjectName: false
+    mountPath: /app/config
+    defaultMode: "0644"
+    items:
+      - key: cocktails.yaml
+        path: cocktails.yaml
 
 service:
   main:
@@ -51,10 +61,43 @@ global:
 
 workload:
   main:
+    type: Deployment
     podSpec:
       containers:
         main:
+          probes:
+            liveness:
+              type: http
+              path: /health
+              port: 5000
+              spec:
+                initialDelaySeconds: 5
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 5
+                successThreshold: 1
+            readiness:
+              type: http
+              path: /health
+              port: 5000
+              spec:
+                initialDelaySeconds: 1
+                periodSeconds: 2
+                timeoutSeconds: 5
+                failureThreshold: 5
+                successThreshold: 1
+            startup:
+              type: http
+              path: /health
+              port: 5000
+              spec:
+                initialDelaySeconds: 1
+                periodSeconds: 2
+                timeoutSeconds: 5
+                failureThreshold: 5
+                successThreshold: 1
           env:
             STATE_DIR: /data
             ADMIN_PASSWORD: bartender
             SECRET_KEY: flask_key
+            COCKTAILS_FILE_PATH: /app/config/cocktails.yaml
