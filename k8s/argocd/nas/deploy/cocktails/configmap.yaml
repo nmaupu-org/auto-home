@@ -14,7 +14,7 @@ data:
       category:
         en: Custom
         fr: Créations
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/smoke-on-the-cynar.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/smoke-on-the-cynar.jpg
       ingredients:
       - name:
           en: Mezcal
@@ -38,7 +38,7 @@ data:
       category:
         en: Creation
         fr: Créations
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/mexican-dream.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/mexican-dream.jpg
       ingredients:
       - name:
           en: Tequila
@@ -154,7 +154,7 @@ data:
           fr: Jus de citron
         qty: 10
     - name: Manhattan Island
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/manhattan-island.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/manhattan-island.jpg
       ingredients:
       - name:
           en: Cognac
@@ -313,7 +313,7 @@ data:
     - name: Mezcal Negroni
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/mezcal-negroni.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/mezcal-negroni.jpg
       ingredients:
       - name:
           en: Mezcal
@@ -328,7 +328,7 @@ data:
     - name: Negroni
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/negroni.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/negroni.jpg
       ingredients:
       - name:
           en: Gin
@@ -343,7 +343,7 @@ data:
     - name: Negroni Sbagliato
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/negroni-sbagliato.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/negroni-sbagliato.jpg
       ingredients:
       - name:
           en: Prosecco
@@ -443,7 +443,7 @@ data:
     - name: Americano
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/americano.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/americano.jpg
       ingredients:
       - name:
           en: Campari
@@ -488,7 +488,7 @@ data:
           en: Angostura
         qty: 2 dashes
     - name: Caipirihna
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/caipirihna.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/caipirihna.jpg
       ingredients:
       - name:
           en: Cachaça
@@ -538,7 +538,7 @@ data:
     - name: Garibaldi
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/garibaldi.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/garibaldi.jpg
       ingredients:
       - name:
           en: Campari
@@ -611,7 +611,7 @@ data:
           en: Angostura
         qty: 4 dashes
     - name: Sidecar
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/sidecar.png
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/sidecar.jpg
       ingredients:
       - name:
           en: Cognac
