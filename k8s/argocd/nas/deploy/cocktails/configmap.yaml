@@ -488,7 +488,7 @@ data:
           en: Angostura
         qty: 2 dashes
     - name: Caipirihna
-      image: https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=400&fit=crop
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/caipirihna.png
       ingredients:
       - name:
           en: Cachaça
