@@ -310,7 +310,7 @@ data:
     - name: Mezcal Megroni
       category:
         en: Americanos
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/americano.png
       ingredients:
       - name:
           en: Mezcal
