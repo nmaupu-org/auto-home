@@ -4,6 +4,9 @@ kind: ConfigMap
 metadata:
   name: cocktails-data
   namespace: cocktails
+  annotations:
+    # Reloader annotation - tells reloader to watch this ConfigMap
+    reloader.stakater.com/match: "true"
 data:
   cocktails.yaml: |
     cocktails:
@@ -310,7 +313,7 @@ data:
     - name: Mezcal Megroni
       category:
         en: Americanos
-      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/americano.png
+      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
       ingredients:
       - name:
           en: Mezcal
@@ -440,7 +443,7 @@ data:
     - name: Americano
       category:
         en: Americanos
-      image: https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&h=400&fit=crop
+      image: https://raw.githubusercontent.com/nmaupu/cocktails/refs/heads/main/images/americano.png
       ingredients:
       - name:
           en: Campari

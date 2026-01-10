@@ -54,6 +54,9 @@ ingress:
           - websecure
 
 global:
+  annotations:
+    # Reloader watches this ConfigMap and restarts pod on changes
+    reloader.stakater.com/search: "true"
   traefik:
     fixedMiddlewares:
       - name: chain-basic
