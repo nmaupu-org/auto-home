@@ -641,3 +641,50 @@ data:
           en: Lemon Juice
           fr: Jus de citron
         qty: 15
+    - name: French 75
+      image: ./images/french-75.jpg
+      ingredients:
+      - name:
+          en: Prosecco
+        qty: 60
+      - name:
+          en: Gin
+        qty: 30
+      - name:
+          en: Lemon Juice
+          fr: Jus de citron
+        qty: 15
+      - name:
+          en: Simple Syrup
+          fr: Sirop simple
+        qty: 15
+    - name: French 125
+      image: ./images/french-125.jpg
+      ingredients:
+      - name:
+          en: Prosecco
+        qty: 60
+      - name:
+          en: Cognac
+        qty: 30
+      - name:
+          en: Lemon Juice
+          fr: Jus de citron
+        qty: 15
+      - name:
+          en: Simple Syrup
+          fr: Sirop simple
+        qty: 15
+    - name: Kamikaze
+      image: ./images/kamikaze.jpg
+      ingredients:
+      - name:
+          en: Vodka
+        qty: 30
+      - name:
+          en: Triple Sec
+        qty: 30
+      - name:
+          en: Lemon Juice
+          fr: Jus de citron
+        qty: 30
