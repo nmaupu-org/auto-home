@@ -1,0 +1,259 @@
+persistence:
+  tvshows:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/plex/TVShows-sonaar
+    mountPath: /data/tvshows
+    readOnly: true
+  movies:
+    enabled: true
+    type: hostPath
+    hostPath: /mnt/tank/dls/plex/Movies
+    mountPath: /data/movies
+    readOnly: true
+  configmap:
+    enabled: true
+    type: configmap
+    targetSelectAll: true
+    objectName: config
+    expandObjectName: true
+    mountPath: /config
+    defaultMode: "0644"
+    items:
+      - key: config.toml
+        path: config.toml
+
+configmap:
+  config:
+    enabled: true
+    namespace: tools
+    data:
+      config.toml: |
+        [general]
+        directory-listing = true
+
+        [advanced]
+
+        [[advanced.headers]]
+        source = "**/*.mp4"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.mkv"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.avi"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.mov"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.wmv"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.flv"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.webm"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.m4v"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.mpg"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.mpeg"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.3gp"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.ogv"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.ts"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.m2ts"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.vob"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.asf"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.rm"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.rmvb"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.divx"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.xvid"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.mp3"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.flac"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.wav"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.aac"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.ogg"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.m4a"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.wma"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+        [[advanced.headers]]
+        source = "**/*.opus"
+        [advanced.headers.headers]
+        Content-Disposition = "attachment"
+
+service:
+  main:
+    enabled: true
+    ports:
+      main:
+        enabled: true
+        targetSelector: web-static
+        port: 80
+        protocol: tcp
+        targetPort: 80
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: web-static.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+      - host: web-static.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+          probes:
+            liveness:
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 5
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 5
+                successThreshold: 1
+            readiness:
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 1
+                periodSeconds: 2
+                timeoutSeconds: 5
+                failureThreshold: 5
+                successThreshold: 1
+            startup:
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 1
+                periodSeconds: 2
+                timeoutSeconds: 5
+                failureThreshold: 5
+                successThreshold: 1
+          env:
+            SERVER_ROOT: /data
+            SERVER_PORT: "80"
+            SERVER_DIRECTORY_LISTING: "true"
+            SERVER_CONFIG_FILE: /config/config.toml

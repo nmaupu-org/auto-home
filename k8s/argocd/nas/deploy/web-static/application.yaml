@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: http-plex
+  name: web-static
   namespace: argocd
 spec:
   project: default
@@ -13,9 +13,9 @@ spec:
       repoURL: oci.trueforge.org/truecharts
       targetRevision: 7.16.5
       helm:
-        releaseName: http-plex
+        releaseName: web-static
         valueFiles:
-          - $values/k8s/argocd/nas/deploy/http-plex/values.yaml
+          - $values/k8s/argocd/nas/deploy/web-static/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
