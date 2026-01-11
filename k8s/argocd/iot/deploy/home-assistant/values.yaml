@@ -35,7 +35,7 @@ rbac:
 
 podOptions:
   automountServiceAccountToken: true
-  hostNetwork: true
+  # hostNetwork: true
 
 workload:
   # conf-reloader cronjob gets config from upstream, prepares the directory
@@ -242,9 +242,6 @@ persistence:
       - key: hass-passwords.json
         path: hass-passwords.json
 
-# Since setting hostNetwork: true, we are not using service as load balancer (metallb) anymore
-# but this remains here as reference.
-# hostNetwork has been mandatory to make udp multicast shit work for emulated_roku and emulated_hue...
 service:
   main:
     enabled: true
@@ -254,24 +251,23 @@ service:
         targetPort: 8123
   emulated-roku:
     enabled: true
+    type: NodePort
     ports:
       emulated-roku:
         enabled: true
-        port: 8060
+        nodePort: 9060
         protocol: tcp
-        targetPort: 8060
+        targetPort: 9060
   emulated-hue:
     enabled: true
+    type: NodePort
     ports:
       emulated-hue:
         enabled: true
-        port: 80
+        nodePort: 9070
         protocol: tcp
-        targetPort: 80
+        targetPort: 9070
 
-# Ingress is configured so that we can access through the main load balancer
-# even if using hostNetwork: true
-# Certificate is also working out of the box.
 ingress:
   main:
     enabled: true
