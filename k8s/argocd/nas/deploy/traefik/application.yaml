@@ -11,7 +11,7 @@ spec:
     name: in-cluster
   sources:
     - chart: traefik
-      repoURL: tccr.io/truecharts
+      repoURL: oci.trueforge.org/truecharts
       targetRevision: 30.4.1
       helm:
         releaseName: traefik

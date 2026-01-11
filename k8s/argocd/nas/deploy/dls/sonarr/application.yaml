@@ -10,7 +10,7 @@ spec:
     name: in-cluster
   sources:
     - chart: sonarr
-      repoURL: tccr.io/truecharts
+      repoURL: oci.trueforge.org/truecharts
       targetRevision: 25.0.1
       helm:
         releaseName: sonarr

@@ -1,4 +1,4 @@
-TRUECHARTS_OCI ?= oci://tccr.io/truecharts
+TRUECHARTS_OCI ?= oci://oci.trueforge.org/truecharts
 GOOGLE_PROJECT_ID ?= my-project
 EMAIL_ADDRESS ?= $(USER)@gmail.com
 

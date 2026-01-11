@@ -11,7 +11,7 @@ spec:
     name: iot
   sources:
     - chart: cloudnative-pg
-      repoURL: tccr.io/truecharts
+      repoURL: oci.trueforge.org/truecharts
       targetRevision: 8.2.0
       helm:
         releaseName: cnpg

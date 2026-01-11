@@ -10,7 +10,7 @@ spec:
     name: in-cluster
   sources:
     - chart: app-template
-      repoURL: tccr.io/truecharts
+      repoURL: oci.trueforge.org/truecharts
       targetRevision: 15.24.48
       helm:
         releaseName: timesheet

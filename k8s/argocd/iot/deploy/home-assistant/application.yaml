@@ -10,8 +10,8 @@ spec:
     name: iot
   sources:
     - chart: home-assistant
-      repoURL: tccr.io/truecharts
-      targetRevision: 28.15.2
+      repoURL: oci.trueforge.org/truecharts
+      targetRevision: 28.19.8
       helm:
         releaseName: home-assistant
         valueFiles:

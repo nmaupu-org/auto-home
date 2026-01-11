@@ -10,7 +10,7 @@ spec:
     name: iot
   sources:
     - chart: mosquitto
-      repoURL: tccr.io/truecharts
+      repoURL: oci.trueforge.org/truecharts
       targetRevision: 17.11.4
       helm:
         releaseName: mosquitto

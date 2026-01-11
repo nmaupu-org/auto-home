@@ -37,7 +37,7 @@ def discover_truecharts_apps():
                 # Check if this app uses TrueCharts
                 sources = app_data.get('spec', {}).get('sources', [])
                 for source in sources:
-                    if source.get('repoURL') == 'tccr.io/truecharts':
+                    if source.get('repoURL') == 'oci.trueforge.org/truecharts':
                         chart_name = source.get('chart', 'unknown')
                         app_name = app_data.get('metadata', {}).get('name', 'unknown')
                         
@@ -67,7 +67,7 @@ def get_current_version(app_path):
         # Navigate through the YAML structure to find targetRevision for TrueCharts source
         sources = app_data.get('spec', {}).get('sources', [])
         for source in sources:
-            if (source.get('repoURL') == 'tccr.io/truecharts' and 
+            if (source.get('repoURL') == 'oci.trueforge.org/truecharts' and 
                 'chart' in source and 'targetRevision' in source):
                 return source.get('targetRevision', 'Unknown')
         
@@ -93,7 +93,7 @@ def update_application_yaml(file_path, new_version):
         # Find and update the TrueCharts source
         sources = app_data.get('spec', {}).get('sources', [])
         for source in sources:
-            if source.get('repoURL') == 'tccr.io/truecharts':
+            if source.get('repoURL') == 'oci.trueforge.org/truecharts':
                 old_version = source.get('targetRevision', 'Unknown')
                 source['targetRevision'] = new_version.split(' ')[0]  # Remove directory suffix
                 

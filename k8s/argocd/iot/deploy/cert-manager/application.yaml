@@ -13,7 +13,7 @@ spec:
     name: iot
   sources:
     - chart: cert-manager
-      repoURL: tccr.io/truecharts
+      repoURL: oci.trueforge.org/truecharts
       targetRevision: 6.2.3
       helm:
         releaseName: cert-manager
