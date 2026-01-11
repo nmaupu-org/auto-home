@@ -254,6 +254,8 @@ service:
         targetPort: 8123
   emulated-roku:
     enabled: true
+    type: LoadBalancer
+    loadBalancerIP: 192.168.100.10
     ports:
       emulated-roku:
         enabled: true
@@ -262,6 +264,8 @@ service:
         targetPort: 8060
   emulated-hue:
     enabled: true
+    type: LoadBalancer
+    loadBalancerIP: 192.168.100.11
     ports:
       emulated-hue:
         enabled: true
