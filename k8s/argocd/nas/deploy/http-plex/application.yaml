@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: http-plex
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: tools
+    name: in-cluster
+  sources:
+    - chart: static-web-server
+      repoURL: oci.trueforge.org/truecharts
+      targetRevision: 7.16.5
+      helm:
+        releaseName: http-plex
+        valueFiles:
+          - $values/k8s/argocd/nas/deploy/http-plex/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
