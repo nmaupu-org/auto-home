@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -x
+
+
 DIRNAME="$(cd "$(dirname "$0")/.." && pwd)"
 
 usage() {
@@ -14,7 +17,7 @@ EOF
 
 SCRIPT="$1"
 
-DOCKER_IMAGE="${DOCKER_ID_USER}/builder:2.0"
+DOCKER_IMAGE="${DOCKER_ID_USER}/builder:3.0"
 HOME_DIR="/home/builder"
 WORK_DIR="/workspace"
 ANSIBLE_DIR="${WORK_DIR}/ansible"

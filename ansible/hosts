@@ -28,25 +28,3 @@ iot
 
 [nas_host]
 nas         ansible_host=192.168.12.8
-
-[freebsd:vars]
-ansible_user=root
-ansible_python_interpreter=/usr/local/bin/python2.7
-#ansible_shell_type=csh
-
-[coreos_controllers]
-kcontroller1 ansible_host=192.168.12.12
-
-[coreos_nodes]
-knode1       ansible_host=192.168.12.13
-knode2       ansible_host=192.168.12.14
-knode3       ansible_host=192.168.12.15
-
-[coreos:children]
-coreos_controllers
-coreos_nodes
-
-[coreos:vars]
-ansible_ssh_user=core
-ansible_python_interpreter=/home/core/bin/python
-ansible_pip_interpreter=/home/core/bin/pip

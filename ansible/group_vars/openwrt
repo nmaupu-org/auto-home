@@ -6,6 +6,9 @@ firewall_packages:
   - openvpn-openssl
   - openvpn-easy-rsa
   - libustream-mbedtls
+  - openssh-sftp-server
+  - python3-urllib
+  - python3-openssl
   - kmod-ipt-ipset
   - vpn-policy-routing
   - luci-app-vpn-policy-routing
@@ -19,6 +22,10 @@ firewall_packages:
   - kmod-fs-nfs
   - kmod-fs-nfs-v3
   - kmod-fs-nfs-v4
+  - gawk
+  - grep
+  - sed
+  - coreutils-sort
 
 firewall_network_interfaces:
   lan:
@@ -103,18 +110,6 @@ firewall_dhcp_static_leases:
   - name: raspbastion
     mac: B8:27:EB:C4:1C:80
     ip: 192.168.12.11
-  - name: kcontroller1
-    mac: 00:19:99:CF:34:71
-    ip: 192.168.12.12
-  - name: knode1
-    mac: 00:19:99:CE:C3:1A
-    ip: 192.168.12.13
-  - name: knode2
-    mac: 00:19:99:D0:43:A9
-    ip: 192.168.12.14
-  - name: knode3
-    mac: 00:19:99:D0:42:E7
-    ip: 192.168.12.15
   - name: harmony-hub
     mac: C8:DB:26:0B:1F:30
     ip: 192.168.12.20
@@ -131,7 +126,7 @@ firewall_dhcp_static_leases:
     mac: 24:4b:fe:05:0a:8d
     ip: 192.168.12.38
   - name: nmaupu-laptop
-    mac: 5c:5f:67:40:18:89
+    mac: e4:1f:d5:8b:ce:82
     ip: 192.168.12.39
   - name: iot
     mac: 68:1D:EF:33:F8:33
@@ -151,7 +146,7 @@ firewall_dns_entries:
     - iot-raspbian
   192.168.100.35:
     - mqtt
-  192.168.100.20:
+  192.168.100.1:
     - hass
   192.168.99.1:
     - plex
