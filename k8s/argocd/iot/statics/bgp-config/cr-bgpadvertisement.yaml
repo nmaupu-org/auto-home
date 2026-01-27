@@ -4,7 +4,7 @@ metadata:
   name: bgpadv
   namespace: metallb
 spec:
-  aggregationLength: 24
+  aggregationLength: 32
   ipAddressPools:
   - appsbgp
   peers:
