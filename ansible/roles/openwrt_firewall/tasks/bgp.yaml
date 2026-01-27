@@ -4,6 +4,10 @@
 # vtysh > show running
 # vtysh > show bgp summary
 # if no traffic, delete metallb speaker pod
+#
+# Also more debug commands:
+# vtysh > show bgp ipv4 unicast
+# vtysh > show ip route 192.168.100.1
 
 - name: Configuring BGP with vtysh
   ansible.builtin.shell: |
