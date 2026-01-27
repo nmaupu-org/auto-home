@@ -32,9 +32,14 @@ workload:
 service:
   main:
     enabled: true
+    annotations:
+      metallb.io/loadBalancerIPs: 192.168.100.35
     type: LoadBalancer
     expandObjectName: true
     loadBalancerIP: 192.168.100.35
+    integrations:
+      metallb:
+        enabled: true
     ports:
       main:
         enabled: true
