@@ -10,7 +10,7 @@ service:
   type: LoadBalancer
   port: 22
   annotations:
-    metallb.io/loadBalancerIPs: 192.168.100.22
+    metallb.io/loadBalancerIPs: 192.168.101.22
 
 persistence:
   serverKeys:
