@@ -1,6 +1,4 @@
 ---
-# Using bitnami chart as truecharts has deprecated metallb
-# See statics directory for configuration CRD
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -12,11 +10,20 @@ spec:
     namespace: metallb
     name: iot
   source:
-    chart: metallb
-    repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 6.4.22
+    repoURL: https://github.com/metallb/metallb.git
+    targetRevision: metallb-chart-0.15.3
+    path: charts/metallb
     helm:
       releaseName: iot-metallb
+      values: |
+        controller:
+          image:
+            tag: v0.15.3
+            pullPolicy: IfNotPresent
+        speaker:
+          image:
+            tag: v0.15.3
+            pullPolicy: IfNotPresent
 
   syncPolicy:
     automated:
