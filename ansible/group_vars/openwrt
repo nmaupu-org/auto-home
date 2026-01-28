@@ -144,6 +144,8 @@ firewall_dns_entries:
     - printer
   192.168.12.35:
     - iot-raspbian
+  192.168.12.40:
+    - iot
   192.168.100.35:
     - mqtt
   192.168.100.1:
@@ -153,6 +155,7 @@ firewall_dns_entries:
     - grafana
     - dashboard
     - vault
+    - web-static
 
 firewall_ports:
   - target: DNAT
