@@ -14,7 +14,7 @@ spec:
   source:
     chart: metallb
     repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 6.4.3
+    targetRevision: 6.4.22
     helm:
       releaseName: iot-metallb
 
