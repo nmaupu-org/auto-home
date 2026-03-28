@@ -3,7 +3,7 @@
 set -eu
 
 : "${NAS:=192.168.12.8}"
-: "${SHARE:=/mnt/tank/le-certs}"
+: "${SHARE:=/tank/le-certs}"
 : "${MOUNTPOINT:=/mnt/le-certs}"
 
 mkdir -p /mnt/le-certs

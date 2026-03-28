@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/zfs.nix
     ../../modules/smb.nix
-    # ../../modules/nfs.nix
+    ../../modules/nfs.nix
     # ../../modules/ftp.nix
     # ../../modules/telegram.nix
     # ../../modules/smart.nix
