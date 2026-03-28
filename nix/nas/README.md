@@ -209,8 +209,27 @@ Remove the USB drive. The system should boot from the SSD into NixOS.
 
 SSH in:
 ```bash
-ssh nmaupu@<nas-ip>
+ssh nmaupu@nas.home.fossar.net
 ```
+
+### Bootstrap git and flakes
+
+The first rebuild must be done from a temporary shell since git and flakes are not
+yet available before the first `nixos-rebuild`:
+
+```bash
+nix-shell -p git --extra-experimental-features 'nix-command flakes'
+```
+
+Then clone the repo and run the first rebuild from inside that shell:
+
+```bash
+cd ~
+git clone <repo-url> auto-home
+sudo nixos-rebuild switch --flake ./auto-home/nix/nas#nas
+```
+
+After this rebuild, `git` and `nix-command`/`flakes` are permanently available.
 
 ### Import the ZFS pools
 

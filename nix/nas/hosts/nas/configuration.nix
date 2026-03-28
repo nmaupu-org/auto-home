@@ -60,6 +60,7 @@
   environment.systemPackages = with pkgs; [ git ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.download-buffer-size = 524288000; # 500MiB
 
   # mdadm notifications — set to no-op until telegram.nix is enabled
   # TODO: change to "PROGRAM /etc/telegram-alert" after sops is set up
