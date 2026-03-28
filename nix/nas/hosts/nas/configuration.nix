@@ -12,9 +12,22 @@
     ../../modules/k3s.nix
   ];
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
+  # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable     = true;
+    efiSupport = true;
+    mirroredBoots = [
+      {
+        devices = [ "/dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891827" ];
+        path    = "/boot";
+      }
+      {
+        devices = [ "/dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828" ];
+        path    = "/boot-fallback";
+      }
+    ];
+  };
 
   # Networking
   networking.hostName = "nas";
@@ -26,6 +39,7 @@
 
   # SSH
   services.openssh.enable = true;
+  services.openssh.openFirewall = true;
   services.openssh.settings.PermitRootLogin = "yes";
 
   users.users.nmaupu = {

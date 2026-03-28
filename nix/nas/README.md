@@ -6,7 +6,9 @@ Full reinstallation procedure, from bare metal to a running system.
 
 ## Hardware
 
-- **Boot disk**: dedicated SSD (wiped during install)
+- **Boot disks**: 2× Verbatim Vi550 S3 119GiB SSDs — mirrored via mdadm RAID1 (root) + GRUB mirroredBoots (EFI)
+  - `ata-Verbatim_Vi550_S3_493504108891827` → primary (`/boot`)
+  - `ata-Verbatim_Vi550_S3_493504108891828` → fallback (`/boot-fallback`)
 - **Data disks**: ZFS pools `tank` (raidz2, 4×8TB) and `dls-tmp` (mirror, 2×2TB) — **never touch these**
 - **Architecture**: x86_64, UEFI
 
@@ -33,45 +35,101 @@ Full reinstallation procedure, from bare metal to a running system.
 
 ---
 
-## Phase 2 — Partition and format the boot SSD
+## Phase 2 — Partition and format the boot SSDs
 
-### Identify the boot SSD
+### Identify the disks
 
-List disks and cross-reference with known data disk IDs to find the boot SSD:
+Run:
 ```bash
 lsblk -o NAME,SIZE,MODEL,SERIAL
 ls /dev/disk/by-id/
 ```
 
-The data disks are:
-- `ata-ST8000VN004-*` — tank (×4)
-- `ata-WDC_WD20EFRX-*` — dls-tmp (×2)
-- `ata-Verbatim_Vi550_S3_*` — **these are the boot SSDs** (mirror for TrueNAS boot-pool, but the boot SSD for NixOS is one dedicated disk — confirm before wiping)
+Expected output (disk letters may vary across reboots — always use by-id):
 
-### Partition the boot SSD
+| by-id | Model | Size | Role |
+|---|---|---|---|
+| `ata-Verbatim_Vi550_S3_493504108891827` | Verbatim Vi550 S3 | 119GiB | **NixOS boot SSD #1** |
+| `ata-Verbatim_Vi550_S3_493504108891828` | Verbatim Vi550 S3 | 119GiB | **NixOS boot SSD #2** |
+| `ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M2585040` | WD Red 2TB | 1.8TiB | dls-tmp pool |
+| `ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M2658965` | WD Red 2TB | 1.8TiB | dls-tmp pool |
+| `ata-ST8000VN004-3CP101_WRQ2HCAN` | Seagate 8TB | 7.3TiB | tank pool |
+| `ata-ST8000VN004-3CP101_WWZ5711R` | Seagate 8TB | 7.3TiB | tank pool |
+| `ata-ST8000VN004-3CP101_WWZ5QLQ6` | Seagate 8TB | 7.3TiB | tank pool |
+| `ata-ST8000VN004-3CP101_WWZ5VT0V` | Seagate 8TB | 7.3TiB | tank pool |
 
-Replace `/dev/sdX` with the correct device.
+Resolve by-id to current device letters:
+```bash
+ls -la /dev/disk/by-id/ata-Verbatim_Vi550_S3_4935041088918{27,28}
+```
+
+Example output:
+```
+ata-Verbatim_Vi550_S3_493504108891827 -> ../../sdb
+ata-Verbatim_Vi550_S3_493504108891828 -> ../../sdc
+```
+
+> **Warning**: disk letters (sdb, sdc…) are assigned by the kernel at boot and can
+> change. Always reference disks by their by-id path for anything permanent.
+
+### Partition both SSDs
+
+The root filesystem is mirrored via mdadm RAID1. Each SSD gets identical partitioning:
+- **Part 1** (512MiB): EFI system partition — GRUB installs on both, kept in sync automatically
+- **Part 2** (rest): mdadm RAID1 member — ext4 root on top
 
 ```bash
-parted /dev/sdX -- mklabel gpt
-parted /dev/sdX -- mkpart ESP fat32 1MiB 512MiB
-parted /dev/sdX -- mkpart primary ext4 512MiB 100%
-parted /dev/sdX -- set 1 esp on
+for dev in \
+  /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891827 \
+  /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828; do
+  parted $dev -- mklabel gpt
+  parted $dev -- mkpart ESP fat32 1MiB 512MiB
+  parted $dev -- mkpart primary ext4 512MiB 100%
+  parted $dev -- set 1 esp on
+done
+```
+
+### Create the mdadm RAID1 array
+
+`--bitmap=internal` enables write-intent bitmap: after an unclean shutdown only
+dirty blocks are resynced instead of the full disk.
+
+`--metadata=1.0` stores metadata at the end of the partition so the EFI firmware
+can still read the partition as a plain disk if needed.
+
+```bash
+mdadm --create /dev/md0 \
+  --level=1 \
+  --raid-devices=2 \
+  --metadata=1.0 \
+  --bitmap=internal \
+  /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891827-part2 \
+  /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828-part2
+```
+
+Monitor initial sync (optional, install can proceed in parallel):
+```bash
+watch cat /proc/mdstat
 ```
 
 ### Format
 
 ```bash
-mkfs.fat -F32 -n BOOT /dev/sdX1
-mkfs.ext4 -L nixos /dev/sdX2
+# EFI on both SSDs (GRUB will keep them in sync after install)
+mkfs.fat -F32 -n BOOT     /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891827-part1
+mkfs.fat -F32 -n BOOTFALL /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828-part1
+
+# Root on the RAID array
+mkfs.ext4 -L nixos /dev/md0
 ```
 
 ### Mount
 
 ```bash
-mount /dev/sdX2 /mnt
-mkdir -p /mnt/boot
-mount /dev/sdX1 /mnt/boot
+mount /dev/md0 /mnt
+mkdir -p /mnt/boot /mnt/boot-fallback
+mount /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891827-part1 /mnt/boot
+mount /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828-part1 /mnt/boot-fallback
 ```
 
 ---
