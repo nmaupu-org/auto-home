@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ../../modules/zfs.nix
+    ../../modules/zfs.nix
     # ../../modules/smb.nix
     # ../../modules/nfs.nix
     # ../../modules/ftp.nix
@@ -31,6 +31,7 @@
 
   # Networking
   networking.hostName = "nas";
+  networking.domain = "home.fossar.net";
   networking.networkmanager.enable = true;
 
   # Basic system
@@ -56,8 +57,16 @@
 
   users.groups.bicou = {};
 
+  environment.systemPackages = with pkgs; [ git ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # mdadm notifications — set to no-op until telegram.nix is enabled
+  # TODO: change to "PROGRAM /etc/telegram-alert" after sops is set up
+  boot.swraid.mdadmConf = "PROGRAM /bin/true";
+
   # sops-nix: age key derived from SSH host key (auto-available after first boot)
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

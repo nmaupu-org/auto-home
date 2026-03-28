@@ -162,7 +162,14 @@ head -c 8 /etc/machine-id
 # networking.hostId = "<output>";
 ```
 
-**3. Comment out all modules except hardware** in `hosts/nas/configuration.nix`.
+**3. Set mdadm notification to no-op** in `hosts/nas/configuration.nix` to avoid a
+crash in the `mdmon` service (will be replaced by the Telegram alert script later):
+
+```nix
+boot.swraid.mdadmConf = "PROGRAM /bin/true";
+```
+
+**4. Comment out all modules except hardware** in `hosts/nas/configuration.nix`.
 All modules (`zfs.nix`, `smb.nix`, `nfs.nix`, `ftp.nix`, `telegram.nix`, `smart.nix`, `k3s.nix`)
 should be commented out for the initial install. They will be re-enabled one by one
 after the system boots and sops secrets are in place.
@@ -251,9 +258,18 @@ ftp_user_password: "<password>"
 
 Save and exit. The file is now encrypted on disk.
 
+### Re-enable modules and update mdadm notification
+
+In `hosts/nas/configuration.nix`:
+- Uncomment all modules (`zfs.nix`, `smb.nix`, `nfs.nix`, `ftp.nix`, `telegram.nix`, `smart.nix`, `k3s.nix`)
+- Switch mdadm notification from no-op to the Telegram script:
+  ```nix
+  boot.swraid.mdadmConf = "PROGRAM /etc/telegram-alert";
+  ```
+
 ### Rebuild to activate secrets
 
-Commit `.sops.yaml` and `secrets/secrets.yaml`, push, then on the NAS:
+Commit `.sops.yaml`, `secrets/secrets.yaml`, and the updated `configuration.nix`, push, then on the NAS:
 ```bash
 cd /tmp/auto-home
 git pull
