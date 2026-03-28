@@ -36,8 +36,8 @@ let
   };
 in
 {
-  sops.secrets.telegram_token  = { sopsFile = ../secrets/secrets.yaml; };
-  sops.secrets.telegram_chat_id = { sopsFile = ../secrets/secrets.yaml; };
+  sops.secrets.telegram_token   = { sopsFile = ../secrets/secrets.yaml; mode = "0444"; };
+  sops.secrets.telegram_chat_id = { sopsFile = ../secrets/secrets.yaml; mode = "0444"; };
 
   environment.systemPackages = [ telegram-alert ];
 
