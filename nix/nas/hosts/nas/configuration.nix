@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/zfs.nix
-    # ../../modules/smb.nix
+    ../../modules/smb.nix
     # ../../modules/nfs.nix
     # ../../modules/ftp.nix
     # ../../modules/telegram.nix
@@ -61,6 +61,14 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.download-buffer-size = 524288000; # 500MiB
+
+  # Automatic cleanup — keep only the last 5 generations, run GC weekly
+  nix.gc = {
+    automatic = true;
+    dates     = "weekly";
+    options   = "--delete-older-than 30d";
+  };
+  nix.settings.auto-optimise-store = true;
 
   # mdadm notifications — set to no-op until telegram.nix is enabled
   # TODO: change to "PROGRAM /etc/telegram-alert" after sops is set up
