@@ -44,10 +44,11 @@
   services.openssh.settings.PermitRootLogin = "yes";
 
   users.users.nmaupu = {
-    isNormalUser     = true;
-    uid              = 1001;
-    group            = "nmaupu";
-    extraGroups      = [ "wheel" ];
+    isNormalUser       = true;
+    uid                = 1001;
+    group              = "nmaupu";
+    extraGroups        = [ "wheel" ];
+    shell              = pkgs.zsh;
     hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
   };
@@ -74,7 +75,24 @@
     neededForUsers = true;
   };
 
-  environment.systemPackages = with pkgs; [ git ];
+  programs.zsh.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+    jq
+    zsh
+    sops
+    age
+    ssh-to-age
+    (writeShellScriptBin "update-system" ''
+      set -e
+      cd /home/nmaupu/auto-home
+      git fetch --all
+      git reset --hard origin/master
+      sudo nixos-rebuild switch --flake ./nix/nas#nas
+    '')
+  ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.download-buffer-size = 524288000; # 500MiB
