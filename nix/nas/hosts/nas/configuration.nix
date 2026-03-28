@@ -6,7 +6,7 @@
     ../../modules/zfs.nix
     ../../modules/smb.nix
     ../../modules/nfs.nix
-    # ../../modules/ftp.nix
+    ../../modules/ftp.nix
     # ../../modules/telegram.nix
     # ../../modules/smart.nix
     # ../../modules/k3s.nix
@@ -45,17 +45,23 @@
 
   users.users.nmaupu = {
     isNormalUser = true;
+    uid         = 1001;
+    group       = "nmaupu";
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
   };
 
+  users.groups.nmaupu = { gid = 1001; };
+
   users.users.bicou = {
     isSystemUser = true;
+    uid   = 1002;
     group = "bicou";
+    home  = "/tank/home/bicou";
     shell = pkgs.shadow;  # no login shell
   };
 
-  users.groups.bicou = {};
+  users.groups.bicou = { gid = 1002; };
 
   environment.systemPackages = with pkgs; [ git ];
 

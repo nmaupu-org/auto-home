@@ -5,64 +5,65 @@
 #
 # Note: path uses /tank/... (no altroot) — verify after `zpool import tank`.
 #
-# The ftpuser password is managed via sops-nix (ftp_user_password).
-# Until sops is in place, set manually: passwd ftpuser
+# The printer user password is managed via sops-nix (ftp_user_password).
+# Until sops is in place, set manually: passwd printer
 
 {
-  services.proftpd = {
+  services.vsftpd = {
     enable = true;
-    displayConnect = "Welcome to nas FTP";
-    defaultRoot = true;
+
+    # No anonymous access
+    anonymousUser = false;
+    localUsers    = true;
+
+    # Chroot local users to their home directory
+    chrootlocalUser = true;
+
+    # Allow writes
+    writeEnable = true;
 
     extraConfig = ''
-      ServerName              "nas"
-      Port                    21
-      MaxClients              10
-      MaxConnectionsPerHost   10
-      MaxLoginAttempts        5
-      TimeoutIdle             600
-      TimeoutNoTransfer       300
-
-      PassivePorts            5000 5020
-
-      # Local users only, no anonymous
-      AuthOrder               mod_auth_unix.c
-      RequireValidShell       off
-
-      # Chroot to home directory
-      DefaultRoot             ~
-
-      # No FXP, no ident, no reverse DNS
-      AllowForeignAddress     off
-      IdentLookups            off
-      UseReverseDNS           off
-
-      # Umask: files=000, dirs=022
-      Umask                   000 022
-
-      # Allow resume of interrupted transfers
-      AllowRetrieveRestart    on
-      AllowStoreRestart       on
-
-      # Restrict login to ftpuser only
-      <Limit LOGIN>
-        AllowUser ftpuser
-        DenyAll
-      </Limit>
-
+      ftpd_banner=Welcome to nas FTP
+      max_clients=10
+      max_per_ip=10
+      idle_session_timeout=600
+      data_connection_timeout=300
+      pasv_enable=YES
+      pasv_min_port=5000
+      pasv_max_port=5020
+      userlist_enable=YES
+      userlist_deny=NO
+      userlist_file=/etc/vsftpd/userlist
+      allow_writeable_chroot=YES
+      # nmaupu is exempt from chroot (gets full filesystem access)
+      chroot_list_enable=YES
+      chroot_list_file=/etc/vsftpd/chroot_exceptions
     '';
   };
+
+  # Allowed users list
+  environment.etc."vsftpd/userlist".text = ''
+    printer
+    nmaupu
+    bicou
+  '';
+
+  # Users exempt from chroot (full filesystem access)
+  environment.etc."vsftpd/chroot_exceptions".text = ''
+    nmaupu
+  '';
 
   networking.firewall.allowedTCPPorts = [ 21 ];
   networking.firewall.allowedTCPPortRanges = [
     { from = 5000; to = 5020; }
   ];
 
-  users.users.ftpuser = {
+  users.users.printer = {
     isSystemUser = true;
-    group = "ftpuser";
-    home = "/tank/ftp_home";
+    uid   = 1003;
+    group = "printer";
+    home  = "/tank/ftp_home";
     # Password managed via sops-nix (ftp_user_password)
   };
-  users.groups.ftpuser = {};
+  users.groups.printer = { gid = 1003; };
 }
