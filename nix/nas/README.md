@@ -233,10 +233,17 @@ After this rebuild, `git` and `nix-command`/`flakes` are permanently available.
 
 ### Import the ZFS pools
 
+On first import after migrating from TrueNAS, the pools need `-f` (force) since
+they were last used by a different system:
+
 ```bash
 sudo zpool import -f tank
 sudo zpool import -f dls-tmp
 ```
+
+> **Note**: `-f` is only needed once. After this, NixOS updates its import cache
+> and subsequent reboots will import the pools automatically without forcing.
+> `boot.zfs.forceImportAll` is therefore not set in `zfs.nix`.
 
 Verify:
 ```bash
