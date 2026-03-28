@@ -11,6 +11,7 @@
     ../../modules/smart.nix
     ../../modules/k3s.nix
     ../../modules/telegram-bot.nix
+    ../../modules/zsh.nix
   ];
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs
@@ -56,6 +57,11 @@
 
   users.groups.nmaupu = { gid = 1001; };
 
+  security.sudo.extraRules = [{
+    users = [ "nmaupu" ];
+    commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
+  }];
+
   users.users.bicou = {
     isSystemUser       = true;
     uid                = 1002;
@@ -75,9 +81,6 @@
     sopsFile      = ../../secrets/secrets.yaml;
     neededForUsers = true;
   };
-
-  programs.zsh.enable = true;
-  programs.zsh.shellAliases = { k = "kubectl"; };
 
   systemd.services.update-system = {
     description = "Auto-update NixOS system configuration";
