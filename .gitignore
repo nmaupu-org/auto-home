@@ -14,3 +14,6 @@ ansible/plugins/lookup/ansible-vault/
 **/sealed-secrets.key
 **/qonta
 vendor/
+
+nix/nas/CLAUDE.md
+nix/nas/CLAUDE-PHASE0.md
