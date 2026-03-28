@@ -30,7 +30,7 @@ let
       curl -s -X POST \
         "https://api.telegram.org/bot''${TELEGRAM_TOKEN}/sendMessage" \
         --data-urlencode "chat_id=''${TELEGRAM_CHAT_ID}" \
-        --data-urlencode "text=[nas] ''${MESSAGE}" \
+        --data-urlencode "text=''${MESSAGE}" \
         > /dev/null
     '';
   };

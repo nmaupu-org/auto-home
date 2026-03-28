@@ -10,6 +10,7 @@
     ../../modules/telegram.nix
     ../../modules/smart.nix
     ../../modules/k3s.nix
+    ../../modules/telegram-bot.nix
   ];
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs
