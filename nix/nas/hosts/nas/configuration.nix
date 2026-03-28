@@ -19,11 +19,11 @@
     efiSupport = true;
     mirroredBoots = [
       {
-        devices = [ "/dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891827" ];
+        devices = [ "nodev" ];
         path    = "/boot";
       }
       {
-        devices = [ "/dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828" ];
+        devices = [ "nodev" ];
         path    = "/boot-fallback";
       }
     ];
