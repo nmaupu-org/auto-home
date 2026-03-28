@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: mosquitto
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 18.0.0
+      targetRevision: 17.11.4
       helm:
         releaseName: mosquitto
         valueFiles:

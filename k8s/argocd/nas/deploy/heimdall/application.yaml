@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: heimdall
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 25.0.0
+      targetRevision: 24.11.3
       helm:
         releaseName: heimdall
         valueFiles:
