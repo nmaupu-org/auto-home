@@ -3,13 +3,13 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/zfs.nix
-    ../../modules/smb.nix
-    ../../modules/nfs.nix
-    ../../modules/ftp.nix
-    ../../modules/telegram.nix
-    ../../modules/smart.nix
-    ../../modules/k3s.nix
+    # ../../modules/zfs.nix
+    # ../../modules/smb.nix
+    # ../../modules/nfs.nix
+    # ../../modules/ftp.nix
+    # ../../modules/telegram.nix
+    # ../../modules/smart.nix
+    # ../../modules/k3s.nix
   ];
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs

@@ -3,7 +3,7 @@
 {
   # Required by ZFS — must be unique per machine.
   # Generate with: head -c 8 /etc/machine-id
-  networking.hostId = "00000000"; # TODO: replace with actual value
+  networking.hostId = "c65240e3";
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
