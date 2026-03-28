@@ -144,6 +144,42 @@ git clone <repo-url>
 cd auto-home/nix/nas
 ```
 
+### Prepare the config before installing
+
+**1. Regenerate hardware-configuration.nix** from the live hardware (with `/mnt` already mounted):
+
+```bash
+nixos-generate-config --root /mnt --no-filesystems
+cp /mnt/etc/nixos/hardware-configuration.nix \
+   /tmp/auto-home/nix/nas/hosts/nas/hardware-configuration.nix
+```
+
+**2. Set the ZFS hostId** in `modules/zfs.nix`:
+
+```bash
+head -c 8 /etc/machine-id
+# Replace the placeholder in modules/zfs.nix:
+# networking.hostId = "<output>";
+```
+
+**3. Comment out all modules except hardware** in `hosts/nas/configuration.nix`.
+All modules (`zfs.nix`, `smb.nix`, `nfs.nix`, `ftp.nix`, `telegram.nix`, `smart.nix`, `k3s.nix`)
+should be commented out for the initial install. They will be re-enabled one by one
+after the system boots and sops secrets are in place.
+
+```nix
+imports = [
+  ./hardware-configuration.nix
+  # ../../modules/zfs.nix
+  # ../../modules/smb.nix
+  # ../../modules/nfs.nix
+  # ../../modules/ftp.nix
+  # ../../modules/telegram.nix
+  # ../../modules/smart.nix
+  # ../../modules/k3s.nix
+];
+```
+
 ### Install
 
 ```bash
