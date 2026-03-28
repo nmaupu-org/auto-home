@@ -77,6 +77,7 @@
   };
 
   programs.zsh.enable = true;
+  programs.zsh.shellAliases = { k = "kubectl"; };
 
   systemd.services.update-system = {
     description = "Auto-update NixOS system configuration";
@@ -109,6 +110,8 @@
     sops
     age
     ssh-to-age
+    k9s
+    kubectl
     (writeShellScriptBin "update-system" ''
       set -e
       cd /home/nmaupu/auto-home
