@@ -1,6 +1,9 @@
 #!/bin/sh
 
-set -euo pipefail
+# Deprecated: LUCI is using uhttpd.
+# See: sync-luci-cert.sh
+
+set -eu
 
 : "${NAS:=192.168.12.8}"
 : "${SHARE:=/mnt/tank/le-certs}"
