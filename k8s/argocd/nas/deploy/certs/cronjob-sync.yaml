@@ -44,4 +44,4 @@ spec:
           volumes:
             - name: le-certs
               hostPath:
-                path: /mnt/tank/le-certs
+                path: /tank/le-certs

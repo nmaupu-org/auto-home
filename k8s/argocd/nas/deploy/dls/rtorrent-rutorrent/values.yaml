@@ -47,7 +47,7 @@ persistence:
   data:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/configs/rtorrent-rutorrent
+    hostPath: /tank/dls/configs/rtorrent-rutorrent
     mountPath: /data
     targetSelectAll: true
   passwd:
@@ -66,7 +66,7 @@ persistence:
   completed:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/incoming/torrent
+    hostPath: /tank/dls/incoming/torrent
     mountPath: /mnt/incoming
   rtorrent-session:
     enabled: true

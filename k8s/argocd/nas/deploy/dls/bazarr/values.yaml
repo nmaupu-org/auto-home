@@ -32,7 +32,7 @@ global:
 persistence:
   config:
     type: hostPath
-    hostPath: /mnt/tank/dls/configs/bazarr
+    hostPath: /tank/dls/configs/bazarr
     mountPath: "/config"
   tmp:
     enabled: true
@@ -46,12 +46,12 @@ persistence:
   movies:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/plex/Movies
+    hostPath: /tank/dls/plex/Movies
     mountPath: /mnt/movies
   tv:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/plex/TVShows-sonaar/
+    hostPath: /tank/dls/plex/TVShows-sonaar/
     mountPath: /mnt/tv
 
 workload:

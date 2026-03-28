@@ -7,7 +7,7 @@ persistence:
     enabled: true
     type: hostPath
     mountPath: /scans
-    hostPath: /mnt/tank/ftp_home/printer
+    hostPath: /tank/ftp_home/printer
 
 service:
   main:

@@ -7,7 +7,6 @@ metadata:
 spec:
   dnsNames:
     - nas.home.fossar.net
-    - truenas.home.fossar.net
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer

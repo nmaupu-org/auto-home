@@ -3,12 +3,12 @@ persistence:
   library:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/plex
+    hostPath: /tank/dls/plex
     mountPath: /mnt/library
   config:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/configs/plex
+    hostPath: /tank/dls/configs/plex
   transcode:
     enabled: true
     mountPath: "/transcode"

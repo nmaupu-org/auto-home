@@ -3,7 +3,7 @@ persistence:
   config:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/configs/radarr
+    hostPath: /tank/dls/configs/radarr
     targetSelector:
       main:
         main:
@@ -14,7 +14,7 @@ persistence:
   online:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls
+    hostPath: /tank/dls
     mountPath: /mnt/dls
 
 securityContext:

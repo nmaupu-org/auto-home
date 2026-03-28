@@ -15,7 +15,7 @@ persistence:
   config:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/configs/prowlarr
+    hostPath: /tank/dls/configs/prowlarr
     targetSelector:
       main:
         main:

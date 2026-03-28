@@ -2,13 +2,13 @@ persistence:
   tvshows:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/plex/TVShows-sonaar
+    hostPath: /tank/dls/plex/TVShows-sonaar
     mountPath: /data/tvshows
     readOnly: true
   movies:
     enabled: true
     type: hostPath
-    hostPath: /mnt/tank/dls/plex/Movies
+    hostPath: /tank/dls/plex/Movies
     mountPath: /data/movies
     readOnly: true
   configmap:
