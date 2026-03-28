@@ -229,7 +229,9 @@ git clone <repo-url> auto-home
 sudo nixos-rebuild switch --flake ./auto-home/nix/nas#nas
 ```
 
-After this rebuild, `git` and `nix-command`/`flakes` are permanently available.
+After this rebuild the following are permanently available:
+- `git`, `vim`, `jq`, `zsh`, `sops`, `age`, `ssh-to-age`
+- `update-system` — pulls latest config and rebuilds in one command
 
 ### Import the ZFS pools
 
@@ -267,63 +269,105 @@ nix-shell -p ssh-to-age --run 'ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub'
 
 On your dev machine, replace the `age1xxx...` placeholder in `.sops.yaml` with the output above.
 
+### Add your dev machine's age key (recommended)
+
+This allows editing secrets from your laptop without SSH-ing to the NAS.
+
+```bash
+mkdir -p ~/.config/sops/age
+age-keygen -o ~/.config/sops/age/keys.txt
+```
+
+Add the public key to `.sops.yaml` alongside the NAS key, then re-encrypt:
+
+```bash
+sops updatekeys nix/nas/secrets/secrets.yaml
+```
+
+> **Note**: `sops updatekeys` requires a key that can already decrypt the file.
+> Run it on the NAS the first time (where the SSH host key is available),
+> or add the laptop key before encrypting for the first time.
+
 ### Create and encrypt the secrets file
 
 ```bash
 cd nix/nas
+rm -f secrets/secrets.yaml   # remove placeholder if it exists
 sops secrets/secrets.yaml
 ```
 
-Add the following keys:
+Add the following keys. System passwords must be hashed — generate with:
+```bash
+nix-shell -p mkpasswd --run 'mkpasswd -m sha-512'
+```
+
 ```yaml
 telegram_token: "bot<your-token>"
 telegram_chat_id: "<your-chat-id>"
-smb_user_password: "<password>"
-ftp_user_password: "<password>"
+printer_user_password: "<sha-512 hash>"
+bicou_user_password: "<sha-512 hash>"
+nmaupu_user_password: "<sha-512 hash>"
+smb_nmaupu_password: "<plaintext>"
+smb_bicou_password: "<plaintext>"
 ```
 
 Save and exit. The file is now encrypted on disk.
 
-### Re-enable modules and update mdadm notification
+> **Telegram**: create a bot via @BotFather to get the token. Get your chat ID by
+> sending a message to the bot then fetching:
+> `https://api.telegram.org/bot<token>/getUpdates`
 
-In `hosts/nas/configuration.nix`:
-- Uncomment all modules (`zfs.nix`, `smb.nix`, `nfs.nix`, `ftp.nix`, `telegram.nix`, `smart.nix`, `k3s.nix`)
-- Switch mdadm notification from no-op to the Telegram script:
-  ```nix
-  boot.swraid.mdadmConf = "PROGRAM /etc/telegram-alert";
-  ```
+### Re-enable all modules
+
+In `hosts/nas/configuration.nix`, uncomment all modules:
+```nix
+imports = [
+  ./hardware-configuration.nix
+  ../../modules/zfs.nix
+  ../../modules/smb.nix
+  ../../modules/nfs.nix
+  ../../modules/ftp.nix
+  ../../modules/telegram.nix
+  ../../modules/smart.nix
+  ../../modules/k3s.nix
+];
+```
 
 ### Rebuild to activate secrets
 
-Commit `.sops.yaml`, `secrets/secrets.yaml`, and the updated `configuration.nix`, push, then on the NAS:
+Commit and push all changes, then on the NAS use the built-in helper:
 ```bash
-cd /tmp/auto-home
-git pull
-sudo nixos-rebuild switch --flake nix/nas#nas
+update-system
+```
+
+Or manually:
+```bash
+cd ~/auto-home
+git fetch --all && git reset --hard origin/master
+sudo nixos-rebuild switch --flake ./nix/nas#nas
+```
+
+### Test the Telegram alert
+
+```bash
+/etc/telegram-alert "test from nas"
 ```
 
 ---
 
 ## Phase 6 — Service passwords
 
-### Samba (nmaupu and bicou)
+All passwords are managed via sops secrets and applied automatically on rebuild:
+- System passwords (`nmaupu`, `bicou`, `printer`) via `hashedPasswordFile`
+- Samba passwords (`nmaupu`, `bicou`) via activation script
 
-```bash
-sudo smbpasswd -a nmaupu
-sudo smbpasswd -a bicou
-```
-
-### FTP (ftpuser — used by the printer)
-
-```bash
-sudo passwd ftpuser
-```
+No manual password setup is needed after sops is configured.
 
 Configure the printer's FTP target:
-- **Host**: `<nas-ip>`
+- **Host**: `nas.home.fossar.net`
 - **Port**: 21
-- **User**: `ftpuser`
-- **Remote path**: `/printer` (chrooted to `/tank/ftp_home`)
+- **User**: `printer`
+- **Remote path**: `/` (chrooted to `/tank/ftp_home/printer`)
 
 ---
 
@@ -380,7 +424,7 @@ zpool list
 # Services
 systemctl status samba smbd nmbd samba-wsdd
 systemctl status nfs-server
-systemctl status proftpd
+systemctl status vsftpd
 systemctl status smartd
 systemctl status k3s
 
