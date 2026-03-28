@@ -7,8 +7,8 @@
     ../../modules/smb.nix
     ../../modules/nfs.nix
     ../../modules/ftp.nix
-    # ../../modules/telegram.nix
-    # ../../modules/smart.nix
+    ../../modules/telegram.nix
+    ../../modules/smart.nix
     ../../modules/k3s.nix
   ];
 
@@ -44,24 +44,35 @@
   services.openssh.settings.PermitRootLogin = "yes";
 
   users.users.nmaupu = {
-    isNormalUser = true;
-    uid         = 1001;
-    group       = "nmaupu";
-    extraGroups = [ "wheel" ];
+    isNormalUser     = true;
+    uid              = 1001;
+    group            = "nmaupu";
+    extraGroups      = [ "wheel" ];
+    hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
   };
 
   users.groups.nmaupu = { gid = 1001; };
 
   users.users.bicou = {
-    isSystemUser = true;
-    uid   = 1002;
-    group = "bicou";
-    home  = "/tank/home/bicou";
-    shell = pkgs.shadow;  # no login shell
+    isSystemUser       = true;
+    uid                = 1002;
+    group              = "bicou";
+    home               = "/tank/home/bicou";
+    shell              = pkgs.shadow;  # no login shell
+    hashedPasswordFile = config.sops.secrets.bicou_user_password.path;
   };
 
   users.groups.bicou = { gid = 1002; };
+
+  sops.secrets.nmaupu_user_password = {
+    sopsFile      = ../../secrets/secrets.yaml;
+    neededForUsers = true;
+  };
+  sops.secrets.bicou_user_password = {
+    sopsFile      = ../../secrets/secrets.yaml;
+    neededForUsers = true;
+  };
 
   environment.systemPackages = with pkgs; [ git ];
 
@@ -76,9 +87,8 @@
   };
   nix.settings.auto-optimise-store = true;
 
-  # mdadm notifications — set to no-op until telegram.nix is enabled
-  # TODO: change to "PROGRAM /etc/telegram-alert" after sops is set up
-  boot.swraid.mdadmConf = "PROGRAM /bin/true";
+  # mdadm notifications via Telegram
+  boot.swraid.mdadmConf = "PROGRAM /etc/telegram-alert";
 
   # sops-nix: age key derived from SSH host key (auto-available after first boot)
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];

@@ -58,12 +58,17 @@
     { from = 5000; to = 5020; }
   ];
 
+  sops.secrets.printer_user_password = {
+    sopsFile      = ../../secrets/secrets.yaml;
+    neededForUsers = true;
+  };
+
   users.users.printer = {
-    isSystemUser = true;
-    uid   = 1003;
-    group = "printer";
-    home  = "/tank/ftp_home";
-    # Password managed via sops-nix (ftp_user_password)
+    isSystemUser       = true;
+    uid                = 1003;
+    group              = "printer";
+    home               = "/tank/ftp_home/printer";
+    hashedPasswordFile = config.sops.secrets.printer_user_password.path;
   };
   users.groups.printer = { gid = 1003; };
 }

@@ -103,4 +103,23 @@
 
   # Network discovery (makes the NAS show up in Finder / Windows Explorer)
   services.samba-wsdd.enable = true;
+
+  sops.secrets.smb_nmaupu_password = { sopsFile = ../../secrets/secrets.yaml; };
+  sops.secrets.smb_bicou_password  = { sopsFile = ../../secrets/secrets.yaml; };
+
+  # Set Samba passwords from sops secrets on every activation
+  system.activationScripts.samba-passwords = {
+    deps = [ "setupSecrets" ];
+    text = ''
+      for user in nmaupu bicou; do
+        secret="/run/secrets/smb_''${user}_password"
+        if [ -f "$secret" ]; then
+          ${pkgs.samba}/bin/smbpasswd -s -a "$user" <<EOF
+$(cat "$secret")
+$(cat "$secret")
+EOF
+        fi
+      done
+    '';
+  };
 }
