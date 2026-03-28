@@ -77,6 +77,29 @@
 
   programs.zsh.enable = true;
 
+  systemd.services.update-system = {
+    description = "Auto-update NixOS system configuration";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+    script = ''
+      cd /home/nmaupu/auto-home
+      ${pkgs.git}/bin/git fetch --all
+      ${pkgs.git}/bin/git reset --hard origin/master
+      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix/nas#nas
+    '';
+  };
+
+  systemd.timers.update-system = {
+    description = "Hourly NixOS system update";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "hourly";
+      Persistent  = true;
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     git
     vim
