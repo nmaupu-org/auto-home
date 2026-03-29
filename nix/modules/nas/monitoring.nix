@@ -5,9 +5,11 @@
 #   Scrutiny — http://nas.home.fossar.net:8080   (SMART disk health history)
 
 {
-  # Netdata — real-time metrics dashboard
+  # Netdata — real-time metrics dashboard (proprietary cloud UI enabled)
+  nixpkgs.config.allowUnfree = true;
   services.netdata = {
     enable = true;
+    package = pkgs.netdata.override { withCloudUi = true; };
     config = {
       global = {
         "memory mode" = "ram";   # no persistent history, keep it lightweight
