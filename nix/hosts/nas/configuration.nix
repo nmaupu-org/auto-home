@@ -118,10 +118,10 @@
   };
 
   systemd.timers.update-system = {
-    description = "Hourly NixOS system update";
+    description = "Daily NixOS system update at 10:00";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "hourly";
+      OnCalendar = "*-*-* 10:00:00";
       Persistent  = true;
     };
   };
