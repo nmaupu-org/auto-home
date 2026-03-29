@@ -8,6 +8,7 @@ configs:
     timeout.reconciliation: 600s
   params:
     server.disable.auth: true
+    server.insecure: true
   cmp:
     create: true
     plugins:
