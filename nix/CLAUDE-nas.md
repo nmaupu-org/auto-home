@@ -2,9 +2,9 @@
 
 ## Repository Layout
 
-This NixOS config lives in the `nix/` subdirectory of the `auto-home` monorepo.
-All paths in this document are relative to `nix/`.
-Ignore everything outside `nix/`: `ansible/`, `argocd/`, `scripts/`, etc.
+This NixOS config lives in the `nix/nas/` subdirectory of the `auto-home` monorepo.
+All paths in this document are relative to `nix/nas/`.
+Ignore everything outside `nix/nas/`: `ansible/`, `argocd/`, `scripts/`, `nix/iot/`, etc.
 
 ## Other Machines
 
@@ -12,11 +12,11 @@ Ignore everything outside `nix/`: `ansible/`, `argocd/`, `scripts/`, etc.
 
 ## Background
 
-Migrated from TrueNAS SCALE (was stuck on k8s 1.26) to NixOS.
+Migrating a TrueNAS SCALE box (stuck on k8s 1.26) to NixOS.
 The machine runs a ZFS NAS + Kubernetes workloads via k3s + ArgoCD.
 
-The boot disk (dedicated SSD) was wiped and replaced with NixOS.
-Data drives (ZFS pool) were untouched — imported with `zpool import -f <poolname>` after install.
+The boot disk (dedicated SSD) will be wiped and replaced with NixOS.
+Data drives (ZFS pool) are untouched — `zpool import -f <poolname>` after install.
 
 ## Hardware
 
@@ -40,7 +40,7 @@ Data drives (ZFS pool) were untouched — imported with `zpool import -f <poolna
 
 ## Repository Structure
 
-All paths below are relative to `nix/` in the monorepo.
+All paths below are relative to `nix/nas/` in the monorepo.
 
 ```
 flake.nix
@@ -49,25 +49,18 @@ hosts/
     configuration.nix
     hardware-configuration.nix
 modules/
-  shared/
-    zsh.nix          # zsh + starship + fzf + neovim (reusable across machines)
-    telegram.nix     # telegram-alert script; host must set services.telegram-alert.sopsFile
-    k3s.nix          # single-node k3s; host must set services.k3s-node.disabledComponents
-  nas/
-    zfs.nix          # pool import, scrub, sanoid snapshots
-    nfs.nix          # NFS exports
-    smb.nix          # Samba with macOS fruit module
-    ftp.nix          # FTP service
-    k3s.nix          # k3s single-node
-    telegram-bot.nix # Telegram bot systemd service
-    telegram-bot.py  # Telegram bot Python script
-    smart.nix        # smartd + telegram alerting
-    monitoring.nix   # Netdata (port 19999) + Scrutiny (port 8080) + Homepage (port 3000)
+  zfs.nix          # pool import, scrub, sanoid snapshots
+  nfs.nix          # NFS exports
+  smb.nix          # Samba with macOS fruit module
+  ftp.nix          # FTP service
+  k3s.nix          # k3s single-node
+  telegram.nix     # shared alert script + secrets wiring
+  smart.nix        # smartd + telegram alerting
 secrets/
-  nas.yaml           # sops-encrypted NAS secrets
-.sops.yaml           # age key config
-CLAUDE.md            # this file
-CLAUDE-PHASE0.md     # concrete values from TrueNAS (pool names, disk IDs, exports...)
+  secrets.yaml     # sops-encrypted
+.sops.yaml         # age key config
+CLAUDE.md          # this file
+CLAUDE-nas-PHASE0.md   # concrete values from TrueNAS (pool names, disk IDs, exports...)
 ```
 
 ## Flake Inputs
@@ -125,14 +118,11 @@ Age key derived from SSH host key (machine can decrypt on boot without intervent
 ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
-Secrets in use (all in `secrets/nas.yaml`):
+Secrets in use:
 - `telegram_token`
 - `telegram_chat_id`
-- `smb_nmaupu_password`
-- `smb_bicou_password`
-- `printer_user_password`
-- `nmaupu_user_password`
-- `bicou_user_password`
+- `smb_user_password`
+- `ftp_user_password`
 
 ## Services Summary
 
@@ -158,7 +148,7 @@ Secrets in use (all in `secrets/nas.yaml`):
 
 ## Phase 0 Data
 
-See `CLAUDE-PHASE0.md` for all concrete values collected from the current TrueNAS system:
+See `CLAUDE-nas-PHASE0.md` for all concrete values collected from the current TrueNAS system:
 - ZFS pool name(s) and vdev layout
 - Dataset tree and mountpoints (`zfs list -r`)
 - Pool properties (`zpool get all <poolname>`)
@@ -169,7 +159,7 @@ See `CLAUDE-PHASE0.md` for all concrete values collected from the current TrueNA
 - ArgoCD apps (chart names, Helm values summary)
 - Network interface and IP
 
-When writing any module, pull exact values from `CLAUDE-PHASE0.md` — no placeholders.
+When writing any module, pull exact values from `CLAUSE-nas-PHASE0.md` — no placeholders.
 
 ## Important Notes
 
