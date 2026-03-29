@@ -141,7 +141,7 @@ mount /dev/disk/by-id/ata-Verbatim_Vi550_S3_493504108891828-part1 /mnt/boot-fall
 ```bash
 cd /tmp
 git clone <repo-url>
-cd auto-home/nix/nas
+cd auto-home/nix
 ```
 
 ### Prepare the config before installing
@@ -151,14 +151,14 @@ cd auto-home/nix/nas
 ```bash
 nixos-generate-config --root /mnt --no-filesystems
 cp /mnt/etc/nixos/hardware-configuration.nix \
-   /tmp/auto-home/nix/nas/hosts/nas/hardware-configuration.nix
+   /tmp/auto-home/nix/hosts/nas/hardware-configuration.nix
 ```
 
-**2. Set the ZFS hostId** in `modules/zfs.nix`:
+**2. Set the ZFS hostId** in `modules/nas/zfs.nix`:
 
 ```bash
 head -c 8 /etc/machine-id
-# Replace the placeholder in modules/zfs.nix:
+# Replace the placeholder in modules/nas/zfs.nix:
 # networking.hostId = "<output>";
 ```
 
@@ -177,13 +177,13 @@ after the system boots and sops secrets are in place.
 ```nix
 imports = [
   ./hardware-configuration.nix
-  # ../../modules/zfs.nix
-  # ../../modules/smb.nix
-  # ../../modules/nfs.nix
-  # ../../modules/ftp.nix
-  # ../../modules/telegram.nix
-  # ../../modules/smart.nix
-  # ../../modules/k3s.nix
+  # ../../modules/nas/zfs.nix
+  # ../../modules/nas/smb.nix
+  # ../../modules/nas/nfs.nix
+  # ../../modules/nas/ftp.nix
+  # ../../modules/nas/telegram.nix
+  # ../../modules/nas/smart.nix
+  # ../../modules/nas/k3s.nix
 ];
 ```
 
@@ -226,7 +226,7 @@ Then clone the repo and run the first rebuild from inside that shell:
 ```bash
 cd ~
 git clone <repo-url> auto-home
-sudo nixos-rebuild switch --flake ./auto-home/nix/nas#nas
+sudo nixos-rebuild switch --flake ./auto-home/nix#nas
 ```
 
 After this rebuild the following are permanently available:
@@ -253,7 +253,7 @@ zpool status
 zfs list
 ```
 
-Check that mountpoints are correct (`/tank/...`). If datasets mounted under a different prefix, adjust paths in `modules/smb.nix`, `modules/nfs.nix`, and `modules/ftp.nix`, then rebuild.
+Check that mountpoints are correct (`/tank/...`). If datasets mounted under a different prefix, adjust paths in `modules/nas/smb.nix`, `modules/nas/nfs.nix`, and `modules/nas/ftp.nix`, then rebuild.
 
 ---
 
@@ -281,7 +281,7 @@ age-keygen -o ~/.config/sops/age/keys.txt
 Add the public key to `.sops.yaml` alongside the NAS key, then re-encrypt:
 
 ```bash
-sops updatekeys nix/nas/secrets/secrets.yaml
+sops updatekeys nix/secrets/nas.yaml
 ```
 
 > **Note**: `sops updatekeys` requires a key that can already decrypt the file.
@@ -291,9 +291,9 @@ sops updatekeys nix/nas/secrets/secrets.yaml
 ### Create and encrypt the secrets file
 
 ```bash
-cd nix/nas
-rm -f secrets/secrets.yaml   # remove placeholder if it exists
-sops secrets/secrets.yaml
+cd nix
+rm -f secrets/nas.yaml   # remove placeholder if it exists
+sops secrets/nas.yaml
 ```
 
 Add the following keys. System passwords must be hashed — generate with:
@@ -323,13 +323,13 @@ In `hosts/nas/configuration.nix`, uncomment all modules:
 ```nix
 imports = [
   ./hardware-configuration.nix
-  ../../modules/zfs.nix
-  ../../modules/smb.nix
-  ../../modules/nfs.nix
-  ../../modules/ftp.nix
-  ../../modules/telegram.nix
-  ../../modules/smart.nix
-  ../../modules/k3s.nix
+  ../../modules/nas/zfs.nix
+  ../../modules/nas/smb.nix
+  ../../modules/nas/nfs.nix
+  ../../modules/nas/ftp.nix
+  ../../modules/nas/telegram.nix
+  ../../modules/nas/smart.nix
+  ../../modules/nas/k3s.nix
 ];
 ```
 
@@ -344,7 +344,7 @@ Or manually:
 ```bash
 cd ~/auto-home
 git fetch --all && git reset --hard origin/master
-sudo nixos-rebuild switch --flake ./nix/nas#nas
+sudo nixos-rebuild switch --flake ./nix#nas
 ```
 
 ### Test the Telegram alert

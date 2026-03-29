@@ -5,7 +5,7 @@
 # Secrets are managed via sops-nix. Before activating this module:
 #   1. Generate the NAS age key: ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
 #   2. Update .sops.yaml with the age public key
-#   3. Create secrets: sops secrets/secrets.yaml
+#   3. Create secrets: sops secrets/nas.yaml
 #      and fill in telegram_token and telegram_chat_id
 #
 # Script calling conventions supported:
@@ -36,8 +36,8 @@ let
   };
 in
 {
-  sops.secrets.telegram_token   = { sopsFile = ../secrets/secrets.yaml; mode = "0444"; };
-  sops.secrets.telegram_chat_id = { sopsFile = ../secrets/secrets.yaml; mode = "0444"; };
+  sops.secrets.telegram_token   = { sopsFile = ../../secrets/nas.yaml; mode = "0444"; };
+  sops.secrets.telegram_chat_id = { sopsFile = ../../secrets/nas.yaml; mode = "0444"; };
 
   environment.systemPackages = [ telegram-alert ];
 

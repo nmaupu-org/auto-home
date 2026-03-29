@@ -69,7 +69,7 @@
   ];
 
   sops.secrets.printer_user_password = {
-    sopsFile      = ../secrets/secrets.yaml;
+    sopsFile      = ../../secrets/nas.yaml;
     neededForUsers = true;
   };
 

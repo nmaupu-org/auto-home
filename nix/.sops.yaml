@@ -7,7 +7,7 @@ keys:
   - &nmaupu-laptop age170gy8t4y7rx5cwmfyeht4n7zemgq5yqdd8062gaevmyp9yd9e9qqnut4kw
 
 creation_rules:
-  - path_regex: secrets/.*\.yaml$
+  - path_regex: secrets/nas\.yaml$
     key_groups:
       - age:
           - *nas

@@ -3,15 +3,15 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/zfs.nix
-    ../../modules/smb.nix
-    ../../modules/nfs.nix
-    ../../modules/ftp.nix
-    ../../modules/telegram.nix
-    ../../modules/smart.nix
-    ../../modules/k3s.nix
-    ../../modules/telegram-bot.nix
-    ../../modules/zsh.nix
+    ../../modules/nas/zfs.nix
+    ../../modules/nas/smb.nix
+    ../../modules/nas/nfs.nix
+    ../../modules/nas/ftp.nix
+    ../../modules/nas/telegram.nix
+    ../../modules/nas/smart.nix
+    ../../modules/nas/k3s.nix
+    ../../modules/nas/telegram-bot.nix
+    ../../modules/nas/zsh.nix
   ];
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs
@@ -74,11 +74,11 @@
   users.groups.bicou = { gid = 1002; };
 
   sops.secrets.nmaupu_user_password = {
-    sopsFile      = ../../secrets/secrets.yaml;
+    sopsFile      = ../../secrets/nas.yaml;
     neededForUsers = true;
   };
   sops.secrets.bicou_user_password = {
-    sopsFile      = ../../secrets/secrets.yaml;
+    sopsFile      = ../../secrets/nas.yaml;
     neededForUsers = true;
   };
 
@@ -92,7 +92,7 @@
       cd /home/nmaupu/auto-home
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
-      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix/nas#nas
+      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#nas
     '';
   };
 
@@ -120,7 +120,7 @@
       cd /home/nmaupu/auto-home
       git fetch --all
       git reset --hard origin/master
-      sudo nixos-rebuild switch --flake ./nix/nas#nas
+      sudo nixos-rebuild switch --flake ./nix#nas
     '')
   ];
 
@@ -154,7 +154,7 @@
 
     Useful commands:
       update-system          pull latest config from git and rebuild
-      sudo nixos-rebuild switch --flake ~/auto-home/nix/nas#nas
+      sudo nixos-rebuild switch --flake ~/auto-home/nix#nas
                              rebuild without git pull
       journalctl -u k3s -f   follow k3s logs
       k9s                    kubernetes TUI

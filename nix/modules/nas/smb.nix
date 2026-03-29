@@ -4,7 +4,7 @@
 # `zpool import tank` and adjust if needed.
 #
 # Samba users (nmaupu, bicou) must exist as system users and have a samba
-# password set. Passwords are wired via sops-nix (see secrets/secrets.yaml).
+# password set. Passwords are wired via sops-nix (see secrets/nas.yaml).
 # Until sops is in place, set manually: smbpasswd -a <user>
 
 {
@@ -104,8 +104,8 @@
   # Network discovery (makes the NAS show up in Finder / Windows Explorer)
   services.samba-wsdd.enable = true;
 
-  sops.secrets.smb_nmaupu_password = { sopsFile = ../secrets/secrets.yaml; };
-  sops.secrets.smb_bicou_password  = { sopsFile = ../secrets/secrets.yaml; };
+  sops.secrets.smb_nmaupu_password = { sopsFile = ../../secrets/nas.yaml; };
+  sops.secrets.smb_bicou_password  = { sopsFile = ../../secrets/nas.yaml; };
 
   # Set Samba passwords from sops secrets on every activation
   system.activationScripts.samba-passwords = {
