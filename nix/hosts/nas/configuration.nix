@@ -88,11 +88,23 @@
       Type = "oneshot";
       User = "root";
     };
+    unitConfig.OnFailure = "update-system-failure@%n.service";
     script = ''
       cd /home/nmaupu/auto-home
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
       ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#nas
+    '';
+  };
+
+  systemd.services."update-system-failure@" = {
+    description = "Notify Telegram on update-system failure";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+    script = ''
+      /etc/telegram-alert "NAS update-system failed — check: journalctl -u update-system"
     '';
   };
 
