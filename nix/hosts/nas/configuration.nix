@@ -96,6 +96,7 @@
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
       ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#nas
+      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/0b248bd0-a4e8-47d3-b2d9-697db7623d48 > /dev/null
     '';
   };
 
