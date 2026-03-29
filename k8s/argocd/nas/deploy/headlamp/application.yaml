@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: headlamp
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: headlamp
+    name: in-cluster
+  sources:
+    - chart: headlamp
+      repoURL: https://kubernetes-sigs.github.io/headlamp/
+      targetRevision: 0.41.0
+      helm:
+        releaseName: headlamp
+        valueFiles:
+          - $values/k8s/argocd/nas/deploy/headlamp/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      path: k8s/argocd/nas/deploy/headlamp
+      directory:
+        include: rbac.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
