@@ -12,6 +12,7 @@
     ../../modules/nas/k3s.nix
     ../../modules/nas/telegram-bot.nix
     ../../modules/nas/zsh.nix
+    ../../modules/nas/monitoring.nix
   ];
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs

@@ -60,6 +60,7 @@ modules/
     telegram-bot.py  # Telegram bot Python script
     smart.nix        # smartd + telegram alerting
     zsh.nix          # zsh config
+    monitoring.nix   # Netdata (port 19999) + Scrutiny (port 8080)
 secrets/
   nas.yaml           # sops-encrypted NAS secrets
 .sops.yaml           # age key config
