@@ -11,8 +11,8 @@ spec:
     name: in-cluster
   sources:
     - chart: traefik
-      repoURL: oci.trueforge.org/truecharts
-      targetRevision: 30.4.3
+      repoURL: https://traefik.github.io/charts
+      targetRevision: 39.0.6
       helm:
         releaseName: traefik
         valueFiles:
@@ -20,12 +20,6 @@ spec:
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
-
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jqPathExpressions:
-        - .spec.template.spec.hostUsers
 
   syncPolicy:
     automated:
