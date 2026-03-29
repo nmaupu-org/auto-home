@@ -15,7 +15,7 @@ spec:
           serviceAccountName: le-certs-sync
           containers:
             - name: le-certs-syncer
-              image: docker.io/bitnami/kubectl:1.32
+              image: nmaupu/kubectl-tools:1.32.0
               command:
                 # WARN: Depending on image version, path to bash can be different!
                 - /bin/bash
