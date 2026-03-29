@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: app-template
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 15.24.48
+      targetRevision: 17.0.3
       helm:
         releaseName: scan-http
         valueFiles:

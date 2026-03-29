@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: plex
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 21.0.0
+      targetRevision: 22.0.0
       helm:
         releaseName: plex
         valueFiles:
