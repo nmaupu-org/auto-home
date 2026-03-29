@@ -45,7 +45,12 @@
   services.openssh.enable = true;
   services.openssh.openFirewall = true;
   services.openssh.settings.PermitRootLogin = "yes";
-  security.pam.services.sshd.motd = true;
+  # Run dynamic motd script on interactive shell login
+  environment.interactiveShellInit = ''
+    if [ -x /etc/update-motd.d/00-nas ]; then
+      /etc/update-motd.d/00-nas
+    fi
+  '';
 
   users.users.nmaupu = {
     isNormalUser       = true;
@@ -162,8 +167,7 @@
   # k3s — disable built-ins replaced by ArgoCD-managed equivalents
   services.k3s-node.disabledComponents = [ "traefik" "servicelb" "local-storage" ];
 
-  # Dynamic MOTD via update-motd.d
-  users.motd = null;
+  # Dynamic MOTD via update-motd.d (no static motd set)
   environment.etc."update-motd.d/00-nas" = {
     mode = "0755";
     text = ''
