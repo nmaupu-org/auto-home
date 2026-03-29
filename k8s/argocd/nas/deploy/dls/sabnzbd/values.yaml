@@ -61,7 +61,7 @@ persistence:
   intermediate:
     enabled: true
     type: hostPath
-    hostPath: /mnt/dls-tmp/sabnzbd-intermediate
+    hostPath: /dls-tmp/sabnzbd-intermediate
     mountPath: /mnt/intermediate
   completed:
     enabled: true

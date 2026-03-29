@@ -61,7 +61,7 @@ persistence:
   incoming:
     enabled: true
     type: hostPath
-    hostPath: /mnt/dls-tmp/incoming-rtorrent
+    hostPath: /dls-tmp/incoming-rtorrent
     mountPath: /mnt/incoming-rtorrent
   completed:
     enabled: true
