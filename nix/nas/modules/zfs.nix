@@ -19,6 +19,13 @@
   # autotrim is off on the pool (spinning disks); keeping it disabled.
   services.zfs.trim.enable = false;
 
+  # openEBS ZFS plugin runs in a chroot and expects zfs/zpool at standard paths.
+  # On NixOS binaries live in the Nix store, so we expose them via /usr/local/bin.
+  systemd.tmpfiles.rules = [
+    "L+ /usr/local/bin/zfs  - - - - ${pkgs.zfs}/bin/zfs"
+    "L+ /usr/local/bin/zpool - - - - ${pkgs.zfs}/bin/zpool"
+  ];
+
   services.sanoid = {
     enable = true;
 
