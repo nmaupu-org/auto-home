@@ -108,11 +108,11 @@ workload:
         main:
           resources:
             limits:
-              cpu: 800m
-              memory: 800Mi
+              cpu: 1000m
+              memory: 1500Mi
             requests:
               cpu: 200m
-              memory: 250Mi
+              memory: 800Mi
           lifecycle:
             postStart:
               type: exec
