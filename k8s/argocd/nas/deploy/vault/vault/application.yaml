@@ -12,7 +12,7 @@ spec:
   sources:
     - chart: vault
       repoURL: registry-1.docker.io/bitnamicharts
-      targetRevision: 1.4.12
+      targetRevision: 1.9.0
       helm:
         releaseName: vault
         valueFiles:
