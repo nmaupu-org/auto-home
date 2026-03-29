@@ -45,7 +45,7 @@
   services.openssh.enable = true;
   services.openssh.openFirewall = true;
   services.openssh.settings.PermitRootLogin = "yes";
-  security.pam.services.sshd.updateMotd = true;
+  security.pam.services.sshd.motd = true;
 
   users.users.nmaupu = {
     isNormalUser       = true;
