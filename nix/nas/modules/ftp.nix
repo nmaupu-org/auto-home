@@ -31,6 +31,7 @@
       pasv_enable=YES
       pasv_min_port=5000
       pasv_max_port=5020
+      pasv_address=192.168.12.8
       userlist_enable=YES
       userlist_deny=NO
       userlist_file=/etc/vsftpd/userlist
@@ -52,6 +53,10 @@
   environment.etc."vsftpd/chroot_exceptions".text = ''
     nmaupu
   '';
+
+  # nf_conntrack_ftp lets the firewall track active FTP data connections
+  # (server connects back to client on a high port)
+  boot.kernelModules = [ "nf_conntrack_ftp" ];
 
   networking.firewall.allowedTCPPorts = [ 21 ];
   networking.firewall.allowedTCPPortRanges = [
