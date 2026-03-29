@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 # Read-only monitoring dashboards:
-#   Homepage — http://nas.home.fossar.net:3000   (services index)
+#   Homepage — http://nas.home.fossar.net:8082   (services index)
 #   Netdata  — http://nas.home.fossar.net:19999  (live system metrics, ZFS, SMB, NFS)
 #   Scrutiny — http://nas.home.fossar.net:8080   (SMART disk health history)
 
@@ -25,12 +25,12 @@
     settings.web.listen.port = 8080;
   };
 
-  # Homepage — local services dashboard (http://nas.home.fossar.net:3000)
+  # Homepage — local services dashboard (http://nas.home.fossar.net:8082)
   services.homepage-dashboard = {
     enable = true;
     settings = {
       title = "NAS";
-      base  = "http://nas.home.fossar.net:3000";
+      base  = "http://nas.home.fossar.net:8082";
     };
     services = [
       {
@@ -79,5 +79,9 @@
     ];
   };
 
-  networking.firewall.allowedTCPPorts = [ 19999 8080 3000 ];
+  # Override the NixOS module's hardcoded localhost-only allowed hosts
+  systemd.services.homepage-dashboard.environment.HOMEPAGE_ALLOWED_HOSTS = lib.mkForce
+    "localhost:8082,127.0.0.1:8082,nas.home.fossar.net:8082,192.168.12.8:8082";
+
+  networking.firewall.allowedTCPPorts = [ 19999 8080 8082 ];
 }
