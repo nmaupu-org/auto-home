@@ -7,11 +7,11 @@
     ../../modules/nas/smb.nix
     ../../modules/nas/nfs.nix
     ../../modules/nas/ftp.nix
-    ../../modules/nas/telegram.nix
+    ../../modules/shared/telegram.nix
     ../../modules/nas/smart.nix
-    ../../modules/nas/k3s.nix
+    ../../modules/shared/k3s.nix
     ../../modules/nas/telegram-bot.nix
-    ../../modules/nas/zsh.nix
+    ../../modules/shared/zsh.nix
     ../../modules/nas/monitoring.nix
   ];
 
@@ -156,6 +156,11 @@
 
   # sops-nix: age key derived from SSH host key (auto-available after first boot)
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  services.telegram-alert.sopsFile = ../../secrets/nas.yaml;
+
+  # k3s — disable built-ins replaced by ArgoCD-managed equivalents
+  services.k3s-node.disabledComponents = [ "traefik" "servicelb" "local-storage" ];
 
   # Dynamic MOTD via update-motd.d
   users.motd = null;

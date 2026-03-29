@@ -2,11 +2,10 @@
 
 # Shared Telegram alert script consumed by smartd, zed, and systemd units.
 #
-# Secrets are managed via sops-nix. Before activating this module:
-#   1. Generate the NAS age key: ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
-#   2. Update .sops.yaml with the age public key
-#   3. Create secrets: sops secrets/nas.yaml
-#      and fill in telegram_token and telegram_chat_id
+# Usage — in the host configuration, set the sops file before importing:
+#   services.telegram-alert.sopsFile = ../../secrets/nas.yaml;
+#
+# The secrets file must contain: telegram_token, telegram_chat_id
 #
 # Script calling conventions supported:
 #   - smartd (-M exec): called as `script -s "subject" address` (body on stdin)
@@ -36,14 +35,21 @@ let
   };
 in
 {
-  sops.secrets.telegram_token   = { sopsFile = ../../secrets/nas.yaml; mode = "0444"; };
-  sops.secrets.telegram_chat_id = { sopsFile = ../../secrets/nas.yaml; mode = "0444"; };
+  options.services.telegram-alert.sopsFile = lib.mkOption {
+    type        = lib.types.path;
+    description = "sops-encrypted secrets file containing telegram_token and telegram_chat_id";
+  };
 
-  environment.systemPackages = [ telegram-alert ];
+  config = {
+    sops.secrets.telegram_token   = { sopsFile = config.services.telegram-alert.sopsFile; mode = "0444"; };
+    sops.secrets.telegram_chat_id = { sopsFile = config.services.telegram-alert.sopsFile; mode = "0444"; };
 
-  # Stable path for other services (smartd, zed) to reference
-  environment.etc."telegram-alert" = {
-    source = "${telegram-alert}/bin/telegram-alert";
-    mode   = "0755";
+    environment.systemPackages = [ telegram-alert ];
+
+    # Stable path for other services (smartd, zed) to reference
+    environment.etc."telegram-alert" = {
+      source = "${telegram-alert}/bin/telegram-alert";
+      mode   = "0755";
+    };
   };
 }

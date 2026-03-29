@@ -67,6 +67,13 @@
               icon        = "vault.png";
             };
           }
+          {
+            "Headlamp" = {
+              href        = "https://headlamp.knas.home.fossar.net";
+              description = "Kubernetes dashboard";
+              icon        = "kubernetes.png";
+            };
+          }
         ];
       }
     ];

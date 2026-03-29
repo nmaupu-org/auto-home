@@ -49,18 +49,20 @@ hosts/
     configuration.nix
     hardware-configuration.nix
 modules/
+  shared/
+    zsh.nix          # zsh + starship + fzf + neovim (reusable across machines)
+    telegram.nix     # telegram-alert script; host must set services.telegram-alert.sopsFile
+    k3s.nix          # single-node k3s; host must set services.k3s-node.disabledComponents
   nas/
     zfs.nix          # pool import, scrub, sanoid snapshots
     nfs.nix          # NFS exports
     smb.nix          # Samba with macOS fruit module
     ftp.nix          # FTP service
     k3s.nix          # k3s single-node
-    telegram.nix     # shared alert script + secrets wiring
     telegram-bot.nix # Telegram bot systemd service
     telegram-bot.py  # Telegram bot Python script
     smart.nix        # smartd + telegram alerting
-    zsh.nix          # zsh config
-    monitoring.nix   # Netdata (port 19999) + Scrutiny (port 8080)
+    monitoring.nix   # Netdata (port 19999) + Scrutiny (port 8080) + Homepage (port 3000)
 secrets/
   nas.yaml           # sops-encrypted NAS secrets
 .sops.yaml           # age key config
