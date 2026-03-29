@@ -63,6 +63,11 @@
     { from = 5000; to = 5020; }
   ];
 
+  # Ensure the printer upload directory exists and is writable by the printer user
+  systemd.tmpfiles.rules = [
+    "d /tank/ftp_home/printer 0755 printer printer -"
+  ];
+
   sops.secrets.printer_user_password = {
     sopsFile      = ../secrets/secrets.yaml;
     neededForUsers = true;
@@ -73,6 +78,7 @@
     uid                = 1003;
     group              = "printer";
     home               = "/tank/ftp_home/printer";
+    shell              = pkgs.shadow;
     hashedPasswordFile = config.sops.secrets.printer_user_password.path;
   };
   users.groups.printer = { gid = 1003; };
