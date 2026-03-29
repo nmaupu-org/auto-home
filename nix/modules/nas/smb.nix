@@ -114,6 +114,7 @@
       for user in nmaupu bicou; do
         secret="/run/secrets/smb_''${user}_password"
         if [ -f "$secret" ]; then
+          ${pkgs.samba}/bin/smbpasswd -x "$user" 2>/dev/null || true
           ${pkgs.samba}/bin/smbpasswd -s -a "$user" <<EOF
 $(cat "$secret")
 $(cat "$secret")
