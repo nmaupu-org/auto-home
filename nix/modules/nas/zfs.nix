@@ -11,6 +11,19 @@
   # Data pools (boot SSD is handled by the bootloader, not listed here)
   boot.zfs.extraPools = [ "tank" "dls-tmp" ];
 
+  # ZED — ZFS event daemon, alerts via Telegram on pool errors/scrub results
+  services.zfs.zed = {
+    enableMail = false;
+    settings = {
+      ZED_DEBUG_LOG       = "/tmp/zed.debug.log";
+      ZED_NOTIFY_VERBOSE  = 1;  # also notify on scrub completion (not just errors)
+      ZED_NOTIFY_DATA     = 1;
+      ZED_RUN_SPARES      = 0;
+      ZED_EMAIL_PROG      = "/etc/telegram-alert";
+      ZED_EMAIL_OPTS      = "@ADDRESS@";
+    };
+  };
+
   services.zfs.autoScrub = {
     enable = true;
     interval = "weekly";
