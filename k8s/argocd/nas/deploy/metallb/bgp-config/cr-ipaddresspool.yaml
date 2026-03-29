@@ -3,6 +3,9 @@ kind: IPAddressPool
 metadata:
   name: appsbgp
   namespace: metallb
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Validate=false
 spec:
   addresses:
   - 192.168.99.0/24

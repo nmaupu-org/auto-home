@@ -5,8 +5,8 @@ metadata:
   name: cocktails-data
   namespace: cocktails
   annotations:
-    # Reloader annotation - tells reloader to watch this ConfigMap
     reloader.stakater.com/match: "true"
+    argocd.argoproj.io/sync-wave: "1"
 data:
   cocktails.yaml: |
     cocktails:

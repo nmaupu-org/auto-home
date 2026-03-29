@@ -3,6 +3,9 @@ kind: BGPPeer
 metadata:
   name: home-router
   namespace: metallb
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Validate=false
 spec:
   disableMP: false
   myASN: 65001
