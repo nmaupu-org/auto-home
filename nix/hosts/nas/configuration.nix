@@ -45,6 +45,7 @@
   services.openssh.enable = true;
   services.openssh.openFirewall = true;
   services.openssh.settings.PermitRootLogin = "yes";
+  security.pam.services.sshd.updateMotd = true;
 
   users.users.nmaupu = {
     isNormalUser       = true;
@@ -156,25 +157,48 @@
   # sops-nix: age key derived from SSH host key (auto-available after first boot)
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-  users.motd = ''
+  # Dynamic MOTD via update-motd.d
+  users.motd = null;
+  environment.etc."update-motd.d/00-nas" = {
+    mode = "0755";
+    text = ''
+      #!${pkgs.bash}/bin/bash
 
-    ███╗   ██╗██╗██╗  ██╗███╗   ██╗ █████╗ ███████╗
-    ████╗  ██║██║╚██╗██╔╝████╗  ██║██╔══██╗██╔════╝
-    ██╔██╗ ██║██║ ╚███╔╝ ██╔██╗ ██║███████║███████╗
-    ██║╚██╗██║██║ ██╔██╗ ██║╚██╗██║██╔══██║╚════██║
-    ██║ ╚████║██║██╔╝ ██╗██║ ╚████║██║  ██║███████║
-    ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝
+      echo ""
+      echo "  ███╗   ██╗██╗██╗  ██╗███╗   ██╗ █████╗ ███████╗"
+      echo "  ████╗  ██║██║╚██╗██╔╝████╗  ██║██╔══██╗██╔════╝"
+      echo "  ██╔██╗ ██║██║ ╚███╔╝ ██╔██╗ ██║███████║███████╗"
+      echo "  ██║╚██╗██║██║ ██╔██╗ ██║╚██╗██║██╔══██║╚════██║"
+      echo "  ██║ ╚████║██║██╔╝ ██╗██║ ╚████║██║  ██║███████║"
+      echo "  ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝"
+      echo ""
 
-    NixOS NAS  —  nas.home.fossar.net (192.168.12.8)
+      IP=$(${pkgs.iproute2}/bin/ip -4 addr show scope global | ${pkgs.gawk}/bin/awk '/inet/{print $2}' | head -1)
+      echo "  NixOS NAS  —  $(hostname -f)  ($IP)"
+      echo ""
 
-    Useful commands:
-      update-system          pull latest config from git and rebuild
-      sudo nixos-rebuild switch --flake ~/auto-home/nix#nas
-                             rebuild without git pull
-      journalctl -u k3s -f   follow k3s logs
-      k9s                    kubernetes TUI
+      echo "  Uptime  : $(${pkgs.procps}/bin/uptime -p)"
+      echo "  Load    : $(${pkgs.coreutils}/bin/cut -d' ' -f1-3 /proc/loadavg)"
+      echo ""
 
-  '';
+      echo "  ZFS pools:"
+      ${pkgs.zfs}/bin/zpool list -o name,size,alloc,free,health | ${pkgs.gawk}/bin/awk 'NR>1{printf "    %-12s  size=%-8s  alloc=%-8s  free=%-8s  %s\n",$1,$2,$3,$4,$5}'
+      echo ""
+
+      echo "  k3s     : $(${pkgs.systemd}/bin/systemctl is-active k3s)"
+      echo ""
+
+      LAST_UPDATE=$(${pkgs.systemd}/bin/systemctl show update-system --property=ExecMainExitTimestamp --value 2>/dev/null)
+      echo "  Last update-system: ''${LAST_UPDATE:-unknown}"
+      echo ""
+
+      echo "  Useful commands:"
+      echo "    update-system          pull latest config and rebuild"
+      echo "    journalctl -u k3s -f   follow k3s logs"
+      echo "    k9s                    kubernetes TUI"
+      echo ""
+    '';
+  };
 
   system.stateVersion = "25.11";
 }
