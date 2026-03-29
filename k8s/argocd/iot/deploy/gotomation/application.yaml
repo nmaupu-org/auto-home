@@ -10,7 +10,6 @@ spec:
     namespace: gotomation
     name: iot
   source:
-    source:
     repoURL: https://github.com/nmaupu/gotomation.git
     targetRevision: main
     path: deploy
