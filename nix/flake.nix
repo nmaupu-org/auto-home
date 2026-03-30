@@ -1,5 +1,5 @@
 {
-  description = "NAS NixOS configuration";
+  description = "Home NixOS configurations";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -15,6 +15,14 @@
       modules = [
         sops-nix.nixosModules.sops
         ./hosts/nas/configuration.nix
+      ];
+    };
+
+    nixosConfigurations.iot = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        sops-nix.nixosModules.sops
+        ./hosts/iot/configuration.nix
       ];
     };
   };
