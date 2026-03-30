@@ -8,7 +8,7 @@
     ../../modules/shared/k3s.nix
     ../../modules/shared/zsh.nix
     ../../modules/iot/udev.nix
-    # ../../modules/iot/monitoring.nix
+    ../../modules/iot/monitoring.nix
   ];
 
   services.base.flakeTarget = "iot";
