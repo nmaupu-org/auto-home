@@ -28,6 +28,7 @@ workload:
             - |
               cp /extra-configs/passwordfile /mosquitto/configinc/passwordfile
               chmod 0700 /mosquitto/configinc/passwordfile
+              echo "password_file /mosquitto/configinc/passwordfile" > /mosquitto/configinc/auth.conf
 
 service:
   main:
