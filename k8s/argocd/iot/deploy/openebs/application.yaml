@@ -52,6 +52,12 @@ spec:
           xfsQuota:
             enabled: true
 
+        loki:
+          enabled: false
+
+        minio:
+          enabled: false
+
   syncPolicy:
     automated:
       prune: true
