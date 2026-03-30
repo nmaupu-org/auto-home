@@ -12,13 +12,22 @@ google-key.json:
 	kubectl create ns cert-manager || true
 	kubectl create secret generic google-dns01-solver --from-file=google-key.json --namespace cert-manager
 
-.PHONY:cert-manager
+.PHONY: cert-manager
 cert-manager: google-key.json
 	helm repo add jetstack https://charts.jetstack.io --force-update
 	helm upgrade --install --namespace cert-manager --create-namespace cert-manager jetstack/cert-manager \
 		--set crds.enabled=true
-	sed -e 's/@@EMAIL_ADDRESS@@/$(EMAIL_ADDRESS)/' -e 's/@@GOOGLE_PROJECT_ID@@/$(GOOGLE_PROJECT_ID)/' letsencrypt-google-dns.yaml | \
-		kubectl apply -f -
+	sed -e 's/@@EMAIL_ADDRESS@@/$(EMAIL_ADDRESS)/' \
+	    -e 's/@@GOOGLE_PROJECT_ID@@/$(GOOGLE_PROJECT_ID)/' \
+	    cert-manager-nas-application.yaml | \
+	    kubectl -n argocd apply -f -
+
+.PHONY: cert-manager-iot
+cert-manager-iot:
+	sed -e 's/@@EMAIL_ADDRESS@@/$(EMAIL_ADDRESS)/' \
+	    -e 's/@@GOOGLE_PROJECT_ID@@/$(GOOGLE_PROJECT_ID)/' \
+	    cert-manager-iot-application.yaml | \
+	    kubectl -n argocd apply -f -
 
 sealed-secrets.crt:
 	$(error please create sealed-secrets.crt here)

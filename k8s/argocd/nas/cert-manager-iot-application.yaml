@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-cert-manager-issuers
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  destination:
+    namespace: cert-manager
+    name: iot
+  source:
+    repoURL: https://github.com/nmaupu-org/auto-home.git
+    targetRevision: master
+    path: k8s/charts/cert-manager-issuers
+    helm:
+      valuesObject:
+        email: "@@EMAIL_ADDRESS@@"
+        googleProjectId: "@@GOOGLE_PROJECT_ID@@"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

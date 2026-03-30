@@ -5,14 +5,14 @@ metadata:
   name: google-dns-issuer-staging
 spec:
   acme:
-    email: nicolas@nma-solutions.fr
+    email: {{ .Values.email | quote }}
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: google-dns-issuer-staging
     solvers:
       - dns01:
           cloudDNS:
-            project: kube-99d1265f
+            project: {{ .Values.googleProjectId | quote }}
             serviceAccountSecretRef:
               name: google-dns01-solver
               key: google-key.json
@@ -24,14 +24,14 @@ metadata:
   name: google-dns-issuer-prod
 spec:
   acme:
-    email: nicolas@nma-solutions.fr
+    email: {{ .Values.email | quote }}
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: google-dns-issuer-prod
     solvers:
       - dns01:
           cloudDNS:
-            project: kube-99d1265f
+            project: {{ .Values.googleProjectId | quote }}
             serviceAccountSecretRef:
               name: google-dns01-solver
               key: google-key.json
