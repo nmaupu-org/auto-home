@@ -121,7 +121,7 @@
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
       ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#iot
-      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/REPLACE_WITH_IOT_HC_PING_UUID > /dev/null
+      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/d6782ebb-66f6-47e4-a028-04131bbc1750 > /dev/null
     '';
   };
 

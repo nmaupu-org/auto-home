@@ -15,9 +15,12 @@
   };
 
   config = {
+    environment.variables.EDITOR = "vim";
+
     environment.systemPackages = with pkgs; [
       age
       git
+      inetutils
       jq
       k9s
       kubectl
