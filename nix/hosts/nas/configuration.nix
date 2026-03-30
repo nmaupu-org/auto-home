@@ -17,6 +17,8 @@
   ];
 
   services.base.flakeTarget = "nas";
+  services.zsh-config.sshSymbol    = "󰋊 ";
+  services.zsh-config.hostnameStyle = "bold cyan";
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs
   boot.loader.efi.canTouchEfiVariables = true;

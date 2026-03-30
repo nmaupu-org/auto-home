@@ -12,6 +12,8 @@
   ];
 
   services.base.flakeTarget = "iot";
+  services.zsh-config.sshSymbol    = "󰋜 ";
+  services.zsh-config.hostnameStyle = "bold yellow";
 
   # Bootloader — systemd-boot (single EFI disk, no mirror needed)
   boot.loader.systemd-boot.enable = true;
