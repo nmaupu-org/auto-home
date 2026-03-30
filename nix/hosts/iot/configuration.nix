@@ -3,12 +3,12 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ../../modules/shared/telegram.nix  # re-enable after sops secrets are created (task 4)
+    ../../modules/shared/telegram.nix
     ../../modules/shared/base.nix
     ../../modules/shared/k3s.nix
     ../../modules/shared/zsh.nix
     ../../modules/iot/udev.nix
-    # ../../modules/iot/monitoring.nix
+    ../../modules/iot/monitoring.nix
   ];
 
   services.base.flakeTarget = "iot";
@@ -85,8 +85,7 @@
     group              = "nmaupu";
     extraGroups        = [ "wheel" ];
     shell              = pkgs.zsh;
-    # hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;  # re-enable after task 4
-    initialPassword = "nixos";
+    hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
   };
 
@@ -97,12 +96,12 @@
     commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
   }];
 
-  # Secrets — disabled for first-pass install, re-enable after task 4
-  # sops.secrets.nmaupu_user_password = {
-  #   sopsFile       = ../../secrets/iot.yaml;
-  #   neededForUsers = true;
-  # };
-  # services.telegram-alert.sopsFile = ../../secrets/iot.yaml;
+  sops.secrets.nmaupu_user_password = {
+    sopsFile       = ../../secrets/iot.yaml;
+    neededForUsers = true;
+  };
+
+  services.telegram-alert.sopsFile = ../../secrets/iot.yaml;
 
   # k3s — disable built-ins replaced by ArgoCD-managed equivalents
   services.k3s-node.disabledComponents = [ "traefik" "servicelb" "local-storage" ];
