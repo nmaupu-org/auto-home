@@ -4,15 +4,19 @@
   imports = [
     ./hardware-configuration.nix
     # ../../modules/shared/telegram.nix  # re-enable after sops secrets are created (task 4)
+    ../../modules/shared/base.nix
     ../../modules/shared/k3s.nix
     ../../modules/shared/zsh.nix
     ../../modules/iot/udev.nix
-    ../../modules/iot/monitoring.nix
+    # ../../modules/iot/monitoring.nix
   ];
+
+  services.base.flakeTarget = "iot";
 
   # Bootloader — systemd-boot (single EFI disk, no mirror needed)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # LVM2 support in initrd
   boot.initrd.luks.devices = {};
@@ -94,7 +98,6 @@
   }];
 
   # Secrets — disabled for first-pass install, re-enable after task 4
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   # sops.secrets.nmaupu_user_password = {
   #   sopsFile       = ../../secrets/iot.yaml;
   #   neededForUsers = true;
@@ -137,39 +140,10 @@
     description = "Daily NixOS system update";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "*-*-* 10:00:00";
+      OnCalendar = "*-*-* 09:00:00";
       Persistent  = true;
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-    jq
-    zsh
-    sops
-    age
-    ssh-to-age
-    k9s
-    kubectl
-    (writeShellScriptBin "update-system" ''
-      set -e
-      cd /home/nmaupu/auto-home
-      git fetch --all
-      git reset --hard origin/master
-      sudo nixos-rebuild switch --flake ./nix#iot
-    '')
-  ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.download-buffer-size = 524288000; # 500MiB
-
-  nix.gc = {
-    automatic = true;
-    dates     = "weekly";
-    options   = "--delete-older-than 30d";
-  };
-  nix.settings.auto-optimise-store = true;
 
   system.stateVersion = "25.11";
 }

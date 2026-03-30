@@ -12,8 +12,11 @@
     ../../modules/shared/k3s.nix
     ../../modules/nas/telegram-bot.nix
     ../../modules/shared/zsh.nix
+    ../../modules/shared/base.nix
     ../../modules/nas/monitoring.nix
   ];
+
+  services.base.flakeTarget = "nas";
 
   # Bootloader — GRUB with mirrored EFI on both Verbatim SSDs
   boot.loader.efi.canTouchEfiVariables = true;
@@ -126,41 +129,8 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-    jq
-    zsh
-    sops
-    age
-    ssh-to-age
-    k9s
-    kubectl
-    (writeShellScriptBin "update-system" ''
-      set -e
-      cd /home/nmaupu/auto-home
-      git fetch --all
-      git reset --hard origin/master
-      sudo nixos-rebuild switch --flake ./nix#nas
-    '')
-  ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.download-buffer-size = 524288000; # 500MiB
-
-  # Automatic cleanup — keep only the last 5 generations, run GC weekly
-  nix.gc = {
-    automatic = true;
-    dates     = "weekly";
-    options   = "--delete-older-than 30d";
-  };
-  nix.settings.auto-optimise-store = true;
-
   # mdadm notifications via Telegram
   boot.swraid.mdadmConf = "PROGRAM /etc/telegram-alert";
-
-  # sops-nix: age key derived from SSH host key (auto-available after first boot)
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   services.telegram-alert.sopsFile = ../../secrets/nas.yaml;
 
