@@ -34,5 +34,23 @@
     networking.firewall.allowedUDPPorts = [
       8472   # Flannel VXLAN
     ];
+
+    # Copy k3s kubeconfig to nmaupu's ~/.kube/conf.d/ after k3s starts
+    # so that kubectl works without sudo for the nmaupu user.
+    systemd.services.k3s-kubeconfig = {
+      description = "Copy k3s kubeconfig for nmaupu";
+      after = [ "k3s.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      script = ''
+        install -d -o nmaupu -g nmaupu /home/nmaupu/.kube
+        install -m 0600 -o nmaupu -g nmaupu \
+          /etc/rancher/k3s/k3s.yaml \
+          /home/nmaupu/.kube/config
+      '';
+    };
   };
 }
