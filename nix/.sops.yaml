@@ -1,9 +1,6 @@
 keys:
-  # Age key derived from the NAS SSH host key.
-  # After first boot, run on the NAS:
-  #   nix-shell -p ssh-to-age --run 'ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub'
-  # Then replace the placeholder below with the output.
   - &nas age1n8x9pwjy493xzsgdcedngajamdpwplr8777plxhehmh8e9xzcg6sr9qx9d
+  - &iot age13g6z2pd7dsywgfw80356veqsrufzhrs8urzwklza5gptkcw8t9ss32y3zt
   - &nmaupu-laptop age170gy8t4y7rx5cwmfyeht4n7zemgq5yqdd8062gaevmyp9yd9e9qqnut4kw
 
 creation_rules:
@@ -11,4 +8,9 @@ creation_rules:
     key_groups:
       - age:
           - *nas
+          - *nmaupu-laptop
+  - path_regex: secrets/iot\.yaml$
+    key_groups:
+      - age:
+          - *iot
           - *nmaupu-laptop
