@@ -7,7 +7,6 @@
     enable = true;
     exports = ''
       /tank/le-certs 192.168.12.0/24(sec=sys,no_root_squash,insecure,no_subtree_check)
-      /tank/backup-iot 192.168.12.0/24(sec=sys,no_root_squash,insecure,no_subtree_check,rw)
     '';
   };
 
