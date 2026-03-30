@@ -121,11 +121,12 @@ if history needs to be preserved.
 
 ## Step 6 — HC Ping UUID
 
-Update the auto-update healthcheck in `nix/hosts/iot/configuration.nix`:
-```nix
-${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/<UUID> > /dev/null
+The auto-update healthcheck UUID is set in `nix/hosts/iot/configuration.nix`.
+If reinstalling from scratch, create a new check at healthchecks.io and update the UUID in the `update-system` service script.
+
 ```
-Replace `REPLACE_WITH_IOT_HC_PING_UUID` with the actual UUID from healthchecks.io.
+
+ArgoCD will then detect the resource as present and proceed.
 
 ## ArgoCD sync order (sync waves)
 
