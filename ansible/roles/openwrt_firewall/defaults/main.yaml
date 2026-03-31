@@ -69,6 +69,7 @@ firewall_dnsmasq_config:
     resolvfile: /tmp/resolv.conf
     nonwildcard: 1
     localservice: 1
+    # port: 5454  # uncomment when running alongside AdGuardHome
 
 firewall_dhcp_static_leases: []
 
@@ -128,6 +129,23 @@ firewall_nfs_mount: {}
 #  options: nolock,noatime,rw
 #  network: lan
 #  fstype: nfs
+
+firewall_adguardhome:
+  enabled: no
+  http_address: 192.168.1.1:3001
+  admin_password_hash: ""
+  bind_hosts:
+    - 192.168.1.1
+  dnsmasq_port: 5454
+  rate_limit: 0
+  upstream_dns:
+    - https://dns10.quad9.net:443/dns-query
+    - '[/lan/]127.0.0.1:5454'
+    - '[//]127.0.0.1:5454'
+  bootstrap_dns:
+    - 9.9.9.10
+    - 149.112.112.10
+  user_rules: []
 
 firewall_mqtt:
   enabled: no

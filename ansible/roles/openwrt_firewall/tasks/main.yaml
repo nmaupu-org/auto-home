@@ -113,6 +113,14 @@
 #       tags: ['firewall_nfs']
 #   tags: ['always']
 
+- name: Processing AdGuardHome configuration
+  include_tasks:
+    file: adguardhome.yaml
+    apply:
+      tags: ['firewall_adguardhome']
+  tags: ['always']
+  when: firewall_adguardhome.enabled
+
 # - name: Processing Mosquitto server
 #   include_tasks:
 #     file: mqtt.yaml

@@ -54,3 +54,9 @@
     name: mosquitto
     state: restarted
     enabled: yes
+
+- name: restart adguardhome
+  service:
+    name: adguardhome
+    state: restarted
+    enabled: yes

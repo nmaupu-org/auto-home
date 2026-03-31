@@ -1,0 +1,21 @@
+---
+
+- name: Install adguardhome package
+  community.general.opkg:
+    name: adguardhome
+    state: present
+
+- name: Deploy AdGuardHome configuration
+  ansible.builtin.template:
+    src: adguardhome.yaml.j2
+    dest: /etc/adguardhome.yaml
+    owner: root
+    group: root
+    mode: '0600'
+  notify: restart adguardhome
+
+- name: Enable and start adguardhome
+  service:
+    name: adguardhome
+    state: started
+    enabled: yes

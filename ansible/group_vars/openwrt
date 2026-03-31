@@ -26,6 +26,7 @@ firewall_packages:
   - grep
   - sed
   - coreutils-sort
+  - adguardhome
 
 firewall_network_interfaces:
   lan:
@@ -82,6 +83,7 @@ firewall_dhcp:
 firewall_dnsmasq_config:
   options:
     domain: home.fossar.net
+    port: 5454
     enable_tftp: 1
     tftp_root: /mnt/extstorage/pxe
   addresses:
@@ -215,6 +217,28 @@ firewall_ports:
 
 firewall_prometheus:
   listen_address: 192.168.12.1
+
+firewall_adguardhome:
+  enabled: yes
+  http_address: 192.168.12.1:3001
+  admin_password_hash: "$2a$10$hS1KswVzkkSMdQQ5mLKUtOmvgqRsL9OSxls/oJfvmZTs.x.AQw.0i"
+  bind_hosts:
+    - 192.168.12.1
+    - 192.168.8.1
+  dnsmasq_port: 5454
+  rate_limit: 0
+  upstream_dns:
+    - https://dns10.quad9.net:443/dns-query
+    - '[/home.fossar.net/]127.0.0.1:5454'
+    - '[//]127.0.0.1:5454'
+  bootstrap_dns:
+    - 9.9.9.10
+    - 149.112.112.10
+    - 2620:fe::10
+    - 2620:fe::fe:10
+  user_rules:
+    - "@@||app.amplitude.com^$client='192.168.12.39'"
+    - "||m.media-amazon.com^$client='192.168.12.221'"
 
 firewall_nfs_mount:
   name: openwrt
