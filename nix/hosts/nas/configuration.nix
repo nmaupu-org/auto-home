@@ -155,7 +155,7 @@
       echo ""
 
       IP=$(${pkgs.iproute2}/bin/ip -4 addr show scope global | ${pkgs.gawk}/bin/awk '/inet/{print $2}' | head -1)
-      echo "  NixOS NAS  —  $(hostname -f)  ($IP)"
+      echo "  NixOS NAS  —  nas.home.fossar.net  ($IP)"
       echo ""
 
       echo "  Uptime  : $(${pkgs.procps}/bin/uptime -p)"
@@ -169,7 +169,7 @@
       echo "  k3s     : $(${pkgs.systemd}/bin/systemctl is-active k3s)"
       echo ""
 
-      LAST_UPDATE=$(${pkgs.systemd}/bin/systemctl show update-system --property=ExecMainExitTimestamp --value 2>/dev/null)
+      LAST_UPDATE=$(${pkgs.systemd}/bin/journalctl -u update-system --no-pager -n 1 --output=short 2>/dev/null | ${pkgs.gawk}/bin/awk '{print $1, $2, $3}')
       echo "  Last update-system: ''${LAST_UPDATE:-unknown}"
       echo ""
 
