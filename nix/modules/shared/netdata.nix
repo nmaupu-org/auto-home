@@ -1,10 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
 
+let
+  unstable = import nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; config.allowUnfree = true; };
+in
 {
   nixpkgs.config.allowUnfree = true;
   services.netdata = {
     enable = true;
-    package = pkgs.netdata.override { withCloudUi = true; };
+    package = unstable.netdata.override { withCloudUi = true; };
     config = {
       global = {
         # dbengine stores metrics on disk at /var/cache/netdata
@@ -18,6 +21,9 @@
       web = {
         # Trust connections from anywhere (Traefik proxies requests from its pod IP)
         "allow connections from" = "*";
+      };
+      cloud = {
+        "enabled" = "no";
       };
     };
   };
