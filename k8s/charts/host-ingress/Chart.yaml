@@ -1,0 +1,5 @@
+apiVersion: v2
+name: host-ingress
+description: Expose a service running on the host through Traefik with TLS via cert-manager
+type: application
+version: 0.1.0

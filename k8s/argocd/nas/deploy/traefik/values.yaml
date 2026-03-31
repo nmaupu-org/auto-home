@@ -13,6 +13,8 @@ ports:
     port: 80
     expose:
       default: true
+    redirectTo:
+      port: websecure
   websecure:
     port: 443
     expose:

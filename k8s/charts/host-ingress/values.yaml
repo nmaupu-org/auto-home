@@ -1,0 +1,11 @@
+# IP address of the host running the service
+hostIP: ""
+
+# Port the service listens on on the host
+hostPort: 80
+
+# Ingress hostname (e.g. mon.iot.home.fossar.net)
+hostname: ""
+
+# cert-manager ClusterIssuer name
+clusterIssuer: google-dns-issuer-prod
