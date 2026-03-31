@@ -8,9 +8,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, nixos-hardware }: {
     nixosConfigurations.nas = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit nixpkgs-unstable; };
@@ -26,6 +27,16 @@
       modules = [
         sops-nix.nixosModules.sops
         ./hosts/iot/configuration.nix
+      ];
+    };
+
+    nixosConfigurations.rpi = nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      specialArgs = { inherit nixpkgs-unstable; };
+      modules = [
+        sops-nix.nixosModules.sops
+        nixos-hardware.nixosModules.raspberry-pi-4
+        ./hosts/rpi/configuration.nix
       ];
     };
   };

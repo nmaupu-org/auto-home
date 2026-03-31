@@ -1,6 +1,7 @@
 keys:
   - &nas age1n8x9pwjy493xzsgdcedngajamdpwplr8777plxhehmh8e9xzcg6sr9qx9d
   - &iot age13g6z2pd7dsywgfw80356veqsrufzhrs8urzwklza5gptkcw8t9ss32y3zt
+  - &bastion age1w3enru4wu5q4m2nuuy05q7kmr498mtgz560m7q7tgfq6t2dqrfnqun2p2t
   - &nmaupu-laptop age170gy8t4y7rx5cwmfyeht4n7zemgq5yqdd8062gaevmyp9yd9e9qqnut4kw
 
 creation_rules:
@@ -13,4 +14,9 @@ creation_rules:
     key_groups:
       - age:
           - *iot
+          - *nmaupu-laptop
+  - path_regex: secrets/bastion\.yaml$
+    key_groups:
+      - age:
+          - *bastion
           - *nmaupu-laptop
