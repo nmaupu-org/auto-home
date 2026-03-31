@@ -95,7 +95,7 @@ firewall_dhcp_static_leases:
     mac: D0:50:99:E1:96:BF
     ip: 192.168.12.3
   - name: printer
-    mac: 00:1B:A9:FA:0A:81
+    mac: B8:76:3F:64:CB:E5
     ip: 192.168.12.5
   - name: mbp
     mac: 3C:06:30:32:1F:8B
@@ -115,7 +115,7 @@ firewall_dhcp_static_leases:
   - name: harmony-hub
     mac: C8:DB:26:0B:1F:30
     ip: 192.168.12.20
-  - name: iot-raspbian
+  - name: bastion
     mac: DC:A6:32:54:73:91
     ip: 192.168.12.35
   - name: naomi
@@ -145,7 +145,7 @@ firewall_dns_entries:
   192.168.12.5:
     - printer
   192.168.12.35:
-    - iot-raspbian
+    - bastion
   192.168.12.40:
     - iot
   192.168.100.35:
