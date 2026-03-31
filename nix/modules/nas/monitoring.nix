@@ -9,6 +9,8 @@
   imports = [ ../shared/netdata.nix ];
 
   services.netdata.config.registry = {
+    # Consolidate visited-nodes registry to the proxied URL only,
+    # avoiding a duplicate locked entry for http://192.168.12.8:19999
     "registry to announce" = "https://mon.knas.home.fossar.net";
   };
 

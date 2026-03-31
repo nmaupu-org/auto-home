@@ -23,6 +23,7 @@
     writeEnable = true;
 
     extraConfig = ''
+      local_umask=022
       ftpd_banner=Welcome to nas FTP
       max_clients=10
       max_per_ip=10
