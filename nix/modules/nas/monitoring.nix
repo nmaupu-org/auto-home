@@ -8,6 +8,10 @@
 {
   imports = [ ../shared/netdata.nix ];
 
+  services.netdata.config.registry = {
+    "registry to announce" = "https://mon.knas.home.fossar.net";
+  };
+
   # Scrutiny — SMART health dashboard
   services.scrutiny = {
     enable = true;

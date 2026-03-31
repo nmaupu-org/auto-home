@@ -15,6 +15,10 @@
       db = {
         "dbengine multihost disk space MB" = "6144";
       };
+      web = {
+        # Trust connections from anywhere (Traefik proxies requests from its pod IP)
+        "allow connections from" = "*";
+      };
     };
   };
 }
