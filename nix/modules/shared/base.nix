@@ -19,6 +19,7 @@
 
     environment.systemPackages = with pkgs; [
       age
+      dnsutils
       git
       inetutils
       jq
