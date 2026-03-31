@@ -1,6 +1,6 @@
 image:
   repository: nmaupu/scan-http
-  tag: "1.7"
+  tag: "1.8"
 
 persistence:
   scan-share:

@@ -100,7 +100,7 @@ def index(page=1):
     try:
         all_files = sorted(
             Path(SCAN_DIR).glob("*.pdf"),
-            key=os.path.getctime,
+            key=os.path.getmtime,
             reverse=True
         )
         total_files = len(all_files)
