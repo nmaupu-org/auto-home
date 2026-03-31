@@ -24,7 +24,7 @@
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # SSH — no firewall opening needed (access via Tailscale only)
+  # SSH — port 22 open on LAN; Tailscale provides secure remote path
   services.openssh = {
     enable = true;
     openFirewall = false;
@@ -39,6 +39,7 @@
   networking.firewall = {
     enable = true;
     trustedInterfaces = [ "tailscale0" ];
+    allowedTCPPorts = [ 22 ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 
