@@ -1,0 +1,55 @@
+---
+# Expose netdata running on the IoT host (192.168.12.40:19999) through Traefik with TLS.
+# Service + Endpoints proxy traffic from k8s ingress to the host process.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netdata
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdata
+  namespace: netdata
+spec:
+  ports:
+    - port: 19999
+      targetPort: 19999
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: netdata
+  namespace: netdata
+subsets:
+  - addresses:
+      - ip: 192.168.12.40
+    ports:
+      - port: 19999
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: netdata
+  namespace: netdata
+  annotations:
+    cert-manager.io/cluster-issuer: google-dns-issuer-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - mon.iot.home.fossar.net
+      secretName: netdata-tls
+  rules:
+    - host: mon.iot.home.fossar.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: netdata
+                port:
+                  number: 19999
