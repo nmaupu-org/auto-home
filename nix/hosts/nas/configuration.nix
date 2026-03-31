@@ -155,7 +155,7 @@
       echo ""
 
       IP=$(${pkgs.iproute2}/bin/ip -4 addr show scope global | ${pkgs.gawk}/bin/awk '/inet/{print $2}' | head -1)
-      echo "  NixOS NAS  —  nas.home.fossar.net  ($IP)"
+      echo "  NixOS NAS  —  $(hostname -f)  ($IP)"
       echo ""
 
       echo "  Uptime  : $(${pkgs.procps}/bin/uptime -p)"
