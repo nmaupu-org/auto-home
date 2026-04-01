@@ -103,7 +103,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(hass_sensor_battery_percent{friendly_name=~\".*hum_temp Battery\"})",
+              "expr": "sort(hass_sensor_battery_percent{friendly_name=~\"^ATC_.*\"})",
               "instant": true,
               "legendFormat": "{{ friendly_name }}",
               "range": false,
@@ -125,7 +125,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "Prometheus"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -260,9 +260,9 @@ data:
                 "type": "prometheus",
                 "uid": "Prometheus"
               },
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "hass_sensor_temperature_celsius{friendly_name=~\".*hum_temp Temperature$\"}",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=~\"^ATC.* temp$\"}",
               "format": "time_series",
               "instant": false,
               "legendFormat": "{{ friendly_name }}",
@@ -301,7 +301,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "Prometheus"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -358,9 +358,9 @@ data:
                 "type": "prometheus",
                 "uid": "Prometheus"
               },
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "hass_sensor_temperature_celsius{friendly_name=~\".*hum_temp Temperature$\"}",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=~\"^ATC_.*temp$\"}",
               "format": "time_series",
               "instant": false,
               "legendFormat": "{{ friendly_name }}",
@@ -383,7 +383,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "Prometheus"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -448,9 +448,9 @@ data:
                 "type": "prometheus",
                 "uid": "Prometheus"
               },
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "hass_sensor_temperature_celsius{friendly_name=~\".*hum_temp Temperature$\"}",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=~\"^ATC_.*temp$\"}",
               "format": "time_series",
               "instant": false,
               "legendFormat": "{{ friendly_name }}",
@@ -473,7 +473,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "Prometheus"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -594,7 +594,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "hass_sensor_humidity_percent{friendly_name=~\".*hum_temp .*\"}",
+              "expr": "hass_sensor_humidity_percent{friendly_name=~\"^ATC_.*\"}",
               "format": "time_series",
               "instant": false,
               "legendFormat": "{{ friendly_name }}",
@@ -606,7 +606,7 @@ data:
                 "type": "prometheus",
                 "uid": "Prometheus"
               },
-              "editorMode": "builder",
+              "editorMode": "code",
               "expr": "hass_sensor_humidity_percent{entity=\"sensor.dehum_bedroom_am2301_humidity\"}",
               "hide": false,
               "legendFormat": "{{friendly_name}}",
@@ -648,7 +648,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "Prometheus"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -718,7 +718,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "hass_sensor_humidity_percent{friendly_name=~\".*hum_temp .*\"}",
+              "expr": "hass_sensor_humidity_percent{friendly_name=~\"^ATC.*\"}",
               "format": "time_series",
               "instant": false,
               "legendFormat": "{{ friendly_name }}",
@@ -730,10 +730,10 @@ data:
                 "type": "prometheus",
                 "uid": "Prometheus"
               },
-              "editorMode": "builder",
-              "expr": "hass_sensor_humidity_percent{entity=\"sensor.dehum_bedroom_am2301_humidity\"}",
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.estrade_am2301_humidity\"}",
               "hide": false,
-              "legendFormat": "{{friendly_name}}",
+              "legendFormat": "Estrade hum",
               "range": true,
               "refId": "B"
             }
@@ -844,7 +844,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "hass_sensor_battery_percent{friendly_name=~\".*hum_temp Battery\"}",
+              "expr": "hass_sensor_battery_percent{friendly_name=~\"^ATC_.*\"}",
               "instant": false,
               "legendFormat": "{{ friendly_name }}",
               "range": true,
@@ -878,6 +878,6 @@ data:
       "timezone": "",
       "title": "Home dash",
       "uid": "a841240e-0d62-4aec-a8c3-52223e72f7fa",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
