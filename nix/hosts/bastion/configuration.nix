@@ -7,7 +7,7 @@
     ../../modules/shared/zsh.nix
   ];
 
-  services.base.flakeTarget = "rpi";
+  services.base.flakeTarget = "bastion";
   services.zsh-config.sshSymbol    = " ";
   services.zsh-config.hostnameStyle = "bold green";
 
@@ -87,7 +87,7 @@
       cd /home/nmaupu/auto-home
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
-      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#rpi
+      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#bastion
     '';
   };
 

@@ -30,13 +30,13 @@
       ];
     };
 
-    nixosConfigurations.rpi = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.bastion = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       specialArgs = { inherit nixpkgs-unstable; };
       modules = [
         sops-nix.nixosModules.sops
         nixos-hardware.nixosModules.raspberry-pi-4
-        ./hosts/rpi/configuration.nix
+        ./hosts/bastion/configuration.nix
       ];
     };
   };
