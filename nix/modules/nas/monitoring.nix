@@ -8,6 +8,11 @@
 {
   imports = [ ../shared/netdata.nix ];
 
+  services.netdata.config.global = {
+    # Reduce collection frequency to lower CPU/IO overhead on NAS hardware
+    "update every" = "5";
+  };
+
   services.netdata.config.registry = {
     # Consolidate visited-nodes registry to the proxied URL only,
     # avoiding a duplicate locked entry for http://192.168.12.8:19999

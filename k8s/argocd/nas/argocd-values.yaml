@@ -5,10 +5,15 @@ global:
 configs:
   cm:
     statusbadge.enabled: true
-    timeout.reconciliation: 600s
+    timeout.reconciliation: 1800s
   params:
     server.disable.auth: true
     server.insecure: true
+    # Reduce CPU by limiting concurrency — no need for fast reconciliation on home NAS
+    controller.operation.processors: "5"
+    controller.status.processors: "10"
+    controller.self.heal.timeout.seconds: "60"
+    reposerver.parallelism.limit: "2"
   cmp:
     create: true
     plugins:
