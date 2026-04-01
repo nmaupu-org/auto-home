@@ -109,9 +109,6 @@ firewall_dhcp_static_leases:
   - name: mbr
     mac: 98:fe:94:41:74:36
     ip: 192.168.12.10
-  - name: raspbastion
-    mac: B8:27:EB:C4:1C:80
-    ip: 192.168.12.11
   - name: harmony-hub
     mac: C8:DB:26:0B:1F:30
     ip: 192.168.12.20
@@ -176,7 +173,7 @@ firewall_ports:
     proto: tcp
     src_dport: 22
     dest_port: 22
-    dest_ip: 192.168.12.11
+    dest_ip: 192.168.12.35
     name: bastion SSH
   - target: DNAT
     enabled: 1
