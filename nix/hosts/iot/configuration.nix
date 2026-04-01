@@ -10,6 +10,7 @@
     ../../modules/shared/zsh.nix
     ../../modules/iot/udev.nix
     ../../modules/iot/monitoring.nix
+    ../../modules/iot/firewall-extras.nix
   ];
 
   users-shared.sopsFile = ../../secrets/iot.yaml;
