@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/shared/users.nix
     ../../modules/nas/zfs.nix
     ../../modules/nas/smb.nix
     ../../modules/nas/nfs.nix
@@ -15,6 +16,8 @@
     ../../modules/shared/base.nix
     ../../modules/nas/monitoring.nix
   ];
+
+  users-shared.sopsFile = ../../secrets/nas.yaml;
 
   services.base.flakeTarget = "nas";
   services.zsh-config.sshSymbol    = "󰋊 ";
@@ -57,23 +60,6 @@
     fi
   '';
 
-  users.users.nmaupu = {
-    isNormalUser       = true;
-    uid                = 1001;
-    group              = "nmaupu";
-    extraGroups        = [ "wheel" ];
-    shell              = pkgs.zsh;
-    hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
-  };
-
-  users.groups.nmaupu = { gid = 1001; };
-
-  security.sudo.extraRules = [{
-    users = [ "nmaupu" ];
-    commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
-  }];
-
   users.users.bicou = {
     isSystemUser       = true;
     uid                = 1002;
@@ -85,10 +71,6 @@
 
   users.groups.bicou = { gid = 1002; };
 
-  sops.secrets.nmaupu_user_password = {
-    sopsFile      = ../../secrets/nas.yaml;
-    neededForUsers = true;
-  };
   sops.secrets.bicou_user_password = {
     sopsFile      = ../../secrets/nas.yaml;
     neededForUsers = true;

@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/shared/users.nix
     ../../modules/shared/base.nix
     ../../modules/shared/zsh.nix
   ];
@@ -43,34 +44,14 @@
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 
+  users-shared.sopsFile = ../../secrets/bastion.yaml;
+
   # Users
   users.users.root = {
     hashedPasswordFile = config.sops.secrets.root_password.path;
   };
 
-  users.users.nmaupu = {
-    isNormalUser       = true;
-    uid                = 1001;
-    group              = "nmaupu";
-    extraGroups        = [ "wheel" ];
-    shell              = pkgs.zsh;
-    hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
-  };
-
-  users.groups.nmaupu = { gid = 1001; };
-
-  security.sudo.extraRules = [{
-    users = [ "nmaupu" ];
-    commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
-  }];
-
   sops.secrets.root_password = {
-    sopsFile       = ../../secrets/bastion.yaml;
-    neededForUsers = true;
-  };
-
-  sops.secrets.nmaupu_user_password = {
     sopsFile       = ../../secrets/bastion.yaml;
     neededForUsers = true;
   };

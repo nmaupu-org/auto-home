@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/shared/users.nix
     ../../modules/shared/telegram.nix
     ../../modules/shared/base.nix
     ../../modules/shared/k3s.nix
@@ -10,6 +11,8 @@
     ../../modules/iot/udev.nix
     ../../modules/iot/monitoring.nix
   ];
+
+  users-shared.sopsFile = ../../secrets/iot.yaml;
 
   services.base.flakeTarget = "iot";
   services.zsh-config.sshSymbol    = "󰋜 ";
@@ -77,29 +80,6 @@
       echo "    k9s                    kubernetes TUI"
       echo ""
     '';
-  };
-
-  # Users
-  users.users.nmaupu = {
-    isNormalUser       = true;
-    uid                = 1001;
-    group              = "nmaupu";
-    extraGroups        = [ "wheel" ];
-    shell              = pkgs.zsh;
-    hashedPasswordFile = config.sops.secrets.nmaupu_user_password.path;
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAuxw5aDJj7SuXLRQS1bWpzKrvXOYv9Ts23gDzHdDvF nmaupu@nmaupu-laptop" ];
-  };
-
-  users.groups.nmaupu = { gid = 1001; };
-
-  security.sudo.extraRules = [{
-    users = [ "nmaupu" ];
-    commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
-  }];
-
-  sops.secrets.nmaupu_user_password = {
-    sopsFile       = ../../secrets/iot.yaml;
-    neededForUsers = true;
   };
 
   services.telegram-alert.sopsFile = ../../secrets/iot.yaml;
