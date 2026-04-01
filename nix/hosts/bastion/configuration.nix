@@ -16,7 +16,7 @@
   boot.loader.generic-extlinux-compatible.enable = true;
 
   # Networking — DHCP, static lease on router for MAC dc:a6:32:54:73:91
-  networking.hostName = "nixbastion";
+  networking.hostName = "bastion";
   networking.domain = "home.fossar.net";
   networking.useDHCP = true;
 
