@@ -32,10 +32,10 @@
       zsh
       (writeShellScriptBin "update-system" ''
         set -e
-        cd /home/nmaupu/auto-home
+        cd /root/auto-home
         git fetch --all
         git reset --hard origin/master
-        sudo nixos-rebuild switch --flake ./nix#${config.services.base.flakeTarget}
+        nixos-rebuild switch --flake ./nix#${config.services.base.flakeTarget}
       '')
     ];
 
@@ -57,14 +57,14 @@
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
-      unitConfig.ConditionPathExists = "!/home/nmaupu/auto-home";
+      unitConfig.ConditionPathExists = "!/root/auto-home";
       serviceConfig = {
         Type            = "oneshot";
-        User            = "nmaupu";
+        User            = "root";
         RemainAfterExit = true;
       };
       script = ''
-        ${pkgs.git}/bin/git clone https://github.com/nmaupu-org/auto-home.git /home/nmaupu/auto-home
+        ${pkgs.git}/bin/git clone https://github.com/nmaupu-org/auto-home.git /root/auto-home
       '';
     };
   };

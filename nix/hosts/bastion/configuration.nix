@@ -64,8 +64,7 @@
       User = "root";
     };
     script = ''
-      ${pkgs.git}/bin/git config --global --add safe.directory /home/nmaupu/auto-home
-      cd /home/nmaupu/auto-home
+      cd /root/auto-home
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
       ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#bastion
