@@ -12,6 +12,9 @@ prometheus:
   enabled: true
   prometheusSpec:
     retention: 720d
+    # Reduce scrape/eval frequency to lower CPU — home lab doesn't need 15s resolution
+    scrapeInterval: "60s"
+    evaluationInterval: "60s"
     storageSpec:
       volumeClaimTemplate:
         spec:
