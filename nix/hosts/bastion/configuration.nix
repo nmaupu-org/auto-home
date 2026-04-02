@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/shared/users.nix
     ../../modules/shared/telegram.nix
+    ../../modules/shared/update-system.nix
     ../../modules/shared/base.nix
     ../../modules/shared/zsh.nix
   ];
@@ -58,30 +59,10 @@
     neededForUsers = true;
   };
 
-  # Auto-update
-  systemd.services.update-system = {
-    description = "Auto-update NixOS system configuration";
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-    unitConfig.OnFailure = "update-system-failure@%n.service";
-    script = ''
-      cd /root/auto-home
-      ${pkgs.git}/bin/git fetch --all
-      ${pkgs.git}/bin/git reset --hard origin/master
-      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#bastion
-      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/0b197972-4024-49c7-8f47-4b4c2ee8b1aa > /dev/null
-    '';
-  };
-
-  systemd.timers.update-system = {
-    description = "Daily NixOS system update";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 09:00:00";
-      Persistent  = true;
-    };
+  services.update-system = {
+    hostName   = "bastion";
+    hcPingUUID = "0b197972-4024-49c7-8f47-4b4c2ee8b1aa";
+    onCalendar = "*-*-* 08:00:00";
   };
 
   system.stateVersion = "25.11";

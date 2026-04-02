@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/shared/users.nix
     ../../modules/shared/telegram.nix
+    ../../modules/shared/update-system.nix
     ../../modules/shared/base.nix
     ../../modules/shared/k3s.nix
     ../../modules/shared/zsh.nix
@@ -88,31 +89,10 @@
   # k3s — disable built-ins replaced by ArgoCD-managed equivalents
   services.k3s-node.disabledComponents = [ "traefik" "servicelb" "local-storage" ];
 
-  # Auto-update
-  systemd.services.update-system = {
-    description = "Auto-update NixOS system configuration";
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-      Environment = "PATH=${pkgs.git}/bin:${pkgs.nixos-rebuild}/bin:${pkgs.curl}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin";
-    };
-    unitConfig.OnFailure = "update-system-failure@%n.service";
-    script = ''
-      cd /root/auto-home
-      ${pkgs.git}/bin/git fetch --all
-      ${pkgs.git}/bin/git reset --hard origin/master
-      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#iot
-      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/d6782ebb-66f6-47e4-a028-04131bbc1750 > /dev/null
-    '';
-  };
-
-  systemd.timers.update-system = {
-    description = "Daily NixOS system update";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 09:00:00";
-      Persistent  = true;
-    };
+  services.update-system = {
+    hostName   = "iot";
+    hcPingUUID = "d6782ebb-66f6-47e4-a028-04131bbc1750";
+    onCalendar = "*-*-* 11:00:00";
   };
 
   system.stateVersion = "25.11";

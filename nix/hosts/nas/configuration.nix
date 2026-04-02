@@ -9,6 +9,7 @@
     ../../modules/nas/nfs.nix
     ../../modules/nas/ftp.nix
     ../../modules/shared/telegram.nix
+    ../../modules/shared/update-system.nix
     ../../modules/nas/smart.nix
     ../../modules/shared/k3s.nix
     ../../modules/nas/telegram-bot.nix
@@ -76,29 +77,10 @@
     neededForUsers = true;
   };
 
-  systemd.services.update-system = {
-    description = "Auto-update NixOS system configuration";
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-    unitConfig.OnFailure = "update-system-failure@%n.service";
-    script = ''
-      cd /root/auto-home
-      ${pkgs.git}/bin/git fetch --all
-      ${pkgs.git}/bin/git reset --hard origin/master
-      ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#nas
-      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/0b248bd0-a4e8-47d3-b2d9-697db7623d48 > /dev/null
-    '';
-  };
-
-  systemd.timers.update-system = {
-    description = "Daily NixOS system update at 10:00";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 10:00:00";
-      Persistent  = true;
-    };
+  services.update-system = {
+    hostName   = "nas";
+    hcPingUUID = "0b248bd0-a4e8-47d3-b2d9-697db7623d48";
+    onCalendar = "*-*-* 10:00:00";
   };
 
   # mdadm notifications via Telegram
