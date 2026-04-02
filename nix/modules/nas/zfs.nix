@@ -99,6 +99,15 @@
         autosnap  = true;
         autoprune = true;
       };
+      "tank/backup-home-servers" = {
+        hourly     = 0;
+        daily      = 90;
+        weekly     = 0;
+        monthly    = 0;
+        autosnap   = true;
+        autoprune  = true;
+        recursive  = true;
+      };
     };
   };
 }
