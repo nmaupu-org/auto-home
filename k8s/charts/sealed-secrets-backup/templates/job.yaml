@@ -19,6 +19,7 @@ spec:
             - sh
             - -c
             - |
+              set -e
               kubectl get secret -n {{ .Values.sealedSecrets.namespace }} \
                 -l sealedsecrets.bitnami.com/sealed-secrets-key \
                 -o yaml > /backup/sealed-secrets-key.yaml

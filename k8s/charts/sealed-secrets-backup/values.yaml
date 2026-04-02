@@ -1,5 +1,5 @@
 nfs:
-  server: nas
+  server: 192.168.12.8
   path: /tank/backup-home-servers/cluster
 
 sealedSecrets:

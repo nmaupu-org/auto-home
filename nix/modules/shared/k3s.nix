@@ -26,6 +26,9 @@
     # k3s bundles containerd; make sure the kernel has the required modules.
     boot.kernelModules = [ "br_netfilter" "overlay" ];
 
+    # NFS client — required for k8s pods that mount NFS volumes directly.
+    boot.supportedFilesystems = [ "nfs" ];
+
     # Firewall — NixOS merges these with ports from other modules automatically
     networking.firewall.allowedTCPPorts = [
       6443   # k3s API server (kubectl + ArgoCD agent)
