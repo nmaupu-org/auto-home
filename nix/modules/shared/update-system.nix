@@ -15,6 +15,12 @@ let
 in
 {
   options.services.update-system = {
+    enable = lib.mkOption {
+      type    = lib.types.bool;
+      default = true;
+      description = "Whether to enable the automatic update timer. The update-system script remains available manually.";
+    };
+
     hostName = lib.mkOption {
       type        = lib.types.str;
       description = "Flake hostname used in: nixos-rebuild switch --flake ./nix#<hostName>";
@@ -49,7 +55,7 @@ in
       '';
     };
 
-    systemd.timers.update-system = {
+    systemd.timers.update-system = lib.mkIf cfg.enable {
       description = "Daily NixOS system update";
       wantedBy    = [ "timers.target" ];
       timerConfig = {

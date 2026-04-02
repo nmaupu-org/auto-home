@@ -93,6 +93,7 @@
   services.k3s-node.disabledComponents = [ "traefik" "servicelb" "local-storage" ];
 
   services.update-system = {
+    enable     = false;
     hostName   = "iot";
     hcPingUUID = "d6782ebb-66f6-47e4-a028-04131bbc1750";
   };
