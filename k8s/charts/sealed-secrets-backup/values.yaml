@@ -1,0 +1,8 @@
+nfs:
+  server: nas
+  path: /tank/backup-home-servers/cluster
+
+sealedSecrets:
+  namespace: sealed-secrets
+
+image: nmaupu/kubectl-tools:1.32.0

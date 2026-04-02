@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.sealedSecrets.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      restartPolicy: OnFailure
+      containers:
+        - name: backup
+          image: {{ .Values.image }}
+          command:
+            - sh
+            - -c
+            - |
+              kubectl get secret -n {{ .Values.sealedSecrets.namespace }} \
+                -l sealedsecrets.bitnami.com/sealed-secrets-key \
+                -o yaml > /backup/sealed-secrets-key.yaml
+              echo "Backup complete: $(wc -c < /backup/sealed-secrets-key.yaml) bytes written"
+          volumeMounts:
+            - name: backup
+              mountPath: /backup
+      volumes:
+        - name: backup
+          nfs:
+            server: {{ .Values.nfs.server }}
+            path: {{ .Values.nfs.path }}

@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Backs up the sealed-secrets controller TLS key to an NFS share as an ArgoCD PostSync hook
+name: sealed-secrets-backup
+version: 0.1.0
