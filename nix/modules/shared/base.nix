@@ -41,6 +41,35 @@
 
     services.journald.extraConfig = "Storage=persistent\n";
 
+    # Reboot automatically after a kernel panic (10s delay)
+    boot.kernel.sysctl."kernel.panic"         = 10;
+    boot.kernel.sysctl."kernel.panic_on_oops" = 1;
+
+    # Alert via Telegram (if available) when coming back after a crash
+    systemd.services.crash-alert = {
+      description = "Notify Telegram if previous boot ended unexpectedly";
+      after    = [ "network-online.target" "sops-nix.service" ];
+      wants    = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type            = "oneshot";
+        User            = "root";
+        RemainAfterExit = false;
+      };
+      script = ''
+        # Skip if telegram-alert is not configured on this host
+        [ -x /etc/telegram-alert ] || exit 0
+        # Skip if there is no previous boot in the journal
+        ${pkgs.systemd}/bin/journalctl --list-boots --no-pager -q 2>/dev/null \
+          | grep -qE '^\s*-1\s' || exit 0
+        # A clean shutdown always logs "Reached target System Shutdown"
+        if ! ${pkgs.systemd}/bin/journalctl -b -1 --no-pager -q 2>/dev/null \
+            | grep -q "Reached target.*Shutdown"; then
+          /etc/telegram-alert "⚠️ ${config.networking.hostName} rebooted after an unclean shutdown (crash or power loss)"
+        fi
+      '';
+    };
+
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     nix.settings.download-buffer-size = 524288000; # 500MiB
 
