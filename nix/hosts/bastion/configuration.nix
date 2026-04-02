@@ -62,7 +62,6 @@
   services.update-system = {
     hostName   = "bastion";
     hcPingUUID = "0b197972-4024-49c7-8f47-4b4c2ee8b1aa";
-    onCalendar = "*-*-* 08:00:00";
   };
 
   system.stateVersion = "25.11";

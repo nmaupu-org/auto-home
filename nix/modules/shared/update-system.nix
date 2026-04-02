@@ -27,7 +27,7 @@ in
 
     onCalendar = lib.mkOption {
       type    = lib.types.str;
-      default = "*-*-* 09:00:00";
+      default = "*-*-* 00/6:00:00";
       description = "systemd OnCalendar expression for the update timer";
     };
   };
@@ -40,7 +40,6 @@ in
         User        = "root";
         Environment = "PATH=${pkgs.git}/bin:${pkgs.nixos-rebuild}/bin:${pkgs.curl}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin";
       };
-      unitConfig.OnFailure = "update-system-failure@%n.service";
       script = ''
         cd /root/auto-home
         ${pkgs.git}/bin/git fetch --all

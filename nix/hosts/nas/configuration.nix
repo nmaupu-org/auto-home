@@ -80,7 +80,6 @@
   services.update-system = {
     hostName   = "nas";
     hcPingUUID = "0b248bd0-a4e8-47d3-b2d9-697db7623d48";
-    onCalendar = "*-*-* 10:00:00";
   };
 
   # mdadm notifications via Telegram

@@ -92,7 +92,6 @@
   services.update-system = {
     hostName   = "iot";
     hcPingUUID = "d6782ebb-66f6-47e4-a028-04131bbc1750";
-    onCalendar = "*-*-* 11:00:00";
   };
 
   system.stateVersion = "25.11";
