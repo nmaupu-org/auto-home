@@ -42,8 +42,11 @@
     services.journald.extraConfig = "Storage=persistent\n";
 
     # Reboot automatically after a kernel panic (10s delay)
-    boot.kernel.sysctl."kernel.panic"         = 10;
-    boot.kernel.sysctl."kernel.panic_on_oops" = 1;
+    boot.kernel.sysctl."kernel.panic"              = 10;
+    boot.kernel.sysctl."kernel.panic_on_oops"      = 1;
+    # Reboot on soft lockup or hung task (otherwise the machine freezes silently)
+    boot.kernel.sysctl."kernel.softlockup_panic"   = 1;
+    boot.kernel.sysctl."kernel.hung_task_panic"    = 1;
 
     # Alert via Telegram (if available) when coming back after a crash
     systemd.services.crash-alert = {

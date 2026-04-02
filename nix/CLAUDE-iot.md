@@ -260,6 +260,53 @@ nmaupu_user_password
 
 ---
 
+## Post-Migration Crash Investigation (2026-04-02)
+
+### Symptom
+After NixOS migration, the machine crashed repeatedly (2 times on 2026-04-02) and failed to auto-reboot on the second crash.
+
+### Root cause: kernel hard lockup during containerd `RemoveContainer` cleanup
+
+Every crash ended with the identical last journal entry:
+```
+k3s[xxxx]: scope.go:117 "RemoveContainer" containerID="<hash>"
+```
+The kernel froze silently after this call — no panic, no OOM, no shutdown message.
+
+**Direct trigger**: The Home Assistant `conf-reloader` CronJob was set to `* * * * *` (every minute), creating 1440 container create/destroy cycles per day. This high-churn container lifecycle eventually triggers a kernel race condition in the cgroup v2 scope teardown / overlayfs unmount path.
+
+**Why the second crash didn't auto-reboot**: `kernel.softlockup_panic` and `kernel.hung_task_panic` were both `0`. When all CPUs block in D-state (uninterruptible sleep waiting on a kernel lock), neither the NMI watchdog nor soft lockup detector fires — the machine hangs silently until manual intervention.
+
+### EDAC IBECC error (false positive — not the crash cause)
+On every boot:
+```
+EDAC igen6 MC0: HANDLING IBECC MEMORY ERROR
+EDAC igen6 MC0: ADDR 0x7fffffffe0
+```
+`0x7fffffffe0` is a sentinel/invalid address. UE/CE counters are both 0. This is a known quirk of the `igen6_edac` driver on Intel N-series SoCs reading a stale hardware register at init. Cosmetic only.
+
+### Fixes applied
+1. **`modules/shared/base.nix`**: added `kernel.softlockup_panic = 1` and `kernel.hung_task_panic = 1` — ensures the machine reboots instead of hanging indefinitely on any future lockup.
+2. **`k8s/argocd/iot/deploy/home-assistant/values.yaml`**: changed conf-reloader schedule from `* * * * *` to `*/10 * * * *` — reduces container churn by 10x.
+3. **`hosts/iot/configuration.nix`**: switched to `pkgs.linuxPackages_latest` (6.19.9 at time of writing, was 6.12.77) — targets fixes in the cgroup v2 / overlayfs / containerd cleanup paths present in more recent kernels. This is iot-specific; NAS keeps its default kernel. Requires a reboot to take effect.
+
+### Diagnosis commands for future crashes
+```bash
+# List boots and spot abrupt endings (no "Journal stopped")
+sudo journalctl --list-boots
+
+# Check last entries of a crashed boot
+sudo journalctl -b -1 --no-pager -n 50
+
+# Confirm soft/hung lockup panic settings
+sysctl kernel.softlockup_panic kernel.hung_task_panic kernel.panic
+
+# Check for OOM/kernel errors
+sudo journalctl -b -1 -k --no-pager | grep -iE "oom|killed|panic|lockup|hung|rcu stall"
+```
+
+---
+
 ## Talos Config Reference (for migration context only)
 
 Talos schematic ID: `e4cbca0436815af5149e0cb1e60807981c87241f85e3c5618c23ebc1d2aec339`

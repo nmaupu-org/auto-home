@@ -43,7 +43,7 @@ workload:
   conf-reloader:
     enabled: true
     type: CronJob
-    schedule: "* * * * *"
+    schedule: "*/10 * * * *"
     podSpec:
       containers:
         main:
