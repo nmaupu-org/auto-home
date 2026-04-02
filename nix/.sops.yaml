@@ -1,4 +1,5 @@
 keys:
+  - &recovery age1v7ylrtteypacznfklsjwu94fgytus70vzynsjtxxgnh6dcsyp3eqfjxkrm
   - &nas age1n8x9pwjy493xzsgdcedngajamdpwplr8777plxhehmh8e9xzcg6sr9qx9d
   - &iot age13g6z2pd7dsywgfw80356veqsrufzhrs8urzwklza5gptkcw8t9ss32y3zt
   - &bastion age1w3enru4wu5q4m2nuuy05q7kmr498mtgz560m7q7tgfq6t2dqrfnqun2p2t
@@ -8,15 +9,18 @@ creation_rules:
   - path_regex: secrets/nas\.yaml$
     key_groups:
       - age:
+          - *recovery
           - *nas
           - *nmaupu-laptop
   - path_regex: secrets/iot\.yaml$
     key_groups:
       - age:
+          - *recovery
           - *iot
           - *nmaupu-laptop
   - path_regex: secrets/bastion\.yaml$
     key_groups:
       - age:
+          - *recovery
           - *bastion
           - *nmaupu-laptop
