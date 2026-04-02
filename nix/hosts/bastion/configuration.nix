@@ -75,17 +75,6 @@
     '';
   };
 
-  systemd.services."update-system-failure@" = {
-    description = "Notify Telegram on update-system failure";
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-    script = ''
-      /etc/telegram-alert "Bastion update-system failed — check: journalctl -u update-system"
-    '';
-  };
-
   systemd.timers.update-system = {
     description = "Daily NixOS system update";
     wantedBy = [ "timers.target" ];

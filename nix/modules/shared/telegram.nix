@@ -51,5 +51,17 @@ in
       source = "${telegram-alert}/bin/telegram-alert";
       mode   = "0755";
     };
+
+    # Generic failure notifier — triggered via OnFailure = "update-system-failure@%n.service"
+    systemd.services."update-system-failure@" = {
+      description = "Notify Telegram on update-system failure";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
+      script = ''
+        /etc/telegram-alert "update-system failed — check: journalctl -u update-system"
+      '';
+    };
   };
 }
