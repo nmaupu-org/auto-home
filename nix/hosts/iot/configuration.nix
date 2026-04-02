@@ -94,6 +94,7 @@
     serviceConfig = {
       Type = "oneshot";
       User = "root";
+      Environment = "PATH=${pkgs.git}/bin:${pkgs.nixos-rebuild}/bin:${pkgs.curl}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin";
     };
     unitConfig.OnFailure = "update-system-failure@%n.service";
     script = ''
