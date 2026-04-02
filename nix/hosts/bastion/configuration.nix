@@ -71,6 +71,7 @@
       ${pkgs.git}/bin/git fetch --all
       ${pkgs.git}/bin/git reset --hard origin/master
       ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#bastion
+      ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/0b197972-4024-49c7-8f47-4b4c2ee8b1aa > /dev/null
     '';
   };
 
