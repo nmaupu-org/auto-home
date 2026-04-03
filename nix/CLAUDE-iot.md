@@ -133,7 +133,7 @@ MetalLB pool: `192.168.100.0/24`, BGP peer: `192.168.12.1` (home router, ASN 650
 | kube-prometheus-stack | monitoring | v61.2.0            | CRDs only, no alertmanager/prometheus/grafana|
 
 ### Home Assistant specifics
-- Config pulled from https://github.com/nmaupu/hass-config.git via init container + cron job (every minute)
+- Config pulled from https://github.com/nmaupu/hass-config.git via init container (rsync on pod start) + conf-reloader sidecar (git pull loop, every 10 min, only patches deployment if SHA1 changed)
 - Uses `hostNetwork: true` for UDP multicast (emulated_roku, emulated_hue)
 - CNPG database: `home-assistant-cnpg-main`, PostgreSQL 16.10, 1 instance, 50Gi+50Gi WAL
 - Secrets: `hass-secrets` (secret.yaml), `hass-passwords` (hass-passwords.json)
@@ -287,8 +287,9 @@ EDAC igen6 MC0: ADDR 0x7fffffffe0
 
 ### Fixes applied
 1. **`modules/shared/base.nix`**: added `kernel.softlockup_panic = 1` and `kernel.hung_task_panic = 1` — ensures the machine reboots instead of hanging indefinitely on any future lockup.
-2. **`k8s/argocd/iot/deploy/home-assistant/values.yaml`**: changed conf-reloader schedule from `* * * * *` to `*/10 * * * *` — reduces container churn by 10x.
+2. **`k8s/argocd/iot/deploy/home-assistant/values.yaml`**: converted conf-reloader from a CronJob (every minute → every 10 min) to a **sidecar container** running a `while true; sleep 600` loop inside the HASS pod. Eliminates container churn entirely (was 1440 create/destroy cycles/day). The sidecar only calls `kubectl patch` when the config SHA1 actually changes.
 3. **`hosts/iot/configuration.nix`**: switched to `pkgs.linuxPackages_latest` (6.19.9 at time of writing, was 6.12.77) — targets fixes in the cgroup v2 / overlayfs / containerd cleanup paths present in more recent kernels. This is iot-specific; NAS keeps its default kernel. Requires a reboot to take effect.
+4. **`modules/shared/update-system.nix`**: added `enable` option (default `true`). Both iot and nas have `enable = false` — the timer is disabled but the `update-system` script remains available manually.
 
 ### Diagnosis commands for future crashes
 ```bash

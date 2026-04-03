@@ -8,7 +8,7 @@ Ignore everything outside `nix/nas/`: `ansible/`, `argocd/`, `scripts/`, `nix/io
 
 ## Other Machines
 
-- **iot** — N100 machine running Talos Linux. ArgoCD configs in `argocd/iot/`. Not on NixOS yet, possible future migration to `nix/iot/`.
+- **iot** — N100 machine, migrated to NixOS (2026-04). ArgoCD configs in `argocd/iot/`. NixOS config in `nix/hosts/iot/`. See `nix/CLAUDE-iot.md` for full details and crash investigation notes.
 
 ## Background
 
@@ -205,3 +205,15 @@ When writing any module, pull exact values from `CLAUSE-nas-PHASE0.md` — no pl
 - Timesheet data restored from old TrueNAS openEBS dataset
 - SMB validated from macOS
 - Time Machine subdirectories for `backup-pro-bicou` configured
+
+---
+
+## Post-Migration Operational Notes (2026-04)
+
+### update-system timer
+The automatic `update-system` systemd timer is **disabled** (`services.update-system.enable = false`) on both NAS and iot. The `update-system` script is still available for manual runs. Reason: `nixos-rebuild switch` briefly restarts NetworkManager-dispatcher and causes a short network disruption which looks alarming. Disabled until better understood or deemed safe to re-enable.
+
+### NAS "crash" incident (2026-04)
+Machine became unresponsive (no ping, no SSH) for ~10 minutes after a manual `update-system` run. Investigation showed k3s/containerd logs were continuous throughout — no kernel panic, no OOM, no lockup entries. Conclusion: the brief network disruption caused by `switch-to-configuration` was mistaken for a crash; machine was actually healthy. User pressed power button ~10 min later.
+- No kernel fixes applied to NAS (unlike iot, NAS has no high-churn container workload).
+- NAS keeps the default NixOS LTS kernel (ZFS compatibility requirement).

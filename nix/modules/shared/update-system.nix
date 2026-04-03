@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
-# Shared auto-update module: pulls latest git, rebuilds NixOS, and pings healthchecks.io.
+# Shared auto-update module: pulls latest git and rebuilds NixOS.
 # On failure, triggers the update-system-failure@ notifier from telegram.nix.
+# Also runs a heartbeat every 10 minutes so healthchecks.io knows the machine is alive.
 #
 # Usage — in the host configuration:
 #   services.update-system = {
@@ -28,7 +29,7 @@ in
 
     hcPingUUID = lib.mkOption {
       type        = lib.types.str;
-      description = "healthchecks.io check UUID to ping on successful update";
+      description = "healthchecks.io check UUID for the heartbeat timer";
     };
 
     onCalendar = lib.mkOption {
@@ -51,7 +52,6 @@ in
         ${pkgs.git}/bin/git fetch --all
         ${pkgs.git}/bin/git reset --hard origin/master
         ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ./nix#${cfg.hostName}
-        ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/${cfg.hcPingUUID} > /dev/null
       '';
     };
 
@@ -61,6 +61,26 @@ in
       timerConfig = {
         OnCalendar = cfg.onCalendar;
         Persistent  = true;
+      };
+    };
+
+    systemd.services.hc-heartbeat = {
+      description = "Ping healthchecks.io to signal machine is alive";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
+      script = ''
+        ${pkgs.curl}/bin/curl -fsS --retry 3 https://hc-ping.com/${cfg.hcPingUUID} > /dev/null
+      '';
+    };
+
+    systemd.timers.hc-heartbeat = {
+      description = "Heartbeat ping to healthchecks.io every 10 minutes";
+      wantedBy    = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec   = "1min";
+        OnUnitActiveSec = "10min";
       };
     };
   };
