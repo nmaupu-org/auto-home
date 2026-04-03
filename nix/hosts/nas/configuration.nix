@@ -45,6 +45,7 @@
   networking.hostName = "nas";
   networking.domain = "home.fossar.net";
   networking.networkmanager.enable = true;
+  networking.firewall.allowedTCPPorts = [ 32400 ]; # plex
 
   # Basic system
   time.timeZone = "Europe/Paris";
