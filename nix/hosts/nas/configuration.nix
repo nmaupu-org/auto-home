@@ -3,6 +3,9 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/shared/base.nix
+    ../../modules/shared/ssh.nix
+    ../../modules/shared/tailscale.nix
     ../../modules/shared/users.nix
     ../../modules/nas/zfs.nix
     ../../modules/nas/smb.nix
@@ -14,11 +17,11 @@
     ../../modules/shared/k3s.nix
     ../../modules/nas/telegram-bot.nix
     ../../modules/shared/zsh.nix
-    ../../modules/shared/base.nix
     ../../modules/nas/monitoring.nix
   ];
 
   users-shared.sopsFile = ../../secrets/nas.yaml;
+  services.tailscale-config.sopsFile = ../../secrets/nas.yaml;
 
   services.base.flakeTarget = "nas";
   services.zsh-config.sshSymbol    = "󰋊 ";
@@ -51,10 +54,6 @@
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # SSH
-  services.openssh.enable = true;
-  services.openssh.openFirewall = true;
-  services.openssh.settings.PermitRootLogin = "yes";
   # Run dynamic motd script on interactive shell login
   environment.interactiveShellInit = ''
     if [ -x /etc/update-motd.d/00-nas ]; then

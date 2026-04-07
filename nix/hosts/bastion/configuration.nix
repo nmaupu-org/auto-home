@@ -7,6 +7,8 @@
     ../../modules/shared/telegram.nix
     ../../modules/shared/update-system.nix
     ../../modules/shared/base.nix
+    ../../modules/shared/ssh.nix
+    ../../modules/shared/tailscale.nix
     ../../modules/shared/zsh.nix
   ];
 
@@ -27,26 +29,9 @@
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # SSH — port 22 open on LAN; Tailscale provides secure remote path
-  services.openssh = {
-    enable = true;
-    openFirewall = false;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
-  # Tailscale
-  services.tailscale.enable = true;
-  networking.firewall = {
-    enable = true;
-    trustedInterfaces = [ "tailscale0" ];
-    allowedTCPPorts = [ 22 ];
-    allowedUDPPorts = [ config.services.tailscale.port ];
-  };
 
   users-shared.sopsFile = ../../secrets/bastion.yaml;
+  services.tailscale-config.sopsFile = ../../secrets/bastion.yaml;
   services.telegram-alert.sopsFile = ../../secrets/bastion.yaml;
 
   # Users

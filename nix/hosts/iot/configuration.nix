@@ -11,10 +11,13 @@
     ../../modules/shared/zsh.nix
     ../../modules/iot/udev.nix
     ../../modules/iot/monitoring.nix
+    ../../modules/shared/ssh.nix
+    ../../modules/shared/tailscale.nix
     ../../modules/iot/firewall-extras.nix
   ];
 
   users-shared.sopsFile = ../../secrets/iot.yaml;
+  services.tailscale-config.sopsFile = ../../secrets/iot.yaml;
 
   services.base.flakeTarget = "iot";
   services.zsh-config.sshSymbol    = "󰋜 ";
@@ -40,11 +43,6 @@
   # Basic system
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
-
-  # SSH
-  services.openssh.enable = true;
-  services.openssh.openFirewall = true;
-  services.openssh.settings.PermitRootLogin = "yes";
 
   # MOTD
   environment.interactiveShellInit = ''
