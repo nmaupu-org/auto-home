@@ -1,0 +1,17 @@
+image:
+  repository: luligu/matterbridge
+  tag: latest
+  pullPolicy: IfNotPresent
+
+pvc:
+  data:
+    size: 100Mi
+    storageClass: openebs-hostpath
+
+haUrl: http://home-assistant.hass.svc.cluster.local:8123
+
+matterbridge:
+  port: 5540
+  passcode: 20242025
+  discriminator: 3840
+  frontendPort: 8283
