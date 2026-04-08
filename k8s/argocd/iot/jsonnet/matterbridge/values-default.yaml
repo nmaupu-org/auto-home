@@ -1,6 +1,6 @@
 image:
   repository: luligu/matterbridge
-  tag: latest
+  tag: 3.7.2
   pullPolicy: IfNotPresent
 
 pvc:
@@ -8,10 +8,11 @@ pvc:
     size: 100Mi
     storageClass: openebs-hostpath
 
-haUrl: http://home-assistant.hass.svc.cluster.local:8123
+haWsUrl: wss://hass.home.fossar.net
 
 matterbridge:
   port: 5540
   passcode: 20242025
   discriminator: 3840
   frontendPort: 8283
+  mdnsInterface: enp1s0

@@ -1,6 +1,6 @@
-local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.30/main.libsonnet';
 local g = import '../globals.libsonnet';
 local v = import '../values.libsonnet';
+local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.34/main.libsonnet';
 
 local pvc = k.core.v1.persistentVolumeClaim;
 

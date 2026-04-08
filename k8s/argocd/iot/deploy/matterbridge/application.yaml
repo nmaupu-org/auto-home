@@ -19,7 +19,8 @@ spec:
       name: custom-jsonnet
       parameters:
         - name: values
-          string: "{}"
+          string: >-
+            {}
   syncPolicy:
     automated:
       prune: true
