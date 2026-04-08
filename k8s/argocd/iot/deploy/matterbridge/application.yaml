@@ -17,6 +17,9 @@ spec:
     path: k8s/argocd/iot/jsonnet/matterbridge
     plugin:
       name: custom-jsonnet
+      parameters:
+        - name: values
+          string: "{}"
   syncPolicy:
     automated:
       prune: true
