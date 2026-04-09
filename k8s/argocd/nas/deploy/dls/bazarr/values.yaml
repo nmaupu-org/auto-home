@@ -58,6 +58,13 @@ workload:
   main:
     primary: true
     podSpec:
+      nodeSelector:
+        role: nas
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
       containers:
         main:
           primary: true

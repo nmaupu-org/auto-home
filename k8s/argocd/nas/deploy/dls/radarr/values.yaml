@@ -52,6 +52,13 @@ workload:
     primary: true
     type: Deployment
     podSpec:
+      nodeSelector:
+        role: nas
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
       containers:
         main:
           primary: true
@@ -75,6 +82,13 @@ workload:
     enabled: true
     type: Deployment
     podSpec:
+      nodeSelector:
+        role: nas
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
       containers:
         exportarr:
           enabled: true
