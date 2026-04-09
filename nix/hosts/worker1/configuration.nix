@@ -95,9 +95,9 @@
   };
 
   services.update-system = {
-    enable   = false;
-    hostName = "worker1";
-    # hcPingUUID: set once the healthcheck.io monitor is created
+    enable     = false;
+    hostName   = "worker1";
+    hcPingUUID = "d54df01a-0e7d-4bb4-b578-ffb3b5f8b30c";
   };
 
   system.stateVersion = "25.11";

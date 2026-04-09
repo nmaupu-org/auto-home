@@ -29,7 +29,8 @@ in
 
     hcPingUUID = lib.mkOption {
       type        = lib.types.str;
-      description = "healthchecks.io check UUID for the heartbeat timer";
+      default     = "";
+      description = "healthchecks.io check UUID for the heartbeat timer. Leave empty to disable heartbeat.";
     };
 
     onCalendar = lib.mkOption {
