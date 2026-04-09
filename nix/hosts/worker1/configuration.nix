@@ -9,24 +9,18 @@
     ../../modules/shared/base.nix
     ../../modules/shared/k3s.nix
     ../../modules/shared/zsh.nix
-    ../../modules/iot/udev.nix
-    ../../modules/iot/monitoring.nix
     ../../modules/shared/ssh.nix
     ../../modules/shared/tailscale.nix
-    ../../modules/iot/firewall-extras.nix
   ];
 
-  users-shared.sopsFile = ../../secrets/iot.yaml;
-  services.tailscale-config.sopsFile = ../../secrets/iot.yaml;
+  users-shared.sopsFile = ../../secrets/worker1.yaml;
+  services.tailscale-config.sopsFile = ../../secrets/worker1.yaml;
 
-  services.base.flakeTarget = "iot";
-  services.zsh-config.sshSymbol    = "󰋜 ";
-  services.zsh-config.hostnameStyle = "bold yellow";
+  services.base.flakeTarget = "worker1";
+  services.zsh-config.sshSymbol    = "󰒋 ";
+  services.zsh-config.hostnameStyle = "bold green";
 
-  # Use latest kernel to benefit from fixes in cgroup/overlayfs/containerd paths
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  # Bootloader — systemd-boot (single EFI disk, no mirror needed)
+  # Bootloader — systemd-boot (single EFI disk)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -35,8 +29,8 @@
   boot.initrd.luks.devices = {};
   boot.initrd.services.lvm.enable = true;
 
-  # Networking — DHCP, static lease on OpenWrt router for MAC 68:1d:ef:33:f8:33
-  networking.hostName = "iot";
+  # Networking — DHCP, static lease on OpenWrt router for MAC TBD → 192.168.12.41
+  networking.hostName = "worker1";
   networking.domain = "home.fossar.net";
   networking.networkmanager.enable = true;
 
@@ -46,26 +40,26 @@
 
   # MOTD
   environment.interactiveShellInit = ''
-    if [ -x /etc/update-motd.d/00-iot ]; then
-      /etc/update-motd.d/00-iot
+    if [ -x /etc/update-motd.d/00-worker1 ]; then
+      /etc/update-motd.d/00-worker1
     fi
   '';
 
-  environment.etc."update-motd.d/00-iot" = {
+  environment.etc."update-motd.d/00-worker1" = {
     mode = "0755";
     text = ''
       #!${pkgs.bash}/bin/bash
       echo ""
-      echo " ██╗ ██████╗ ████████╗"
-      echo " ██║██╔═══██╗╚══██╔══╝"
-      echo " ██║██║   ██║   ██║   "
-      echo " ██║██║   ██║   ██║   "
-      echo " ██║╚██████╔╝   ██║   "
-      echo " ╚═╝ ╚═════╝    ╚═╝   "
+      echo " ██╗    ██╗ ██████╗ ██████╗ ██╗  ██╗███████╗██████╗      ██╗"
+      echo " ██║    ██║██╔═══██╗██╔══██╗██║ ██╔╝██╔════╝██╔══██╗    ███║"
+      echo " ██║ █╗ ██║██║   ██║██████╔╝█████╔╝ █████╗  ██████╔╝    ╚██║"
+      echo " ██║███╗██║██║   ██║██╔══██╗██╔═██╗ ██╔══╝  ██╔══██╗     ██║"
+      echo " ╚███╔███╔╝╚██████╔╝██║  ██║██║  ██╗███████╗██║  ██║     ██║"
+      echo "  ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝     ╚═╝"
       echo ""
 
       IP=$(${pkgs.iproute2}/bin/ip -4 addr show scope global | ${pkgs.gawk}/bin/awk '/inet/{print $2}' | head -1)
-      echo "  NixOS IoT  —  $(hostname -f)  ($IP)"
+      echo "  NixOS Worker1  —  $(hostname -f)  ($IP)"
       echo ""
       echo "  Uptime  : $(${pkgs.procps}/bin/uptime -p)"
       echo "  Load    : $(${pkgs.coreutils}/bin/cut -d' ' -f1-3 /proc/loadavg)"
@@ -85,25 +79,25 @@
     '';
   };
 
-  services.telegram-alert.sopsFile = ../../secrets/iot.yaml;
+  services.telegram-alert.sopsFile = ../../secrets/worker1.yaml;
 
-  # k3s — agent node, pinned to iot node (USB devices + local openebs data)
+  # k3s — floating agent node, no taint (general workloads land here by default)
   services.k3s-node = {
     role      = "agent";
     serverUrl = "https://${constants.hosts.nasIp}:6443";
     tokenFile = config.sops.secrets.k3s_cluster_token.path;
-    nodeLabels = [ "role=iot" ];
-    nodeTaints = [ "role=iot:NoSchedule" ];
+    nodeLabels = [ "role=worker" ];
+    # no nodeTaints — this node accepts any workload
   };
 
   sops.secrets.k3s_cluster_token = {
-    sopsFile = ../../secrets/iot.yaml;
+    sopsFile = ../../secrets/worker1.yaml;
   };
 
   services.update-system = {
-    enable     = false;
-    hostName   = "iot";
-    hcPingUUID = "d6782ebb-66f6-47e4-a028-04131bbc1750";
+    enable   = false;
+    hostName = "worker1";
+    # hcPingUUID: set once the healthcheck.io monitor is created
   };
 
   system.stateVersion = "25.11";

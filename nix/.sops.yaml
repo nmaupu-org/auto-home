@@ -3,6 +3,8 @@ keys:
   - &nas age1n8x9pwjy493xzsgdcedngajamdpwplr8777plxhehmh8e9xzcg6sr9qx9d
   - &iot age13g6z2pd7dsywgfw80356veqsrufzhrs8urzwklza5gptkcw8t9ss32y3zt
   - &bastion age1w3enru4wu5q4m2nuuy05q7kmr498mtgz560m7q7tgfq6t2dqrfnqun2p2t
+  # worker1: fill in after install — ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
+  # - &worker1 age1...
   - &nmaupu-laptop age170gy8t4y7rx5cwmfyeht4n7zemgq5yqdd8062gaevmyp9yd9e9qqnut4kw
 
 creation_rules:
@@ -17,6 +19,13 @@ creation_rules:
       - age:
           - *recovery
           - *iot
+          - *nmaupu-laptop
+  # worker1: uncomment *worker1 once the age key is known (after NixOS install)
+  - path_regex: secrets/worker1\.yaml$
+    key_groups:
+      - age:
+          - *recovery
+          # - *worker1
           - *nmaupu-laptop
   - path_regex: secrets/bastion\.yaml$
     key_groups:

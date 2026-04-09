@@ -88,8 +88,18 @@
 
   services.telegram-alert.sopsFile = ../../secrets/nas.yaml;
 
-  # k3s — disable built-ins replaced by ArgoCD-managed equivalents
-  services.k3s-node.disabledComponents = [ "traefik" "servicelb" "local-storage" ];
+  # k3s — server (control plane + worker), pinned to nas node
+  services.k3s-node = {
+    role       = "server";
+    tokenFile  = config.sops.secrets.k3s_cluster_token.path;
+    nodeLabels = [ "role=nas" ];
+    nodeTaints = [ "role=nas:NoSchedule" ];
+    disabledComponents = [ "traefik" "servicelb" "local-storage" ];
+  };
+
+  sops.secrets.k3s_cluster_token = {
+    sopsFile = ../../secrets/nas.yaml;
+  };
 
   # Dynamic MOTD via update-motd.d (no static motd set)
   environment.etc."update-motd.d/00-nas" = {

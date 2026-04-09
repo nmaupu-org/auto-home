@@ -19,7 +19,9 @@
         k3sPodCidr = "10.42.0.0/16";
       };
       hosts = {
-        nasIp = "192.168.12.8";
+        nasIp    = "192.168.12.8";
+        iotIp    = "192.168.12.40";
+        worker1Ip = "192.168.12.41";
       };
     };
   in {
@@ -38,6 +40,15 @@
       modules = [
         sops-nix.nixosModules.sops
         ./hosts/iot/configuration.nix
+      ];
+    };
+
+    nixosConfigurations.worker1 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit nixpkgs-unstable constants; };
+      modules = [
+        sops-nix.nixosModules.sops
+        ./hosts/worker1/configuration.nix
       ];
     };
 
