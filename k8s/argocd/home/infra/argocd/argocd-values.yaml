@@ -44,11 +44,12 @@ configs:
           command: ["/usr/bin/bash", "-c"]
           args:
             - |
+              set -eo pipefail
               echo "${ARGOCD_APP_PARAMETERS}" > /tmp/parameters.log
               echo "${ARGOCD_APP_PARAMETERS}" | jq -r '.[] | select(.name == "values") | .string' > values.yaml
               cp values.yaml /tmp/values.yaml
               find . -name '*.jsonnet' | while read -r file; do
-                jsonnet -J vendor -J . $file
+                jsonnet -J vendor -J . "$file" || { echo "ERROR: jsonnet failed for $file" >&2; exit 1; }
               done
 
 repoServer:
