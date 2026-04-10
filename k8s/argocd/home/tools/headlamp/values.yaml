@@ -1,5 +1,16 @@
 replicaCount: 1
 
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: role
+              operator: In
+              values:
+                - worker
+
 ingress:
   enabled: true
   ingressClassName: traefik
