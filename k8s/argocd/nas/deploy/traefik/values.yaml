@@ -7,7 +7,7 @@ service:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.99.1
   spec:
-    externalTrafficPolicy: Local
+    externalTrafficPolicy: Cluster
 
 ports:
   web:
