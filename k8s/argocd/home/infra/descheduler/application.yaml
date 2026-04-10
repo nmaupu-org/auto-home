@@ -15,8 +15,22 @@ spec:
       targetRevision: 0.35.1
       helm:
         releaseName: descheduler
-        valueFiles:
-          - $values/k8s/argocd/home/infra/descheduler/values.yaml
+        values: |
+          kind: Deployment
+          deschedulingInterval: 5m
+          deschedulerPolicy:
+            profiles:
+              - name: default
+                plugins:
+                  deschedule:
+                    enabled:
+                      - RemovePodsViolatingNodeAffinity
+                pluginConfig:
+                  - name: RemovePodsViolatingNodeAffinity
+                    args:
+                      nodeAffinityType:
+                        - requiredDuringSchedulingIgnoredDuringExecution
+                        - preferredDuringSchedulingIgnoredDuringExecution
     - repoURL: https://github.com/nmaupu-org/auto-home.git
       targetRevision: master
       ref: values
