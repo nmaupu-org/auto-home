@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: static-web-server
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 8.1.0
+      targetRevision: 8.1.1
       helm:
         releaseName: web-static
         valueFiles:

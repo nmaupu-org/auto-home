@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: sabnzbd
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 24.0.0
+      targetRevision: 24.0.2
       helm:
         releaseName: sabnzbd
         valueFiles:

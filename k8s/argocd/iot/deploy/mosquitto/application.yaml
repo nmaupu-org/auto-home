@@ -4,7 +4,7 @@ metadata:
   name: iot-mosquitto
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: '4'
 spec:
   project: default
   destination:
@@ -13,7 +13,7 @@ spec:
   sources:
     - chart: mosquitto
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 17.11.4
+      targetRevision: 18.0.1
       helm:
         releaseName: mosquitto
         valueFiles:
