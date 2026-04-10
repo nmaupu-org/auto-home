@@ -17,7 +17,7 @@ spec:
         releaseName: descheduler
         values: |
           kind: Deployment
-          deschedulingInterval: 5m
+          deschedulingInterval: 1m
           cmdOptions:
             v: 5
           deschedulerPolicy:
