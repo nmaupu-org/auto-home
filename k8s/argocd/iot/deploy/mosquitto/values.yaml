@@ -17,6 +17,13 @@ auth:
 workload:
   main:
     podSpec:
+      nodeSelector:
+        role: iot
+      tolerations:
+      - key: role
+        operator: Equal
+        value: iot
+        effect: NoSchedule
       initContainers:
         init:
           enabled: true

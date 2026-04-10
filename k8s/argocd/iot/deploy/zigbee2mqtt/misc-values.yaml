@@ -1,3 +1,11 @@
+nodeSelector:
+  role: iot
+tolerations:
+- key: role
+  operator: Equal
+  value: iot
+  effect: NoSchedule
+
 service:
   type: ClusterIP
 

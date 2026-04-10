@@ -12,6 +12,14 @@ service:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.100.22
 
+nodeSelector:
+  role: iot
+tolerations:
+- key: role
+  operator: Equal
+  value: iot
+  effect: NoSchedule
+
 persistence:
   serverKeys:
     enabled: true

@@ -162,6 +162,13 @@ workload:
 
   main:
     podSpec:
+      nodeSelector:
+        role: iot
+      tolerations:
+      - key: role
+        operator: Equal
+        value: iot
+        effect: NoSchedule
       containers:
         conf-reloader:
           enabled: true
@@ -313,6 +320,13 @@ cnpg:
         size: 50Gi
       walStorage:
         size: 50Gi
+      nodeSelector:
+        role: iot
+      tolerations:
+      - key: role
+        operator: Equal
+        value: iot
+        effect: NoSchedule
 
 persistence:
   init:
