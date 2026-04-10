@@ -3,13 +3,11 @@ global:
   domain: argocd.knas.home.fossar.net
   affinity:
     nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        preference:
-          matchExpressions:
-          - key: role
-            operator: In
-            values:
+      type: soft
+      matchExpressions:
+        - key: role
+          operator: In
+          values:
             - worker
 
 configs:

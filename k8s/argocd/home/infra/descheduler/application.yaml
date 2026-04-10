@@ -18,6 +18,8 @@ spec:
         values: |
           kind: Deployment
           deschedulingInterval: 5m
+          cmdOptions:
+            v: 5
           deschedulerPolicy:
             profiles:
               - name: default
