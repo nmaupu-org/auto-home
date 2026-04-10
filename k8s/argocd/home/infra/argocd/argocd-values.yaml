@@ -16,13 +16,6 @@ configs:
   cm:
     statusbadge.enabled: true
     timeout.reconciliation: 1800s
-    resource.exclusions: |
-      - apiGroups:
-          - metrics.k8s.io
-        kinds:
-          - "*"
-        clusters:
-          - "*"
   params:
     server.disable.auth: true
     server.insecure: true
