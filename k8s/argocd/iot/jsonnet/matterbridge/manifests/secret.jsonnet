@@ -1,8 +1,8 @@
-local secretSealedStr = importstr '../secret-sealed.yaml';
+local secretSealedStr = importstr '../sealed-secret.yaml';
 local secretSealed = std.parseYaml(secretSealedStr);
 local g = import '../globals.libsonnet';
 
-secretSealed + {
+secretSealed {
   metadata+: {
     labels+: g.labels,
   },
