@@ -69,6 +69,8 @@ d.new('matterbridge', replicas=1, containers=[mainContainer])
 + { spec+: { strategy: { type: 'Recreate' } } }
 + d.spec.template.spec.withHostNetwork(true)
 + d.spec.template.spec.withDnsPolicy('ClusterFirstWithHostNet')
++ (if v.nodeSelector != {} then d.spec.template.spec.withNodeSelector(v.nodeSelector) else {})
++ (if std.length(v.tolerations) > 0 then d.spec.template.spec.withTolerations(v.tolerations) else {})
 + d.spec.template.spec.withInitContainers([initWriteConfig, initRegisterPlugin])
 + d.spec.template.spec.withVolumes([
   vol.fromPersistentVolumeClaim('data', 'matterbridge-data'),

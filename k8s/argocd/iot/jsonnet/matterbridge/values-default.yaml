@@ -16,3 +16,11 @@ matterbridge:
   discriminator: 3840
   frontendPort: 8283
   mdnsInterface: enp1s0
+
+nodeSelector:
+  role: iot
+tolerations:
+  - key: role
+    operator: Equal
+    value: iot
+    effect: NoSchedule
