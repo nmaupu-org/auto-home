@@ -38,7 +38,7 @@ ingress:
   main:
     enabled: true
     hosts:
-      - host: cocktails.knas.home.fossar.net
+      - host: cocktails.apps.home.fossar.net
         paths:
           - path: /
             pathType: Prefix

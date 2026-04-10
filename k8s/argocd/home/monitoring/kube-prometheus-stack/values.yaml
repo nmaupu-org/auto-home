@@ -36,15 +36,15 @@ prometheus:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
-      - p8s.knas.home.fossar.net
-      - prometheus.knas.home.fossar.net
+      - p8s.apps.home.fossar.net
+      - prometheus.apps.home.fossar.net
     paths:
       - /
     tls:
       - secretName: prometheus-general-tls
         hosts:
-          - p8s.knas.home.fossar.net
-          - prometheus.knas.home.fossar.net
+          - p8s.apps.home.fossar.net
+          - prometheus.apps.home.fossar.net
 
 grafana:
   admin:
@@ -56,14 +56,14 @@ grafana:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
-      - grafana.knas.home.fossar.net
+      - grafana.apps.home.fossar.net
       - grafana.home.fossar.net
     paths:
       - /
     tls:
       - secretName: grafana-general-tls
         hosts:
-          - grafana.knas.home.fossar.net
+          - grafana.apps.home.fossar.net
           - grafana.home.fossar.net
   sidecar:
     datasources:

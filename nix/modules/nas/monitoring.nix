@@ -56,7 +56,7 @@
         "Kubernetes" = [
           {
             "ArgoCD" = {
-              href        = "https://argocd.knas.home.fossar.net";
+              href        = "https://argocd.apps.home.fossar.net";
               description = "GitOps controller";
               icon        = "argocd.png";
             };
@@ -70,7 +70,7 @@
           }
           {
             "Headlamp" = {
-              href        = "https://headlamp.knas.home.fossar.net";
+              href        = "https://headlamp.apps.home.fossar.net";
               description = "Kubernetes dashboard";
               icon        = "kubernetes.png";
             };

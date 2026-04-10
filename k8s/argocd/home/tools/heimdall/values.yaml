@@ -14,7 +14,7 @@ ingress:
         paths:
           - path: /
             pathType: Prefix
-      - host: heimdall.knas.home.fossar.net
+      - host: heimdall.apps.home.fossar.net
         paths:
           - path: /
             pathType: Prefix

@@ -28,7 +28,7 @@ ingress:
   main:
     enabled: true
     hosts:
-      - host: timesheet.knas.home.fossar.net
+      - host: timesheet.apps.home.fossar.net
         paths:
           - path: /
             pathType: Prefix
