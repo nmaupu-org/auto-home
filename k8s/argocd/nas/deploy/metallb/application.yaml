@@ -14,7 +14,7 @@ spec:
     targetRevision: metallb-chart-0.15.3
     path: charts/metallb
     helm:
-      releaseName: iot-metallb
+      releaseName: metallb
       values: |
         controller:
           image:

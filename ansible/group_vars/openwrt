@@ -147,9 +147,8 @@ firewall_dns_entries:
     - iot
   192.168.100.35:
     - mqtt
-  192.168.100.1:
-    - hass
   192.168.99.1:
+    - hass
     - plex
     - grafana
     - dashboard

@@ -29,6 +29,8 @@ providers:
     enabled: true
   kubernetesIngress:
     enabled: true
+    publishedService:
+      enabled: true
 
 metrics:
   prometheus: null
