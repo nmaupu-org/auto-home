@@ -1,0 +1,47 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: le-certs-sync
+  namespace: argocd
+spec:
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 5
+  schedule: "0 20 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: le-certs-sync
+          containers:
+            - name: le-certs-syncer
+              image: nmaupu/kubectl-tools:1.32.0
+              command:
+                # WARN: Depending on image version, path to bash can be different!
+                - /bin/bash
+                - -c
+                - |
+                  set -euo pipefail
+                  umask 277
+                  rm -f /le-certs/*.key /le-certs/*.crt
+                  kubectl -n argocd get secrets -l nmaupu/cert=external \
+                    -o custom-columns=NAME:.metadata.name --no-headers | while read -r sec; do
+                    json=$(kubectl -n argocd get secret $sec -o json)
+                    jq -r '.data."tls.crt"' <<< $json | base64 -d > /le-certs/${sec}.crt
+                    jq -r '.data."tls.key"' <<< $json | base64 -d > /le-certs/${sec}.key
+                  done
+              volumeMounts:
+                - name: le-certs
+                  mountPath: /le-certs
+              securityContext:
+                capabilities:
+                  drop:
+                    - ALL
+                runAsUser: 1001
+                runAsGroup: 1001
+                runAsNonRoot: true
+          restartPolicy: OnFailure
+          volumes:
+            - name: le-certs
+              hostPath:
+                path: /tank/le-certs

@@ -1,0 +1,79 @@
+---
+persistence:
+  library:
+    enabled: true
+    type: hostPath
+    hostPath: /tank/dls/plex
+    mountPath: /mnt/library
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /tank/dls/configs/plex
+  transcode:
+    enabled: true
+    mountPath: "/transcode"
+    type: emptyDir
+    medium: Memory
+    targetSelectAll: true
+
+service:
+  remote-in:
+    enabled: true
+    type: LoadBalancer
+    expandObjectName: true
+    annotations:
+      metallb.io/loadBalancerIPs: 192.168.99.3
+    ports:
+      remote-in:
+        enabled: true
+        targetSelector: plex
+        port: 32400
+        protocol: tcp
+        targetPort: 32400
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: plex.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+      - host: plex.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+plex:
+  additionalAdvertiseURL: https://plex.home.fossar.net:443
+
+workload:
+  main:
+    podSpec:
+      nodeSelector:
+        role: nas
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001

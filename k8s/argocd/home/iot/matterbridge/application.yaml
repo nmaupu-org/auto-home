@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-matterbridge
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  destination:
+    namespace: matterbridge
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/nmaupu-org/auto-home.git
+    targetRevision: master
+    path: k8s/argocd/home/iot/matterbridge
+    plugin:
+      name: custom-jsonnet
+      parameters:
+        - name: values
+          string: >-
+            {}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

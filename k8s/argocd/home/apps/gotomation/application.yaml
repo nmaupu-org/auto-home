@@ -1,0 +1,49 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-gotomation
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  destination:
+    namespace: gotomation
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/nmaupu/gotomation.git
+    targetRevision: main
+    path: deploy
+    plugin:
+      name: custom-jsonnet
+      parameters:
+        - name: values
+          string: >-
+            image:
+              tag: 1.1.16
+              pullPolicy: IfNotPresent
+            git:
+              pullPolicy: IfNotPresent
+            gotomation:
+              config:
+                pvc:
+                  storageClassName: nfs-client
+                  size: 10Mi
+            tolerations:
+              - key: role
+                operator: Equal
+                value: nas
+                effect: NoSchedule
+              - key: role
+                operator: Equal
+                value: iot
+                effect: NoSchedule
+            existingSecretEnvVars: gotomation-extra-flags
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

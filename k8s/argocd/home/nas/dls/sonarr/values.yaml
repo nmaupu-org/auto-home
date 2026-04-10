@@ -1,0 +1,122 @@
+---
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsUser: 1001
+    runAsGroup: 1001
+
+workload:
+  main:
+    primary: true
+    type: Deployment
+    podSpec:
+      nodeSelector:
+        role: nas
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
+      containers:
+        main:
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 8989
+            readiness:
+              enabled: true
+              type: http
+              path: /ping
+              port: 8989
+            startup:
+              enabled: true
+              type: http
+              path: /ping
+              port: 8989
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+  exportarr:
+    enabled: true
+    type: Deployment
+    podSpec:
+      nodeSelector:
+        role: nas
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
+      containers:
+        exportarr:
+          enabled: true
+          primary: true
+          probes:
+            liveness:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 8989
+            readiness:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 8989
+            startup:
+              enabled: true
+              type: http
+              path: /metrics
+              port: 8989
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+
+persistence:
+  config:
+    enabled: true
+    type: hostPath
+    hostPath: /tank/dls/configs/sonarr
+    targetSelector:
+      main:
+        main:
+          mountPath: /config
+      exportarr:
+        exportarr:
+          mountPath: /config
+  online:
+    enabled: true
+    type: hostPath
+    hostPath: /tank/dls
+    mountPath: /mnt/dls
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: sonarr.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+metrics:
+  main:
+    labels:
+      release: kube-prometheus-stack

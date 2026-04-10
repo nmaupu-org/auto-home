@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zigbee2mqtt-xiaomi-extra-configs
+  namespace: zigbee2mqtt
+  labels:
+    app.kubernetes.io/instance: zigbee2mqtt-xiaomi
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: zigbee2mqtt
+    argocd.argoproj.io/instance: zigbee2mqtt-xiaomi
+data:
+  # When adding a new device to the network, zigbee2mqtt crashes with the following error:
+  # https://github.com/Koenkk/zigbee2mqtt/issues/23589
+  # To workaround that:
+  # - Disable auto-sync
+  # - Edit sts and delete the devices volumeMount
+  # - z2m will reboot with a writable file
+  # - join any devices
+  devices.yaml: |
+    '0x00158d00031b1a5d':
+      friendly_name: basement_vibr_escalier
+    '0x00158d0003d477c1':
+      friendly_name: kitchen_vibr_window
+    '0x00158d00040be394':
+      friendly_name: dehumidifier_water_sensor
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0x00158d00045b01ac':
+      debounce: 1
+      friendly_name: outside_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0x00158d0007f29fae':
+      debounce: 1
+      friendly_name: kitchen_fridge_up_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0x881a14fffe011aad':
+      friendly_name: kitchen_router
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0x28dba7fffeefded4':
+      friendly_name: ground_floor_router
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0x881a14fffe0380eb':
+      friendly_name: basement_router
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0xa4c1385225ba9416':
+      friendly_name: z03mmc_living_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0xa4c138f432f67731':
+      friendly_name: z03mmc_kitchen_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0xa4c1383c32f6d4f9':
+      friendly_name: z03mmc_basement_main_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0xa4c138b533bb5a43':
+      friendly_name: z03mmc_basement_cave_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true
+    '0xa4c138e1f78117b5':
+      friendly_name: z03mmc_networkbox_hum_temp
+      homeassistant:
+        last_seen:
+          enabled_by_default: true
+        linkquality:
+          enabled_by_default: true

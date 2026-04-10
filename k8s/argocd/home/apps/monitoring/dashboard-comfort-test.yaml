@@ -1,0 +1,476 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: home-dash-comfort-test-dashboard
+  labels:
+    grafana_dashboard: "1"
+data:
+  comfort-test-dash.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "series",
+                "axisLabel": "",
+                "axisPlacement": "right",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "fieldMinMax": false,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "celsius"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Difference"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [
+                "last",
+                "mean",
+                "variance"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "disableTextWrap": false,
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"${sensor}_hum_temp Temperature\"}",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "old",
+              "useBackend": false
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"z03mmc_${sensor}_hum_temp Temperature\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "new"
+            },
+            {
+              "datasource": {
+                "name": "Expression",
+                "type": "__expr__",
+                "uid": "__expr__"
+              },
+              "expression": "abs($old-$new)",
+              "hide": false,
+              "refId": "Difference",
+              "type": "math"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"test_hum_temp Temperature\"} $show_test true",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "${sensor} Temperature",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "^(.*)_hum_temp (.*)$",
+                "renamePattern": "$2 $1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "series",
+                "axisLabel": "",
+                "axisPlacement": "right",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "fieldMinMax": false,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Difference"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 2,
+          "options": {
+            "legend": {
+              "calcs": [
+                "last",
+                "mean",
+                "variance"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "disableTextWrap": false,
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{friendly_name=\"${sensor}_hum_temp Humidity\"}",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "old",
+              "useBackend": false
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{friendly_name=\"z03mmc_${sensor}_hum_temp Humidity\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "new"
+            },
+            {
+              "datasource": {
+                "name": "Expression",
+                "type": "__expr__",
+                "uid": "__expr__"
+              },
+              "expression": "abs($old-$new)",
+              "hide": false,
+              "refId": "Difference",
+              "type": "math"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{friendly_name=\"test_hum_temp Humidity\"} $show_test true",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "${sensor} Humidity",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "^(.*)_hum_temp (.*)$",
+                "renamePattern": "$2 $1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "kitchen",
+              "value": "kitchen"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "multi": false,
+            "name": "sensor",
+            "options": [
+              {
+                "selected": false,
+                "text": "living",
+                "value": "living"
+              },
+              {
+                "selected": true,
+                "text": "kitchen",
+                "value": "kitchen"
+              },
+              {
+                "selected": false,
+                "text": "hall",
+                "value": "hall"
+              },
+              {
+                "selected": false,
+                "text": "bedroom",
+                "value": "bedroom"
+              },
+              {
+                "selected": false,
+                "text": "blue",
+                "value": "blue"
+              },
+              {
+                "selected": false,
+                "text": "pink",
+                "value": "pink"
+              },
+              {
+                "selected": false,
+                "text": "basement_main",
+                "value": "basement_main"
+              },
+              {
+                "selected": false,
+                "text": "basement_cave",
+                "value": "basement_cave"
+              },
+              {
+                "selected": false,
+                "text": "basement_bedroom",
+                "value": "basement_bedroom"
+              }
+            ],
+            "query": "living, kitchen, hall, bedroom, blue, pink, basement_main, basement_cave, basement_bedroom",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": "Hide",
+              "value": "and"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Test device",
+            "multi": false,
+            "name": "show_test",
+            "options": [
+              {
+                "selected": true,
+                "text": "Hide",
+                "value": "and"
+              },
+              {
+                "selected": false,
+                "text": "Show",
+                "value": "or"
+              }
+            ],
+            "query": "Hide : and, Show : or",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "test z03mmc",
+      "uid": "aecfhxufhzhfkf",
+      "version": 3,
+      "weekStart": ""
+    }

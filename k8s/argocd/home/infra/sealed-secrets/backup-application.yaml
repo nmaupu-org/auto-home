@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets-backup
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  destination:
+    namespace: sealed-secrets
+    server: https://kubernetes.default.svc
+  source:
+    path: ./k8s/charts/sealed-secrets-backup
+    repoURL: https://github.com/nmaupu-org/auto-home.git
+    targetRevision: master
+    helm:
+      releaseName: sealed-secrets-backup
+      values: |
+        nfs:
+          server: 192.168.12.8
+          path: /tank/backup-home-servers/nas
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

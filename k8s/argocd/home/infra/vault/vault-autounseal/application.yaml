@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault-autounseal
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: vault
+    server: https://kubernetes.default.svc
+  sources:
+    - path: charts/vault-autounseal
+      repoURL: https://github.com/nmaupu/vault-autounseal.git
+      targetRevision: HEAD
+      helm:
+        releaseName: vault-autounseal
+        valueFiles:
+          - $values/k8s/argocd/home/infra/vault/vault-autounseal/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

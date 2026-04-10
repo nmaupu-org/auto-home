@@ -1,0 +1,88 @@
+service:
+  type: ClusterIP
+
+statefulset:
+  nodeSelector:
+    role: iot
+  tolerations:
+  - key: role
+    operator: Equal
+    value: iot
+    effect: NoSchedule
+  storage:
+    enabled: true
+    size: 1Gi
+    storageClassName: openebs-hostpath
+
+  resources:
+    requests:
+      memory: 600Mi
+      cpu: 200m
+    limits:
+      memory: 600Mi
+      cpu: 200m
+  # Existing secret (sealed-secrets) created under ../../statistics
+  secrets:
+    name: zigbee2mqtt
+  volumeMounts:
+    - name: usb-device
+      mountPath: /dev/usb
+    - name: devices
+      mountPath: /app/data/devices.yaml
+      subPath: devices.yaml
+    - name: devices
+      mountPath: /app/data/groups.yaml
+      subPath: groups.yaml
+  volumes:
+    - name: usb-device
+      hostPath:
+        path: /dev/zazah_coord_misc
+    - name: devices
+      configMap:
+        defaultMode: 420
+        name: zigbee2mqtt-misc-extra-configs
+
+zigbee2mqtt:
+  homeassistant:
+    enabled: true
+    legacy_entity_attributes: false
+    legacy_triggers: false
+  timezone: Europe/Paris
+  mqtt:
+    base_topic: z2m-misc-iot
+    server: "!secret.yaml server"
+    user: "!secret.yaml user"
+    password: "!secret.yaml password"
+  serial:
+    adapter: zstack
+    port: "/dev/usb"
+    disable_led: false
+  frontend:
+    port: 8080
+  advanced:
+    pan_id: 6755
+    channel: 11
+    timestamp_format: "YYYY-MM-DD HH:mm:ss"
+    last_seen: "ISO_8601_local"
+    # -- Optional: Add an elapsed attribute to MQTT messages, contains milliseconds since the previous msg (default: false)
+    elapsed: true
+    log_level: info
+
+ingress:
+  enabled: true
+  ingressClassName: null
+  annotations:
+    cert-manager.io/cluster-issuer: google-dns-issuer-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - host: z2m-misc.iot.home.fossar.net
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+        - path: /api
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: zigbee2mqtt-misc
+      hosts:
+        - z2m-misc.iot.home.fossar.net

@@ -1,0 +1,68 @@
+image:
+  repository: nmaupu/timesheet
+  tag: "1.0.0"
+
+persistence:
+  data:
+    enabled: true
+    type: pvc
+    mountPath: /data
+    targetSelectAll: true
+    storageClass: nfs-client
+    size: 200Mi
+    enablePodAffinityInjection: false
+
+service:
+  main:
+    enabled: true
+    type: ClusterIP
+    ports:
+      main:
+        enabled: true
+        targetSelector: timesheet
+        port: 8080
+        protocol: tcp
+        targetPort: 8080
+
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: timesheet.knas.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix
+    integrations:
+      certManager:
+        certificateIssuer: google-dns-issuer-prod
+        enabled: true
+      traefik:
+        allowCors: false
+        enabled: true
+        entrypoints:
+          - websecure
+
+global:
+  traefik:
+    fixedMiddlewares:
+      - name: chain-basic
+        namespace: ingress-controller
+
+workload:
+  main:
+    podSpec:
+      tolerations:
+      - key: role
+        operator: Equal
+        value: nas
+        effect: NoSchedule
+      - key: role
+        operator: Equal
+        value: iot
+        effect: NoSchedule
+      containers:
+        main:
+          env:
+            TIMESHEET_DB: /data/timesheet.db
+            TIMESHEET_TITLE: Nicolas Maupu
+            TIMESHEET_COUNTRY: FR

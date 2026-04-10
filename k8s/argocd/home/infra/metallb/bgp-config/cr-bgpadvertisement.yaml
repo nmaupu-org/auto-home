@@ -1,0 +1,15 @@
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: bgpadv
+  namespace: metallb
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Validate=false
+spec:
+  aggregationLength: 32
+  ipAddressPools:
+  - appsbgp
+  - iotbgp
+  peers:
+  - home-router

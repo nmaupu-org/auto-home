@@ -1,0 +1,31 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zigbee2mqtt-xiaomi
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  destination:
+    namespace: zigbee2mqtt
+    server: https://kubernetes.default.svc
+  sources:
+    - path: charts/zigbee2mqtt
+      repoURL: https://github.com/Koenkk/zigbee2mqtt-chart.git
+      targetRevision: 2.7.1
+      helm:
+        releaseName: zigbee2mqtt-xiaomi
+        valueFiles:
+          - $values/k8s/argocd/home/iot/zigbee2mqtt/xiaomi-values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

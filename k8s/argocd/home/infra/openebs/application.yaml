@@ -1,0 +1,53 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: openebs
+    server: https://kubernetes.default.svc
+  source:
+    chart: openebs
+    repoURL: https://openebs.github.io/openebs
+    targetRevision: 4.4.0
+    helm:
+      releaseName: openebs
+      valuesObject:
+        openebs-crds:
+          csi:
+            volumeSnapshots:
+              enabled: true
+        engines:
+          local:
+            lvm:
+              enabled: false
+            zfs:
+              enabled: true
+          replicated:
+            mayastor:
+              enabled: false
+        mayastor:
+          enabled: false
+        lvm-localpv:
+          enabled: false
+        localpv-provisioner:
+          enabled: true
+          hostpathClass:
+            enabled: true
+            isDefaultClass: false
+            basePath: /var/openebs/local
+          xfsQuota:
+            enabled: true
+        loki:
+          enabled: false
+        minio:
+          enabled: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

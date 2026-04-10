@@ -1,0 +1,37 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: metallb
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/metallb/metallb.git
+    targetRevision: metallb-chart-0.15.3
+    path: charts/metallb
+    helm:
+      releaseName: metallb
+      values: |
+        controller:
+          image:
+            tag: v0.15.3
+            pullPolicy: IfNotPresent
+        speaker:
+          image:
+            tag: v0.15.3
+            pullPolicy: IfNotPresent
+          tolerations:
+          - key: role
+            operator: Exists
+            effect: NoSchedule
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
