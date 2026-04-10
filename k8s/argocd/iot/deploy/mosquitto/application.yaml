@@ -9,7 +9,7 @@ spec:
   project: default
   destination:
     namespace: mosquitto
-    name: iot
+    server: https://kubernetes.default.svc
   sources:
     - chart: mosquitto
       repoURL: oci.trueforge.org/truecharts

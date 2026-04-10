@@ -10,7 +10,7 @@ spec:
   project: default
   destination:
     namespace: cnpg
-    name: iot
+    server: https://kubernetes.default.svc
   sources:
     - chart: cloudnative-pg
       repoURL: oci.trueforge.org/truecharts

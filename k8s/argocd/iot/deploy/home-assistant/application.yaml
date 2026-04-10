@@ -9,7 +9,7 @@ spec:
   project: default
   destination:
     namespace: hass
-    name: iot
+    server: https://kubernetes.default.svc
   sources:
     - chart: home-assistant
       repoURL: oci.trueforge.org/truecharts

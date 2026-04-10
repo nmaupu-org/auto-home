@@ -10,7 +10,7 @@ spec:
   project: default
   destination:
     namespace: gotomation
-    name: iot
+    server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/nmaupu/gotomation.git
     targetRevision: main

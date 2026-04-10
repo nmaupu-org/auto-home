@@ -10,7 +10,7 @@ spec:
   project: default
   destination:
     namespace: monitoring
-    name: iot
+    server: https://kubernetes.default.svc
   sources:
     - chart: kube-prometheus-stack
       repoURL: https://prometheus-community.github.io/helm-charts
