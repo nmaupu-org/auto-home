@@ -8,8 +8,9 @@ persistence:
     type: pvc
     mountPath: /data
     targetSelectAll: true
-    storageClass: openebs-zfs
+    storageClass: nfs-client
     size: 200Mi
+    enablePodAffinityInjection: false
   cocktails-config:
     enabled: true
     type: configmap
@@ -64,12 +65,14 @@ workload:
   main:
     type: Deployment
     podSpec:
-      nodeSelector:
-        role: nas
       tolerations:
       - key: role
         operator: Equal
         value: nas
+        effect: NoSchedule
+      - key: role
+        operator: Equal
+        value: iot
         effect: NoSchedule
       containers:
         main:
