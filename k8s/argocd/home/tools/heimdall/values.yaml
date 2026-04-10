@@ -57,15 +57,16 @@ securityContext:
 workload:
   main:
     podSpec:
-      tolerations:
-      - key: role
-        operator: Equal
-        value: nas
-        effect: NoSchedule
-      - key: role
-        operator: Equal
-        value: iot
-        effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - worker
       containers:
         main:
           fixedEnv:

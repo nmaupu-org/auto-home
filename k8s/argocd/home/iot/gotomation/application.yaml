@@ -19,7 +19,7 @@ spec:
       name: custom-jsonnet
       parameters:
         - name: values
-          string: >-
+          string: |-
             image:
               tag: 1.1.16
               pullPolicy: IfNotPresent
@@ -30,15 +30,16 @@ spec:
                 pvc:
                   storageClassName: nfs-client
                   size: 10Mi
-            tolerations:
-              - key: role
-                operator: Equal
-                value: nas
-                effect: NoSchedule
-              - key: role
-                operator: Equal
-                value: iot
-                effect: NoSchedule
+            affinity:
+              nodeAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  preference:
+                    matchExpressions:
+                    - key: role
+                      operator: In
+                      values:
+                      - worker
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:

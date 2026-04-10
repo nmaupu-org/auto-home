@@ -93,7 +93,6 @@
     role       = "server";
     tokenFile  = config.sops.secrets.k3s_cluster_token.path;
     nodeLabels = [ "role=nas" ];
-    nodeTaints = [ "role=nas:NoSchedule" ];
     disabledComponents = [ "traefik" "servicelb" "local-storage" ];
   };
 

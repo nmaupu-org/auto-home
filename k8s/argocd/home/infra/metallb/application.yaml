@@ -24,10 +24,6 @@ spec:
           image:
             tag: v0.15.3
             pullPolicy: IfNotPresent
-          tolerations:
-          - key: role
-            operator: Exists
-            effect: NoSchedule
 
   syncPolicy:
     automated:

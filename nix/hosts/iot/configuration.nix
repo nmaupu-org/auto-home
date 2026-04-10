@@ -93,7 +93,6 @@
     serverUrl = "https://${constants.hosts.nasIp}:6443";
     tokenFile = config.sops.secrets.k3s_cluster_token.path;
     nodeLabels = [ "role=iot" ];
-    nodeTaints = [ "role=iot:NoSchedule" ];
   };
 
   sops.secrets.k3s_cluster_token = {

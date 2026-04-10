@@ -32,11 +32,6 @@ server:
 
   nodeSelector:
     role: nas
-  tolerations:
-  - key: role
-    operator: Equal
-    value: nas
-    effect: NoSchedule
 
   podLabels:
     vault-active: "true"
