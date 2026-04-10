@@ -10,6 +10,7 @@
       /tank/backup-home-servers/iot ${constants.network.lan}(rw,sec=sys,no_root_squash,insecure,no_subtree_check) ${constants.network.k3sPodCidr}(rw,sec=sys,no_root_squash,insecure,no_subtree_check)
       /tank/backup-home-servers/nas ${constants.network.lan}(rw,sec=sys,no_root_squash,insecure,no_subtree_check) ${constants.network.k3sPodCidr}(rw,sec=sys,no_root_squash,insecure,no_subtree_check)
       /tank/le-certs ${constants.network.lan}(rw,sec=sys,no_root_squash,insecure,no_subtree_check)
+      /tank/k8s ${constants.network.lan}(rw,sec=sys,no_root_squash,insecure,no_subtree_check) ${constants.network.k3sPodCidr}(rw,sec=sys,no_root_squash,insecure,no_subtree_check)
     '';
   };
 
