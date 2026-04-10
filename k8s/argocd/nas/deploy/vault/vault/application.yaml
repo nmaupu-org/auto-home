@@ -8,7 +8,7 @@ spec:
   project: default
   destination:
     namespace: vault
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - chart: vault
       repoURL: https://helm.releases.hashicorp.com

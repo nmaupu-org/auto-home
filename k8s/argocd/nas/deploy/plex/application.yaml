@@ -7,7 +7,7 @@ spec:
   project: default
   destination:
     namespace: plex
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - chart: plex
       repoURL: oci.trueforge.org/truecharts

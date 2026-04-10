@@ -8,7 +8,7 @@ spec:
   project: default
   destination:
     namespace: headlamp
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - chart: headlamp
       repoURL: https://kubernetes-sigs.github.io/headlamp/

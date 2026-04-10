@@ -7,7 +7,7 @@ spec:
   project: default
   destination:
     namespace: tools
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - chart: static-web-server
       repoURL: oci.trueforge.org/truecharts

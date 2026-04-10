@@ -8,7 +8,7 @@ spec:
   project: default
   destination:
     namespace: vault
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - path: charts/vault-autounseal
       repoURL: https://github.com/nmaupu/vault-autounseal.git

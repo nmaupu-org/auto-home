@@ -7,7 +7,7 @@ spec:
   project: default
   destination:
     namespace: scan-http
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - chart: app-template
       repoURL: oci.trueforge.org/truecharts

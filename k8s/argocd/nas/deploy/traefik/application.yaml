@@ -8,7 +8,7 @@ spec:
   project: default
   destination:
     namespace: ingress-controller
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - chart: traefik
       repoURL: https://traefik.github.io/charts

@@ -8,7 +8,7 @@ spec:
   project: default
   destination:
     namespace: openebs
-    name: in-cluster
+    server: https://kubernetes.default.svc
   source:
     chart: openebs
     repoURL: https://openebs.github.io/openebs

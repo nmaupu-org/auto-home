@@ -10,7 +10,7 @@ spec:
   project: default
   destination:
     namespace: sealed-secrets
-    name: in-cluster
+    server: https://kubernetes.default.svc
   source:
     path: ./k8s/charts/sealed-secrets-backup
     repoURL: https://github.com/nmaupu-org/auto-home.git

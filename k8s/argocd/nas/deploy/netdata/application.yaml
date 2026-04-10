@@ -8,7 +8,7 @@ spec:
   project: default
   destination:
     namespace: netdata
-    name: in-cluster
+    server: https://kubernetes.default.svc
   sources:
     - path: k8s/charts/host-ingress
       repoURL: https://github.com/nmaupu-org/auto-home.git
