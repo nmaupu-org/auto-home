@@ -28,8 +28,17 @@ spec:
             gotomation:
               config:
                 pvc:
-                  storageClassName: openebs-hostpath
+                  storageClassName: nfs-client
                   size: 10Mi
+            tolerations:
+              - key: role
+                operator: Equal
+                value: nas
+                effect: NoSchedule
+              - key: role
+                operator: Equal
+                value: iot
+                effect: NoSchedule
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
