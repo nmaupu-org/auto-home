@@ -391,12 +391,23 @@ sudo zfs create -o mountpoint=none tank/openebs-zfs
 ```bash
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-helm repo add truecharts https://charts.truecharts.org
+helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 
-helm install argocd truecharts/argocd \
+helm install argocd argo/argo-cd \
+  --version 7.9.1 \
   --namespace argocd \
-  --create-namespace
+  --create-namespace \
+  --values k8s/argocd/home/infra/argocd/argocd-values.yaml
+```
+
+To upgrade an existing install:
+
+```bash
+helm upgrade argocd argo/argo-cd \
+  --version 7.9.1 \
+  --namespace argocd \
+  --values k8s/argocd/home/infra/argocd/argocd-values.yaml
 ```
 
 ### Point ArgoCD at the GitOps repo
