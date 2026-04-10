@@ -27,7 +27,13 @@ spec:
                   deschedule:
                     enabled:
                       - RemovePodsViolatingNodeAffinity
+                  filter:
+                    enabled:
+                      - DefaultEvictor
                 pluginConfig:
+                  - name: DefaultEvictor
+                    args:
+                      evictLocalStoragePods: true
                   - name: RemovePodsViolatingNodeAffinity
                     args:
                       nodeAffinityType:
