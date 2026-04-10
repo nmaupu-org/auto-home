@@ -1,5 +1,0 @@
----
-main:
-  monitoring:
-    enablePodMonitor: false
-    disableDefaultQueries: true
