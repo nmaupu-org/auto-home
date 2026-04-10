@@ -12,20 +12,22 @@ service:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.100.22
 
-nodeSelector:
-  role: iot
 tolerations:
 - key: role
   operator: Equal
   value: iot
+  effect: NoSchedule
+- key: role
+  operator: Equal
+  value: nas
   effect: NoSchedule
 
 persistence:
   serverKeys:
     enabled: true
     size: 1Mi
-    storageClassName: openebs-hostpath
+    storageClassName: nfs-client
   misc:
     enabled: true
     size: 1Gi
-    storageClassName: openebs-hostpath
+    storageClassName: nfs-client
