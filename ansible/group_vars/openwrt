@@ -88,7 +88,8 @@ firewall_dnsmasq_config:
     tftp_root: /mnt/extstorage/pxe
   addresses:
     - /knas.home.fossar.net/192.168.99.1
-    - /iot.home.fossar.net/192.168.100.1
+    - /iot.home.fossar.net/192.168.99.1
+    - /worker1.home.fossar.net/192.168.99.1
 
 firewall_dhcp_static_leases:
   - name: asrock
@@ -148,10 +149,11 @@ firewall_dns_entries:
   192.168.100.35:
     - mqtt
   192.168.99.1:
-    - hass
-    - plex
-    - grafana
     - dashboard
+    - grafana
+    - hass
+    - headlamp
+    - plex
     - vault
     - web-static
 
