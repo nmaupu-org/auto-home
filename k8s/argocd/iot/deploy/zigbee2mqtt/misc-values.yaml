@@ -1,15 +1,14 @@
-nodeSelector:
-  role: iot
-tolerations:
-- key: role
-  operator: Equal
-  value: iot
-  effect: NoSchedule
-
 service:
   type: ClusterIP
 
 statefulset:
+  nodeSelector:
+    role: iot
+  tolerations:
+  - key: role
+    operator: Equal
+    value: iot
+    effect: NoSchedule
   storage:
     enabled: true
     size: 1Gi
