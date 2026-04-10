@@ -10,5 +10,6 @@ spec:
   aggregationLength: 32
   ipAddressPools:
   - appsbgp
+  - iotbgp
   peers:
   - home-router

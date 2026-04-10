@@ -11,3 +11,17 @@ spec:
   - 192.168.99.0/24
   autoAssign: true
   avoidBuggyIPs: true
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: iotbgp
+  namespace: metallb
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Validate=false
+spec:
+  addresses:
+  - 192.168.100.0/24
+  autoAssign: false
+  avoidBuggyIPs: true
