@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: timesheet
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: timesheet
+    server: https://kubernetes.default.svc
+  sources:
+    - chart: app-template
+      repoURL: oci.trueforge.org/truecharts
+      targetRevision: 17.0.6
+      helm:
+        releaseName: timesheet
+        valueFiles:
+          - $values/k8s/argocd/home/tools/timesheet/values.yaml
+    - repoURL: https://github.com/nmaupu-org/auto-home.git
+      targetRevision: master
+      ref: values
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.hostUsers
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
