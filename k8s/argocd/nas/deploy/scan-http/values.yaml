@@ -5,9 +5,10 @@ image:
 persistence:
   scan-share:
     enabled: true
-    type: hostPath
+    type: nfs
     mountPath: /scans
-    hostPath: /tank/ftp_home/printer
+    server: 192.168.12.8
+    path: /tank/ftp_home/printer
 
 service:
   main:
@@ -48,10 +49,12 @@ global:
 workload:
   main:
     podSpec:
-      nodeSelector:
-        role: nas
       tolerations:
       - key: role
         operator: Equal
         value: nas
+        effect: NoSchedule
+      - key: role
+        operator: Equal
+        value: iot
         effect: NoSchedule
