@@ -87,8 +87,9 @@ firewall_dnsmasq_config:
     enable_tftp: 1
     tftp_root: /mnt/extstorage/pxe
   addresses:
-    - /knas.home.fossar.net/192.168.99.1
+    - /apps.home.fossar.net/192.168.99.1
     - /iot.home.fossar.net/192.168.99.1
+    - /knas.home.fossar.net/192.168.99.1
     - /worker1.home.fossar.net/192.168.99.1
 
 firewall_dhcp_static_leases:
