@@ -1,7 +1,7 @@
 local g = import '../globals.libsonnet';
 local v = import '../values.libsonnet';
-local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.34/main.libsonnet';
 local cm = import 'configmap.jsonnet';
+local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.34/main.libsonnet';
 
 local d = k.apps.v1.deployment;
 local c = k.core.v1.container;
@@ -69,13 +69,6 @@ d.new('matterbridge', replicas=1, containers=[mainContainer])
 + { spec+: { strategy: { type: 'Recreate' } } }
 + d.spec.template.spec.withHostNetwork(true)
 + d.spec.template.spec.withDnsPolicy('ClusterFirstWithHostNet')
-+ d.spec.template.spec.withNodeSelector({ role: 'iot' })
-+ d.spec.template.spec.withTolerations([{
-    key: 'role',
-    operator: 'Equal',
-    value: 'iot',
-    effect: 'NoSchedule',
-  }])
 + d.spec.template.spec.withInitContainers([initWriteConfig, initRegisterPlugin])
 + d.spec.template.spec.withVolumes([
   vol.fromPersistentVolumeClaim('data', 'matterbridge-data'),
