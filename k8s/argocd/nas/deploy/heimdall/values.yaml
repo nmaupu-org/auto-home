@@ -37,8 +37,11 @@ global:
 persistence:
   config:
     enabled: true
-    type: hostPath
-    hostPath: /tank/dls/configs/heimdall
+    type: pvc
+    mountPath: /config
+    storageClass: nfs-client
+    size: 200Mi
+    enablePodAffinityInjection: false
 
 # To change the GID, need to set fsGroup
 securityContext:
@@ -54,12 +57,14 @@ securityContext:
 workload:
   main:
     podSpec:
-      nodeSelector:
-        role: nas
       tolerations:
       - key: role
         operator: Equal
         value: nas
+        effect: NoSchedule
+      - key: role
+        operator: Equal
+        value: iot
         effect: NoSchedule
       containers:
         main:
