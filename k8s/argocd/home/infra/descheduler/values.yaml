@@ -1,0 +1,17 @@
+# Run as a Deployment with a periodic descheduling interval rather than a CronJob
+kind: Deployment
+deschedulingInterval: 5m
+
+deschedulerPolicy:
+  profiles:
+    - name: default
+      plugins:
+        balance:
+          enabled:
+            - RemovePodsViolatingNodeAffinity
+      pluginConfig:
+        - name: RemovePodsViolatingNodeAffinity
+          args:
+            nodeAffinityType:
+              - requiredDuringSchedulingIgnoredDuringExecution
+              - preferredDuringSchedulingIgnoredDuringExecution
