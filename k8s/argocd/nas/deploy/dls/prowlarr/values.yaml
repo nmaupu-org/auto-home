@@ -14,8 +14,10 @@ service:
 persistence:
   config:
     enabled: true
-    type: hostPath
-    hostPath: /tank/dls/configs/prowlarr
+    type: pvc
+    storageClass: nfs-client
+    size: 1Gi
+    enablePodAffinityInjection: false
     targetSelector:
       main:
         main:
@@ -53,12 +55,14 @@ workload:
     primary: true
     type: Deployment
     podSpec:
-      nodeSelector:
-        role: nas
       tolerations:
       - key: role
         operator: Equal
         value: nas
+        effect: NoSchedule
+      - key: role
+        operator: Equal
+        value: iot
         effect: NoSchedule
       containers:
         main:
@@ -83,12 +87,14 @@ workload:
     enabled: true
     type: Deployment
     podSpec:
-      nodeSelector:
-        role: nas
       tolerations:
       - key: role
         operator: Equal
         value: nas
+        effect: NoSchedule
+      - key: role
+        operator: Equal
+        value: iot
         effect: NoSchedule
       containers:
         exportarr:
