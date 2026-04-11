@@ -18,6 +18,10 @@ ingress:
     cert-manager.io/cluster-issuer: google-dns-issuer-prod
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
   hosts:
+    - host: headlamp.apps.home.fossar.net
+      paths:
+        - path: /
+          type: Prefix 
     - host: headlamp.home.fossar.net
       paths:
         - path: /
