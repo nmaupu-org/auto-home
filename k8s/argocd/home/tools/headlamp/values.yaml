@@ -30,6 +30,7 @@ ingress:
     - secretName: headlamp-tls
       hosts:
         - headlamp.home.fossar.net
+        - headlamp.apps.home.fossar.net
 
 config:
   pluginsDir: /headlamp/plugins
