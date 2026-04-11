@@ -43,5 +43,6 @@ spec:
           restartPolicy: OnFailure
           volumes:
             - name: le-certs
-              hostPath:
+              nfs:
+                server: 192.168.12.8
                 path: /tank/le-certs
