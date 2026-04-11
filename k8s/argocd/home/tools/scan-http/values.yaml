@@ -46,16 +46,3 @@ global:
       - name: chain-basic
         namespace: ingress-controller
 
-workload:
-  main:
-    podSpec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            preference:
-              matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - worker

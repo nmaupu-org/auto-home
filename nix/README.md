@@ -395,7 +395,7 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 
 helm install argocd argo/argo-cd \
-  --version 7.9.1 \
+  --version 9.5.0 \
   --namespace argocd \
   --create-namespace \
   --values k8s/argocd/home/infra/argocd/argocd-values.yaml
@@ -405,7 +405,7 @@ To upgrade an existing install:
 
 ```bash
 helm upgrade argocd argo/argo-cd \
-  --version 7.9.1 \
+  --version 9.5.0 \
   --namespace argocd \
   --values k8s/argocd/home/infra/argocd/argocd-values.yaml
 ```
