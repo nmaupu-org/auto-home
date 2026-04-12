@@ -306,6 +306,9 @@ securityContext:
 cnpg:
   main:
     enabled: true
+    podOptions:
+      nodeSelector:
+       role: iot
     user: home-assistant
     database: home-assistant
     cluster:
@@ -315,9 +318,6 @@ cnpg:
         size: 50Gi
       walStorage:
         size: 50Gi
-      affinity:
-        nodeSelector:
-          role: iot
 
 persistence:
   init:
