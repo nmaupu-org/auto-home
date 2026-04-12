@@ -23,8 +23,8 @@
   services.zsh-config.sshSymbol    = "󰋜 ";
   services.zsh-config.hostnameStyle = "bold yellow";
 
-  # Use latest kernel to benefit from fixes in cgroup/overlayfs/containerd paths
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Use stable kernel for reliability
+  boot.kernelPackages = pkgs.linuxPackages;
 
   # Bootloader — systemd-boot (single EFI disk, no mirror needed)
   boot.loader.systemd-boot.enable = true;

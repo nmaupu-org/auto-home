@@ -41,12 +41,17 @@
 
     services.journald.extraConfig = "Storage=persistent\n";
 
+    # Capture kernel crash dumps into /var/crash for post-mortem analysis
+    boot.crashDump.enable = true;
+
     # Reboot automatically after a kernel panic (10s delay)
     boot.kernel.sysctl."kernel.panic"              = 10;
     boot.kernel.sysctl."kernel.panic_on_oops"      = 1;
-    # Reboot on soft lockup or hung task (otherwise the machine freezes silently)
+    # Reboot on soft lockup, hard lockup, or hung task (otherwise the machine freezes silently)
     boot.kernel.sysctl."kernel.softlockup_panic"   = 1;
     boot.kernel.sysctl."kernel.hung_task_panic"    = 1;
+    # Hard lockup: CPU completely stuck, NMI watchdog fires — also trigger a panic
+    boot.kernel.sysctl."kernel.hardlockup_panic"   = 1;
 
     # Alert via Telegram (if available) when coming back after a crash
     systemd.services.crash-alert = {
