@@ -34,6 +34,11 @@
       fsType = "ext4";
     };
 
+  fileSystems."/var/lib/longhorn" =
+    { device = "/dev/sys/data-longhorn";
+      fsType = "ext4";
+    };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

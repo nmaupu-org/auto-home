@@ -11,6 +11,11 @@
   # Data pools (boot SSD is handled by the bootloader, not listed here)
   boot.zfs.extraPools = [ "tank" "dls-tmp" ];
 
+  fileSystems."/var/lib/longhorn" = {
+    device = "tank/longhorn";
+    fsType = "zfs";
+  };
+
   # ZED — ZFS event daemon, alerts via Telegram on pool errors/scrub results
   services.zfs.zed = {
     enableMail = false;

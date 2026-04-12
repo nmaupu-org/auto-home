@@ -64,6 +64,12 @@ in
       default     = [];
       description = "Built-in k3s components to disable — server only (e.g. traefik, servicelb, local-storage)";
     };
+
+    enableLonghornSupport = lib.mkOption {
+      type        = lib.types.bool;
+      default     = true;
+      description = "Enable open-iscsi on the host — required for Longhorn distributed storage";
+    };
   };
 
   config = {
@@ -79,6 +85,19 @@ in
         ++ (map (t: "--node-taint ${t}") cfg.nodeTaints)
       );
     };
+
+    # open-iscsi — required by Longhorn for block storage volumes
+    services.openiscsi = lib.mkIf cfg.enableLonghornSupport {
+      enable = true;
+      name   = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}";
+    };
+
+    # Longhorn uses nsenter to call iscsiadm on the host at the standard FHS
+    # path /usr/bin/iscsiadm — on NixOS binaries live in the store, so expose
+    # it via a symlink (same pattern as zfs/zpool in nas/zfs.nix).
+    systemd.tmpfiles.rules = lib.mkIf cfg.enableLonghornSupport [
+      "L+ /usr/bin/iscsiadm - - - - ${pkgs.openiscsi}/bin/iscsiadm"
+    ];
 
     # k3s bundles containerd; make sure the kernel has the required modules.
     boot.kernelModules = [ "br_netfilter" "overlay" ];
