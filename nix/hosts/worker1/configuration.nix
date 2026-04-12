@@ -11,6 +11,7 @@
     ../../modules/shared/zsh.nix
     ../../modules/shared/ssh.nix
     ../../modules/shared/tailscale.nix
+    ../../modules/worker1/monitoring.nix
   ];
 
   users-shared.sopsFile = ../../secrets/worker1.yaml;
