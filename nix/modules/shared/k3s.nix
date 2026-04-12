@@ -90,9 +90,11 @@ in
     networking.firewall.allowedTCPPorts = [
       6443   # k3s API server (kubectl + agent join)
       10250  # kubelet metrics
+      7946   # MetalLB memberlist (speaker coordination)
     ];
     networking.firewall.allowedUDPPorts = [
       8472   # Flannel VXLAN
+      7946   # MetalLB memberlist (speaker coordination)
     ];
 
     # Copy k3s kubeconfig to nmaupu's ~/.kube/config after k3s starts.
