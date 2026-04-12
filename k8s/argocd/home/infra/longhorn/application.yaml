@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io/
+      targetRevision: v1.11.1
+      helm:
+        values: |
+          preUpgradeChecker:
+            jobEnabled: false
+          ingress:
+            enabled: true
+            host: longhorn.apps.home.fossar.net
+            tls: true
+            ingressClassName: traefik
+            annotations:
+              cert-manager.io/cluster-issuer: google-dns-issuer-prod
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.tls: "true"
+
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
