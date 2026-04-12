@@ -10,7 +10,6 @@ persistence:
     targetSelectAll: true
     storageClass: nfs-client
     size: 200Mi
-    enablePodAffinityInjection: false
   cocktails-config:
     enabled: true
     type: configmap
@@ -65,6 +64,8 @@ workload:
   main:
     type: Deployment
     podSpec:
+      affinity:
+        podAffinity: null
       containers:
         main:
           probes:

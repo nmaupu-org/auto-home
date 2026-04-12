@@ -17,7 +17,6 @@ persistence:
     type: pvc
     storageClass: nfs-client
     size: 1Gi
-    enablePodAffinityInjection: false
     targetSelector:
       main:
         main:
@@ -55,6 +54,8 @@ workload:
     primary: true
     type: Deployment
     podSpec:
+      affinity:
+        podAffinity: null # important when using NFS provisioning
       containers:
         main:
           primary: true

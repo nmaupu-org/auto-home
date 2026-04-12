@@ -10,7 +10,6 @@ persistence:
     targetSelectAll: true
     storageClass: nfs-client
     size: 200Mi
-    enablePodAffinityInjection: false
 
 service:
   main:
@@ -51,6 +50,8 @@ global:
 workload:
   main:
     podSpec:
+      affinity:
+        podAffinity: null # important when using NFS provisioning
       containers:
         main:
           env:
