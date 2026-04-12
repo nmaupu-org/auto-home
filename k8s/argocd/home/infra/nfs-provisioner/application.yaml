@@ -21,7 +21,7 @@ spec:
           path: /tank/k8s
         storageClass:
           name: nfs-client
-          defaultClass: false
+          defaultClass: true
           reclaimPolicy: Retain
           archiveOnDelete: false
   syncPolicy:
