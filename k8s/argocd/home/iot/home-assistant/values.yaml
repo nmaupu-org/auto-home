@@ -306,9 +306,6 @@ securityContext:
 cnpg:
   main:
     enabled: true
-    podOptions:
-      nodeSelector:
-       role: iot
     user: home-assistant
     database: home-assistant
     cluster:
@@ -316,8 +313,10 @@ cnpg:
       singleNode: true
       storage:
         size: 50Gi
+        storageClass: openebs-hostpath
       walStorage:
         size: 50Gi
+        storageClass: openebs-hostpath
 
 persistence:
   init:
