@@ -17,13 +17,19 @@ auth:
 workload:
   main:
     podSpec:
-      nodeSelector:
-        role: iot
+      affinity:
+        podAffinity: null
       initContainers:
         init:
           enabled: true
           type: init
           imageSelector: initImage
+          volumeMounts:
+            - name: configinc
+              mountPath: /mosquitto/configinc
+            - name: password
+              mountPath: /extra-configs
+              readOnly: true
           command:
             - /usr/local/bin/bash
             - -c
@@ -61,12 +67,11 @@ persistence:
         path: passwordfile
   data:
     enabled: true
-    size: 1Gi
+    size: 200Mi
     type: pvc
-    storageClassName: openebs-hostpath
+    storageClassName: longhorn
   configinc:
     enabled: true
     size: 10Mi
-    type: pvc
-    storageClassName: openebs-hostpath
+    type: emptyDir
     targetSelectAll: true
