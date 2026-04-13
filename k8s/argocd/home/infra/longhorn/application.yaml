@@ -16,6 +16,9 @@ spec:
         values: |
           defaultSettings:
             allowCollectingLonghornUsageMetrics: false
+            defaultReplicaCount: 3
+          persistence:
+            defaultClassReplicaCount: 3
           preUpgradeChecker:
             jobEnabled: false
           ingress:
