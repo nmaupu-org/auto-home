@@ -12,8 +12,8 @@
   boot.zfs.extraPools = [ "tank" "dls-tmp" ];
 
   fileSystems."/var/lib/longhorn" = {
-    device = "tank/longhorn";
-    fsType = "zfs";
+    device = "/dev/zvol/tank/longhorn";
+    fsType = "ext4";
   };
 
   # ZED — ZFS event daemon, alerts via Telegram on pool errors/scrub results
