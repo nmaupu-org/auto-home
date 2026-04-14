@@ -86,7 +86,7 @@ podOptions:
 
                 # handling recorder configuration (db)
                 cat << EOF > "$config_dir/recorder.yaml"
-              purge_keep_days: 30
+              purge_keep_days: 60
               commit_interval: 3
               db_url: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
               EOF
@@ -311,6 +311,7 @@ configmap:
           "version": 3
         }
       init.sh: |-
+        #!/bin/bash
         set -eEuo pipefail
         set -x
         date
