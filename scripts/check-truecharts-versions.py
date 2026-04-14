@@ -32,8 +32,7 @@ def discover_truecharts_apps():
 
     # Search patterns for both nas and iot deployments (recursive)
     search_patterns = [
-        'k8s/argocd/nas/deploy/**/application*.yaml',
-        'k8s/argocd/iot/deploy/**/application*.yaml'
+        'k8s/argocd/home/media/dls/**/application*.yaml'
     ]
 
     for pattern in search_patterns:

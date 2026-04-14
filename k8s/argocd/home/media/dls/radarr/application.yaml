@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: radarr
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 27.0.3
+      targetRevision: 27.0.4
       helm:
         releaseName: radarr
         valueFiles:

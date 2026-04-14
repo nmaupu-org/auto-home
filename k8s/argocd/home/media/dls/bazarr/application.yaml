@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: bazarr
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 24.0.2
+      targetRevision: 24.0.3
       helm:
         releaseName: bazarr
         valueFiles:

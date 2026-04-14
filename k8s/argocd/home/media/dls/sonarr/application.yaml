@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: sonarr
       repoURL: oci.trueforge.org/truecharts
-      targetRevision: 26.0.3
+      targetRevision: 26.0.4
       helm:
         releaseName: sonarr
         valueFiles:
