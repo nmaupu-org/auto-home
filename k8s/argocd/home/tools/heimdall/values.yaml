@@ -39,8 +39,8 @@ persistence:
     enabled: true
     type: pvc
     mountPath: /config
-    storageClass: nfs-client
-    size: 200Mi
+    storageClass: longhorn
+    size: 100Mi
 
 # To change the GID, need to set fsGroup
 securityContext:
