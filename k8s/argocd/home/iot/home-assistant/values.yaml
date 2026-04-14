@@ -189,10 +189,10 @@ cnpg:
       instances: 1
       singleNode: true
       storage:
-        size: 50Gi
+        size: 25Gi
         storageClass: longhorn
       walStorage:
-        size: 50Gi
+        size: 25Gi
         storageClass: longhorn
 
 persistence:
@@ -210,14 +210,14 @@ persistence:
     mountPath: /conf-reloader
     targetSelectAll: true
     storageClass: longhorn
-    size: 100Mi
+    size: 50Mi
   config:
     enabled: true
     type: pvc
     mountPath: /config
     targetSelectAll: true
     storageClass: longhorn
-    size: 100Mi
+    size: 50Mi
   hass-secrets:
     # Existing secret (sealed-secrets) created under ../../statics
     enabled: true
