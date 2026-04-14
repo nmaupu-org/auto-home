@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: iot-sshd
+  name: sshd
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "5"
@@ -16,7 +16,7 @@ spec:
       repoURL: https://github.com/nmaupu/sshd-helm-chart.git
       targetRevision: 0.0.4
       helm:
-        releaseName: iot-sshd
+        releaseName: sshd
         valueFiles:
           - $values/k8s/argocd/home/tools/sshd/values.yaml
     - repoURL: https://github.com/nmaupu-org/auto-home.git
