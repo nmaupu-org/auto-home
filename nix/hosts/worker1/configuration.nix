@@ -70,13 +70,6 @@
 
       LAST_UPDATE=$(${pkgs.systemd}/bin/systemctl show update-system --property=ExecMainExitTimestamp --value 2>/dev/null)
       echo "  Last update-system: ''${LAST_UPDATE:-unknown}"
-      echo ""
-
-      echo "  Useful commands:"
-      echo "    update-system          pull latest config and rebuild"
-      echo "    journalctl -u k3s -f   follow k3s logs"
-      echo "    k9s                    kubernetes TUI"
-      echo ""
     '';
   };
 
@@ -96,7 +89,7 @@
   };
 
   services.update-system = {
-    enable     = false;
+    enable     = true;
     hostName   = "worker1";
     hcPingUUID = "d54df01a-0e7d-4bb4-b578-ffb3b5f8b30c";
   };

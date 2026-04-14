@@ -75,13 +75,6 @@
 
       LAST_UPDATE=$(${pkgs.systemd}/bin/systemctl show update-system --property=ExecMainExitTimestamp --value 2>/dev/null)
       echo "  Last update-system: ''${LAST_UPDATE:-unknown}"
-      echo ""
-
-      echo "  Useful commands:"
-      echo "    update-system          pull latest config and rebuild"
-      echo "    journalctl -u k3s -f   follow k3s logs"
-      echo "    k9s                    kubernetes TUI"
-      echo ""
     '';
   };
 
