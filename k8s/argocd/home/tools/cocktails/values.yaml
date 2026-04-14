@@ -8,8 +8,8 @@ persistence:
     type: pvc
     mountPath: /data
     targetSelectAll: true
-    storageClass: nfs-client
-    size: 200Mi
+    storageClass: longhorn
+    size: 10Mi
   cocktails-config:
     enabled: true
     type: configmap
