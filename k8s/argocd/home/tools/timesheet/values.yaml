@@ -8,8 +8,8 @@ persistence:
     type: pvc
     mountPath: /data
     targetSelectAll: true
-    storageClass: nfs-client
-    size: 200Mi
+    storageClass: longhorn
+    size: 50Mi
 
 service:
   main:
@@ -51,7 +51,7 @@ workload:
   main:
     podSpec:
       affinity:
-        podAffinity: null # important when using NFS provisioning
+        podAffinity: null # important when using longhorn or NFS provisioning
       containers:
         main:
           env:
