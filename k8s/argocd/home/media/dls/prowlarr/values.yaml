@@ -15,8 +15,8 @@ persistence:
   config:
     enabled: true
     type: pvc
-    storageClass: nfs-client
-    size: 1Gi
+    storageClass: longhorn
+    size: 500Mi
     targetSelector:
       main:
         main:
