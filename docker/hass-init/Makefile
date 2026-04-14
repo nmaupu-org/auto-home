@@ -3,7 +3,7 @@ default: push
 
 NAME=hass-init
 YQ_VERSION=4.44.6
-VERSION=1.0.2
+VERSION=1.0.3
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
 build: check-docker-hub

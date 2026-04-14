@@ -4,7 +4,7 @@ TZ: Europe/Paris
 # Add any image: yaml key is the name used in any imageSelector
 initImage:
   repository: nmaupu/hass-init
-  tag: 1.0.2
+  tag: 1.0.3
   pullPolicy: IfNotPresent
 
 #####
@@ -37,6 +37,7 @@ podOptions:
   automountServiceAccountToken: true
   hostNetwork: true
 
+workload:
   main:
     podSpec:
       nodeSelector:
