@@ -27,8 +27,8 @@ persistence:
   serverKeys:
     enabled: true
     size: 1Mi
-    storageClassName: nfs-client
+    storageClassName: longhorn
   misc:
     enabled: true
     size: 1Gi
-    storageClassName: nfs-client
+    storageClassName: longhorn
