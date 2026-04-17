@@ -70,7 +70,7 @@
         browseable             = "yes";
         "read only"            = "no";
         "guest ok"             = "no";
-        "valid users"          = "nmaupu";
+        "valid users"          = "nmaupu bicou";
         "create mask"          = "0777";
         "directory mask"       = "0777";
         "force create mode"    = "0755";
