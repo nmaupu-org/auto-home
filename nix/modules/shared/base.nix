@@ -44,6 +44,12 @@
     # Capture kernel crash dumps into /var/crash for post-mortem analysis
     boot.crashDump.enable = true;
 
+    # Hardware watchdog: systemd pets /dev/watchdog every 30s.
+    # If the system freezes (D-state hang, deep C-state, any cause), the
+    # hardware timer fires independently of the CPU and hard-resets the machine.
+    # This works even when NMI watchdog is blind (e.g. Intel C10 state).
+    systemd.watchdog.runtimeTime = "60s";
+
     # Reboot automatically after a kernel panic (10s delay)
     boot.kernel.sysctl."kernel.panic"              = 10;
     boot.kernel.sysctl."kernel.panic_on_oops"      = 1;

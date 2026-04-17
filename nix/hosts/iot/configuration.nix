@@ -23,8 +23,17 @@
   services.zsh-config.sshSymbol    = "󰋜 ";
   services.zsh-config.hostnameStyle = "bold yellow";
 
-  # Use stable kernel for reliability
   boot.kernelPackages = pkgs.linuxPackages;
+
+  # RTL8168h/8111h (r8169 XID 541) + PCIe ASPM causes transmit queue hangs:
+  # ASPM puts the PCIe link into a low-power state; the driver then fails to
+  # wake it in time for pending TX frames → NETDEV WATCHDOG timeout → freeze.
+  # Disabling ASPM globally fixes this. Disabling EEE prevents the NIC from
+  # entering its own low-power mode independently of ASPM.
+  boot.kernelParams = [ "pcie_aspm=off" ];
+  services.udev.extraRules = lib.mkAfter ''
+    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="68:1d:ef:33:f8:33", RUN+="${pkgs.ethtool}/sbin/ethtool --set-eee $name eee off"
+  '';
 
   # Bootloader — systemd-boot (single EFI disk, no mirror needed)
   boot.loader.systemd-boot.enable = true;
