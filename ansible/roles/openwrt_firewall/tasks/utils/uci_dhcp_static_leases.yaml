@@ -7,11 +7,11 @@
     command: add
     config: dhcp
     type: host
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "{{ item.name }} - Set dhcp static lease configuration"
   uci:
     command: set
     key: dhcp.@host[-1]
     value: "{{ item | combine(firewall_dhcp_static_leases_extras)}}"
-  notify: restart dhcp
+  notify: restart dnsmasq

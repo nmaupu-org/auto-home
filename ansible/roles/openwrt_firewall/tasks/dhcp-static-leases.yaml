@@ -15,7 +15,7 @@
   delay: 0
   retries: 999
   ignore_errors: true
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: Add lease entries
   include_tasks: utils/uci_dhcp_static_leases.yaml

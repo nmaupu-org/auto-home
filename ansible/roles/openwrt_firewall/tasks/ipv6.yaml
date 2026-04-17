@@ -1,0 +1,50 @@
+---
+# Configure static IPv6 default route for LAN prefix.
+# Required because Freebox in bridge mode uses static Next Hop routing instead of DHCPv6 PD.
+# The WAN DHCPv6 default route is source-restricted to the WAN prefix and does not cover LAN clients.
+#
+# This setup works with the Freebox in BRIDGE mode (not router mode). In bridge mode, DHCPv6
+# prefix delegation is not available, but the Freebox provides static prefix routing via Next Hop
+# assignment — which achieves the same result.
+#
+# MANUAL FREEBOX CONFIGURATION (one-time, cannot be automated):
+#   1. Go to mafreebox.freebox.fr > Paramètres de la Freebox > Configuration IPv6
+#   2. Under "Délégation de préfixe", find a "Préfixe secondaire" (e.g. 2a01:e0a:5f:98b1::/64)
+#      — do NOT touch the "Préfixe principal", it is used by the router WAN interface itself.
+#   3. Set its "Next Hop" to the OpenWrt WAN link-local address: fe80::3a94:edff:fe15:7e55
+#      (check current value with: ip -6 addr show eth0.2 | grep fe80)
+#      NOTE: the Freebox requires a link-local address (fe80::), not a global one.
+#   4. The chosen secondary prefix must match firewall_ipv6_lan_prefix in group_vars/openwrt.
+#   5. If the Freebox is replaced/reset, the link-local gateway (firewall_ipv6_gateway) and
+#      the Next Hop entry will need to be reconfigured.
+
+
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Remove existing IPv6 default route if any
+  uci:
+    command: delete
+    key: network.ipv6_default_route
+  ignore_errors: true
+
+- name: Add IPv6 default route section
+  uci:
+    command: set
+    key: network.ipv6_default_route
+    value: route6
+
+- name: Configure IPv6 default route
+  uci:
+    command: set
+    key: network.ipv6_default_route
+    value:
+      interface: wan6
+      target: "::/0"
+      gateway: "{{ firewall_ipv6_gateway }}"
+  notify: restart network
+
+- name: Commit UCI changes
+  uci:
+    command: commit

@@ -6,14 +6,14 @@
     command: add
     config: dhcp
     type: dnsmasq
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "Set dnsmasq instance's configuration"
   uci:
     command: set
     key: dhcp.@dnsmasq[-1]
     value: "{{ outer_item.options }}"
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "Set dnsmasq instance's list configuration"
   uci:
@@ -21,14 +21,14 @@
     key: dhcp.@dnsmasq[-1].address
     value: "{{ item }}"
   loop: "{{ outer_item.addresses }}"
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "Creating dnsmasq custom confdir"
   file:
     state: directory
     mode: 0755
     path: /etc/dnsmasq.d
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "Copying dnsmasq custom boot configuration"
   template:
@@ -41,11 +41,11 @@
     pxe_files:
       efi: efi/ipxe.efi
       bios: bios/pxelinux.0
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "Set dnsmasq external configuration for boot"
   uci:
     command: set
     key: dhcp.@dnsmasq[-1].confdir
     value: /etc/dnsmasq.d
-  notify: restart dhcp
+  notify: restart dnsmasq

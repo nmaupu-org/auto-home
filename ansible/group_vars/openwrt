@@ -1,4 +1,5 @@
 firewall_packages:
+  - odhcpd-ipv6only
   - luci-theme-material
   - vim
   - curl
@@ -32,11 +33,24 @@ firewall_network_interfaces:
   lan:
     ipaddr: 192.168.12.1
     netmask: 255.255.255.0
+    ip6assign: 64
+    ip6prefix: "{{ firewall_ipv6_lan_prefix }}"
   wan:
     proto: dhcp
+  wan6:
+    device: eth0.2
+    proto: dhcpv6
+    reqprefix: 60
   vpn0:
     ifname: tun0
     proto: none
+
+# Link-local address of the Freebox (gateway for static IPv6 default route)
+# In bridge mode, Freebox does not do DHCPv6 PD — static prefix routing via Next Hop is used instead.
+# The secondary prefix (e.g. 2a01:e0a:5f:98b1::/64) must be configured in Freebox admin UI
+# (mafreebox.freebox.fr > Configuration IPv6 > Délégation de préfixe) with this address as Next Hop.
+firewall_ipv6_gateway: "fe80::3627:92ff:fe63:7c94"
+firewall_ipv6_lan_prefix: "2a01:e0a:5f:98b1::/64"
 
 # Wireless key is given using extra-vars parameter to ansible
 #   e.g. AULT_ADDR=not-used ./scripts/apply-ansible.sh home.yml --private-key /root/.ssh/id_rsa.bicnic-travelers --limit openwrt --extra-vars "firewall_wireless_key='my_key'"
@@ -79,6 +93,9 @@ firewall_dhcp:
     ignore: 0
     start: 200
     limit: 250
+    ra: server
+    dhcpv6: server
+    ra_management: 1
 
 firewall_dnsmasq_config:
   options:

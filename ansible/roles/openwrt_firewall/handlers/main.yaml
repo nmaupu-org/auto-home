@@ -15,13 +15,13 @@
     state: reloaded
     enabled: yes
 
-- name: reload dhcp
+- name: reload dnsmasq
   service:
     name: dnsmasq
     state: reloaded
     enabled: yes
 
-- name: restart dhcp
+- name: restart dnsmasq
   service:
     name: dnsmasq
     state: restarted
@@ -58,5 +58,11 @@
 - name: restart adguardhome
   service:
     name: adguardhome
+    state: restarted
+    enabled: yes
+
+- name: restart odhcpd
+  service:
+    name: odhcpd
     state: restarted
     enabled: yes

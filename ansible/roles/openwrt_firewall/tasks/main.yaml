@@ -136,6 +136,13 @@
       tags: ['openvpn_server']
   tags: ['always']
 
+- name: Processing IPv6 configuration
+  include_tasks:
+    file: ipv6.yaml
+    apply:
+      tags: ['firewall_ipv6']
+  tags: ['always']
+
 - name: Processing BGP configuration
   include_tasks:
     file: bgp.yaml

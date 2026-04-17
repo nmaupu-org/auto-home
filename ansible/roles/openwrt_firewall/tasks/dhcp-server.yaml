@@ -10,7 +10,7 @@
   uci:
     command: delete
     key: dhcp.{{ item.key }}
-  notify: restart dhcp
+  notify: restart dnsmasq
   ignore_errors: True
 
 - name: "{{ item.key }} - Adding DHCP server entry"
@@ -18,14 +18,16 @@
     command: set
     key: dhcp.{{ item.key }}
     value: dhcp
-  notify: restart dhcp
+  notify: restart dnsmasq
 
 - name: "{{ item.key }} Configuring DHCP configuration"
   uci:
     command: set
     key: dhcp.{{ item.key }}
     value: "{{ item.value }}"
-  notify: restart dhcp
+  notify:
+    - restart dnsmasq
+    - restart odhcpd
 
 - name: Commit UCI changes
   uci:
