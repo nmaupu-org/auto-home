@@ -48,12 +48,12 @@
     # If the system freezes (D-state hang, deep C-state, any cause), the
     # hardware timer fires independently of the CPU and hard-resets the machine.
     # This works even when NMI watchdog is blind (e.g. Intel C10 state).
-    systemd.watchdog.runtimeTime = "60s";
+    systemd.settings.Manager.RuntimeWatchdogSec = "60s";
     # During shutdown/reboot, systemd-shutdown resets the watchdog to the
     # hardware max (10min for iTCO_wdt). Cap it so a hang in the kernel
     # reboot path (e.g. NIC/iSCSI driver not releasing) triggers a hard reset
     # within 2 minutes instead of waiting the full hardware timeout.
-    systemd.watchdog.rebootTime = "120s";
+    systemd.settings.Manager.RebootWatchdogSec = "120s";
 
     # Reboot automatically after a kernel panic (10s delay)
     boot.kernel.sysctl."kernel.panic"              = 10;
