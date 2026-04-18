@@ -66,3 +66,9 @@
     name: odhcpd
     state: restarted
     enabled: yes
+
+- name: restart openvpn
+  service:
+    name: openvpn
+    state: restarted
+    enabled: yes

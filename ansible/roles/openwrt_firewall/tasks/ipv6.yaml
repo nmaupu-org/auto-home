@@ -43,7 +43,9 @@
       interface: wan6
       target: "::/0"
       gateway: "{{ firewall_ipv6_gateway }}"
-  notify: restart network
+  notify:
+    - restart network
+    - restart openvpn
 
 - name: Commit UCI changes
   uci:

@@ -17,6 +17,7 @@
     value: "{{ item.value }}"
   notify:
     - restart network
+    - restart openvpn
 
 - name: Commit UCI changes
   uci:
