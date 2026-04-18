@@ -78,6 +78,11 @@
       script = ''
         # Skip if telegram-alert is not configured on this host
         [ -x /etc/telegram-alert ] || exit 0
+        # Run only once per boot — /run is tmpfs, cleared on reboot.
+        # nixos-rebuild switch re-triggers oneshot units; this guard prevents
+        # false positives from mid-uptime re-activation.
+        [ -f /run/crash-alert-done ] && exit 0
+        touch /run/crash-alert-done
         # Skip if there is no previous boot in the journal
         ${pkgs.systemd}/bin/journalctl --list-boots --no-pager -q 2>/dev/null \
           | grep -qE '^\s*-1\s' || exit 0
