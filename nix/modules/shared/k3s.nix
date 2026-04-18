@@ -110,6 +110,7 @@ in
       6443   # k3s API server (kubectl + agent join)
       10250  # kubelet metrics
       7946   # MetalLB memberlist (speaker coordination)
+      9100   # Node-exporter daemon set port
     ];
     networking.firewall.allowedUDPPorts = [
       8472   # Flannel VXLAN
