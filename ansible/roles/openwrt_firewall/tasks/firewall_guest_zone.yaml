@@ -1,0 +1,77 @@
+---
+- name: Revert potential pending changes if needed
+  uci:
+    command: revert
+
+- name: Create guest firewall zone
+  uci:
+    command: set
+    key: firewall.guest
+    value: zone
+
+- name: Configure guest firewall zone
+  uci:
+    command: set
+    key: firewall.guest
+    value:
+      name: guest
+      network: guest
+      input: REJECT
+      output: ACCEPT
+      forward: REJECT
+  notify: restart firewall
+
+- name: Create guest->wan forwarding
+  uci:
+    command: set
+    key: firewall.guest_wan
+    value: forwarding
+
+- name: Configure guest->wan forwarding
+  uci:
+    command: set
+    key: firewall.guest_wan
+    value:
+      src: guest
+      dest: wan
+  notify: restart firewall
+
+- name: Create guest DNS rule
+  uci:
+    command: set
+    key: firewall.guest_dns
+    value: rule
+
+- name: Configure guest DNS rule
+  uci:
+    command: set
+    key: firewall.guest_dns
+    value:
+      name: guest-allow-dns
+      src: guest
+      dest_port: "53"
+      proto: tcp udp
+      target: ACCEPT
+  notify: restart firewall
+
+- name: Create guest DHCP rule
+  uci:
+    command: set
+    key: firewall.guest_dhcp
+    value: rule
+
+- name: Configure guest DHCP rule
+  uci:
+    command: set
+    key: firewall.guest_dhcp
+    value:
+      name: guest-allow-dhcp
+      src: guest
+      dest_port: "67"
+      proto: udp
+      target: ACCEPT
+  notify: restart firewall
+
+- name: Commit UCI changes
+  uci:
+    command: commit

@@ -52,6 +52,13 @@
   loop: "{{ firewall_wireless }}"
   tags: ['always']
 
+- name: Processing guest network
+  include_tasks:
+    file: guest_network.yaml
+    apply:
+      tags: ['firewall_guest']
+  tags: ['always', 'firewall_guest']
+
 - name: Processing DHCP configuration
   include_tasks:
     file: dhcp-server.yaml

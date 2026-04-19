@@ -53,7 +53,11 @@ firewall_ipv6_gateway: "fe80::3627:92ff:fe63:7c94"
 firewall_ipv6_lan_prefix: "2a01:e0a:5f:98b1::/64"
 
 # Wireless key is given using extra-vars parameter to ansible
-#   e.g. AULT_ADDR=not-used ./scripts/apply-ansible.sh home.yml --private-key /root/.ssh/id_rsa.bicnic-travelers --limit openwrt --extra-vars "firewall_wireless_key='my_key'"
+#   e.g. AULT_ADDR=not-used ./scripts/apply-ansible.sh home.yml \
+#          --private-key /root/.ssh/id_rsa.bicnic-travelers \
+#          --limit openwrt \
+#          --extra-vars "firewall_wireless_key='my_key'" \
+#          --extra-vars "firewall_wireless_guest_key='my_key'"
 firewall_wireless:
   - device:
       name: radio0
@@ -87,6 +91,58 @@ firewall_wireless:
         mode: ap
         ssid: ml-ng
         encryption: psk2
+firewall_guest_wireless:
+  - device:
+      name: radio0
+      config:
+        disabled: 0
+        channel: auto
+        legacy_rates: 1
+        country: FR
+    iface:
+      name: guest_radio0
+      key_var: firewall_wireless_guest_key
+      config:
+        disabled: 0
+        device: radio0
+        network: guest
+        mode: ap
+        ssid: ml-guest-5g
+        encryption: psk2
+  - device:
+      name: radio1
+      config:
+        disabled: 0
+        channel: auto
+        legacy_rates: 1
+        country: FR
+    iface:
+      name: guest_radio1
+      key_var: firewall_wireless_guest_key
+      config:
+        disabled: 0
+        device: radio1
+        network: guest
+        mode: ap
+        ssid: ml-guest
+        encryption: psk2
+
+firewall_guest_network:
+  proto: static
+  ipaddr: 192.168.50.1
+  netmask: 255.255.255.0
+  device: br-guest
+
+firewall_guest_dhcp:
+  interface: guest
+  ignore: 0
+  start: 100
+  limit: 150
+  leasetime: 6h
+  force: 1
+  dhcp_option:
+    - "3,192.168.50.1"
+    - "6,192.168.50.1"
 
 firewall_dhcp:
   lan:
@@ -241,6 +297,7 @@ firewall_adguardhome:
   bind_hosts:
     - 192.168.12.1
     - 192.168.8.1
+    - 192.168.50.1
   dnsmasq_port: 5454
   rate_limit: 0
   upstream_dns:

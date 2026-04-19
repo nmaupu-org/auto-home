@@ -1,0 +1,53 @@
+---
+- name: Create guest bridge device
+  uci:
+    command: set
+    key: network.br_guest
+    value: device
+  notify: restart network
+  tags: ['firewall_guest']
+
+- name: Configure guest bridge device
+  uci:
+    command: set
+    key: network.br_guest
+    value:
+      type: bridge
+      name: br-guest
+  notify: restart network
+  tags: ['firewall_guest']
+
+- name: Commit guest bridge device
+  uci:
+    command: commit
+  tags: ['firewall_guest']
+
+- name: Configure guest network interface
+  include_tasks:
+    file: network_interfaces.yaml
+    apply:
+      tags: ['firewall_guest']
+  loop:
+    - key: guest
+      value: "{{ firewall_guest_network }}"
+
+- name: Configure guest wireless VAPs
+  include_tasks:
+    file: wireless.yaml
+    apply:
+      tags: ['firewall_guest']
+  loop: "{{ firewall_guest_wireless }}"
+
+- name: Configure guest DHCP
+  include_tasks:
+    file: dhcp-server.yaml
+    apply:
+      tags: ['firewall_guest']
+  with_dict:
+    guest: "{{ firewall_guest_dhcp }}"
+
+- name: Configure guest firewall zone
+  include_tasks:
+    file: firewall_guest_zone.yaml
+    apply:
+      tags: ['firewall_guest']

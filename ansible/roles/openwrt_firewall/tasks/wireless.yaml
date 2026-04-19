@@ -25,7 +25,7 @@
   uci:
     command: set
     key: wireless.{{ item.iface.name }}
-    value: "{{ item.iface.config | combine({'key': lookup('vars', 'firewall_wireless_key')}) }}"
+    value: "{{ item.iface.config | combine({'key': lookup('vars', item.iface.key_var | default('firewall_wireless_key'))}) }}"
   notify: reload wifi
 
 - name: Commit UCI changes

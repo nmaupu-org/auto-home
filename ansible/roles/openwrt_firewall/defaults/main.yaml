@@ -6,6 +6,7 @@ firewall_network_interfaces:
     ipaddr: 192.168.1.1
 
 firewall_wireless_key: 0123456789
+firewall_wireless_guest_key: 9876543210
 firewall_wireless:
   - device:
       name: radio0
