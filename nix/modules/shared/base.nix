@@ -69,6 +69,7 @@
       description = "Notify Telegram if previous boot ended unexpectedly";
       after    = [ "network-online.target" "sops-nix.service" ];
       wants    = [ "network-online.target" ];
+      requires = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type            = "oneshot";
@@ -89,7 +90,11 @@
         # A clean shutdown always logs "Reached target System Shutdown"
         if ! ${pkgs.systemd}/bin/journalctl -b -1 --no-pager -q 2>/dev/null \
             | grep -q "Reached target.*Shutdown"; then
-          /etc/telegram-alert "⚠️ ${config.networking.hostName} rebooted after an unclean shutdown (crash or power loss)"
+          # Retry up to 5 times in case network is slow to become usable
+          for i in 1 2 3 4 5; do
+            /etc/telegram-alert "⚠️ ${config.networking.hostName} rebooted after an unclean shutdown (crash or power loss)" && break
+            sleep 10
+          done
         fi
       '';
     };
