@@ -35,13 +35,10 @@ rbac:
 
 podOptions:
   automountServiceAccountToken: true
-  hostNetwork: true
 
 workload:
   main:
     podSpec:
-      nodeSelector:
-        role: iot
       containers:
         conf-reloader:
           enabled: true
@@ -175,11 +172,6 @@ securityContext:
     runAsNonRoot: false
     runAsUser: 0
     runAsGroup: 0
-    privileged: true
-    capabilities:
-      add:
-        - CAP_NET_RAW
-        - CAP_NET_BIND_SERVICE
 
 cnpg:
   main:
@@ -188,7 +180,6 @@ cnpg:
     database: home-assistant
     cluster:
       instances: 1
-      singleNode: true
       storage:
         size: 25Gi
         storageClass: longhorn
@@ -242,9 +233,6 @@ persistence:
       - key: hass-passwords.json
         path: hass-passwords.json
 
-# Since setting hostNetwork: true, we are not using service as load balancer (metallb) anymore
-# but this remains here as reference.
-# hostNetwork has been mandatory to make udp multicast shit work for emulated_roku and emulated_hue...
 service:
   main:
     enabled: true
@@ -252,14 +240,14 @@ service:
       main:
         port: 8123
         targetPort: 8123
-  # emulated-roku:
-  #   enabled: true
-  #   ports:
-  #     emulated-roku:
-  #       enabled: true
-  #       port: 8060
-  #       protocol: tcp
-  #       targetPort: 8060
+  emulated-roku:
+    enabled: true
+    ports:
+      emulated-roku:
+        enabled: true
+        port: 8060
+        protocol: tcp
+        targetPort: 8060
   # emulated-hue:
   #   enabled: true
   #   ports:
