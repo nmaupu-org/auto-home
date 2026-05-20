@@ -4,6 +4,7 @@ keys:
   - &iot age13g6z2pd7dsywgfw80356veqsrufzhrs8urzwklza5gptkcw8t9ss32y3zt
   - &bastion age1w3enru4wu5q4m2nuuy05q7kmr498mtgz560m7q7tgfq6t2dqrfnqun2p2t
   - &worker1 age12y4ze3utd2ssukjyu9gls94edvhmseyad6v2mlwn0zyzxj7hgqhqrkmzth
+  - &worker2 age164rj6k40qp5q6kedz0tcethag0g4j08nf45vurf7g4nl2qp8z4vqmtzh4u
   - &nmaupu-laptop age170gy8t4y7rx5cwmfyeht4n7zemgq5yqdd8062gaevmyp9yd9e9qqnut4kw
 
 creation_rules:
@@ -25,6 +26,12 @@ creation_rules:
       - age:
           - *recovery
           - *worker1
+          - *nmaupu-laptop
+  - path_regex: secrets/worker2\.yaml$
+    key_groups:
+      - age:
+          - *recovery
+          - *worker2
           - *nmaupu-laptop
   - path_regex: secrets/bastion\.yaml$
     key_groups:
