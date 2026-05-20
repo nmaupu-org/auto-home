@@ -21,7 +21,7 @@ statefulset:
     name: zigbee2mqtt
   volumeMounts:
     - name: usb-device
-      mountPath: /dev/usb
+      mountPath: /dev/zigbee
     - name: devices
       mountPath: /app/data/cm-devices.yaml
       subPath: devices.yaml
@@ -47,7 +47,7 @@ zigbee2mqtt:
     password: "!secret.yaml password"
   serial:
     adapter: zstack
-    port: "/dev/usb"
+    port: "/dev/zigbee"
     disable_led: false
   frontend:
     port: 8080
