@@ -164,6 +164,8 @@ firewall_dnsmasq_config:
     - /iot.home.fossar.net/192.168.99.1
     - /knas.home.fossar.net/192.168.99.1
     - /worker1.home.fossar.net/192.168.99.1
+    - /worker2.home.fossar.net/192.168.99.1
+    - /worker3.home.fossar.net/192.168.99.1
 
 firewall_dhcp_static_leases:
   - name: asrock
@@ -202,12 +204,15 @@ firewall_dhcp_static_leases:
   - name: nmaupu-laptop
     mac: e4:1f:d5:8b:ce:82
     ip: 192.168.12.39
-  - name: iot
-    mac: 68:1D:EF:33:F8:33
-    ip: 192.168.12.40
   - name: worker1
     mac: 68:1D:EF:5D:4C:20
     ip: 192.168.12.41
+  - name: worker2
+    mac: 68:1D:EF:5D:46:5A
+    ip: 192.168.12.40
+  - name: worker3
+    mac: 68:1D:EF:33:F8:33
+    ip: 192.168.12.42
 
 firewall_dns_entries:
   192.168.12.1:
@@ -220,6 +225,11 @@ firewall_dns_entries:
     - bastion
   192.168.12.40:
     - iot
+    - worker2
+  192.168.12.41:
+    - worker1
+  192.168.12.42:
+    - worker3
   192.168.100.35:
     - mqtt
   192.168.99.1:

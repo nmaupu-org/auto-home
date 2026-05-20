@@ -12,6 +12,9 @@
     ../../modules/shared/ssh.nix
     ../../modules/shared/tailscale.nix
     ../../modules/worker2/monitoring.nix
+    # iot replacement: USB Zigbee udev rules + extra firewall ports (HA / Roku / Matter)
+    ../../modules/iot/udev.nix
+    ../../modules/iot/firewall-extras.nix
   ];
 
   users-shared.sopsFile = ../../secrets/worker2.yaml;
@@ -76,14 +79,13 @@
 
   services.telegram-alert.sopsFile = ../../secrets/worker2.yaml;
 
-  # k3s — floating agent node, no taint (general workloads land here by default).
-  # Becomes the iot-pinned node once USB adapters are migrated and iot is removed.
+  # k3s — iot replacement: same labels as iot, USB devices + iot workloads pinned here.
+  # No taint (matches iot's previous behavior — other workloads can still float here).
   services.k3s-node = {
     role      = "agent";
     serverUrl = "https://${constants.hosts.nasIp}:6443";
     tokenFile = config.sops.secrets.k3s_cluster_token.path;
-    nodeLabels = [ "role=worker" ];
-    # no nodeTaints — this node accepts any workload
+    nodeLabels = [ "role=iot" ];
   };
 
   sops.secrets.k3s_cluster_token = {

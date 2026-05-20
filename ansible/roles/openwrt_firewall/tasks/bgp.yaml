@@ -15,8 +15,12 @@
     router bgp 65000
     neighbor 192.168.12.8 remote-as 65001
     neighbor 192.168.12.8 description home-nas
-    neighbor 192.168.12.40 remote-as 66001
-    neighbor 192.168.12.40 description iot
+    neighbor 192.168.12.40 remote-as 65001
+    neighbor 192.168.12.40 description worker2
+    neighbor 192.168.12.41 remote-as 65001
+    neighbor 192.168.12.41 description worker1
+    neighbor 192.168.12.42 remote-as 65001
+    neighbor 192.168.12.42 description worker3
     exit
     exit
     copy running-config startup-config
