@@ -284,6 +284,20 @@ data:
               "legendFormat": "{{friendly_name}}",
               "range": true,
               "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"outside_hum_temp Temperature\"}",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "C"
             }
           ],
           "title": "Temperatures",
@@ -624,6 +638,19 @@ data:
               "legendFormat": "{{friendly_name}}",
               "range": true,
               "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.outside_hum_temp_humidity\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "D"
             }
           ],
           "title": "Humidity",
