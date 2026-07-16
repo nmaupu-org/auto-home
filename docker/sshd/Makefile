@@ -2,14 +2,14 @@ default: push
 .PHONY: default clean build tag tag-latest check-docker-hub
 
 NAME=sshd
-VERSION=1.0.2
-# Copy the last qonta binary to local directory before building
-QONTA_BIN_PATH ?= ./qonta
+VERSION=1.0.3
+# Copy the last binary to local directory before building
+PENNYVAT_BIN_PATH ?= ./pennyvat
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)
 
 build: check-docker-hub
 	docker build \
-		--build-arg QONTA_BIN_PATH=$(QONTA_BIN_PATH) \
+		--build-arg PENNYVAT_BIN_PATH=$(PENNYVAT_BIN_PATH) \
 		-t $(NAME):$(VERSION) .
 	$(MAKE) clean
 
