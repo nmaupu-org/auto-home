@@ -2,7 +2,7 @@ default: push
 .PHONY: default clean build tag tag-latest check-docker-hub
 
 NAME=sshd
-VERSION=1.0.3
+VERSION=1.0.4
 # Copy the last binary to local directory before building
 PENNYVAT_BIN_PATH ?= ./pennyvat
 REMOTE_NAME=$(DOCKER_ID_USER)/$(NAME)

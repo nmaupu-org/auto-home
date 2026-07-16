@@ -7,5 +7,5 @@ RUN apk add curl jq
 
 ## Tools
 
-COPY ${PENNYVAT_BIN_PATH} /bin/qonta
-RUN  chmod +x /bin/qonta
+COPY ${PENNYVAT_BIN_PATH} /bin/pennyvat
+RUN  chmod +x /bin/pennyvat
