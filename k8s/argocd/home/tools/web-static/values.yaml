@@ -189,7 +189,7 @@ ingress:
   main:
     enabled: true
     hosts:
-     - host: web-static.apps.home.fossar.net
+      - host: web-static.apps.home.fossar.net
         paths:
           - path: /
             pathType: Prefix 
