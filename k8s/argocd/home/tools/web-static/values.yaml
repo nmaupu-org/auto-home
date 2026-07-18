@@ -189,6 +189,10 @@ ingress:
   main:
     enabled: true
     hosts:
+     - host: web-static.apps.home.fossar.net
+        paths:
+          - path: /
+            pathType: Prefix 
       - host: web-static.knas.home.fossar.net
         paths:
           - path: /
