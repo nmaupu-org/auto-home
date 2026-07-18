@@ -241,6 +241,12 @@ firewall_dns_entries:
     - vault
     - web-static
 
+firewall_ipsets:
+  - name: web-static-authorized
+    family: ipv4
+    match: src_ip
+    entry: "'86.195.74.241/32'"
+
 firewall_ports:
   - target: DNAT
     enabled: 0
@@ -274,8 +280,8 @@ firewall_ports:
     src: wan
     dest: lan
     proto: tcp
-    src_dport: 62820
-    dest_port: 62820
+    src_dport: 62820-62999
+    dest_port: 62820-62999
     dest_ip: 192.168.99.2
     name: torrent
   - target: DNAT
@@ -296,6 +302,16 @@ firewall_ports:
     dest_port: 61455-61458
     dest_ip: 192.168.12.38
     name: Rockstar Social Club 2
+  - target: DNAT
+    enabled: 1
+    src: wan
+    dest: lan
+    proto: udp
+    src_dport: 443
+    dest_port: 443
+    dest_ip: 192.168.99.1
+    ipset: web-static-authorized
+    name: web-static
 
 firewall_prometheus:
   listen_address: 192.168.12.1

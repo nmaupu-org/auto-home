@@ -1,0 +1,13 @@
+- name: "{{ item.name }} - Add ipset rule"
+  uci:
+    command: add
+    config: firewall
+    type: ipset
+  notify: restart firewall
+
+- name: "{{ item.name }} - Set ipset configuration"
+  uci:
+    command: set
+    key: firewall.@ipset[-1]
+    value: "{{ item }}"
+  notify: restart firewall

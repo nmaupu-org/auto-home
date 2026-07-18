@@ -84,10 +84,16 @@ firewall_dns_entries: {}
 #    - name2
 #    - name3
 
+firewall_ipsets: {}
+# firewall_ipsets:
+#   - name: test
+#     family: ipv4
+#     match: src_ip
+#     entry: "'10.10.10.10/32' '9.9.9.9/32'"
+
 firewall_ports: {}
 #firewall_ports:
-#  test:
-#    target: DNAT
+#  - target: DNAT
 #    src: wan
 #    dest: lan
 #    proto: tcp

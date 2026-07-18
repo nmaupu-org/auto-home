@@ -5,6 +5,21 @@
   uci:
     command: revert
 
+- name: Deleting all ipset rules
+  uci:
+    command: delete
+    key: firewall.@ipset[0]
+  register: result
+  until: result.failed | bool
+  delay: 0
+  retries: 999
+  ignore_errors: true
+  notify: restart firewall
+
+- name: Add firewall ipset
+  include_tasks: utils/uci_ipset.yaml
+  loop: "{{ firewall_ipsets }}"
+
 - name: Deleting all redirect rules
   uci:
     command: delete
