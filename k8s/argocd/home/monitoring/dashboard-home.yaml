@@ -226,6 +226,30 @@ data:
                     "value": 0.2
                   }
                 ]
+              },
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "estrade AM2301 Temperature"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -298,6 +322,19 @@ data:
               "legendFormat": "{{friendly_name}}",
               "range": true,
               "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"estrade AM2301 Temperature\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "D"
             }
           ],
           "title": "Temperatures",
@@ -572,6 +609,30 @@ data:
                     "value": 5
                   }
                 ]
+              },
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "estrade"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -651,6 +712,19 @@ data:
               "legendFormat": "{{friendly_name}}",
               "range": true,
               "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.estrade_am2301_humidity\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "E"
             }
           ],
           "title": "Humidity",
@@ -905,6 +979,6 @@ data:
       "timezone": "",
       "title": "Home dash",
       "uid": "a841240e-0d62-4aec-a8c3-52223e72f7fa",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }
