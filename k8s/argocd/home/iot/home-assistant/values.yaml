@@ -85,8 +85,8 @@ workload:
                 # handling recorder configuration (db)
                 cat << EOF > "$config_dir/recorder.yaml"
               purge_keep_days: 60
-              commit_interval: 3
-              db_url: {{ (printf "%s?client_encoding=utf8" (.Values.cnpg.main.creds.std | trimAll "\"")) | quote }}
+              commit_interval: 30
+              db_url: "sqlite:////recorder/home-assistant_v2.db"
               EOF
 
                 # MQTT must be configured in the UI now...
@@ -173,21 +173,23 @@ securityContext:
     runAsUser: 0
     runAsGroup: 0
 
+# Postgres removed: recorder now uses ephemeral SQLite on an emptyDir volume
+# (see persistence.recorder + recorder.yaml db_url above). Metrics are wiped
+# on pod restart/reschedule by design.
 cnpg:
   main:
-    enabled: true
-    user: home-assistant
-    database: home-assistant
-    cluster:
-      instances: 1
-      storage:
-        size: 25Gi
-        storageClass: longhorn
-      walStorage:
-        size: 25Gi
-        storageClass: longhorn
+    enabled: false
 
 persistence:
+  recorder:
+    # Ephemeral SQLite recorder DB. Wiped when the pod restarts/reschedules.
+    # sizeLimit caps growth so a runaway DB fails writes instead of filling
+    # the node's ephemeral disk (which would evict the pod).
+    enabled: true
+    type: emptyDir
+    mountPath: /recorder
+    sizeLimit: 4Gi
+    targetSelectAll: true
   init:
     enabled: true
     type: configmap

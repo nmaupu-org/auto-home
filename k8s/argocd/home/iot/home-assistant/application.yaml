@@ -26,11 +26,6 @@ spec:
       kind: Deployment
       jqPathExpressions:
         - .spec.template.spec.hostUsers
-    - group: postgresql.cnpg.io
-      kind: Cluster
-      name: home-assistant-cnpg-main
-      jsonPointers:
-        - /spec/resources/limits/cpu
     - group: batch
       kind: CronJob
       name: home-assistant-conf-reloader
