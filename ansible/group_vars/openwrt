@@ -245,7 +245,7 @@ firewall_ipsets:
   - name: web-static-authorized
     family: ipv4
     match: src_ip
-    entry: "'86.195.74.241/32'"
+    entry: "'10.10.10.10/32'"
 
 firewall_ports:
   - target: DNAT

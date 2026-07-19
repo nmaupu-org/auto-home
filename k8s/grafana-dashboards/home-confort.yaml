@@ -12,7 +12,10 @@ data:
         "list": [
           {
             "builtIn": 1,
-            "datasource": "Prometheus",
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
             "enable": true,
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
@@ -22,521 +25,960 @@ data:
         ]
       },
       "editable": true,
-      "gnetId": null,
+      "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "iteration": 1581704476891,
       "links": [],
+      "liveNow": false,
       "panels": [
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorPostfix": false,
-          "colorPrefix": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
-          "datasource": null,
-          "decimals": null,
-          "description": "",
-          "format": "dateTimeAsIso",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "dark-red",
+                    "value": null
+                  },
+                  {
+                    "color": "light-red",
+                    "value": 15
+                  },
+                  {
+                    "color": "orange",
+                    "value": 30
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 50
+                  },
+                  {
+                    "color": "green",
+                    "value": 70
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
           },
           "gridPos": {
-            "h": 2,
+            "h": 4,
             "w": 24,
             "x": 0,
             "y": 0
           },
-          "id": 9,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
+          "id": 6,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
             },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "options": {},
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false,
-            "ymax": null,
-            "ymin": null
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "tableColumn": "",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
-              "expr": "timestamp(temperature{job=\"$location\",metric=\"SENSOR\"}) * 1000",
-              "format": "time_series",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sort(hass_sensor_battery_percent{friendly_name=~\"^ATC_.*\"})",
               "instant": true,
-              "legendFormat": "last update",
+              "legendFormat": "{{ friendly_name }}",
+              "range": false,
               "refId": "A"
             }
           ],
-          "thresholds": "",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Last update",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
+          "title": "Batteries",
+          "transformations": [
             {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Battery",
+                "renamePattern": "$1"
+              }
             }
           ],
-          "valueName": "current"
+          "type": "gauge"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "Prometheus",
-          "gridPos": {
-            "h": 6,
-            "w": 8,
-            "x": 0,
-            "y": 2
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
           },
-          "id": 5,
-          "links": [],
-          "options": {
-            "fieldOptions": {
-              "calcs": [
-                "last"
-              ],
-              "defaults": {
-                "decimals": 1,
-                "mappings": [
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic",
+                "seriesBy": "min"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 30,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 3,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
                   {
-                    "id": 0,
-                    "op": "=",
-                    "text": "N/A",
-                    "type": 1,
-                    "value": "null"
-                  }
-                ],
-                "max": 45,
-                "min": 0,
-                "nullValueMode": "connected",
-                "thresholds": [
-                  {
-                    "color": "light-blue",
+                    "color": "green",
                     "value": null
                   },
                   {
-                    "color": "green",
+                    "color": "blue",
                     "value": 18
                   },
                   {
                     "color": "yellow",
+                    "value": 20
+                  },
+                  {
+                    "color": "light-orange",
+                    "value": 21
+                  },
+                  {
+                    "color": "dark-orange",
                     "value": 22
                   },
                   {
-                    "color": "orange",
-                    "value": 25
+                    "color": "red",
+                    "value": 23
+                  }
+                ]
+              },
+              "unit": "celsius"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byFrameRefID",
+                  "options": "B"
+                },
+                "properties": [
+                  {
+                    "id": "custom.axisPlacement",
+                    "value": "right"
                   },
                   {
-                    "color": "semi-dark-red",
-                    "value": 28
+                    "id": "unit",
+                    "value": "bool_on_off"
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 6
+                  },
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0.2
                   }
-                ],
-                "unit": "celsius"
+                ]
               },
-              "override": {},
-              "values": false
-            },
-            "orientation": "horizontal",
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "estrade AM2301 Temperature"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "pluginVersion": "6.4.4",
+          "gridPos": {
+            "h": 13,
+            "w": 19,
+            "x": 0,
+            "y": 4
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "sortBy": "Last",
+              "sortDesc": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
           "targets": [
             {
-              "expr": "avg(temperature{job=\"$location\",metric=\"SENSOR\"})",
-              "instant": true,
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "hass_sensor_temperature_celsius{friendly_name=~\"^ATC.* temp$\"}",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "hass_switch_state{friendly_name=~\".* heater.?$\"}",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "0",
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"outside_hum_temp Temperature\"}",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_temperature_celsius{friendly_name=\"estrade AM2301 Temperature\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "D"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Current Temperature",
-          "type": "gauge"
+          "title": "Temperatures",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Temperature",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "Prometheus",
-          "gridPos": {
-            "h": 6,
-            "w": 8,
-            "x": 8,
-            "y": 2
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
           },
-          "id": 4,
-          "links": [],
-          "options": {
-            "fieldOptions": {
-              "calcs": [
-                "last"
-              ],
-              "defaults": {
-                "decimals": 1,
-                "mappings": [
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-BlYlRd"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
                   {
-                    "id": 0,
-                    "op": "=",
-                    "text": "N/A",
-                    "type": 1,
-                    "value": "null"
-                  }
-                ],
-                "max": 100,
-                "min": 0,
-                "nullValueMode": "connected",
-                "thresholds": [
-                  {
-                    "color": "orange",
+                    "color": "green",
                     "value": null
                   },
                   {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "celsius"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 5,
+            "x": 19,
+            "y": 4
+          },
+          "id": 3,
+          "options": {
+            "displayMode": "lcd",
+            "maxVizHeight": 300,
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "hass_sensor_temperature_celsius{friendly_name=~\"^ATC_.*temp$\"}",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Temperatures",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Temperature",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "scaleDistribution": {
+                  "type": "linear"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 5,
+            "x": 19,
+            "y": 9
+          },
+          "id": 5,
+          "options": {
+            "calculate": false,
+            "cellGap": 1,
+            "color": {
+              "exponent": 0.5,
+              "fill": "dark-orange",
+              "mode": "scheme",
+              "reverse": true,
+              "scale": "exponential",
+              "scheme": "Oranges",
+              "steps": 64
+            },
+            "exemplars": {
+              "color": "rgba(255,0,255,0.7)"
+            },
+            "filterValues": {
+              "le": 1e-9
+            },
+            "legend": {
+              "show": true
+            },
+            "rowsFrame": {
+              "layout": "unknown"
+            },
+            "tooltip": {
+              "mode": "single",
+              "showColorScale": false,
+              "yHistogram": false
+            },
+            "yAxis": {
+              "axisPlacement": "left",
+              "reverse": false
+            }
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "hass_sensor_temperature_celsius{friendly_name=~\"^ATC_.*temp$\"}",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Temperatures",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Temperature",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "heatmap"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic",
+                "seriesBy": "last"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "axisSoftMax": 100,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 3,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "dashed"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
                     "color": "green",
-                    "value": 40
+                    "value": null
                   },
                   {
                     "color": "red",
-                    "value": 60
+                    "value": 75
                   }
-                ],
-                "unit": "percent"
+                ]
               },
-              "override": {},
-              "values": false
+              "unit": "percent"
             },
-            "orientation": "horizontal",
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-          },
-          "pluginVersion": "6.4.4",
-          "targets": [
-            {
-              "expr": "avg(humidity{job=\"$location\",metric=\"SENSOR\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Current Humidity",
-          "type": "gauge"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorPostfix": false,
-          "colorPrefix": false,
-          "colorValue": true,
-          "colors": [
-            "#d44a3a",
-            "rgba(237, 129, 40, 0.89)",
-            "#299c46"
-          ],
-          "datasource": null,
-          "decimals": 0,
-          "description": "Battery status if available for this device",
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byFrameRefID",
+                  "options": "C"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bool_on_off"
+                  },
+                  {
+                    "id": "custom.axisPlacement",
+                    "value": "right"
+                  },
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0.2
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "estrade"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
-            "h": 6,
-            "w": 8,
-            "x": 16,
-            "y": 2
-          },
-          "id": 7,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "options": {},
-          "pluginVersion": "6.4.4",
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": true,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": true,
-            "ymax": 100,
-            "ymin": 0
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "min(battery{job=\"$location\",metric=\"SENSOR\"})",
-              "refId": "A"
-            }
-          ],
-          "thresholds": "25,50",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Battery Status",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "aliasColors": {
-            "Heat Index": "red",
-            "Humidity": "orange",
-            "Temperature": "purple"
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Prometheus",
-          "decimals": 1,
-          "fill": 0,
-          "fillGradient": 3,
-          "gridPos": {
-            "h": 8,
-            "w": 24,
+            "h": 10,
+            "w": 19,
             "x": 0,
-            "y": 8
+            "y": 17
           },
           "id": 2,
-          "interval": "",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "sideWidth": null,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "connected",
           "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Humidity",
-              "fill": 1,
-              "linewidth": 2,
-              "yaxis": 2
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "last"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "sortBy": "Last",
+              "sortDesc": true
             },
-            {
-              "alias": "Temperature",
-              "dashes": true
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
             }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          },
           "targets": [
             {
-              "expr": "sum(temperature{job=\"$location\",metric=\"SENSOR\"})",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "hass_sensor_humidity_percent{friendly_name=~\"^ATC_.*\"}",
+              "format": "time_series",
               "instant": false,
-              "intervalFactor": 1,
-              "legendFormat": "Temperature",
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
               "refId": "A"
             },
             {
-              "expr": "sum(humidity{job=\"$location\",metric=\"SENSOR\"})",
-              "legendFormat": "Humidity",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.dehum_bedroom_am2301_humidity\"}",
+              "hide": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_switch_state{entity=\"switch.estrade_relay\"}",
+              "hide": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.outside_hum_temp_humidity\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.estrade_am2301_humidity\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{friendly_name}}",
+              "range": true,
+              "refId": "E"
+            }
+          ],
+          "title": "Humidity",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Humidity",
+                "renamePattern": "$1"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) AM2301.*",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "scaleDistribution": {
+                  "type": "linear"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 5,
+            "x": 19,
+            "y": 17
+          },
+          "id": 4,
+          "options": {
+            "calculate": false,
+            "cellGap": 1,
+            "cellValues": {
+              "unit": "percent"
+            },
+            "color": {
+              "exponent": 0.5,
+              "fill": "blue",
+              "mode": "scheme",
+              "reverse": true,
+              "scale": "exponential",
+              "scheme": "RdBu",
+              "steps": 64
+            },
+            "exemplars": {
+              "color": "#ff00ffb3"
+            },
+            "filterValues": {
+              "le": 1e-9
+            },
+            "legend": {
+              "show": true
+            },
+            "rowsFrame": {
+              "layout": "auto"
+            },
+            "tooltip": {
+              "mode": "single",
+              "showColorScale": false,
+              "yHistogram": false
+            },
+            "yAxis": {
+              "axisPlacement": "right",
+              "reverse": true
+            }
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "hass_sensor_humidity_percent{friendly_name=~\"^ATC.*\"}",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_humidity_percent{entity=\"sensor.estrade_am2301_humidity\"}",
+              "hide": false,
+              "legendFormat": "Estrade hum",
+              "range": true,
               "refId": "B"
             }
           ],
-          "thresholds": [
+          "title": "Humidity",
+          "transformations": [
             {
-              "colorMode": "ok",
-              "fill": true,
-              "line": false,
-              "op": "gt",
-              "value": 40,
-              "yaxis": "right"
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Humidity",
+                "renamePattern": "$1"
+              }
             },
             {
-              "colorMode": "ok",
-              "fill": true,
-              "line": false,
-              "op": "lt",
-              "value": 60,
-              "yaxis": "right"
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) AM2301.*",
+                "renamePattern": "$1"
+              }
             }
           ],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Temperature / Humidity",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
+          "type": "heatmap"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
           },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "celsius",
-              "label": "Temperature",
-              "logBase": 1,
-              "max": "40",
-              "min": "0",
-              "show": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-RdYlGr"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 100,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 30
+                  }
+                ]
+              }
             },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 27
+          },
+          "id": 7,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
             {
-              "decimals": 0,
-              "format": "percent",
-              "label": "Humidity",
-              "logBase": 1,
-              "max": "100",
-              "min": "0",
-              "show": true
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "hass_sensor_battery_percent{friendly_name=~\"^ATC_.*\"}",
+              "instant": false,
+              "legendFormat": "{{ friendly_name }}",
+              "range": true,
+              "refId": "A"
             }
           ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "title": "Discharge",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*)_hum_temp Battery",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
         }
       ],
-      "refresh": "30s",
-      "schemaVersion": 20,
-      "style": "dark",
-      "tags": [
-        "IoT"
-      ],
+      "refresh": "5s",
+      "schemaVersion": 39,
+      "tags": [],
       "templating": {
-        "list": [
-          {
-            "allValue": null,
-            "current": {
-              "tags": [],
-              "text": "kitchen_hum_temp",
-              "value": "kitchen_hum_temp"
-            },
-            "datasource": "Prometheus",
-            "definition": "label_values(temperature, job)",
-            "hide": 0,
-            "includeAll": false,
-            "label": "location",
-            "multi": false,
-            "name": "location",
-            "options": [],
-            "query": "label_values(temperature, job)",
-            "refresh": 1,
-            "regex": "",
-            "skipUrlSync": false,
-            "sort": 1,
-            "tagValuesQuery": "",
-            "tags": [],
-            "tagsQuery": "",
-            "type": "query",
-            "useTags": false
-          }
-        ]
+        "list": []
       },
       "time": {
         "from": "now-24h",
         "to": "now"
       },
-      "timepicker": {
-        "refresh_intervals": [
-          "5s",
-          "10s",
-          "30s",
-          "1m",
-          "5m",
-          "15m",
-          "30m",
-          "1h",
-          "2h",
-          "1d"
-        ]
-      },
+      "timepicker": {},
       "timezone": "",
-      "title": "Home confort",
-      "uid": "J45F0oxZz",
-      "version": 5
+      "title": "Home dash",
+      "uid": "a841240e-0d62-4aec-a8c3-52223e72f7fa",
+      "version": 2,
+      "weekStart": ""
     }
