@@ -141,8 +141,9 @@ firewall_adguardhome:
   enabled: no
   http_address: 192.168.1.1:3001
   admin_password_hash: ""
+  # Prefer 0.0.0.0: per-interface IPs must exist when the service starts at boot
   bind_hosts:
-    - 192.168.1.1
+    - 0.0.0.0
   dnsmasq_port: 5454
   rate_limit: 0
   upstream_dns:

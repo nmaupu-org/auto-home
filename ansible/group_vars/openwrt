@@ -320,10 +320,13 @@ firewall_adguardhome:
   enabled: yes
   http_address: 192.168.12.1:3001
   admin_password_hash: "$2a$10$hS1KswVzkkSMdQQ5mLKUtOmvgqRsL9OSxls/oJfvmZTs.x.AQw.0i"
+  # Bind the wildcard address rather than per-interface IPs: at boot AdGuardHome is
+  # (re)started 5s after the first interface comes up, and binding an IP that does
+  # not exist yet (192.168.8.1 on tun0 from openvpn, 192.168.50.1 on br-guest) is a
+  # fatal error with no respawn -> no DNS after a reboot. A wildcard socket also
+  # serves addresses added later. WAN/guest zones reject input on :53 anyway.
   bind_hosts:
-    - 192.168.12.1
-    - 192.168.8.1
-    - 192.168.50.1
+    - 0.0.0.0
   dnsmasq_port: 5454
   rate_limit: 0
   upstream_dns:
