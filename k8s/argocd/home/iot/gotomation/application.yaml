@@ -30,16 +30,6 @@ spec:
                 pvc:
                   storageClassName: nfs-client
                   size: 10Mi
-            affinity:
-              nodeAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  preference:
-                    matchExpressions:
-                    - key: role
-                      operator: In
-                      values:
-                      - worker
             existingSecretEnvVars: gotomation-extra-flags
 
   syncPolicy:
