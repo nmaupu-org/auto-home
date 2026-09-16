@@ -34,7 +34,7 @@ dns:
     - {{ bs }}
 {% endfor %}
   fallback_dns: []
-  upstream_mode: load_balance
+  upstream_mode: {{ firewall_adguardhome.upstream_mode }}
   fastest_timeout: 1s
   allowed_clients: []
   disallowed_clients: []
@@ -113,7 +113,6 @@ user_rules:
 {% for rule in firewall_adguardhome.user_rules %}
   - {{ rule | to_json }}
 {% endfor %}
-  - ""
 dhcp:
   enabled: false
   interface_name: ""
@@ -170,7 +169,7 @@ clients:
     hosts: true
   persistent: []
 log:
-  file: ""
+  file: {{ firewall_adguardhome.log_file | to_json }}
   max_backups: 0
   max_size: 100
   max_age: 3

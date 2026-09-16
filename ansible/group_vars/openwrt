@@ -329,6 +329,8 @@ firewall_adguardhome:
     - 0.0.0.0
   dnsmasq_port: 5454
   rate_limit: 0
+  upstream_mode: fastest_addr
+  log_file: /tmp/adg.log
   upstream_dns:
     - https://dns10.quad9.net:443/dns-query
     - '[/home.fossar.net/]127.0.0.1:5454'
@@ -339,8 +341,11 @@ firewall_adguardhome:
     - 2620:fe::10
     - 2620:fe::fe:10
   user_rules:
-    - "@@||app.amplitude.com^$client='192.168.12.39'"
+    - "@@||amplitude.com^$client='192.168.12.39'"
     - "||m.media-amazon.com^$client='192.168.12.221'"
+    - "@@||*.github.com^$important"
+    - "@@||*.githubassets.com^$important"
+    - "@@||*.githubusercontent.com^$important"
 
 firewall_nfs_mount:
   name: openwrt
