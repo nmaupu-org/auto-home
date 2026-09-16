@@ -29,6 +29,7 @@ statefulset:
     - name: usb-device
       hostPath:
         path: /dev/sonoff_coord_xiaomi
+        type: CharDevice
     - name: devices
       configMap:
         defaultMode: 420

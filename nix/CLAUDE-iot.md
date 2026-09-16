@@ -26,22 +26,24 @@ All PVC data lives in sda6 (EPHEMERAL). **The entire disk will be wiped** for Ni
 
 ## USB Zigbee Coordinators
 
-Two USB serial adapters plugged in — critical to preserve udev symlinks on NixOS.
+Two USB Zigbee sticks plugged in — critical to preserve udev symlinks on NixOS.
+
+> ⚠️ worker2 (Firebat N100) also has an **onboard** CH340 (`1a86:7523`, USB port `1-7`, bcdDevice `81.34`), alongside its internal Bluetooth, USB audio/HID and Holtek HID chips. It is not something plugged in. Matching the zig-a-zig-ah on vid:pid alone therefore makes the symlink a coin flip at every boot (symptom: z2m-misc `SRSP - SYS - ping after 6000ms`). The rule matches on `bcdDevice` instead.
 
 | Symlink                  | Driver    | Vendor:Product | Serial                             | Device           |
 |--------------------------|-----------|----------------|------------------------------------|------------------|
 | `/dev/sonoff_coord_xiaomi` | cp210x  | `10c4:ea60`    | `5c1d7030e96aef11aa58a4adc169b110` | Sonoff Zigbee 3.0 USB Dongle Plus |
-| `/dev/zazah_coord_misc`    | ch341-uart| `1a86:7523`   | *(no serial — match by vid:pid only)* | CH341 USB Serial |
+| `/dev/zazah_coord_misc`    | ch341-uart| `1a86:7523`   | *(no serial — match on `bcdDevice==0264`, USB port `1-1`)* | zig-a-zig-ah CC2652R (CH340) |
 
 ### NixOS udev rules (to put in `modules/iot/udev.nix`)
 ```nix
 services.udev.extraRules = ''
-  ACTION=="add", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="5c1d7030e96aef11aa58a4adc169b110", SYMLINK+="sonoff_coord_xiaomi"
-  ACTION=="add", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="zazah_coord_misc"
+  SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="5c1d7030e96aef11aa58a4adc169b110", SYMLINK+="sonoff_coord_xiaomi"
+  SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", ATTRS{bcdDevice}=="0264", SYMLINK+="zazah_coord_misc"
 '';
 ```
 
-> Note: The zazah device (ch341) has no unique serial — the match on vid:pid alone is acceptable since only one such device is plugged in. If a second ch341 device is ever added, revisit.
+> Note: the zig-a-zig-ah (CH340) has no unique serial. `bcdDevice` is the CH340 chip revision and differs from the onboard one (`0264` vs `8134`), and survives moving the stick to another USB port. If the stick is ever replaced, re-check with `cat /sys/bus/usb/devices/1-1/bcdDevice`. Both hostPath volumes use `type: CharDevice` so a missing symlink fails the pod loudly instead of mounting nothing.
 
 ---
 
