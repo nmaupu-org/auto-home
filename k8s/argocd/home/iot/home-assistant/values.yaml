@@ -35,6 +35,13 @@ rbac:
 
 podOptions:
   automountServiceAccountToken: true
+  # emulated_roku relies on SSDP (UDP multicast 239.255.255.250:1900) to be
+  # discovered by the Harmony Hub. Multicast does not cross the flannel overlay,
+  # so the pod must live in the node's network namespace. This does NOT pin the
+  # pod to a node: advertise_ip in hass-config points at the emulated-roku
+  # LoadBalancer IP below, which follows the pod wherever it is scheduled.
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
 
 workload:
   main:
@@ -243,13 +250,11 @@ service:
         port: 8123
         targetPort: 8123
   emulated-roku:
-    enabled: true
-    ports:
-      emulated-roku:
-        enabled: true
-        port: 8060
-        protocol: tcp
-        targetPort: 8060
+    # Disabled here on purpose: the TrueCharts common lib forces any Service
+    # selecting a hostNetwork pod to ClusterIP, so the LoadBalancer for the
+    # Harmony Hub is a raw manifest instead:
+    #   ../statics/home-assistant-emulated-roku-svc.yaml (192.168.100.36)
+    enabled: false
   # emulated-hue:
   #   enabled: true
   #   ports:
@@ -259,9 +264,8 @@ service:
   #       protocol: tcp
   #       targetPort: 80
 
-# Ingress is configured so that we can access through the main load balancer
-# even if using hostNetwork: true
-# Certificate is also working out of the box.
+# Ingress keeps working with hostNetwork: true because the Service still
+# selects the pod (endpoint = node IP:8123). Certificate is handled by cert-manager.
 ingress:
   main:
     enabled: true

@@ -1,0 +1,30 @@
+# Stable address advertised to the Harmony Hub by emulated_roku
+# (advertise_ip in hass-config/configuration.yaml).
+#
+# Declared as a raw manifest because the TrueCharts common lib forces every
+# Service that selects a hostNetwork pod to ClusterIP. Home Assistant runs with
+# hostNetwork: true (SSDP multicast), so the endpoint of this Service is
+# <node running hass>:8060. MetalLB keeps announcing the same IP via BGP when
+# the pod moves to another node, so the Hub never notices.
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant-emulated-roku
+  namespace: hass
+  labels:
+    app.kubernetes.io/instance: home-assistant
+    app.kubernetes.io/name: home-assistant
+    app.kubernetes.io/component: emulated-roku
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.100.36
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/instance: home-assistant
+    app.kubernetes.io/name: home-assistant
+    pod.name: main
+  ports:
+    - name: emulated-roku
+      port: 8060
+      protocol: TCP
+      targetPort: 8060
