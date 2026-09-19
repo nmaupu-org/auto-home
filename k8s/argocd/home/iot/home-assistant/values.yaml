@@ -44,6 +44,12 @@ podOptions:
   # in its host firewall: nix/modules/iot/firewall-extras.nix.
   hostNetwork: true
   dnsPolicy: ClusterFirstWithHostNet
+  # TrueCharts adds a *required* podAffinity to co-locate every workload that
+  # shares an RWO PVC (label truecharts.org/pvc). With a single Deployment this
+  # only glues each new pod to the node of the previous one (rolling update) and
+  # leaves it Pending when that node is cordoned/down. Only this Deployment uses
+  # the PVCs, and Longhorn re-attaches them on any node, so drop it.
+  defaultAffinity: false
 
 workload:
   main:
