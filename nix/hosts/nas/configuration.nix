@@ -18,6 +18,8 @@
     ../../modules/nas/telegram-bot.nix
     ../../modules/shared/zsh.nix
     ../../modules/nas/monitoring.nix
+    # home-assistant is hostNetwork and may be scheduled here: HA / Roku / SSDP ports
+    ../../modules/iot/firewall-extras.nix
   ];
 
   users-shared.sopsFile = ../../secrets/nas.yaml;

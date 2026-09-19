@@ -12,6 +12,8 @@
     ../../modules/shared/ssh.nix
     ../../modules/shared/tailscale.nix
     ../../modules/worker1/monitoring.nix
+    # home-assistant is hostNetwork and may be scheduled here: HA / Roku / SSDP ports
+    ../../modules/iot/firewall-extras.nix
   ];
 
   users-shared.sopsFile = ../../secrets/worker1.yaml;

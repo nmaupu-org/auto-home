@@ -40,6 +40,8 @@ podOptions:
   # so the pod must live in the node's network namespace. This does NOT pin the
   # pod to a node: advertise_ip in hass-config points at the emulated-roku
   # LoadBalancer IP below, which follows the pod wherever it is scheduled.
+  # Every node that can run this pod must open 8123/tcp, 8060/tcp and 1900/udp
+  # in its host firewall: nix/modules/iot/firewall-extras.nix.
   hostNetwork: true
   dnsPolicy: ClusterFirstWithHostNet
 
