@@ -83,6 +83,19 @@ workload:
                 git clone https://github.com/nmaupu/hass-config.git
               fi
 
+              cd "$config_dir"
+
+              # The reflog is useless here: we never commit locally, we only ever
+              # hard-reset onto origin. Left enabled it grows by one entry per
+              # loop iteration -- including no-op resets whose target sha is
+              # unchanged -- which is what filled this volume: .git/logs/HEAD hit
+              # 40MB / 227k entries in ~160 days while .git/objects (the real
+              # history) stayed at 844KB. Disable it and drop what it already
+              # accumulated, so an existing bloated volume shrinks on the next
+              # rollout without manual surgery.
+              git config core.logAllRefUpdates false
+              rm -rf .git/logs
+
               last_sha1=""
 
               while true; do
@@ -90,7 +103,16 @@ workload:
                 date
 
                 cd "$config_dir"
-                git fetch --all && git reset --hard origin/master
+
+                # Fetch only the branch we deploy, and reset only when it moved:
+                # `reset --hard` appends a reflog entry even when the target sha
+                # is unchanged. FETCH_HEAD is what this fetch just wrote, so the
+                # comparison does not depend on origin/master being updated by
+                # this fetch form.
+                git fetch origin master
+                if [ "$(git rev-parse HEAD)" != "$(git rev-parse FETCH_HEAD)" ]; then
+                  git reset --hard FETCH_HEAD
+                fi
 
                 cp /hass-secrets/secret.yaml "$config_dir/secrets.yaml"
                 mkdir -p $config_dir/.storage
