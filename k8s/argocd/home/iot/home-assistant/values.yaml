@@ -219,14 +219,14 @@ persistence:
     mountPath: /conf-reloader
     targetSelectAll: true
     storageClass: longhorn
-    size: 50Mi
+    size: 100Mi
   config:
     enabled: true
     type: pvc
     mountPath: /config
     targetSelectAll: true
     storageClass: longhorn
-    size: 50Mi
+    size: 100Mi
   hass-secrets:
     # Existing secret (sealed-secrets) created under ../../statics
     enabled: true
