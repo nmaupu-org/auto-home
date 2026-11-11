@@ -189,6 +189,9 @@ firewall_dhcp_static_leases:
   - name: harmony-hub
     mac: C8:DB:26:0B:1F:30
     ip: 192.168.12.20
+  - name: boox-go
+    mac: 4E:80:74:3C:63:82
+    ip: 192.168.12.34
   - name: bastion
     mac: DC:A6:32:54:73:91
     ip: 192.168.12.35
@@ -204,12 +207,12 @@ firewall_dhcp_static_leases:
   - name: nmaupu-laptop
     mac: e4:1f:d5:8b:ce:82
     ip: 192.168.12.39
-  - name: worker1
-    mac: 68:1D:EF:5D:4C:20
-    ip: 192.168.12.41
   - name: worker2
     mac: 68:1D:EF:5D:46:5A
     ip: 192.168.12.40
+  - name: worker1
+    mac: 68:1D:EF:5D:4C:20
+    ip: 192.168.12.41
   - name: worker3
     mac: 68:1D:EF:33:F8:33
     ip: 192.168.12.42
