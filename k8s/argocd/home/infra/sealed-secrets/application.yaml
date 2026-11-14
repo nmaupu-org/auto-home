@@ -11,8 +11,8 @@ spec:
     server: https://kubernetes.default.svc
   source:
     chart: sealed-secrets
-    repoURL: https://bitnami-labs.github.io/sealed-secrets
-    targetRevision: 2.16.0
+    repoURL: https://bitnami.github.io/sealed-secrets
+    targetRevision: 2.22.0
     helm:
       releaseName: sealed-secrets
 
