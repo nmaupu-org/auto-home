@@ -373,6 +373,10 @@ Configure the printer's FTP target:
 
 ## Phase 7 — k3s and ArgoCD
 
+The shared K3s module enables Spegel peer-to-peer image sharing. See the
+[rollout, trust assumptions and offline limits](../docs/k3s-image-sharing.md)
+and [module regression checks](tests/README.md) before applying this change.
+
 ### Verify k3s is running
 
 ```bash

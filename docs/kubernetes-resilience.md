@@ -79,9 +79,12 @@ ConfigMap edits trigger a normal GitOps rollout; no manual restart is required.
 
 ### Offline limits
 
-- At least one usable persisted config and the required images cached on the
-  scheduled node are necessary for offline restart. `IfNotPresent` does not
-  supply an image to a node that has never pulled it.
+- At least one usable persisted config and obtainable images are necessary
+  for offline restart. The [Spegel configuration](k3s-image-sharing.md), once
+  deployed, lets a node pull cached images from reachable cluster peers.
+  `IfNotPresent` alone cannot supply a missing image, and Spegel does not
+  replicate or pin images automatically; critical-image preloading remains
+  a separate task.
 - Working LAN DNS, MQTT, Kubernetes, and persistent storage remain dependencies.
   Cloud integrations cannot be made local merely by fixing this reloader.
 - A first installation with empty/lost PVCs requires initial configuration

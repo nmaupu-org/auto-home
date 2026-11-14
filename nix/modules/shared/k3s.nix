@@ -22,7 +22,8 @@
 #       nodeTaints = [ "role=iot:NoSchedule" ];
 #     };
 #
-# Firewall ports (6443, 10250, 8472/udp) are always opened.
+# All nodes share cached images via K3s's embedded Spegel mirror.
+# Firewall includes TCP 5001/6443 for Spegel peers; keep these LAN-only.
 
 let
   cfg = config.services.k3s-node;
@@ -80,11 +81,22 @@ in
       tokenFile  = lib.mkIf (cfg.tokenFile != null) cfg.tokenFile;
       extraFlags = toString (
         (lib.optionals (cfg.role == "server")
-          (map (c: "--disable ${c}") cfg.disabledComponents))
+          ([ "--embedded-registry" ]
+            ++ (map (c: "--disable ${c}") cfg.disabledComponents)))
         ++ (map (l: "--node-label ${l}") cfg.nodeLabels)
         ++ (map (t: "--node-taint ${t}") cfg.nodeTaints)
       );
     };
+
+    # Opt every node into sharing images from all registries. JSON is valid YAML.
+    # No endpoints: use Spegel first, retaining the default upstream fallback.
+    environment.etc."rancher/k3s/registries.yaml".text = builtins.toJSON {
+      mirrors."*" = {};
+    };
+    # K3s reads registry configuration at startup, including on agent nodes.
+    systemd.services.k3s.restartTriggers = [
+      config.environment.etc."rancher/k3s/registries.yaml".source
+    ];
 
     # open-iscsi — required by Longhorn for block storage volumes
     services.openiscsi = lib.mkIf cfg.enableLonghornSupport {
@@ -107,7 +119,8 @@ in
 
     # Firewall — NixOS merges these with ports from other modules automatically
     networking.firewall.allowedTCPPorts = [
-      6443   # k3s API server (kubectl + agent join)
+      5001   # Spegel peer-to-peer image discovery (all nodes)
+      6443   # k3s API server + Spegel image transfers (all nodes)
       10250  # kubelet metrics
       7946   # MetalLB memberlist (speaker coordination)
       9100   # Node-exporter daemon set port
