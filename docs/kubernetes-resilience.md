@@ -150,6 +150,26 @@ but Sync Unknown, with a ComparisonError for a missing
 at inspection time, but desired-state changes may not render until the dependency
 problem is repaired in the upstream deployment source/plugin dependency handling.
 
+### Jsonnet dependency fix
+
+The CMP logs confirmed that `jb update` fetched a newer `k8s-libsonnet` main
+revision whose archive no longer contains `1.32`. The download returned HTTP 200,
+then installation panicked; the shell retry loop nevertheless returned success
+and allowed generation to continue with missing dependencies. Gotomation's
+committed lockfile pins a revision that still contains the required directory.
+
+The plugin init script now requires a nonempty committed lockfile and runs
+`timeout -k 5 40 jb install` under strict Bash error handling. Installation
+failures and timeouts are propagated rather than hidden. Dependency updates
+belong in a reviewed lockfile change, not in Argo CD manifest generation.
+No Gotomation import changes or image rebuild are required.
+
+After deploying the Argo CD configuration, ensure repo-server/CMP has rolled out
+(the plugin file is mounted with `subPath`), then hard-refresh `iot-gotomation`
+to clear any cached generation error. This repository edit has not been deployed.
+Fresh dependency installation still needs GitHub; fully offline rendering would
+require vendored libraries or a versioned image containing the locked dependencies.
+
 ## Verification and deployment
 
 See [tests/README.md](../tests/README.md) for reproducible local checks and

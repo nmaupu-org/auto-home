@@ -39,7 +39,15 @@ configs:
           command: ["/usr/bin/bash", "-c"]
           args:
             - |
-              for i in 1 2 3 4 5; do jb update && break || sleep 2; done
+              set -euo pipefail
+
+              if [ ! -s jsonnetfile.lock.json ]; then
+                echo "ERROR: committed Jsonnet lockfile is required" >&2
+                exit 1
+              fi
+
+              # Install reviewed revisions; never update during rendering.
+              timeout -k 5 40 jb install
         generate:
           command: ["/usr/bin/bash", "-c"]
           args:
