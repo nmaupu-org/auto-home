@@ -207,10 +207,8 @@ ingress:
         enabled: true
       traefik:
         enabled: true
-        allowCors: false
         entrypoints:
           - websecure
-        enableFixedMiddlewares: false
 
 configmap:
   init:
