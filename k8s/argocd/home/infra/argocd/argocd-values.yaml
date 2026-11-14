@@ -17,7 +17,7 @@ configs:
   params:
     server.disable.auth: true
     server.insecure: true
-    # Reduce CPU by limiting concurrency — no need for fast reconciliation on home NAS
+    # Reduce concurrency/CPU: fast reconciliation is unnecessary at home.
     controller.operation.processors: "5"
     controller.status.processors: "10"
     controller.self.heal.timeout.seconds: "60"
@@ -30,7 +30,9 @@ configs:
           static:
             - name: values
               title: values to pass as input parameters (values.json)
-              tooltip: A file named values.json will be generated from this parameter before generating manifests
+              tooltip: >-
+                A file named values.json will be generated from this parameter
+                before generating manifests
               required: true
               type: string
         init:
@@ -44,11 +46,38 @@ configs:
             - |
               set -eo pipefail
               echo "${ARGOCD_APP_PARAMETERS}" > /tmp/parameters.log
-              echo "${ARGOCD_APP_PARAMETERS}" | jq -r '.[] | select(.name == "values") | .string' > values.yaml
+              echo "${ARGOCD_APP_PARAMETERS}" | \
+                jq -r '.[] | select(.name == "values") | .string' > values.yaml
               cp values.yaml /tmp/values.yaml
               find . -name '*.jsonnet' | while read -r file; do
-                jsonnet -J vendor -J . "$file" || { echo "ERROR: jsonnet failed for $file" >&2; exit 1; }
+                jsonnet -J vendor -J . "$file" || {
+                  echo "ERROR: jsonnet failed for $file" >&2
+                  exit 1
+                }
               done
+
+# Enable the chart's local TCP/Redis-PING checks. Do not probe GitHub.
+applicationSet:
+  livenessProbe:
+    enabled: true
+  readinessProbe:
+    enabled: true
+
+notifications:
+  livenessProbe:
+    enabled: true
+  readinessProbe:
+    enabled: true
+
+redis:
+  livenessProbe:
+    enabled: true
+  readinessProbe:
+    enabled: true
+
+# Dex is deliberately unconfigured (server.disable.auth above). Its wrapper
+# idles without opening health ports; enabling probes would cause a crash loop.
+# The application controller has no liveness option in this pinned chart.
 
 repoServer:
   extraContainers:
@@ -64,12 +93,12 @@ repoServer:
           name: var-files
         - mountPath: /home/argocd/cmp-server/plugins
           name: plugins
-        # Remove this volumeMount if you've chosen to bake the config file into the sidecar image.
+        # Remove this mount if the plugin config is baked into the image.
         - mountPath: /home/argocd/cmp-server/config/plugin.yaml
           subPath: custom-jsonnet.yaml
           name: argocd-cmp-cm
-        # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps
-        # mitigate path traversal attacks.
+        # Since v2.4, do NOT share tmp with the repo-server container.
+        # Filesystem separation helps mitigate path traversal attacks.
         - mountPath: /tmp
           name: cmp-tmp
   volumes:

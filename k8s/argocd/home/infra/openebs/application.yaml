@@ -41,6 +41,17 @@ spec:
             basePath: /var/openebs/local
           xfsQuota:
             enabled: true
+        # Check the local Alloy server, not delivery to a Loki backend.
+        alloy:
+          alloy:
+            livenessProbe:
+              httpGet:
+                path: /metrics
+                port: 12345
+              initialDelaySeconds: 30
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 5
         loki:
           enabled: false
         minio:

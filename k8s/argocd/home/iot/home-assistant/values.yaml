@@ -1,6 +1,9 @@
 ---
 TZ: Europe/Paris
 
+# Existing image tools (verified; no image rebuild is required):
+# init: Bash, Git, rsync, curl, BusyBox tools. Use portable `timeout -k`.
+# reloader: Bash, Git, curl, kubectl, GNU tools and tar; rsync is NOT installed.
 # Add any image: yaml key is the name used in any imageSelector
 initImage:
   repository: nmaupu/hass-init
@@ -63,136 +66,25 @@ workload:
               fieldRef:
                 fieldPath: metadata.namespace
           probes:
+            # Loop progress, NOT GitHub reachability. A normal iteration is
+            # bounded to < 5 minutes including optional UI downloads.
             liveness:
-              enabled: false
+              enabled: true
+              type: exec
+              command:
+                - bash
+                - /config/init/health.sh
             readiness:
               enabled: false
             startup:
-              enabled: false
+              enabled: true
+              type: exec
+              command:
+                - bash
+                - /config/init/health.sh
           command:
             - bash
-            - -c
-            - |
-              set -eEuo pipefail
-
-              config_dir="/conf-reloader/hass-config"
-
-              # Initial clone if PVC is empty
-              if [ ! -d "$config_dir/.git" ]; then
-                cd /conf-reloader
-                git clone https://github.com/nmaupu/hass-config.git
-              fi
-
-              cd "$config_dir"
-
-              # The reflog is useless here: we never commit locally, we only ever
-              # hard-reset onto origin. Left enabled it grows by one entry per
-              # loop iteration -- including no-op resets whose target sha is
-              # unchanged -- which is what filled this volume: .git/logs/HEAD hit
-              # 40MB / 227k entries in ~160 days while .git/objects (the real
-              # history) stayed at 844KB. Disable it and drop what it already
-              # accumulated, so an existing bloated volume shrinks on the next
-              # rollout without manual surgery.
-              git config core.logAllRefUpdates false
-              rm -rf .git/logs
-
-              last_sha1=""
-
-              while true; do
-                set -x
-                date
-
-                cd "$config_dir"
-
-                # Fetch only the branch we deploy, and reset only when it moved:
-                # `reset --hard` appends a reflog entry even when the target sha
-                # is unchanged. FETCH_HEAD is what this fetch just wrote, so the
-                # comparison does not depend on origin/master being updated by
-                # this fetch form.
-                git fetch origin master
-                if [ "$(git rev-parse HEAD)" != "$(git rev-parse FETCH_HEAD)" ]; then
-                  git reset --hard FETCH_HEAD
-                fi
-
-                cp /hass-secrets/secret.yaml "$config_dir/secrets.yaml"
-                mkdir -p $config_dir/.storage
-                cp /config/init/onboarding "$config_dir/.storage/onboarding"
-                cp /hass-passwords/hass-passwords.json "$config_dir/.storage/auth_provider.homeassistant"
-
-                # handling recorder configuration (db)
-                cat << EOF > "$config_dir/recorder.yaml"
-              purge_keep_days: 60
-              commit_interval: 30
-              db_url: "sqlite:////recorder/home-assistant_v2.db"
-              EOF
-
-                # MQTT must be configured in the UI now...
-
-                if [ ! -d "$config_dir/www" ]; then
-                  mkdir -p $config_dir/www/{icons/weather_icons,community/lovelace-meteofrance-weather-card/icons}
-                  git -c advice.detachedHead=false clone --depth=1 --branch=1.12.1 https://github.com/thomasloven/lovelace-auto-entities.git "$config_dir/www/auto-entities"
-                  git -c advice.detachedHead=false clone --depth=1 --branch=1.3.2 https://github.com/thomasloven/lovelace-template-entity-row "$config_dir/www/template-entity-row"
-                  (
-                    git -c advice.detachedHead=false clone --depth=1 https://github.com/rodrigofragadf/lovelace-cards.git "$config_dir/www/lovelace-cards" && \
-                      cd "$config_dir/www/lovelace-cards" && \
-                      git -c advice.detachedHead=false reset --hard c246a4f
-                  )
-                  git -c advice.detachedHead=false clone --depth=1 --branch=2.4.4 https://github.com/thomasloven/lovelace-layout-card.git "$config_dir/www/lovelace-layout-cards"
-
-                  curl -L https://github.com/maykar/custom-header/releases/download/1.3.2/custom-header.js \
-                    -o "$config_dir/www/custom-header.js"
-                  curl -L https://github.com/kalkih/mini-graph-card/releases/download/v0.9.2/mini-graph-card-bundle.js \
-                    -o "$config_dir/www/mini-graph-card-bundle.js"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/meteofrance-weather-card.js \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/meteofrance-weather-card.js"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/meteofrance-weather-card-editor.js \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/meteofrance-weather-card-editor.js"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy-day-3.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/cloudy-day-3.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy-night-3.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/cloudy-night-3.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/cloudy.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/cloudy.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/day.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/day.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/fog.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/fog.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/lightning-rainy.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/lightning-rainy.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/night.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/night.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-5.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/rainy-5.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-6.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/rainy-6.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/rainy-7.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/rainy-7.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/snowy-6.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/snowy-6.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/snowy-rainy.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/snowy-rainy.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/thunder.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/thunder.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/windy-night.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/windy-night.svg"
-                  curl -L https://raw.githubusercontent.com/hacf-fr/lovelace-meteofrance-weather-card/Meteo-France/dist/icons/windy.svg \
-                    -o "$config_dir/www/community/lovelace-meteofrance-weather-card/icons/windy.svg"
-                  curl -L -o /tmp/amcharts.zip https://download.amcharts.com/1.0/amcharts_weather_icons_1.0.0.zip && \
-                    unzip /tmp/amcharts.zip -d "$config_dir/www/icons/weather_icons" && \
-                    rm -f /tmp/amcharts.zip
-                fi
-
-                sha1=$(find "$config_dir" -type f | grep -v www | grep -v .git | sort | while read -r file; do cat $file; done | sha1sum | awk '{print $1}')
-                echo "sha1: $sha1"
-                if [ "$sha1" != "$last_sha1" ]; then
-                  kubectl patch deployment home-assistant -n $NAMESPACE \
-                    --patch "{\"spec\": {\"template\": {\"metadata\": {\"annotations\": {\"conf-reloader-hass-config-sha1\": \"$sha1\"}}}}}"
-                  last_sha1="$sha1"
-                fi
-
-                set +x
-                sleep 60
-              done
+            - /config/init/sync.sh
 
       initContainers:
         init:
@@ -295,7 +187,8 @@ service:
   #       targetPort: 80
 
 # Ingress keeps working with hostNetwork: true because the Service still
-# selects the pod (endpoint = node IP:8123). Certificate is handled by cert-manager.
+# selects the pod (endpoint = node IP:8123).
+# Certificate is handled by cert-manager.
 ingress:
   main:
     enabled: true
@@ -343,21 +236,245 @@ configmap:
           "key": "onboarding",
           "version": 3
         }
+      common.sh: |-
+        #!/bin/bash
+        # Shared paths can be overridden by the isolated regression tests.
+        cache_dir="${CACHE_DIR:-/conf-reloader/hass-config}"
+        export config_dir="${CONFIG_DIR:-/config}"
+        init_dir="${INIT_DIR:-/config/init}"
+        export progress_file="${PROGRESS_FILE:-/tmp/conf-reloader-progress}"
+        repo_url="${REPO_URL:-https://github.com/nmaupu/hass-config.git}"
+        export GIT_TERMINAL_PROMPT=0
+
+        bounded_git() {
+          timeout -k 5 "${GIT_TIMEOUT:-30}" git \
+            -c http.lowSpeedLimit=1 -c http.lowSpeedTime=15 "$@"
+        }
+
+        refresh_repo() {
+          if [ ! -d "$cache_dir/.git" ]; then
+            # Never expose an incomplete clone or delete a cached config on
+            # failure.
+            rm -rf "${cache_dir}.clone"
+            bounded_git clone --branch master "$repo_url" \
+              "${cache_dir}.clone" || return
+            test -s "${cache_dir}.clone/configuration.yaml" || return 1
+            if [ -d "$cache_dir/www" ]; then
+              cp -a "$cache_dir/www" "${cache_dir}.clone/" || return
+            fi
+            rm -rf "${cache_dir}.previous"
+            if [ -d "$cache_dir" ]; then
+              mv "$cache_dir" "${cache_dir}.previous" || return
+            fi
+            if ! mv "${cache_dir}.clone" "$cache_dir"; then
+              if [ -d "${cache_dir}.previous" ]; then
+                mv "${cache_dir}.previous" "$cache_dir"
+              fi
+              return 1
+            fi
+            rm -rf "${cache_dir}.previous"
+          else
+            bounded_git -C "$cache_dir" fetch origin master || return
+            if [ ! -s "$cache_dir/configuration.yaml" ] || \
+               [ "$(git -C "$cache_dir" rev-parse HEAD)" != \
+                 "$(git -C "$cache_dir" rev-parse FETCH_HEAD)" ]; then
+              git -C "$cache_dir" reset --hard FETCH_HEAD || return
+            fi
+          fi
+          # No local commits: avoid the previously unbounded reflog on this
+          # small PVC.
+          git -C "$cache_dir" config core.logAllRefUpdates false || return
+          rm -rf "$cache_dir/.git/logs"
+        }
+
+        prepare_config() {
+          local target="$1"
+          cp "${SECRETS_DIR:-/hass-secrets}/secret.yaml" "$target/secrets.yaml"
+          mkdir -p "$target/.storage"
+          cp "$init_dir/onboarding" "$target/.storage/onboarding"
+          cp "${PASSWORDS_DIR:-/hass-passwords}/hass-passwords.json" \
+            "$target/.storage/auth_provider.homeassistant"
+          printf '%s\n' 'purge_keep_days: 60' 'commit_interval: 30' \
+            'db_url: "sqlite:////recorder/home-assistant_v2.db"' \
+            > "$target/recorder.yaml"
+        }
+
+        config_hash() {
+          (
+            cd "$1" || exit
+            # Hash relative names AND contents; UI assets and Git metadata are
+            # not
+            # automation config. NUL separators preserve filenames with spaces.
+            find . -type f ! -path './.git/*' ! -path './www/*' \
+              ! -path './init/*' ! -name '.hass-config-sha1' \
+              ! -name '.HA_VERSION' \
+              -print0 | sort -z | xargs -0 sha1sum | sha1sum | awk '{print $1}'
+          )
+        }
       init.sh: |-
         #!/bin/bash
         set -eEuo pipefail
-        set -x
-        date
+        # shellcheck source=common.sh
+        source "${INIT_DIR:-/config/init}/common.sh"
 
-        conf_reloader_dir=/conf-reloader/hass-config
-        config_dir=/config
-        config="${config_dir}/configuration.yaml"
+        if [ ! -s "$cache_dir/configuration.yaml" ]; then
+          if [ -s "$config_dir/configuration.yaml" ]; then
+            echo "Incomplete cache; retaining existing Home Assistant config."
+            prepare_config "$config_dir"
+            # No source baseline until a complete repository is available.
+            rm -f "$config_dir/.hass-config-sha1"
+            exit 0
+          fi
+          echo "No local config: bootstrapping the initial configuration."
+          if ! refresh_repo; then
+            echo "ERROR: no usable config; initial download failed." >&2
+            exit 1
+          fi
+        fi
+        test -s "$cache_dir/configuration.yaml"
+        prepare_config "$cache_dir"
 
-        # Getting last configuration from conf-reloader
-        rsync -aP --delete \
-          --exclude .storage/ \
-          --exclude .git/ \
-          --exclude .HA_VERSION \
-          "$conf_reloader_dir/" "$config_dir/" || true
-        # .storage is used as a local configuration directory (integrations for example) so be sure to not delete anything in it.
-        rsync -aP "$conf_reloader_dir/.storage" "$config_dir" || true
+        # Do not delete integration state, image metadata, or the mounted
+        # ConfigMap.
+        # In particular, never ignore rsync errors and then start with partial
+        # config.
+        rsync -a --delete --exclude .storage/ --exclude .git/ \
+          --exclude '*.tmp' \
+          --exclude .HA_VERSION --exclude .hass-config-sha1 --exclude /init/ \
+          "$cache_dir/" "$config_dir/"
+        mkdir -p "$config_dir/.storage"
+        rsync -a "$cache_dir/.storage/" "$config_dir/.storage/"
+        config_hash "$cache_dir" > "$config_dir/.hass-config-sha1"
+      sync.sh: |-
+        #!/bin/bash
+        set -eEuo pipefail
+        # shellcheck source=common.sh
+        source "${INIT_DIR:-/config/init}/common.sh"
+
+        touch "$progress_file"
+        # Written by init, not the sidecar: represents config loaded by this
+        # Pod.
+        # A reloader-only restart must not trigger a new Home Assistant rollout.
+        last_sha1=""
+        if [ -f "$config_dir/.hass-config-sha1" ]; then
+          last_sha1=$(< "$config_dir/.hass-config-sha1")
+        fi
+
+        while true; do
+          touch "$progress_file"
+          if ! refresh_repo; then
+            echo "Refresh unavailable; keeping local config and retrying." >&2
+          fi
+
+          if [ -s "$cache_dir/configuration.yaml" ]; then
+            prepare_config "$cache_dir"
+            sha1=$(config_hash "$cache_dir")
+            if [ "$sha1" != "$last_sha1" ]; then
+              patch='{"spec":{"template":{"metadata":{"annotations":{'
+              patch+="\"conf-reloader-hass-config-sha1\":\"$sha1\"}}}}}"
+              if timeout -k 5 "${PATCH_TIMEOUT:-15}" kubectl \
+                --request-timeout=10s patch deployment home-assistant \
+                -n "$NAMESPACE" \
+                --patch "$patch"; then
+                last_sha1="$sha1"
+              else
+                echo "Could not request config rollout; will retry." >&2
+              fi
+            fi
+
+            # Optional assets run in a separate strict shell: failures must
+            # not stop automation updates. Retry incomplete downloads later.
+            if [ ! -f "$cache_dir/www/.download-complete" ]; then
+              if ! timeout -k 5 "${ASSET_TIMEOUT:-180}" \
+                bash "$init_dir/assets.sh"; then
+                echo "Optional dashboard assets unavailable; will retry." >&2
+              fi
+              # The deployed reloader image has tar, but not rsync.
+              # Only copy after download attempts, not every poll.
+              mkdir -p "$config_dir/www"
+              if ! (tar -C "$cache_dir/www" --exclude=.git \
+                --exclude='*.tmp' -cf - . | \
+                tar -C "$config_dir/www" -xf -); then
+                rm -f "$cache_dir/www/.download-complete"
+                echo "Could not publish optional assets; will retry." >&2
+              fi
+            fi
+          fi
+          touch "$progress_file"
+          sleep "${REFRESH_INTERVAL:-60}"
+        done
+      health.sh: |-
+        #!/bin/bash
+        set -eEuo pipefail
+        progress_file="${PROGRESS_FILE:-/tmp/conf-reloader-progress}"
+        test -f "$progress_file"
+        # A GitHub outage still advances the loop. Only a stuck loop is
+        # unhealthy.
+        test "$(( $(date +%s) - $(stat -c %Y "$progress_file") ))" -lt 600
+      assets.sh: |-
+        #!/bin/bash
+        set -eEuo pipefail
+        # shellcheck source=common.sh
+        source "${INIT_DIR:-/config/init}/common.sh"
+        www="$cache_dir/www"
+        weather="$www/community/lovelace-meteofrance-weather-card"
+        mkdir -p "$weather/icons" "$www/icons/weather_icons"
+        github=https://github.com
+
+        clone_asset() {
+          local name="$1" repo="$2" ref="$3"
+          if [ ! -d "$www/$name/.git" ]; then
+            rm -rf "$www/$name.tmp"
+            # Only the pinned commit needs history; keep tag clones small.
+            if [ "$ref" = c246a4f ]; then
+              bounded_git clone "$repo" "$www/$name.tmp"
+            else
+              bounded_git clone --depth=1 --branch "$ref" \
+                "$repo" "$www/$name.tmp"
+            fi
+            git -C "$www/$name.tmp" -c advice.detachedHead=false checkout "$ref"
+            # A previous failed/partial directory must not nest the new clone.
+            rm -rf "${www:?}/${name:?}"
+            mv "$www/$name.tmp" "$www/$name"
+          fi
+        }
+
+        download_asset() {
+          local url="$1" target="$2"
+          if [ ! -s "$target" ]; then
+            curl --fail --location --connect-timeout 10 --max-time 30 \
+              "$url" -o "$target.tmp"
+            mv "$target.tmp" "$target"
+          fi
+        }
+
+        clone_asset auto-entities \
+          "$github/thomasloven/lovelace-auto-entities.git" 1.12.1
+        clone_asset template-entity-row \
+          "$github/thomasloven/lovelace-template-entity-row" 1.3.2
+        clone_asset lovelace-cards \
+          "$github/rodrigofragadf/lovelace-cards.git" c246a4f
+        clone_asset lovelace-layout-cards \
+          "$github/thomasloven/lovelace-layout-card.git" 2.4.4
+        header="$github/maykar/custom-header/releases/download/1.3.2"
+        download_asset "$header/custom-header.js" "$www/custom-header.js"
+        mini="$github/kalkih/mini-graph-card/releases/download/v0.9.2"
+        download_asset "$mini/mini-graph-card-bundle.js" \
+          "$www/mini-graph-card-bundle.js"
+        base=https://raw.githubusercontent.com/hacf-fr
+        base=$base/lovelace-meteofrance-weather-card/Meteo-France/dist
+        for file in meteofrance-weather-card.js \
+          meteofrance-weather-card-editor.js \
+          icons/cloudy-day-3.svg icons/cloudy-night-3.svg \
+          icons/cloudy.svg icons/day.svg icons/night.svg; do
+          download_asset "$base/$file" "$weather/$file"
+        done
+        if [ ! -f "$www/icons/weather_icons/.complete" ]; then
+          amcharts=https://download.amcharts.com/1.0
+          download_asset "$amcharts/amcharts_weather_icons_1.0.0.zip" \
+            /tmp/amcharts.zip
+          unzip -o /tmp/amcharts.zip -d "$www/icons/weather_icons"
+          rm -f /tmp/amcharts.zip
+          touch "$www/icons/weather_icons/.complete"
+        fi
+        touch "$www/.download-complete"

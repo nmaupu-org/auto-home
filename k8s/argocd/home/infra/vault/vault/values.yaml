@@ -23,6 +23,16 @@ server:
     size: 1Gi
     storageClass: openebs-zfs
 
+  # Sealed/uninitialized Vault is alive, but must remain unready.
+  # Restart only when the local HTTP server stops responding.
+  livenessProbe:
+    enabled: true
+    path: /v1/sys/health?standbyok=true&sealedcode=200&uninitcode=200
+    initialDelaySeconds: 60
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 5
+
   readinessProbe:
     enabled: true
     path: /v1/sys/health

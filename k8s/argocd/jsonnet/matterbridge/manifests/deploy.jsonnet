@@ -50,6 +50,22 @@ local mainContainer =
   + c.withEnv([
     envVar.withName('TZ') + envVar.withValue('Europe/Paris'),
   ])
+  // Test the local frontend, not the HA connection or Internet access.
+  + c.startupProbe.httpGet.withPath('/')
+  + c.startupProbe.httpGet.withPort(v.matterbridge.frontendPort)
+  + c.startupProbe.withPeriodSeconds(5)
+  + c.startupProbe.withTimeoutSeconds(5)
+  + c.startupProbe.withFailureThreshold(60)
+  + c.livenessProbe.httpGet.withPath('/')
+  + c.livenessProbe.httpGet.withPort(v.matterbridge.frontendPort)
+  + c.livenessProbe.withPeriodSeconds(15)
+  + c.livenessProbe.withTimeoutSeconds(5)
+  + c.livenessProbe.withFailureThreshold(5)
+  + c.readinessProbe.httpGet.withPath('/')
+  + c.readinessProbe.httpGet.withPort(v.matterbridge.frontendPort)
+  + c.readinessProbe.withPeriodSeconds(10)
+  + c.readinessProbe.withTimeoutSeconds(5)
+  + c.readinessProbe.withFailureThreshold(3)
   // No ports declared: hostNetwork: true already exposes all ports on the host
   + c.withVolumeMounts([
     vmount.withName('data') + vmount.withMountPath('/root/.matterbridge'),
