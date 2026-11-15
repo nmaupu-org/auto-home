@@ -370,8 +370,10 @@ configmap:
             if [ "$sha1" != "$last_sha1" ]; then
               patch='{"spec":{"template":{"metadata":{"annotations":{'
               patch+="\"conf-reloader-hass-config-sha1\":\"$sha1\"}}}}}"
+              # kubectl v1.32.0 loses in-cluster fallback with a nonzero
+              # --request-timeout. Bound the whole call with timeout instead.
               if timeout -k 5 "${PATCH_TIMEOUT:-15}" kubectl \
-                --request-timeout=10s patch deployment home-assistant \
+                patch deployment home-assistant \
                 -n "$NAMESPACE" \
                 --patch "$patch"; then
                 last_sha1="$sha1"
